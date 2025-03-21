@@ -1,0 +1,100 @@
+<style>
+    .w-70px {
+        width: 70px !important;
+    }
+
+    #kt_app_sidebar_toggle .svg-icon {
+        margin: 0 auto;
+        border-radius: 50%;
+        border: 1px solid;
+    }
+    .svg-icon.svg-icon-muted {
+        color: var(--kt-text-gray-600);
+    }
+    .pos-sidebar {
+        z-index: 100000 !important;
+    }
+
+    .pos-sidebar .menu-link {
+        height: 70px;
+        border: 1px solid rgb(246, 248, 252);
+        display: flex;
+        justify-content: center;
+        width: 70px;
+        box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 10%);
+        padding: 0px !important;
+    }
+    .pos-sidebar .menu-item {
+        padding: 0px !important;
+    }
+
+    div#kt_app_sidebar_toggle {
+        height: 70px;
+        border: 1px solid rgb(246, 248, 252);
+        box-shadow: 0px 0px 1px 1px rgb(0 0 0 / 10%);
+    }
+
+    .top-left-pos .register-box {
+        width: calc(100% - 80px);
+        margin-left: 5px;
+    }
+    .sale-grid-big-wrapper-parent{
+        width: calc(100% - 80px);
+        margin-left: 5px;
+    }
+
+    html[data-theme='light'] .register-box {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .pos_bg_dark{
+        background-color: #eef1f5 !important;
+    }
+  .bg-primary{
+    background-color: var(--kt-primary) !important;
+  }
+  .border-radius-left{
+    border-radius: 5px 0px 0px 5px !important;
+  }
+  .border-radius-right{
+    border-radius: 0px 5px 5px 0px !important;
+  }
+ 
+  .bg-primary:hover{
+    background-color: #383fcf  !important;
+  }
+  .btn-check:active+.btn.btn-active-color-primary, .btn-check:checked+.btn.btn-active-color-primary, .btn.btn-active-color-primary.active, .btn.btn-active-color-primary.show, .btn.btn-active-color-primary:active:not(.btn-active), .btn.btn-active-color-primary:focus:not(.btn-active), .btn.btn-active-color-primary:hover:not(.btn-active), .show>.btn.btn-active-color-primary {
+        color: #ffffff;
+    }
+    .text-hover-primary:hover {
+        transition: color .2s ease;
+        color: var(--kt-text-light) !important;
+    }
+    .text-hover-primary:hover i {
+        transition: color .2s ease;
+        color: var(--kt-text-light) !important;
+    }
+    .h-42px {
+        height: 42px !important;
+    }
+    .h-43px {
+        height: 43px !important;
+    }
+    .align-item-center {
+        align-items: center !important;;
+    }
+    .d-inline-flex{
+        display: inline-flex !important;
+    }
+    .badge{
+        border-radius: 3px !important;
+    }
+
+    span#cancel_sale_button {
+        cursor: pointer;
+    }
+    #pos_footer{
+        box-shadow: 0px -2px 1px 1px rgb(0 0 0 / 10%)
+    }
+</style>

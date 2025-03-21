@@ -2,6 +2,7 @@
 <?php 
 
 $this->load->view("partial/offline_header"); ?>
+<?php $this->load->view("sales/offline/css/offline_css"); ?>
 <div id="network-status">You are offline</div>
 <div class="modal fade look-up-receipt" id="print_modal" role="dialog" aria-labelledby="lookUpReceipt"
     aria-hidden="true">
@@ -27,7 +28,7 @@ $this->load->view("partial/offline_header"); ?>
 <div id="sales_page_holder">
 
 </div>
-<div class=" register d-flex" id="main-container">
+<div class=" register d-flex pos-container" id="main-container">
 
     <!--begin::View component-->
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
@@ -1423,31 +1424,24 @@ $this->load->view("partial/offline_header"); ?>
         <div id="drag-handle"
             style="cursor: ew-resize;width: 7px;position: relative;background-color: #0009;height: 100%;float: right;z-index: 99;">
         </div>
-        <div class="d-flex">
-            <div id="kt_app_sidebar_toggle" class="w-100px text-center pt-2  text-light cursor-pointer bg-black rotate"
+        <div class="d-flex top-left-pos">
+            <div id="kt_app_sidebar_toggle" class="w-70px text-center pt-2  text-light cursor-pointer  rotate"
                 data-kt-rotate="true">
 
-                <span class="svg-icon svg-icon-muted svg-icon-2x rotate-180" style="margin: 0 auto;"><svg width="24"
-                        height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M14.4 11H2.99999C2.39999 11 1.99999 11.4 1.99999 12C1.99999 12.6 2.39999 13 2.99999 13H14.4V11Z"
-                            fill="currentColor"></path>
-                        <path
-                            d="M17.7762 13.2561C18.4572 12.5572 18.4572 11.4429 17.7762 10.7439L13.623 6.48107C13.1221 5.96697 12.25 6.32158 12.25 7.03934V16.9607C12.25 17.6785 13.1221 18.0331 13.623 17.519L17.7762 13.2561Z"
-                            fill="currentColor"></path>
-                        <rect opacity="0.5" width="2" height="16" rx="1" transform="matrix(-1 0 0 1 22 4)"
-                            fill="currentColor"></rect>
-                    </svg>
-                </span>
-                <!--end::Svg Icon-->
-                <!--end::Svg Icon-->
+                <span class="svg-icon svg-icon-muted svg-icon-2x rotate-180" style="margin: 0 auto;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1" transform="rotate(-180 18 13)" fill="currentColor"/>
+<path d="M15.4343 12.5657L11.25 16.75C10.8358 17.1642 10.8358 17.8358 11.25 18.25C11.6642 18.6642 12.3358 18.6642 12.75 18.25L18.2929 12.7071C18.6834 12.3166 18.6834 11.6834 18.2929 11.2929L12.75 5.75C12.3358 5.33579 11.6642 5.33579 11.25 5.75C10.8358 6.16421 10.8358 6.83579 11.25 7.25L15.4343 11.4343C15.7467 11.7467 15.7467 12.2533 15.4343 12.5657Z" fill="currentColor"/>
+</svg>
+            </span>
+
+
             </div>
-            <div class="register-box register-items-form w-100 d-flex justify-content-space-between h-70px">
+            <div class="register-box register-items-form  d-flex justify-content-space-between h-70px">
                 <a tabindex="-1" href="#" class="dismissfullscreen hidden"><i class="ion-close-circled"></i></a>
-                <div id="itemForm" class="item-form bg-light-100 w-60">
+                <div id="itemForm" class="item-form bg-light-100 w-60 d-flex justify-content-start align-item-center">
                     <!-- Item adding form -->
 
-                    <form action="<?= base_url(); ?>sales/add" id="add_item_form" class="form-inline" autocomplete="off"
+                    <form action="<?= base_url(); ?>sales/add" id="add_item_form" class="form-inline w-100 mx-2" autocomplete="off"
                         method="post" accept-charset="utf-8">
 
                         <div class="input-group input-group-mobile contacts">
@@ -1456,14 +1450,14 @@ $this->load->view("partial/offline_header"); ?>
                                     class="none add-new-item" title="New Item" id="new-item-mobile" tabindex="-1"><i
                                         class="icon ti-pencil-alt"></i> <span class="register-btn-text">New
                                         Item</span></a> </span>
-                            <div class="input-group-text register-mode sale-mode dropdown">
+                            <div class="input-group-text register-mode sale-mode dropdown bg-primary border-radius-left">
                                 <a href="<?= base_url(); ?>#" class="none active" tabindex="-1" title="Sale"
                                     id="select-mode-1" data-target="#" data-toggle="dropdown" aria-haspopup="true"
-                                    role="button" aria-expanded="false"><i class="icon ti-shopping-cart"></i> <span
-                                        class="register-btn-text mode_text">Sale</span></a>
+                                    role="button" aria-expanded="false"> Sale <i class="icon ti-shopping-cart m-2 text-light"></i>  <span
+                                        class="register-btn-text mode_text"></span></a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                    <li><a tabindex="-1" href="#" data-mode="return" class="change-mode Return-mode" >Return</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="sale" class="change-mode Sale-mode ">Sale</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" >Return</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode ">Sale</a></li>
                                 </ul>
                             </div>
 
@@ -1485,15 +1479,15 @@ $this->load->view("partial/offline_header"); ?>
                                 <div class="rect3"></div>
                             </div>
 
-                            <div class="input-group-text register-mode sale-mode dropdown">
+                            <div class="input-group-text register-mode sale-mode dropdown bg-primary border-radius-left">
                                 <a href="<?= base_url(); ?>#"
-                                    class="none active text-light  text-hover-primary mode_text" tabindex="-1"
+                                    class="none active text-light  text-hover-primary mode_text w-75px " tabindex="-1"
                                     title="Sale" id="select-mode-2" data-target="#" data-toggle="dropdown"
-                                    aria-haspopup="true" role="button" aria-expanded="false"><i
-                                        class="icon ti-shopping-cart"></i>Sale</a>
+                                    aria-haspopup="true" role="button" aria-expanded="false">Sale<i
+                                        class="icon ti-shopping-cart m-2 text-light"></i> </a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                <li><a tabindex="-1" href="#" data-mode="return" class="change-mode Return-mode" >Return</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="sale" class="change-mode Sale-mode ">Sale</a></li>
+                                <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" >Return</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode ">Sale</a></li>
                                    
                                    
                                 </ul>
@@ -1502,7 +1496,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
                             <input type="text" id="item" name="item"
-                                class="add-item-input   w-50  pull-left keyboardTop  ui-autocomplete-input"
+                                class="add-item-input   w-40  pull-left keyboardTop  ui-autocomplete-input"
                                 placeholder=<?php echo json_encode(lang('start_typing_item_name')); ?>
                                 data-title=<?php echo json_encode(lang('item_name')); ?>>
 
@@ -1515,14 +1509,14 @@ $this->load->view("partial/offline_header"); ?>
                                     title="Show Grid"><i class="icon ti-layout"></i> Show Grid</a> <a
                                     href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1" title="Hide Grid"><i
                                         class="icon ti-layout"></i> Hide Grid</a> </span>
-                            <span class="input-group-text  grid-buttons ">
+                            <span class="input-group-text  grid-buttons bg-primary border-radius-right  ">
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
                                     <button id="category_selection_btn"
-                                        class="btn h-20px w-70px btn-icon btn-color-light-400 btn-active-color-primary justify-content-end"
+                                        class="btn h-20px w-100px btn-icon btn-color-light-400 btn-active-color-primary justify-content-end  d-inline-flex"
                                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
                                         data-kt-menu-overflow="true">
-                                        Categories </button>
+                                        Categories <i class="icon ti-angle-down m-2 text-light"></i> </button>
                                     <div id="grid_selection"
                                         class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
                                         data-kt-menu="true" style="">
@@ -1567,20 +1561,24 @@ $this->load->view("partial/offline_header"); ?>
                     </form>
                 </div>
 
-                <div class="d-flex justify-content-end w-40">
+                <div class="d-flex justify-content-end w-40 align-item-center">
 
 
-                    <?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => 'd-flex    h-75px')); ?>
+                    <?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => 'd-flex    h-42px')); ?>
 
                     <?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
                     <?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
-                    <div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px me-1 "
+                    <div class="d-flex bg-primary p-3 flex-center w-100px h-42px me-1 "
                         id="kt_drawer_suspend" class="menu-icon w-100 " data-bs-custom-class="tooltip-inverse"
                         data-bs-toggle="tooltip" data-bs-placement="left" data-bs-dismiss="click"
                         data-bs-trigger="hover" data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                        <div class=" py-2">
+                        <?= lang('save_as') ?>
+                         
+                        </div>
                         <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                        <span class="svg-icon  svg-icon-3x mt-3">
+                        <span class="svg-icon svg-icon-3x svg-icon-2hx text-light">
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
                             <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -1590,14 +1588,23 @@ $this->load->view("partial/offline_header"); ?>
                             </svg>
                             <!--end::Svg Icon-->
                         </span>
+
+
                         <!--end::Svg Icon-->
-                        <div class=" py-2">
-                            <?= lang('save_as') ?> </div>
+                     
+                      
+                        
+                       
                     </div>
-                    <div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 "
+                    <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?>
+                    <div class="d-flex  bg-primary  p-3 flex-center w-100px h-42px me-1 "
                         id="cancel_sale_button">
+
+                        <div class=" py-2">
+                            <?php echo  lang('back');  ?>
+                        </div>
                         <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                        <span class="svg-icon svg-icon-3x mt-3">
+                        <span class="svg-icon svg-icon-3x svg-icon-2hx text-light">
                             <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <rect opacity="0.3" x="4" y="11" width="12" height="2" rx="1" fill="currentColor" />
@@ -1613,10 +1620,9 @@ $this->load->view("partial/offline_header"); ?>
 
                         </span>
                         <!--end::Svg Icon-->
-                        <div class=" py-2">
-                            <?php echo $this->cart->get_previous_receipt_id() ||  $this->cart->suspended ? lang('back') : lang('clear'); ?>
-                        </div>
+                      
                     </div>
+                    <?php endif; ?>
 
                     <?php } ?>
                     <?php } ?>
@@ -1624,12 +1630,16 @@ $this->load->view("partial/offline_header"); ?>
 
                     
 
-                    <div class="d-flex flex-column bg-primary  p-3 flex-center w-75px h-50px me-1 "
+                    <div class="d-flex  bg-primary  p-3 flex-center w-100px h-42px me-1 "
                         id="delete_sale_button" <?php
                         if (($this->cart->get_previous_receipt_id() || $this->cart->suspended) && $this->Employee->has_module_action_permission('sales', 'delete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
                         ?>  <?php }else{ ?>   style="display:none !important"   <?php } ?>>
                         <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                        <span class="svg-icon svg-icon-3x text-danger svg-icon-light mt-3">
+
+                        <div class=" py-2"><?php echo lang('void'); ?></div>
+
+
+                        <span class="svg-icon svg-icon-3x svg-icon-2hx  text-danger">
 
                             <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -1649,15 +1659,18 @@ $this->load->view("partial/offline_header"); ?>
                         </span>
                         <!--end::Svg Icon-->
 
-                        <div class=" py-2"><?php echo lang('void'); ?></div>
+                     
                     </div>
 
 
-                    <div class="d-flex flex-column bg-primary p-3 flex-center w-75px h-50px ddd " id="advance_details">
+                    <div class="d-flex  bg-primary p-3 flex-center w-100px  h-42px me-1 " id="advance_details">
                         <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                        <span class="svg-icon svg-icon-3x mt-3">
+
+                        <div class=" py-2">
+                            <?= lang('add_info') ?> </div>
+                    
                             <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
-                            <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
+                            <span class="svg-icon svg-icon-3x svg-icon-2hx text-light"><svg class="pos-top-icon" width="24"
                                     height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
                                         fill="currentColor" />
@@ -1668,11 +1681,8 @@ $this->load->view("partial/offline_header"); ?>
                                 </svg>
                             </span>
                             <!--end::Svg Icon-->
-                        </span>
                         <!--end::Svg Icon-->
-                        <div class=" py-2">
-                            <?= lang('add_info') ?> </div>
-                    </div>
+                        </div>
 
                     </form>
 
@@ -1690,9 +1700,9 @@ $this->load->view("partial/offline_header"); ?>
 
 
 		?>
-            <div class="w-100px bg-black pos-sidebar">
+            <div class="w-75px pos-sidebar">
                 <!--begin::Sidebar menu-->
-                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3  pos-menu"
+                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y    pos-menu"
                     id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto"
                     data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer"
                     data-kt-scroll-offset="0" style="height: 490px;">
@@ -1713,18 +1723,10 @@ $this->load->view("partial/offline_header"); ?>
                                     data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
                                     data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                                     data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x  w-100"><svg width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3"
-                                                d="M17 6H3C2.4 6 2 6.4 2 7V21C2 21.6 2.4 22 3 22H17C17.6 22 18 21.6 18 21V7C18 6.4 17.6 6 17 6Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M17.8 4.79999L9.3 13.3C8.9 13.7 8.9 14.3 9.3 14.7C9.5 14.9 9.80001 15 10 15C10.2 15 10.5 14.9 10.7 14.7L19.2 6.20001L17.8 4.79999Z"
-                                                fill="currentColor" />
-                                            <path opacity="0.3" d="M22 9.09998V3C22 2.4 21.6 2 21 2H14.9L22 9.09998Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                        <span class="menu-title w-100"><?= lang('go_to'); ?></span>
+                                    <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.5" x="16.9497" y="8.46448" width="13" height="2" rx="1" transform="rotate(135 16.9497 8.46448)" fill="currentColor"/>
+                                    <path d="M14.8284 9.97157L14.8284 15.8891C14.8284 16.4749 15.3033 16.9497 15.8891 16.9497C16.4749 16.9497 16.9497 16.4749 16.9497 15.8891L16.9497 8.05025C16.9497 7.49797 16.502 7.05025 15.9497 7.05025L8.11091 7.05025C7.52512 7.05025 7.05025 7.52513 7.05025 8.11091C7.05025 8.6967 7.52512 9.17157 8.11091 9.17157L14.0284 9.17157C14.4703 9.17157 14.8284 9.52975 14.8284 9.97157Z" fill="currentColor"/>
+                                    </svg>
                                     </span>
                                 </span>
                             </span>
@@ -1738,7 +1740,7 @@ $this->load->view("partial/offline_header"); ?>
                                     data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                                     data-bs-original-title="Metronic Builder" data-kt-initialized="1">
                                     <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x  w-100"><svg width="24" height="24"
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x "><svg width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M13 11H3C2.4 11 2 10.6 2 10V9C2 8.4 2.4 8 3 8H13C13.6 8 14 8.4 14 9V10C14 10.6 13.6 11 13 11ZM22 5V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4V5C2 5.6 2.4 6 3 6H21C21.6 6 22 5.6 22 5Z"
@@ -1747,16 +1749,14 @@ $this->load->view("partial/offline_header"); ?>
                                                 d="M21 16H3C2.4 16 2 15.6 2 15V14C2 13.4 2.4 13 3 13H21C21.6 13 22 13.4 22 14V15C22 15.6 21.6 16 21 16ZM14 20V19C14 18.4 13.6 18 13 18H3C2.4 18 2 18.4 2 19V20C2 20.6 2.4 21 3 21H13C13.6 21 14 20.6 14 20Z"
                                                 fill="currentColor" />
                                         </svg>
-                                        <span class="menu-title w-100"><?= lang('pos_builder'); ?></span>
                                     </span>
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
-                            <div class="menu-item">
                                 <a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
                                     <span class="menu-icon  w-100 ">
                                         <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
-                                        <span class="svg-icon svg-icon-muted svg-icon-2x w-100 "><svg width="24"
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x "><svg width="24"
                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path opacity="0.3"
@@ -1769,161 +1769,149 @@ $this->load->view("partial/offline_header"); ?>
                                                     d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z"
                                                     fill="currentColor" />
                                             </svg>
-                                            <span class="menu-title w-100"><?= lang('back_to_sale'); ?></span>
                                         </span>
                                         <!--end::Svg Icon-->
                                     </span>
 
                                 </a>
 
-                            </div>
+                                <?php
+
+                                    if (get_quick_access()) :
+                                        $quick_access = get_quick_access();
+                                    ?>
+
+                                    <?php if ($this->Employee->has_module_permission('sales', $employee_id) && in_array('pos', $quick_access)) { ?>
+                                    <div class="menu-item" >
+                                        <a class="menu-link  " href="<?php echo site_url('sales'); ?>" <?php echo array_search('sales', $disable_modules) === false ? ''
+                                                                        : 'style="display: none;"' ?>>
+                                            <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/art/art006.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3"
+                                                            d="M22 19V17C22 16.4 21.6 16 21 16H8V3C8 2.4 7.6 2 7 2H5C4.4 2 4 2.4 4 3V19C4 19.6 4.4 20 5 20H21C21.6 20 22 19.6 22 19Z"
+                                                            fill="currentColor" />
+                                                        <path
+                                                            d="M20 5V21C20 21.6 19.6 22 19 22H17C16.4 22 16 21.6 16 21V8H8V4H19C19.6 4 20 4.4 20 5ZM3 8H4V4H3C2.4 4 2 4.4 2 5V7C2 7.6 2.4 8 3 8Z"
+                                                            fill="currentColor" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <?php if (!isset($is_pos)) : ?>
+                                            <span class="menu-title">
+                                                <?php echo lang('pos') ?>
+                                            </span>
+                                            <?php endif; ?>
+                                        </a>
+                                    </div>
+
+                                    <?php } ?>
+
+
+                                    <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id) && in_array('items', $quick_access)) { ?>
+                                    <div class="menu-item">
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'items') ?  'active' : '' ?>"
+                                            href="<?php echo site_url('items'); ?>">
+                                            <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen002.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3"
+                                                            d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z"
+                                                            fill="currentColor" />
+                                                        <path
+                                                            d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z"
+                                                            fill="currentColor" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <?php if (!isset($is_pos)) : ?>
+                                            <span class="menu-title">
+                                                <?php echo lang("module_items"); ?>
+                                            </span>
+                                            <?php endif; ?>
+                                        </a>
+                                    </div>
+
+                                    <?php } ?>
+
+                                    <?php if ($this->Employee->has_module_permission('receivings', $employee_id) && in_array('receivings', $quick_access)) { ?>
+                                    <div class="menu-item">
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer') ?  'active' : '' ?>"
+                                            href="<?php echo site_url('receivings'); ?>">
+                                            <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path opacity="0.3"
+                                                            d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
+                                                            fill="currentColor" />
+                                                        <path
+                                                            d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
+                                                            fill="currentColor" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <?php if (!isset($is_pos)) : ?>
+                                            <span class="menu-title">
+                                                <?php echo lang("receiving"); ?>
+                                            </span>
+                                            <?php endif; ?>
+                                        </a>
+                                    </div>
+
+                                    <?php } ?>
+
+                                    <?php if (check_allowed_module($allowed_modules->result(), 'customers')  && in_array('customers', $quick_access)) : ?>
+                                    <!--begin:Menu item-->
+                                    <?php if (module_access_check_view('invoices')) { ?>
+                                    <div class="menu-item">
+                                        <a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active' : '' ?> "
+                                            href="<?php echo site_url('customers'); ?>">
+                                            <span class="menu-icon">
+                                                <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
+                                                <span class="svg-icon svg-icon-muted svg-icon-2x rotate-0"><svg width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z"
+                                                            fill="currentColor" />
+                                                        <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4"
+                                                            fill="currentColor" />
+                                                    </svg>
+                                                </span>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <?php if (!isset($is_pos)) : ?>
+                                            <span class="menu-title">
+                                                <?php echo lang('customers') ?>
+                                            </span>
+                                            <?php endif; ?>
+                                        </a>
+                                    </div>
+
+                                    <?php } ?>
+
+                                    <?php endif; ?>
+
+
+                                    <?php endif; ?>
+
+
                         </div>
 
 
-                        <div class="menu-item pt-5">
-                            <div class="menu-content">
-                                <span class="text-uppercase fw-bold menu-heading fs-7">
-                                    <strong>
-                                        <?php echo lang('quick_access') ?>
-                                    </strong>
-                                </span>
-                                <span class="fw-bold menu-heading fs-7"
-                                    style="color: var(--bs-app-light-sidebar-logo-icon-custom-color);font-family: Inter, sans-serif;font-style: italic;font-weight: bold;"
-                                    onclick="show_quick_access()">&nbsp; &nbsp;
-                                    <?php echo lang('edit') ?>
-                                </span>
-                            </div>
-                        </div>
+                     
 
-                        <?php
-
-						if (get_quick_access()) :
-							$quick_access = get_quick_access();
-						?>
-
-                        <?php if ($this->Employee->has_module_permission('sales', $employee_id) && in_array('pos', $quick_access)) { ?>
-                        <div class="menu-item" <?php echo array_search('sales', $disable_modules) === false ? ''
-															: 'style="display: none;"' ?>>
-                            <a class="menu-link  " href="<?php echo site_url('sales'); ?>">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/art/art006.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3"
-                                                d="M22 19V17C22 16.4 21.6 16 21 16H8V3C8 2.4 7.6 2 7 2H5C4.4 2 4 2.4 4 3V19C4 19.6 4.4 20 5 20H21C21.6 20 22 19.6 22 19Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M20 5V21C20 21.6 19.6 22 19 22H17C16.4 22 16 21.6 16 21V8H8V4H19C19.6 4 20 4.4 20 5ZM3 8H4V4H3C2.4 4 2 4.4 2 5V7C2 7.6 2.4 8 3 8Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                                <?php if (!isset($is_pos)) : ?>
-                                <span class="menu-title">
-                                    <?php echo lang('pos') ?>
-                                </span>
-                                <?php endif; ?>
-                            </a>
-                        </div>
-
-                        <?php } ?>
-
-
-                        <?php if ($this->Employee->has_module_permission('items', $this->Employee->get_logged_in_employee_info()->person_id) && in_array('items', $quick_access)) { ?>
-                        <div class="menu-item">
-                            <a class="menu-link  <?= ($this->uri->segment(1) == 'items') ?  'active' : '' ?>"
-                                href="<?php echo site_url('items'); ?>">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/general/gen002.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3"
-                                                d="M4.05424 15.1982C8.34524 7.76818 13.5782 3.26318 20.9282 2.01418C21.0729 1.98837 21.2216 1.99789 21.3618 2.04193C21.502 2.08597 21.6294 2.16323 21.7333 2.26712C21.8372 2.37101 21.9144 2.49846 21.9585 2.63863C22.0025 2.7788 22.012 2.92754 21.9862 3.07218C20.7372 10.4222 16.2322 15.6552 8.80224 19.9462L4.05424 15.1982ZM3.81924 17.3372L2.63324 20.4482C2.58427 20.5765 2.5735 20.7163 2.6022 20.8507C2.63091 20.9851 2.69788 21.1082 2.79503 21.2054C2.89218 21.3025 3.01536 21.3695 3.14972 21.3982C3.28408 21.4269 3.42387 21.4161 3.55224 21.3672L6.66524 20.1802L3.81924 17.3372ZM16.5002 5.99818C16.2036 5.99818 15.9136 6.08615 15.6669 6.25097C15.4202 6.41579 15.228 6.65006 15.1144 6.92415C15.0009 7.19824 14.9712 7.49984 15.0291 7.79081C15.0869 8.08178 15.2298 8.34906 15.4396 8.55884C15.6494 8.76862 15.9166 8.91148 16.2076 8.96935C16.4986 9.02723 16.8002 8.99753 17.0743 8.884C17.3484 8.77046 17.5826 8.5782 17.7474 8.33153C17.9123 8.08486 18.0002 7.79485 18.0002 7.49818C18.0002 7.10035 17.8422 6.71882 17.5609 6.43752C17.2796 6.15621 16.8981 5.99818 16.5002 5.99818Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M4.05423 15.1982L2.24723 13.3912C2.15505 13.299 2.08547 13.1867 2.04395 13.0632C2.00243 12.9396 1.9901 12.8081 2.00793 12.679C2.02575 12.5498 2.07325 12.4266 2.14669 12.3189C2.22013 12.2112 2.31752 12.1219 2.43123 12.0582L9.15323 8.28918C7.17353 10.3717 5.4607 12.6926 4.05423 15.1982ZM8.80023 19.9442L10.6072 21.7512C10.6994 21.8434 10.8117 21.9129 10.9352 21.9545C11.0588 21.996 11.1903 22.0083 11.3195 21.9905C11.4486 21.9727 11.5718 21.9252 11.6795 21.8517C11.7872 21.7783 11.8765 21.6809 11.9402 21.5672L15.7092 14.8442C13.6269 16.8245 11.3061 18.5377 8.80023 19.9442ZM7.04023 18.1832L12.5832 12.6402C12.7381 12.4759 12.8228 12.2577 12.8195 12.032C12.8161 11.8063 12.725 11.5907 12.5653 11.4311C12.4057 11.2714 12.1901 11.1803 11.9644 11.1769C11.7387 11.1736 11.5205 11.2583 11.3562 11.4132L5.81323 16.9562L7.04023 18.1832Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                                <?php if (!isset($is_pos)) : ?>
-                                <span class="menu-title">
-                                    <?php echo lang("module_items"); ?>
-                                </span>
-                                <?php endif; ?>
-                            </a>
-                        </div>
-
-                        <?php } ?>
-
-                        <?php if ($this->Employee->has_module_permission('receivings', $employee_id) && in_array('receivings', $quick_access)) { ?>
-                        <div class="menu-item">
-                            <a class="menu-link  <?= ($this->uri->segment(1) == 'receivings' && $this->uri->segment(2) != 'transfer') ?  'active' : '' ?>"
-                                href="<?php echo site_url('receivings'); ?>">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/abstract/abs027.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x"><svg width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path opacity="0.3"
-                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                                <?php if (!isset($is_pos)) : ?>
-                                <span class="menu-title">
-                                    <?php echo lang("receiving"); ?>
-                                </span>
-                                <?php endif; ?>
-                            </a>
-                        </div>
-
-                        <?php } ?>
-
-                        <?php if (check_allowed_module($allowed_modules->result(), 'customers')  && in_array('customers', $quick_access)) : ?>
-                        <!--begin:Menu item-->
-                        <?php if (module_access_check_view('invoices')) { ?>
-                        <div class="menu-item">
-                            <a class="menu-link  <?= ($this->uri->segment(1) == 'customers') ?  'active' : '' ?> "
-                                href="<?php echo site_url('customers'); ?>">
-                                <span class="menu-icon">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/communication/com013.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x rotate-0"><svg width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M6.28548 15.0861C7.34369 13.1814 9.35142 12 11.5304 12H12.4696C14.6486 12 16.6563 13.1814 17.7145 15.0861L19.3493 18.0287C20.0899 19.3618 19.1259 21 17.601 21H6.39903C4.87406 21 3.91012 19.3618 4.65071 18.0287L6.28548 15.0861Z"
-                                                fill="currentColor" />
-                                            <rect opacity="0.3" x="8" y="3" width="8" height="8" rx="4"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </span>
-                                <?php if (!isset($is_pos)) : ?>
-                                <span class="menu-title">
-                                    <?php echo lang('customers') ?>
-                                </span>
-                                <?php endif; ?>
-                            </a>
-                        </div>
-
-                        <?php } ?>
-
-                        <?php endif; ?>
-
-
-                        <?php endif; ?>
+                       
                     </div>
                 </div>
             </div>
-            <div class="w-100">
+            <div class="sale-grid-big-wrapper-parent">
                 <div id="sale-grid-big-wrapper" class="clearfix register ">
                     <div class="clearfix" style="" id="category_item_selection_wrapper">
                         <div id="grid_breadcrumbs"
@@ -1960,7 +1948,7 @@ $this->load->view("partial/offline_header"); ?>
     <!-- /.Col-lg-8 @end of left Column -->
 
     <!-- col-lg-4 @start of right Column -->
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="sales_section">
+    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 pos_bg_dark" id="sales_section">
         <style>
         #category_item_selection_wrapper_new {
             height: calc(100vh - 45vh);
@@ -2814,7 +2802,7 @@ $this->load->view("partial/offline_header"); ?>
 
         <div class="tab-content" id="myTabContent">
 
-            <div class="register-box register-right " id="select_customer_form">
+            <div class="register-right " id="select_customer_form">
 
                 <!-- Sale Top Buttons  -->
 
@@ -2855,8 +2843,23 @@ $this->load->view("partial/offline_header"); ?>
             <div id="customer-panel"></div>
 
 
+            <div class="py-1 pos-bg-dark h-42px p-5 rounded-1 d-flex align-items-center flex-flex justify-content-space-between mt-1">
+                <div>
+                    <span class="text-light">Order Details</span>
+                    <span class="badge badge-light badge-md text-black p-2 mx-5" >Items:  <span id="total_items">0</span> </span>
+                    
+                    <span class="badge badge-light badge-md text-black p-2">QTY: <span id="total_items_qty"> 0 </span> </span>
+                </div>
 
-            <div class="register-box register-items  itemboxnew">
+                <div>
+                    <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?> <?php else: ?>
+                        <span class="badge badge-light badge-md text-danger p-2 bg-light-danger" id="cancel_sale_button"> Clear  <i class="icon ti-close m-2 text-danger"></i></span>
+                    <?php endif; ?>
+                </div>
+                
+
+            </div>
+            <div class=" register-items  itemboxnew">
 
 
                 <div class="register-items-holder">
@@ -2890,16 +2893,13 @@ $this->load->view("partial/offline_header"); ?>
                         class="table table-striped align-middle table-row-dashed fs-6 gy-3 dataTable no-footer">
                         <thead>
                             <tr
-                                class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary pos-bg-dark">
+                                class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0  pos_bg_dark">
                                 <th class=" py-1 min-w-50px text-center  text-light "><a href="javascript:void(0);"
-                                        id="sale_details_expand_collapse" class="expand">+</a><span id="total_items"
-                                        class=" symbol-badge badge    badge-circle badge-warning  ">1</span></th>
+                                        id="sale_details_expand_collapse" class="expand">+</a></th>
                                 <th class=" py-1 item_sort_able  text-light item_name_heading ">Item Name</th>
                                 <th class=" py-1 item_sort_able min-w-150px text-center text-light sales_price ">Price
                                 </th>
-                                <th class=" py-1 item_sort_able sales_quantity  text-light"><span
-                                        class=" symbol-badge badge   badge-circle badge-warning  "
-                                        id="total_items_qty">1</span>Quantity</th>
+                                <th class=" py-1 item_sort_able sales_quantity  text-light">Quantity</th>
                                 <th class=" py-1 item_sort_able min-w-150px text-center sales_total text-light">Total
                                 </th>
                             </tr>
@@ -2912,7 +2912,7 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of Store Account Payment Mode -->
 
                 <!-- /.Register Items first pan end here -->
-                <div class="register-box register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100"
+                <div class=" register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100 pos_bg_dark"
                     id="pos_footer">
 
 

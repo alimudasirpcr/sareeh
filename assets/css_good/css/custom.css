@@ -9567,7 +9567,6 @@ button.toast-close-button {
 } */
 .register .register-items-form .item-form {
   text-align: center;
-  padding: 20px;
 }
 .register .register-items-form .item-form .input-group {
   width: 100%;
@@ -13797,9 +13796,7 @@ body.modal-open {
   text-shadow: none !important;
   border: 0px solid red !important;
 }
-#category_item_selection_wrapper {
-  padding: 5px !important;
-}
+
 .quick-actions li,
 .quick-actions-horizontal li {
   border: 1px solid #d5d5d5;
@@ -18258,9 +18255,7 @@ button.btn.btn-default.btn-sm.editable-cancel {
 }
 
 div#kt_drawer_suspend {
-	background: #dfdffe !important;
 	border-radius: 5px;
-  color: #5055da;
 	margin: 4px;
 	cursor: pointer;
 	align-self: center;
@@ -18293,9 +18288,7 @@ div#cancel_sale_button {
 	align-self: center;
 }
 
-#advance_details span.svg-icon {
-	color: #5055da;
-}
+
 
 span.svg-icon svg.pos-top-icon {
 	height: 2rem !important;

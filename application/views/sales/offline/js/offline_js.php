@@ -76,31 +76,7 @@ function getSalePrice(params) {
 
         
 
-    if (itemInfo.is_recurring!='0' && !params.ignore_recurring_price) {
-        let startupCost = params.orig_price;
-        console.log("step 1");
-        // if (itemInfo.prorated) {
 
-        // let newParams = { ...params, ignore_recurring_price: true }; // Create a new params object
-        // console.log("Calling getSalePrice recursively with:", newParams);
-        // let normalPrice = getSalePrice(newParams);
-        // console.log("Returned from recursive getSalePrice:", normalPrice);
-
-
-        // let normalBillCycle;
-        // if (itemInfo.interval === 'weekly') normalBillCycle = 7;
-        // else if (itemInfo.interval.includes('monthly')) normalBillCycle = 30;
-        // else if (itemInfo.interval.includes('yearly')) normalBillCycle = 365;
-
-        // let nextPaymentDate = CustomerSubscription.getNextPaymentDate(itemInfo);
-        // let daysUntilNextPayment = daysBetweenDates(nextPaymentDate, new Date());
-        // let proratedAmount = normalPrice / (normalBillCycle / daysUntilNextPayment);
-        // startupCost += proratedAmount;
-        // }
-       
-        return to_currency_no_money(startupCost);
-    }
-    
     if (quantityUnitId) {
         console.log("step 2");
         let qui =  itemInfo.quantity_units_info[quantityUnitId];
@@ -1589,50 +1565,9 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
         select: function(event, ui) {
 
             if (ui.item.value == "") return;
-
+            console.log("selected addItem" , ui.item.value);
             //if item has secondary suppliers and has no variation
-            <?php if (!$this->config->item('disable_supplier_selection_on_sales_interface')) { ?>
-            if (ui.item.hasOwnProperty('secondary_suppliers')) {
-                if (ui.item.secondary_suppliers.length > 0 && !ui.item.hasOwnProperty('attributes')) {
-                    $('#var-customize-ss').text(ui.item.label);
-                    $('#var_popup_ss').modal('show');
-                    $('.placeholder_supplier_vals2 .secondary-supplier-table tr').not(':first').remove();
-
-                    $.each(ui.item.default_supplier, function(supplier_key, supplier) {
-                        $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after(
-                            '<tr class="default_supplier_row" style="cursor:pointer;" data-supplier_id="' +
-                            supplier.supplier_id +
-                            '"> <td><input class="default_supplier" type="radio" style="display:block;" value="' +
-                            supplier.supplier_id + '" name="default_supplier" ></td> <td>' +
-                            supplier.company_name + ', ' + supplier.full_name + '</td> <td>' +
-                            parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' +
-                            parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
-                        $("#default_supplier_id").val(supplier.supplier_id);
-                    });
-
-                    $(".default_supplier_row").find(".default_supplier").prop("checked", true);
-
-                    $.each(ui.item.secondary_suppliers, function(supplier_key, supplier) {
-                        $('.placeholder_supplier_vals2 .secondary-supplier-table tr:last').after(
-                            '<tr class="secondary_supplier_row" style="cursor:pointer;" data-supplier_id="' +
-                            supplier.supplier_id +
-                            '"> <td><input class="secondary_supplier" type="radio" style="display:block;" value="' +
-                            supplier.supplier_id + '" name="secondary_supplier" ></td> <td>' +
-                            supplier.company_name + ', ' + supplier.full_name + '</td> <td>' +
-                            parseFloat(supplier.cost_price).toFixed(2) + '</td> <td>' +
-                            parseFloat(supplier.unit_price).toFixed(2) + '</td> </tr>');
-                    });
-
-                    if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
-                        $("#item").val(decodeHtml(ui.item.serial_number));
-                    } else {
-                        $("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
-                    }
-
-                    return true;
-                }
-            }
-            <?php } ?>
+          
 
             if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
                 $("#item").val(decodeHtml(ui.item.serial_number));
@@ -1640,14 +1575,41 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
                 $("#item").val(decodeHtml(ui.item.value) + '|FORCE_ITEM_ID|');
             }
 
+           
+               
+                  
+               
+                
+                   
+
+
+
+           $price=   getSalePrice({
+                permissions: ui.item.all_data.permissions,
+                name: ui.item.label,
+                all_data: ui.item.all_data,
+                description: ui.item.description,
+                item_id: ui.item.value,
+                quantity: 1,
+                price: ui.item.price_field,
+                orig_price: ui.item.price_field,
+                discount_percent: 0,
+                variations: ui.item.tax_included,
+                modifiers: ui.item.modifiers,
+                taxes: ui.item.item_taxes,
+                tax_included: ui.item.tax_included,
+                quantity_units: ui.item.quantity_units
+            });
+            
             addItem({
+                permissions: ui.item.all_data.permissions,
                 name: ui.item.label,
                 all_data: ui.item.all_data,
                 description: '',
                 item_id: ui.item.value,
                 quantity: 1,
-                price: ui.item.price_field,
-                orig_price: ui.item.price_field,
+                price: $price,
+                orig_price: $price,
                 discount_percent: 0,
                 variations: ui.item.tax_included,
                 modifiers: ui.item.modifiers,
@@ -3640,7 +3602,7 @@ $(document).ready(function() {
 
     $('.change-mode').click(function(e) {
             e.preventDefault();
-            $('.mode_text').html("<i class='icon ti-shopping-cart'></i>" + $(this).data('mode'));
+            $('.mode_text').html($(this).data('mode') + "<i class='icon ti-shopping-cart m-2 text-light'></i>");
             // $(".sales-dropdown li:first-child").remove();
             if ($(this).data('mode') == 'sale') {
                 $('.Sale-mode').hide();

@@ -446,6 +446,7 @@ if ( ! function_exists('thawani_payment'))
 
     }
     function get_due_alerts() {
+       
         $CI =& get_instance();
         $today = date('Y-m-d');
         $sevenDaysFromNow = date('Y-m-d', strtotime('+7 days'));
@@ -457,22 +458,22 @@ if ( ! function_exists('thawani_payment'))
         $CI->db->save_queries = true;
         if($payments){
             $upcomingDueQuery = $CI->db->query(
-                "SELECT i.id, i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, DATEDIFF(i.duedate, ?) as days_remaining 
+                "SELECT i.id,  i.invoice_json, i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, DATEDIFF(i.duedate, ?) as days_remaining 
                 FROM phppos_invoice i
                 LEFT JOIN (
                     SELECT erp_invoice_id, SUM(total_amount) as total_paid
                     FROM phppos_payments
                     GROUP BY erp_invoice_id
                 ) p ON i.erp_invoice_id = p.erp_invoice_id
-                WHERE i.duedate BETWEEN ? AND ? AND (p.total_paid IS NULL OR p.total_paid < i.amount)",
+                WHERE i.duedate BETWEEN ? AND ? AND (p.total_paid IS NULL OR p.total_paid < i.amount)  order by i.id desc ",
                 [$today, $today, $sevenDaysFromNow]
         );
         }else{
        
             $upcomingDueQuery = $CI->db->query(
-                "SELECT i.id, i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, DATEDIFF(i.duedate, ?) as days_remaining 
+                "SELECT i.id ,  i.invoice_json , i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, DATEDIFF(i.duedate, ?) as days_remaining 
                 FROM phppos_invoice i
-                WHERE i.duedate BETWEEN ? AND ? ",
+                WHERE i.duedate BETWEEN ? AND ?  order by i.id desc",
                 [$today, $today, $sevenDaysFromNow]
         );
         }
@@ -489,37 +490,35 @@ if ( ! function_exists('thawani_payment'))
 
          if($payments){
             $overdueQuery = $CI->db->query(
-                "SELECT i.id, i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, ABS(DATEDIFF(i.duedate, ?)) as overdue_days 
+                "SELECT i.id ,  i.invoice_json , i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, ABS(DATEDIFF(i.duedate, ?)) as overdue_days 
                 FROM phppos_invoice i
                 LEFT JOIN (
                     SELECT erp_invoice_id, SUM(total_amount) as total_paid
                     FROM phppos_payments
                     GROUP BY erp_invoice_id
                 ) p ON i.erp_invoice_id = p.erp_invoice_id
-                WHERE i.duedate < ? AND (p.total_paid IS NULL OR p.total_paid < i.amount)",
+                WHERE i.duedate < ? AND (p.total_paid IS NULL OR p.total_paid < i.amount) order by i.id desc",
                 [$today, $today]
             );
     
          }else{
             $overdueQuery = $CI->db->query(
-                "SELECT i.id, i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, ABS(DATEDIFF(i.duedate, ?)) as overdue_days 
+                "SELECT i.id ,  i.invoice_json , i.erp_invoice_id, i.amount, i.currency, i.hash, i.duedate, i.recurring, ABS(DATEDIFF(i.duedate, ?)) as overdue_days 
                 FROM phppos_invoice i
                 
-                WHERE i.duedate < ? ",
+                WHERE i.duedate < ? order by i.id desc ",
                 [$today, $today]
             );
     
          }
 
-      
              $overdueAlerts = $overdueQuery->result();
         
-
         $alerts =  [
             'upcoming_due' => $upcomingDueAlerts,
             'overdue' => $overdueAlerts
         ];
-
+       
         $response_alerts = [
             'upcoming_due' => array_map(function($alert) {
                 return [
@@ -534,6 +533,16 @@ if ( ! function_exists('thawani_payment'))
                 ];
             }, $alerts['upcoming_due']),
             'overdue' => array_map(function($alert) {
+
+                $ovr = $alert->overdue_days;
+                if(isset($alert->invoice_json)){
+                    if(isset(json_decode($alert->invoice_json)->cancel_overdue_reminders)){
+                        if(json_decode($alert->invoice_json)->cancel_overdue_reminders){
+                            $ovr = 0;
+                        }
+                    }
+                }
+                
                 return [
                     'id' => $alert->id,
                     'erp_invoice_id' => $alert->erp_invoice_id,
@@ -542,7 +551,7 @@ if ( ! function_exists('thawani_payment'))
                     'hash' => $alert->hash,
                     'duedate' => $alert->duedate,
                     'recurring' => $alert->recurring,
-                    'overdue_days' => $alert->overdue_days
+                    'overdue_days' =>  $ovr,
                 ];
             }, $alerts['overdue'])
         ];
@@ -627,7 +636,7 @@ if ( ! function_exists('thawani_payment'))
         // Extract invoice and payments from ERP data
         $invoice = $erpData['invoice'];
         $payments = $erpData['payments'];
-
+        $invoiceJson = json_encode($invoice, JSON_PRETTY_PRINT);
 
         // Check if invoice already exists in Sareeh
         $existingInvoice = get_query_data('select * from  phppos_invoice where erp_invoice_id= '.$invoice->id.' ');
@@ -641,7 +650,8 @@ if ( ! function_exists('thawani_payment'))
                 'currency' => $invoice->currency,
                 'duedate' => $invoice->duedate,
                 'recurring' => $invoice->recurring,
-                'last_sync' => date('Y-m-d H:i:s')
+                'last_sync' => date('Y-m-d H:i:s'),
+                'invoice_json' =>  $invoiceJson,
             ];
             $CI->db->where('erp_invoice_id', $invoice->id);
             $CI->db->update('phppos_invoice', $updateInvoiceData);
@@ -655,17 +665,17 @@ if ( ! function_exists('thawani_payment'))
                 'currency' => $invoice->currency,
                 'duedate' => $invoice->duedate,
                 'recurring' => $invoice->recurring,
-                'last_sync' => date('Y-m-d H:i:s')
+                'last_sync' => date('Y-m-d H:i:s'),
+                'invoice_json' =>  $invoiceJson,
             ];
             $CI->db->insert('phppos_invoice', $insertInvoiceData);
         }
         // $CI->db->delete('phppos_payments');
-        execute_query(' delete from phppos_payments');
+        // execute_query(' delete from phppos_payments');
         // Process payments
         foreach ($payments as $payment) {
             // Check if payment already exists
-            
-           
+            if(!get_query_data('select * from phppos_payments where erp_invoice_id = ' . $payment->invoiceid)){
                 // Insert new payment
                 $insertPaymentData = [
                     'erp_invoice_id' => $payment->invoiceid,
@@ -678,6 +688,9 @@ if ( ! function_exists('thawani_payment'))
                     'pay_json' => json_encode($payment)
                 ];
                 $CI->db->insert('phppos_payments', $insertPaymentData);
+            }
+           
+             
             
         }
 
