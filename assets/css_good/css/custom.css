@@ -10525,9 +10525,11 @@ button.toast-close-button {
   border: none;
 }
 span.price_of_item {
-  color: #8a6d3b;
+  color: black;
   margin-top: -3px;
+  border-radius: 5px;
   margin-right: 3px;
+  border: 1px solid #cfcdcd;
 }
 #category_item_selection_wrapper_new {
   display: block;
@@ -18105,6 +18107,7 @@ i.icon.ion-android-cancel {
 }
 .category_item.item {
   height: 160px;
+  padding: 0px 3px;
 }
 
 .pr-0 {
@@ -18227,7 +18230,7 @@ ul.pagination{
     left: 0%;
     z-index:99;
     bottom: 0 !important;
-		padding-left: 105px ;
+		padding-left: 15px ;
 }
 /* Start: POS UI Style by Mohammed */
 .pos-sidebar {
@@ -18332,14 +18335,13 @@ input.add-customer-input {
   border-radius:0px !important;
   width: 20%;
 	font-weight: 600;
-  font-size: xx-large;
+  font-size: 20px;
   border: 2px solid #4f55dc !important;
 	background: white !important;
 }
-.add-payment-form{
-  height:60px;
-  
-}
+
+
+
 .ml-0{
   margin-left:0px !important;
 }
@@ -19274,7 +19276,7 @@ label.btn.btn-file-upload {
   z-index: 1110 !important;
 }
 
-.pos_footer>span, .pos_footer>div {
+.pos_footer>span, .pos_footer>div>div {
 	background: white ;
 	height: 80px ;
 	margin: 10px 0px 10px 2px;

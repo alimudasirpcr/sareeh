@@ -2826,24 +2826,21 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of Store Account Payment Mode -->
 
                 <!-- /.Register Items first pan end here -->
-                <div class=" register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100 pos_bg_dark"
+                <div class=" register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100 pos_bg_dark justify-content-space-between"
                     id="pos_footer">
+                    <div class=" d-flex flex-wrap ">
 
-
-                    <span
-                        class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  ">
-
+                    <div class=" d-flex  border border-light  rounded min-w-125px h-80px py-3 px-4 align-item-center flex-direction-column">
 
 
 
-                        <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                            Discount (OMR) <i class="fonticon-content-marketing" id="discount_details_reload"></i>
+                        <i class="fonticon-content-marketing fs-6" id="discount_details_reload"></i>
+                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
+                            Discount (OMR) 
                         </div>
 
-                        <div class="fs-1 fw-bold counted text-center" id="total_discount">
-
-                            0 </div>
-                    </span>
+                        <div class="fs-2 fw-bold counted text-center" id="total_discount">0 </div>
+                    </div>
 
 
                     <span class="svg-icon   svg-icon-primary svg-icon-2x">
@@ -2855,23 +2852,12 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                    <div
-                        class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
-                        <div class="fw-semibold fs-6 text-dark-400">Sub Total (OMR)
-
-
+                    <div class="sub-total  min-w-125px h-80px py-3 px-4 d-flex align-item-center flex-direction-column  bg-unset">
+                        <div class="fw-semibold fs-8 text-dark-400 my-2">Sub Total (OMR)
                         </div>
                         <div class="fs-1 fw-bold counted">
-
-
-
-                            <a href="#" id="sub_total" class=" xeditable-subtotal editable-click" data-validate-number="true"
-                                data-type="text" data-value="0" data-pk="1" data-title="Sub Total"> 0</a>
-
-
-
+                            <a href="#" id="sub_total" class=" xeditable-subtotal editable-click" data-validate-number="true" data-type="text" data-value="0" data-pk="1" data-title="Sub Total"> 0</a>
                         </div>
-
 
                     </div>
 
@@ -2882,37 +2868,30 @@ $this->load->view("partial/offline_header"); ?>
                             <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
                         </svg>
                     </span>
-                    <div class="d-none" id="list_tax">
-                        <div
-                            class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
-                            <div class="fw-semibold fs-6 text-dark-400">
-                                <a href="<?= base_url(); ?>/sales/delete_tax/5%25%20VAT%20Rate%201"
-                                    class="delete-tax remove"><i class="fa fa-trash text-danger"></i></a>
-                                5% VAT Rate 1:
-                            </div>
-                            <div class="fs-1 fw-bold counted">
-                                0 </div>
+
+
+                    <div class=" d-flex  border border-light  rounded min-w-125px h-80px py-3 px-4 align-item-center flex-direction-column">
+
+
+
+                            <a href="#" class="" id="edit_taxes_gen" data-id="-1"
+                                    data-target="#kt_drawer_general" data-target-title="Edit Taxes"
+                                    data-target-width="lg"><i class="fonticon-content-marketing fs-6"></i>
+                            </a>
+                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
+                            Tax (OMR)
                         </div>
 
-
-
-                    </div>
-
-
-
-                    <div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
-                        <div class="tax amount">
-                            <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                                Tax (OMR) <a href="#" class="" id="edit_taxes_gen" data-id="-1"
-                                    data-target="#kt_drawer_general" data-target-title="Edit Taxes"
-                                    data-target-width="lg"><i class="fonticon-content-marketing"></i></a>
-                            </div>
-                            <div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
+                        <div class="amount total-tax fs-2 fw-bold counted" data-speed="1000" data-currency="OMR"
                                 data-decimals="0" id="taxes">
                                 0
                             </div>
-                        </div>
                     </div>
+
+
+
+
+                  
                     <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
                         <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
                         <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
@@ -2928,7 +2907,7 @@ $this->load->view("partial/offline_header"); ?>
                         <!--end::Svg Icon-->
                     </span>
 
-                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-primary ">
+                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-unset ">
                         <div class="total amount">
                             <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
                                 Total (OMR)
@@ -2955,38 +2934,30 @@ $this->load->view("partial/offline_header"); ?>
                         </span>
                         <!--end::Svg Icon-->
                     </span>
-                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-due  me-3">
-                        <div class="total amount-due">
-                            <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
+                    <div class="d-flex flex-direction-column align-items-center rounded amount-block  min-w-125px h-80px py-3 px-4 bg-primary  me-3">
+                    <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>
+                        
+                            <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
                                 Amount Due (OMR)
 
 
-                                <i class="fonticon-content-marketing" title="" id="kt_drawer_payments_list"></i>
+                               
 
 
 
                             </div>
-                            <div class="amount fs-1 fw-bold counted" id="amount_due">
+                        <div class="amount fs-2 fw-bold counted" id="amount_due">
                                 0 </div>
-                        </div>
                     </div>
                     <!-- ./amount block -->
 
                     <!-- Payment Applied -->
+                    </div>
 
                     <!-- Add Payment -->
-                    <div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4">
+                    <div class=" add-payment border border-light border-dashed rounded w-25 py-3 px-4 vertical-center">
                         <!-- Check Work Order Permission -->
-                        <div class="row">
-                            <div id="create_invoice_holder" class="create_invoice_holder col-md-6 hidden">
-                                <div class="text-left">
-                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
-                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
-                                    <label for="create_invoice"
-                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
-                                </div>
-                            </div>
-                        </div>
+                      
                         <form action="#" id="add_payment_form" autocomplete="off" method="post" accept-charset="utf-8">
 
                             <div class="input-group add-payment-form">
@@ -2995,7 +2966,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                <div class="input-group-text register-mode sale-mode dropup">
+                                <div class="input-group-text register-mode sale-mode dropup h-43px border-radius-left">
 
 
                                     <a tabindex="-1" href="#"
@@ -3027,12 +2998,12 @@ $this->load->view("partial/offline_header"); ?>
 
                                 <input type="hidden" name="payment_types" id="payment_types" value="Cash">
                                 <input type="input" name="amount_tendered" value="2" id="amount_tendered"
-                                    class="form-control" data-title="Payment Amount" placeholder="Enter Cash Amount">
+                                    class="form-control h-43px" data-title="Payment Amount" placeholder="Enter Cash Amount">
 
-                                <span class="input-group-text">
+                                <span class="input-group-text h-43px border-radius-right">
                                     <a href="#" class="" id="add_payment_button">Add Payment</a>
                                 </span>
-                                <span class="input-group-text" id="finish_sale">
+                                <span class="input-group-text h-43px border-radius-right" id="finish_sale">
 
                                     <a href="#" class="text-white" id="finish_sale_button">Complete Sale</a>
                                 </span>
@@ -3052,7 +3023,16 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of pos footer -->
             </div>
 
-
+            <div class="row">
+                            <div id="create_invoice_holder" class="create_invoice_holder col-md-6 hidden">
+                                <div class="text-left">
+                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
+                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
+                                    <label for="create_invoice"
+                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
+                                </div>
+                            </div>
+                        </div>
 
 
 
@@ -3374,7 +3354,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="d-flex align-items-end flex-stack mb-1"></div>
 
                                 </div>
-                            <span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span>
+                            <span class="position-absolute badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span>
                         </div>
                         </div>
 </script>

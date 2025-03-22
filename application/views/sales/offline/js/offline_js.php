@@ -439,13 +439,13 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
             .override_default_tax + '" data-tax_included="' + json.categories_and_items[k]
             .tax_included + '"   data-name="' + json.categories_and_items[k].name + '"  data-price="' +
             price_val + '" data-id="' + json.categories_and_items[k].id +
-            '" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 90px;background-image:url(' +
+            '" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 70px;background-image:url(' +
             image_src +
-            ')"><span   class="position-absolute symbol-badge badge  badge-light top-75 end-0 price_of_item ">' +
+            ')"></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span   class="position-absolute symbol-badge badge  badge-light top-55 fs-9 end-0 price_of_item m ">' +
             price +
-            '</span></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span class="fw-bold text-left text-gray-800 cursor-pointer text-hover-primary fs-6 d-block mt-minus-10">' +
+            '</span><div class="d-flex align-items-end flex-stack mb-1"><span class="fw-bold text-left text-gray-800 cursor-pointer  fs-8 d-block mt-1 w-80">' +
             json.categories_and_items[k].name +
-            '</span><div class="d-flex align-items-end flex-stack mb-1"></div><!--end::Info--></div><!--end::Body--><span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span></div><!--end::Card widget 14--></div>';
+            '</span><!--end::Info--><!--end::Body--><div class="w-20"> <span class=" position-absolute badge   badge-circle badge-light-primary fs-7 h-15px w-15px  bottom-5 end-5  ">+</span></div></div></div><!--end::Card widget 14--></div></div>';
         $("#category_item_selection_wrapper_new").append(htm);
 
     }
@@ -4733,7 +4733,7 @@ setTimeout(function() {
 
 
 $(document).ready(function() {
-    const sidebarToggleElement = $('#kt_app_sidebar_toggle');
+    const sidebarToggleElement = $('#kt_app_sidebar_toggle_diabled');
     const sidebarClass = 'pos-sidebar'; // Class to toggle on sidebar elements
 
     // Retrieve stored toggle state from localStorage (default to inactive)

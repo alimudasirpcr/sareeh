@@ -99,9 +99,7 @@
     .d-inline-flex{
         display: inline-flex !important;
     }
-    .badge{
-        border-radius: 3px !important;
-    }
+    
 
     span#cancel_sale_button {
         cursor: pointer;
@@ -137,6 +135,25 @@
 
 .text-black{
     color: black !important;
+}
+
+.top-55 {
+    top: 55%;
+}
+.mt-minus-4{
+    margin-top: -4px;
+} 
+
+i.fonticon-content-marketing{
+    background: unset  !important;
+    border: unset  !important;
+}
+
+.flex-direction-column{
+    flex-direction: column;
+}
+.bg-unset{
+    background: unset !important;
 }
     
 </style>
