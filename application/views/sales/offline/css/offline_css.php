@@ -56,9 +56,21 @@
   }
   .border-radius-left{
     border-radius: 5px 0px 0px 5px !important;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
   }
+  .input-group .border-radius-left {
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+}
+
+
   .border-radius-right{
     border-radius: 0px 5px 5px 0px !important;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+   
+
   }
  
   .bg-primary:hover{
@@ -97,4 +109,34 @@
     #pos_footer{
         box-shadow: 0px -2px 1px 1px rgb(0 0 0 / 10%)
     }
+    #customer {
+        width: 94.4%  !important;
+    }
+
+    .order_detail_margin{
+        margin: 0px 6px 0px 2px;
+    }
+    .vertical {
+         transform: rotate(90deg);
+    }
+    .vertical-center{
+        display: grid;
+        place-items: center;
+    }
+    .vertical-align{
+        vertical-align: middle;
+    }
+    .text-hover-none:hover{
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+
+    .text-muted.fs-7.fw-bold {
+    margin-top: 2px;
+}
+
+.text-black{
+    color: black !important;
+}
+    
 </style>

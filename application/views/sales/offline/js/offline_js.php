@@ -1386,7 +1386,7 @@ $("#customer").autocomplete({
         cart['customer']['customer_name'] = customer_name;
         // cart['customer'].['phone_number'] = phone_number;
         cart['customer']['email'] = email;
-        cart['customer']['balance'] = balance;
+        cart['customer']['balance'] = to_currency_no_money(balance);
         cart['customer']['internal_notes'] = internal_notes;
         cart['customer']['points'] = (ui.item.points) ? ui.item.points : 0;
         cart['customer']['sales_until_discount'] = (ui.item.sales_until_discount) ? ui.item
@@ -2386,10 +2386,10 @@ function renderUi() {
         $(this).parent().parent().next().toggleClass('collapse');
 
         if ($(this).parent().parent().next().hasClass("collapse")) {
-            $(this).text("+");
+            $(this).html('<i class="icon ti-angle-down"></i>');
             $(this).parent().parent().next().addClass("d-none")
         } else {
-            $(this).text("-");
+            $(this).html('<i class="icon ti-angle-up"></i>');
             $(this).parent().parent().next().removeClass("d-none")
         }
     });
@@ -2401,14 +2401,14 @@ function renderUi() {
             $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
                 value: '1'
             });
-            $("#sale_details_expand_collapse").text('+');
+            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-down"></i>');
             $(".show-collpased").show();
 
         } else {
             $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
                 value: '0'
             });
-            $("#sale_details_expand_collapse").text('-');
+            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-up"></i>');
             $(".show-collpased").hide();
 
         }

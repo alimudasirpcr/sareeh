@@ -1968,40 +1968,14 @@ $this->load->view("partial/offline_header"); ?>
 
 
                 <!-- If customer is added to the sale -->
-                <div class="d-flex flex-wrap flex-sm-nowrap p-2 pb-0">
+                <div class="d-flex flex-wrap flex-sm-nowrap p-2 pb-0 gap-2">
 
-                    <div class="ribbon ribbon-triangle ribbon-top-end border-danger">
-
-                        <div class="ribbon-icon mt-n8 me-n6"><a href="#" id="remove_customer">
-
-                                <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/communication/com009.svg-->
-                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg" style="
-														height: 1.5rem !important;
-														width: 1.5rem !important;
-														color: black;
-													">
-                                        <path opacity="0.3"
-                                            d="M5.78001 21.115L3.28001 21.949C3.10897 22.0059 2.92548 22.0141 2.75004 21.9727C2.57461 21.9312 2.41416 21.8418 2.28669 21.7144C2.15923 21.5869 2.06975 21.4264 2.0283 21.251C1.98685 21.0755 1.99507 20.892 2.05201 20.7209L2.886 18.2209L7.22801 13.879L10.128 16.774L5.78001 21.115Z"
-                                            fill="currentColor"></path>
-                                        <path
-                                            d="M21.7 8.08899L15.911 2.30005C15.8161 2.2049 15.7033 2.12939 15.5792 2.07788C15.455 2.02637 15.3219 1.99988 15.1875 1.99988C15.0531 1.99988 14.92 2.02637 14.7958 2.07788C14.6717 2.12939 14.5589 2.2049 14.464 2.30005L13.74 3.02295C13.548 3.21498 13.4402 3.4754 13.4402 3.74695C13.4402 4.01849 13.548 4.27892 13.74 4.47095L14.464 5.19397L11.303 8.35498C10.1615 7.80702 8.87825 7.62639 7.62985 7.83789C6.38145 8.04939 5.2293 8.64265 4.332 9.53601C4.14026 9.72817 4.03256 9.98855 4.03256 10.26C4.03256 10.5315 4.14026 10.7918 4.332 10.984L13.016 19.667C13.208 19.859 13.4684 19.9668 13.74 19.9668C14.0115 19.9668 14.272 19.859 14.464 19.667C15.3575 18.77 15.9509 17.618 16.1624 16.3698C16.374 15.1215 16.1932 13.8383 15.645 12.697L18.806 9.53601L19.529 10.26C19.721 10.452 19.9814 10.5598 20.253 10.5598C20.5245 10.5598 20.785 10.452 20.977 10.26L21.7 9.53601C21.7952 9.44108 21.8706 9.32825 21.9221 9.2041C21.9737 9.07995 22.0002 8.94691 22.0002 8.8125C22.0002 8.67809 21.9737 8.54505 21.9221 8.4209C21.8706 8.29675 21.7952 8.18392 21.7 8.08899Z"
-                                            fill="currentColor"></path>
-                                    </svg>
-                                </span>
-                                <!--end::Svg Icon-->
-                            </a>
-                        </div>
-
-                        <!--end::Ribbon icon-->
-                    </div>
-
+                    
 
 
                     <!--begin: Pic-->
                     <div class="me-1 mb-1 w-50px">
-                        <div class="symbol symbol-50px  symbol-fixed position-relative">
+                        <div class="symbol symbol-50px  symbol-fixed position-relative symbol-circle">
                             <img src="<?= base_url(); ?>assets/img/user.png"
                                 onerror="this.onerror=null; this.src='<?= base_url(); ?>assets/css_good/media/avatars/blank.png';"
                                 alt="image">
@@ -2015,13 +1989,13 @@ $this->load->view("partial/offline_header"); ?>
                         <!--begin::Title-->
                         <div class="d-flex justify-content-between align-items-start flex-wrap">
                             <!--begin::User-->
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column mt-1">
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center">
-                                    <a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold me-1"> </a><a
+                                    <a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold"> </a><a
                                         href="<?= base_url(); ?>sales/customer_recent_sales/{{customer.person_id}}" data-toggle="modal"
                                         data-target="#myModal"
-                                        class="text-gray-700 text-hover-primary fs-5 fw-bold me-1 name"
+                                        class="text-gray-700 text-hover-primary fs-7 fw-bold me-1 name"
                                         id="customer_name">{{customer.customer_name}}</a>
 
 
@@ -2037,22 +2011,15 @@ $this->load->view("partial/offline_header"); ?>
                                 <!-- Start: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
                                 <!-- Customer Balance -->
-                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2">
-                                      <span class="svg-icon svg-icon-primary svg-icon-2x">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.3"
-                                                    d="M20 18H4C3.4 18 3 17.6 3 17V7C3 6.4 3.4 6 4 6H20C20.6 6 21 6.4 21 7V17C21 17.6 20.6 18 20 18ZM12 8C10.3 8 9 9.8 9 12C9 14.2 10.3 16 12 16C13.7 16 15 14.2 15 12C15 9.8 13.7 8 12 8Z"
-                                                    fill="currentColor"></path>
-                                                <path
-                                                    d="M18 6H20C20.6 6 21 6.4 21 7V9C19.3 9 18 7.7 18 6ZM6 6H4C3.4 6 3 6.4 3 7V9C4.7 9 6 7.7 6 6ZM21 17V15C19.3 15 18 16.3 18 18H20C20.6 18 21 17.6 21 17ZM3 15V17C3 17.6 3.4 18 4 18H6C6 16.3 4.7 15 3 15Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                        </span>
+                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2 mt-1 gap-10 vertical-center">
+                                    <div>
+                                            <i class="fa fa-money-bill me-2"></i>
+                                     
 
                                         <!--end::Svg Icon-->
 
-                                        <span id="customer_balance"> {{customer.balance}}</span>
+                                        <span id="customer_balance" class=""> {{customer.balance}}</span>
+                                    </div>
                                 
                                     <!-- End Customer Balance -->
 
@@ -2066,20 +2033,7 @@ $this->load->view("partial/offline_header"); ?>
                                         <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple') { ?>
                                         <span
                                             class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 {{#if customer.sales_until_discount}} text-danger {{else}} text-success {{/if}}  sales_until_discount_main">
-                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z"
-                                                        fill="currentColor"></path>
-                                                    <path
-                                                        d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z"
-                                                        fill="currentColor"></path>
-                                                    <path opacity="0.3"
-                                                        d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z"
-                                                        fill="currentColor"></path>
-                                                </svg>
-                                            </span>
+                                            <i class="fa fa-gift me-2"></i>
                                             <div class="fs-6 fw-bold counted  sales_until_discount"
                                                 data-kt-countup="true" data-kt-countup-value="4500"
                                                 data-kt-countup-prefix="$" data-kt-initialized="1">
@@ -2104,20 +2058,7 @@ $this->load->view("partial/offline_header"); ?>
                                         <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') { ?>
                                         <span title="  <?php echo lang('points') ?>"
                                             class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5  {{#LessThanEqual customer.points 0}} text-danger {{else}} text-success  {{/LessThanEqual}} points_main">
-                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z"
-                                                        fill="currentColor"></path>
-                                                    <path
-                                                        d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z"
-                                                        fill="currentColor"></path>
-                                                    <path opacity="0.3"
-                                                        d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z"
-                                                        fill="currentColor"></path>
-                                                </svg>
-                                            </span>
+                                            <i class="fa fa-gift me-2"></i>
                                             <div class="fs-6 fw-bold counted  points" data-kt-countup="true"
                                                 data-kt-countup-value="4500" data-kt-countup-prefix="$"
                                                 data-kt-initialized="1"> {{customer.points}}
@@ -2129,28 +2070,153 @@ $this->load->view("partial/offline_header"); ?>
                                         <?php } ?>
 
                                     </div>
-                                    <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.3"
-                                                    d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z"
-                                                    fill="currentColor"></path>
-                                                <path
-                                                    d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z"
-                                                    fill="currentColor"></path>
-                                            </svg>
-                                        </span> 
+                                    <div class="d-flex">
+                                    <i class="fa fa-comments me-2 mt-2"></i>
                                     <a href="#" id="internal_notes"
-                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7  editable-click"
+                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7  editable-click px-2"
                                         data-type="text" data-validate-number="false" data-pk="1"
                                         data-name="internal_notes" data-placement="bottom" data-value="{{customer.internal_notes}}">
                                         <span id="customer_internal_notes">{{customer.internal_notes}}</span>
                                     </a>
+                                    </div>
+
+
+                                    <div class="d-flex ">
+                                        <div id="popover-content" class="d-none">
+                                            <!--begin::ShareArea-->
+                                            <div class="d-flex flex-wrap justify-content-around fw-semibold fs-6 mb-4 pe-2">
+
+
+                                                <div class="symbol round w-50px h-50px text-center p-4  bg-success me-2">
+                                                    <i class="fa-solid fa-square-phone fs-2rem text-light"></i>
+                                                </div>
+
+
+                                                <div class="symbol round w-50px h-50px text-center p-4  bg-danger me-2">
+
+                                                    <i class="fa-regular fa-envelope fs-2rem text-light  "
+                                                        id="toggle_email_receipt"></i>
+                                                </div>
+
+
+
+
+                                            </div>
 
 
 
 
 
+                                            <!--End::ShareArea-->
+                                        </div>
+
+
+
+
+                                        <!--begin::Menu-->
+                                        <button type="button" class="btn btn-sm btn-icon "
+                                            data-kt-menu-trigger="custom" data-kt-menu-overflow="true"
+                                            data-kt-menu-placement="top-end">
+                                           <i class=" ti ti-more-alt vertical"></i>
+                                        </button>
+                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
+                                            data-kt-menu="true" style="">
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">Quick Actions
+                                                </div>
+                                            </div>
+                                            <!--end::Menu item-->
+
+                                            <!--begin::Menu separator-->
+                                            <div class="separator mb-3 opacity-75"></div>
+                                            <!--end::Menu separator-->
+
+                                            <!--begin::Menu item-->
+
+                                            <!--end::Menu item-->
+
+                                            <!--begin::Menu item-->
+
+                                            <!--end::Menu item-->
+
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+
+
+                                                <a href="<?= base_url(); ?>sales/view_delivery_modal/" class="menu-link px-3 "
+                                                    id="open_delivery_modal" data-toggle="modal" data-target="#myModal"> <i
+                                                        class="ion-android-car"></i>Delivery</a>
+
+                                            </div>
+
+
+
+
+
+                                            <div class="menu-item px-3">
+                                                <a href="<?= base_url(); ?>customers/redeem_series/{{customer.person_id}}" id="redeem_series"
+                                                    class="menu-link px-3" title="Redeem Series"><i
+                                                        class="ion-ios-compose-outline"></i> Redeem Series</a>
+                                            </div>
+                                            <div class="menu-item px-3">
+                                                <a href="<?= base_url(); ?>customers/pay_now/{{customer.person_id}}" id="pay_now"
+                                                    class="menu-link px-3" title="Pay Now"><i
+                                                        class="ion-ios-compose-outline"></i> Pay Now</a>
+                                            </div>
+
+                                            <div class="menu-item px-3">
+
+
+
+                                                <a href="<?= base_url(); ?>customers/quick_modal/{{customer.person_id}}/1" id="edit_customer"
+                                                    data-target="#kt_drawer_general" data-target-title="New Customer"
+                                                    data-target-width="xl" class="menu-link px-3" title="Update Customer"><i
+                                                        class="ion-ios-compose-outline"></i> Update Customer</a>
+                                            </div>
+
+                                            <!--end::Menu item-->
+
+                                            <!--begin::Menu item-->
+
+                                            <!--end::Menu item-->
+
+                                            <!--begin::Menu separator-->
+                                            <div class="separator mt-3 opacity-75"></div>
+                                            <!--end::Menu separator-->
+
+                                            <!--begin::Menu item-->
+                                            <div class="menu-item px-3">
+                                                <div class="menu-content px-3 py-3">
+
+
+
+
+                                                    <a target="_blank"
+                                                        href="<?= base_url(); ?>reports/generate/specific_customer?report_type=complex&amp;start_date=2023-07-11&amp;start_date_formatted=07/11/2023 12:00 am&amp;end_date=2024-07-11%2023:59:59&amp;end_date_formatted=07/11/2024 11:59 pm&amp;customer_id={{customer.person_id}}&amp;sale_type=all&amp;export_excel=0"
+                                                        class="btn btn-success btn-sm px-4">View Report
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <!--end::Menu item-->
+                                        </div>
+
+                                        <!--begin::Menu 2-->
+
+                                        <!--end::Menu 2-->
+                                        <!--end::Menu-->
+
+
+
+
+                                    </div>
+
+                                    <a href="#" id="remove_customer" class="vertical-center">
+
+                                        <i class="icon ti-close m-2 text-danger" ></i>
+                                    </a>
+
+                                   
 
 
                                 </div>
@@ -2159,144 +2225,7 @@ $this->load->view("partial/offline_header"); ?>
                             </div>
                             <!--end::User-->
                             <!--begin::Actions-->
-                            <div class="d-flex my-4 me-15">
-                                <div id="popover-content" class="d-none">
-                                    <!--begin::ShareArea-->
-                                    <div class="d-flex flex-wrap justify-content-around fw-semibold fs-6 mb-4 pe-2">
-
-
-                                        <div class="symbol round w-50px h-50px text-center p-4  bg-success me-2">
-                                            <i class="fa-solid fa-square-phone fs-2rem text-light"></i>
-                                        </div>
-
-
-                                        <div class="symbol round w-50px h-50px text-center p-4  bg-danger me-2">
-
-                                            <i class="fa-regular fa-envelope fs-2rem text-light  "
-                                                id="toggle_email_receipt"></i>
-                                        </div>
-
-
-
-
-                                    </div>
-
-
-
-
-
-                                    <!--End::ShareArea-->
-                                </div>
-
-
-
-
-                                <!--begin::Menu-->
-                                <button type="button" class="btn btn-sm btn-icon btn-primary btn-active-light-primary"
-                                    data-kt-menu-trigger="custom" data-kt-menu-overflow="true"
-                                    data-kt-menu-placement="top-end">
-                                    <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen052.svg-->
-                                    <span class="svg-icon svg-icon-white svg-icon-muted svg-icon-2hx"><svg width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"></rect>
-                                            <rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"></rect>
-                                            <rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"></rect>
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                </button>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
-                                    data-kt-menu="true" style="">
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">Quick Actions
-                                        </div>
-                                    </div>
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu separator-->
-                                    <div class="separator mb-3 opacity-75"></div>
-                                    <!--end::Menu separator-->
-
-                                    <!--begin::Menu item-->
-
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu item-->
-
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-
-
-                                        <a href="<?= base_url(); ?>sales/view_delivery_modal/" class="menu-link px-3 "
-                                            id="open_delivery_modal" data-toggle="modal" data-target="#myModal"> <i
-                                                class="ion-android-car"></i>Delivery</a>
-
-                                    </div>
-
-
-
-
-
-                                    <div class="menu-item px-3">
-                                        <a href="<?= base_url(); ?>customers/redeem_series/{{customer.person_id}}" id="redeem_series"
-                                            class="menu-link px-3" title="Redeem Series"><i
-                                                class="ion-ios-compose-outline"></i> Redeem Series</a>
-                                    </div>
-                                    <div class="menu-item px-3">
-                                        <a href="<?= base_url(); ?>customers/pay_now/{{customer.person_id}}" id="pay_now"
-                                            class="menu-link px-3" title="Pay Now"><i
-                                                class="ion-ios-compose-outline"></i> Pay Now</a>
-                                    </div>
-
-                                    <div class="menu-item px-3">
-
-
-
-                                        <a href="<?= base_url(); ?>customers/quick_modal/{{customer.person_id}}/1" id="edit_customer"
-                                            data-target="#kt_drawer_general" data-target-title="New Customer"
-                                            data-target-width="xl" class="menu-link px-3" title="Update Customer"><i
-                                                class="ion-ios-compose-outline"></i> Update Customer</a>
-                                    </div>
-
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu item-->
-
-                                    <!--end::Menu item-->
-
-                                    <!--begin::Menu separator-->
-                                    <div class="separator mt-3 opacity-75"></div>
-                                    <!--end::Menu separator-->
-
-                                    <!--begin::Menu item-->
-                                    <div class="menu-item px-3">
-                                        <div class="menu-content px-3 py-3">
-
-
-
-
-                                            <a target="_blank"
-                                                href="<?= base_url(); ?>reports/generate/specific_customer?report_type=complex&amp;start_date=2023-07-11&amp;start_date_formatted=07/11/2023 12:00 am&amp;end_date=2024-07-11%2023:59:59&amp;end_date_formatted=07/11/2024 11:59 pm&amp;customer_id={{customer.person_id}}&amp;sale_type=all&amp;export_excel=0"
-                                                class="btn btn-success btn-sm px-4">View Report
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <!--end::Menu item-->
-                                </div>
-
-                                <!--begin::Menu 2-->
-
-                                <!--end::Menu 2-->
-                                <!--end::Menu-->
-
-
-
-
-                            </div>
+                            
                             <!--end::Actions-->
                         </div>
                         <!--end::Title-->
@@ -2349,26 +2278,9 @@ $this->load->view("partial/offline_header"); ?>
 
 
 									<span
-										class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"
+										class="toggle_rows "
 										style="position:relative">
-										<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
-										<span class="svg-icon svg-icon-3 m-0 toggle-off">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-												xmlns="http://www.w3.org/2000/svg">
-												<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1"
-													transform="rotate(-90 11 18)" fill="currentColor"></rect>
-												<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
-											</svg>
-										</span>
-										<!--end::Svg Icon-->
-										<!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
-										<span class="svg-icon svg-icon-3 m-0 toggle-on">
-											<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-												xmlns="http://www.w3.org/2000/svg">
-												<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
-											</svg>
-										</span>
-										<!--end::Svg Icon-->
+                                        <i class="icon ti-angle-down"></i>
 									</span> &nbsp;
 								</td>
 
@@ -2377,7 +2289,7 @@ $this->load->view("partial/offline_header"); ?>
 									<a tabindex="-1"
 										href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
 										data-target="#kt_drawer_general" data-target-title="View Item"
-										data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary "
+										data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
 										data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
 										data-bs-placement="top" title="Box Master Sandwich - Original">{{name}}</a>
 								</td>
@@ -2409,11 +2321,12 @@ $this->load->view("partial/offline_header"); ?>
 										data-title="Total">{{currency}} {{multiply price qty}}</a>
 
 
-									<a href="<?= base_url(); ?>/sales/delete_item/{{@index}}"
-										class="delete-item pull-right" tabindex="-1" data-cart-index="{{@index}}" data-id="{{@index}}"><i
-											class="icon ion-android-cancel"></i></a>
+									
 
 								</td>
+                                <td class="text-center fs-7"><a href="<?= base_url(); ?>/sales/delete_item/{{@index}}"
+										class="delete-item " tabindex="-1" data-cart-index="{{@index}}" data-id="{{@index}}"><i
+											class="fa fa-trash text-danger"></i></a></td>
 							</tr>
 							<tr class="register-item-bottom collapse">
 								<td>&nbsp;</td>
@@ -2550,7 +2463,7 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
                         <div class="fw-semibold fs-6 text-dark-400">
                             <a href="<?= base_url(); ?>/sales/delete_tax/5%25%20VAT%20Rate%201"
-                                class="delete-tax remove"><i class="icon ion-android-cancel"></i></a>
+                                class="delete-tax remove"><i class="fa fa-trash text-danger"></i></a>
                             5% VAT Rate 1:
                         </div>
                         <div class="fs-1 fw-bold counted">
@@ -2809,25 +2722,25 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!-- If customer is added to the sale -->
 
-                <div class="customer-form d-flex flex-wrap">
+                <div class="customer-form d-flex flex-wrap px-1">
 
                     <!-- if the customer is not set , show customer adding form -->
                     <form action="<?= base_url(); ?>sales/select_customer" autocomplete="off"
                         class="form-inline w-100 mb-2" method="post" accept-charset="utf-8">
-                        <div class="input-group contacts d-flex">
-                            <span class="input-group-text">
-                                <a href="<?= base_url(); ?>customers/quick_modal/-1/1" class="none "
-                                    title="New Customer" id="new-customer" data-target="#kt_drawer_general"
-                                    data-target-title="New Customer" data-target-width="xl" tabindex="-1"><i
-                                        class="ion-person-add"></i></a> </span>
+                        <div class="input-group contacts register-input-group d-flex">
+                            
                             <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
 
 
                             <input type="text" id="customer" name="customer"
-                                class="add-customer-input w-75 keyboardLeft ui-autocomplete-input"
+                                class="add-customer-input  keyboardLeft ui-autocomplete-input border-radius-left"
                                 data-title=<?php echo json_encode(lang('customer_name')); ?>
                                 placeholder=<?php echo json_encode(lang('sales_start_typing_customer_name')); ?>>
-
+                                <span class="input-group-text   bg-primary border-radius-right ">
+                                <a href="<?= base_url(); ?>customers/quick_modal/-1/1" class="none "
+                                    title="New Customer" id="new-customer" data-target="#kt_drawer_general"
+                                    data-target-title="New Customer" data-target-width="xl" tabindex="-1"><i
+                                        class="ion-person-add text-white"></i></a> </span>
 
                         </div>
                     </form>
@@ -2843,7 +2756,7 @@ $this->load->view("partial/offline_header"); ?>
             <div id="customer-panel"></div>
 
 
-            <div class="py-1 pos-bg-dark h-42px p-5 rounded-1 d-flex align-items-center flex-flex justify-content-space-between mt-1">
+            <div class="py-1 pos-bg-dark h-42px p-5 rounded-1 d-flex align-items-center flex-flex justify-content-space-between mt-1 order_detail_margin" >
                 <div>
                     <span class="text-light">Order Details</span>
                     <span class="badge badge-light badge-md text-black p-2 mx-5" >Items:  <span id="total_items">0</span> </span>
@@ -2893,15 +2806,16 @@ $this->load->view("partial/offline_header"); ?>
                         class="table table-striped align-middle table-row-dashed fs-6 gy-3 dataTable no-footer">
                         <thead>
                             <tr
-                                class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0  pos_bg_dark">
-                                <th class=" py-1 min-w-50px text-center  text-light "><a href="javascript:void(0);"
-                                        id="sale_details_expand_collapse" class="expand">+</a></th>
-                                <th class=" py-1 item_sort_able  text-light item_name_heading ">Item Name</th>
-                                <th class=" py-1 item_sort_able min-w-150px text-center text-light sales_price ">Price
+                                class="text-start text-gray-400 fw-bold fs-7  gs-0  pos_bg_dark">
+                                <th class=" py-1  text-center  text-black "><a href="javascript:void(0);"
+                                        id="sale_details_expand_collapse" class="expand"> <i class="icon ti-angle-down"></i>  </a></th>
+                                <th class=" py-1 item_sort_able  text-black item_name_heading vertical-align ">Item Name</th>
+                                <th class=" py-1 item_sort_able min-w-100px text-center text-black sales_price vertical-align ">Price
                                 </th>
-                                <th class=" py-1 item_sort_able sales_quantity  text-light">Quantity</th>
-                                <th class=" py-1 item_sort_able min-w-150px text-center sales_total text-light">Total
+                                <th class=" py-1 item_sort_able min-w-100px sales_quantity  text-black vertical-align text-center">Quantity</th>
+                                <th class=" py-1 item_sort_able min-w-100px text-center sales_total text-black vertical-align ">Total
                                 </th>
+                                <th class="min-w-50px"></th>
                             </tr>
                         </thead>
 
@@ -2973,7 +2887,7 @@ $this->load->view("partial/offline_header"); ?>
                             class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
                             <div class="fw-semibold fs-6 text-dark-400">
                                 <a href="<?= base_url(); ?>/sales/delete_tax/5%25%20VAT%20Rate%201"
-                                    class="delete-tax remove"><i class="icon ion-android-cancel"></i></a>
+                                    class="delete-tax remove"><i class="fa fa-trash text-danger"></i></a>
                                 5% VAT Rate 1:
                             </div>
                             <div class="fs-1 fw-bold counted">
@@ -3417,7 +3331,7 @@ $this->load->view("partial/offline_header"); ?>
 
     <li class="list-group-item">
 			<span class="key">
-				<a href="#" class="delete-payment remove" id="delete_payment_{{index}}" data-payment-index="{{index}}"><i class="icon ion-android-cancel"></i></a>
+				<a href="#" class="delete-payment remove" id="delete_payment_{{index}}" data-payment-index="{{index}}"><i class="fa fa-trash text-danger"></i></a>
 				{{type}}
 			</span>
 			<span class="value">{{amount}}</span>
@@ -3473,69 +3387,49 @@ $this->load->view("partial/offline_header"); ?>
         <tr class="register-item-details">
 
 
-            <td class="text-center  fs-6">
+            <td class="text-center  fs-7">
 
 
 
                 <span
-                    class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"
+                    class="toggle_rows   "
                     style="position:relative">
-                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
-                    <span class="svg-icon svg-icon-3 m-0 toggle-off">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1"
-                                transform="rotate(-90 11 18)" fill="currentColor"></rect>
-                            <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
-                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
-                    <span class="svg-icon svg-icon-3 m-0 toggle-on">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->
+                    <i class="icon ti-angle-down"></i>
                 </span> &nbsp;
             </td>
 
-            <td class="fs-6">
+            <td class="fs-7">
 
                 <a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
                     data-target="#kt_drawer_general" data-target-title="View Item"
-                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary "
+                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
                     data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                     data-bs-placement="top" title="{{name}}">{{name}}</a>
             </td>
-            <td class="text-center fs-6">
+            <td class="text-center fs-7">
                 
 
                     <a href="#" id="price_{{index}}" class="xeditable xeditable-price editable" data-validate-number="true" data-type="text" data-pk="1" data-name="price" data-index="{{index}}" data-title="Price">{{to_currency_no_money price}}</a>									 
 
 
             </td>
-            <td class="text-center fs-6">
-                <button type="button" onclick="inc_de_qty('{{index}}', -1)"
-                    class="btn w-25px h-25px  btn-icon rounded-circle btn-light"><i
-                        class="bi bi-dash fs-1"></i></button>
+            <td class="text-center fs-7">
+                <i onclick="inc_de_qty('{{index}}', -1)"
+                        class="icon ti-minus text-black cursor-pointer"></i>
             
-                <a href="#" id="quantity_{{index}}" class="xeditable edit-quantity " data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-index="{{index}}" data-title="Qty.">{{to_quantity quantity}}</a>
+                <a href="#" id="quantity_{{index}}" class="xeditable edit-quantity mx-1" data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-index="{{index}}" data-title="Qty.">{{to_quantity quantity}}</a>
             
                 
-                <button type="button" onclick="inc_de_qty('{{index}}', 1)"
-                    class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i
-                        class="bi bi-plus fs-1"></i></button>
+               <i
+                        class="icon ti-plus text-black cursor-pointer" onclick="inc_de_qty('{{index}}', 1)"></i>
             </td>
 
-            <td class="text-center fs-6" style="padding-right:10px">
+            <td class="text-center fs-7" style="padding-right:10px">
 
                 <a href="#" id="total_{{index}}" class=" xeditable edit-price-line-total" data-validate-number="true"  data-pk="1" data-name="price-line-total" data-index="{{index}}">{{to_currency_no_money line_total}}</a>
 
 
-                <a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item pull-right"
-                    tabindex="-1" data-id="{{index}}" data-item_id="{{item_id}}"><i class="icon ion-android-cancel"></i></a>
+                
 
 
 
@@ -3594,9 +3488,11 @@ $this->load->view("partial/offline_header"); ?>
                         {{/sn_modal_check}}
                     {{/sn_check}}
             </td>
+            <td class="text-center fs-7"><a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item "
+                    tabindex="-1" data-id="{{index}}" data-item_id="{{item_id}}"><i class="fa fa-trash text-danger"></i></a></td>
 
         </tr>
-        <tr class="register-item-bottom collapse">
+        <tr class="register-item-bottom bg-white collapse">
             <td>&nbsp;</td>
             <td colspan="5">
 
@@ -3622,7 +3518,7 @@ $this->load->view("partial/offline_header"); ?>
                                 <div class="col-md-3 mt-3">
                                     <div class="text-gray-800 fs-7"><?php echo lang('variation'); ?></div>
                                     <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                    <a style="cursor:pointer;" onclick="edit_variation({{index}});"><?php echo lang('edit'); ?></a>
+                                    <a class="myeditable" style="cursor:pointer;" onclick="edit_variation({{index}});"><?php echo lang('edit'); ?></a>
 
                                     </div>
                                 </div>
@@ -3633,7 +3529,7 @@ $this->load->view("partial/offline_header"); ?>
                                 <div class="col-md-3 mt-3">
                                     <div class="text-gray-800 fs-7"><?php echo lang('modifiers'); ?></div>
                                     <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                    <a style="cursor:pointer;" onclick="enable_popup_modifier({{index}});"><?php echo lang('edit'); ?></a>
+                                    <a style="cursor:pointer;" onclick="enable_popup_modifier({{index}});" class="myeditable"><?php echo lang('edit'); ?></a>
 
                                     {{#if selected_item_modifiers}}
                                         <div class="text-muted fs-7 fw-bold">
@@ -3663,7 +3559,7 @@ $this->load->view("partial/offline_header"); ?>
 															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                                                             {{#or permissions.allow_price_override_regardless_of_permissions  permission_edit_sale_price}}
 																
-																<a href="#" id="tier_{{index}}" data-index="{{index}}" data-name="tier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('tier')); ?>">
+																<a href="# " class="myeditable" id="tier_{{index}}" data-index="{{index}}" data-name="tier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('tier')); ?>">
                                                                     {{#if tier_id}}
                                                                                 <span>{{tier_name}}</span>
                                                                     {{/if}}
@@ -3741,7 +3637,7 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                 
                         
-                        <a href="#" id="supplier_{{index}}" data-index="{{index}}" data-name="supplier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('supplier')); ?>">
+                        <a href="#" id="supplier_{{index}}" class="myeditable" data-index="{{index}}" data-name="supplier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('supplier')); ?>">
                             {{#if supplier_id}}
                                         <span>{{supplier_name}}</span>
                             {{/if}}
@@ -3754,9 +3650,9 @@ $this->load->view("partial/offline_header"); ?>
                 {{/supplier_permission}}
 
                 {{#notval permissions.hide_description_on_sales_and_recv  }}
-                    <div class="col-md-3 mt-3">
+                    <div class="col-md-6 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('description'); ?></div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
                             {{#greaterThanZero permissions.allow_alt_description }}
                         <a
                                 href="#" id="description_{{index}}" class="xeditable-description  editable-click"
@@ -3776,7 +3672,7 @@ $this->load->view("partial/offline_header"); ?>
 
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('category'); ?></div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
                                 {{all_data.category_name}}
                                                         
 
@@ -3785,7 +3681,7 @@ $this->load->view("partial/offline_header"); ?>
                     {{#if selected_rule}}
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7">{{selected_rule.name}}</div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
                                 {{to_currency_no_money selected_rule.rule_discount}}
                                                         
 
@@ -3796,7 +3692,7 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                            <a href="#" class=" edit_taxes_item"
+                            <a href="#" class=" edit_taxes_item myeditable"
                                  data-target="#kt_drawer_general"
                                 data-target-title="Edit Taxes" id="" data-id="{{index}}" data-target-width="lg">Edit Taxes</a>
                         </div>
@@ -3807,7 +3703,7 @@ $this->load->view("partial/offline_header"); ?>
 
                         {{#count all_data.serial_numbers  }}
                             <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="select" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
+                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber"  class="  myeditable" data-index="{{index}}"   data-type="select" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
                                    {{serialnumberText}}
                                 </a>
                             </div>
@@ -3817,7 +3713,7 @@ $this->load->view("partial/offline_header"); ?>
                                 
                                {{#if  permissions.edit_serail_no}}
                                                         
-                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="text" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
+                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"  class="  myeditable"  data-type="text" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
                                    {{serialnumberText}} 
                                 </a>
                                 {{else}}
@@ -3864,7 +3760,7 @@ $this->load->view("partial/offline_header"); ?>
 			                    ?>
                         </div>
 
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
                                 {{all_data.id_to_show_on_sale_interface_val}}
                         </div>
                     </div>
@@ -3872,7 +3768,7 @@ $this->load->view("partial/offline_header"); ?>
 
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('stock'); ?></div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                        <div class="text-muted fs-7 fw-bol text-black" data-kt-table-widget-4="template_cost">
                                 {{all_data.cur_quantity}}
                                                         
 
@@ -3883,7 +3779,7 @@ $this->load->view("partial/offline_header"); ?>
 
                             <div class="col-md-3 mt-3">
                                 <!-- cart items details  damaged not returned  -->
-                                <div class="text-gray-800 fs-7"><?php echo lang('number_damaged_not_return_to_stock'); ?></div>
+                                <div class="text-gray-800 fs-7 text-black"><?php echo lang('number_damaged_not_return_to_stock'); ?></div>
                                 <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                                     <a href="#"
                                         id="damaged_qty_{{index}}" class="xeditable" data-type="text" data-pk="1"
@@ -3899,14 +3795,14 @@ $this->load->view("partial/offline_header"); ?>
                 <div class="col-md-3 mt-3">
                 <!-- cart items details  series   -->
                 <div class="text-gray-800 fs-7"><?php echo lang('series_quantity'); ?></div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
                   {{all_data.series_quantity}}</div>
                 </div>
 
                 <div class="col-md-3 mt-3">
                 <!-- cart items details  series days to use  -->
                 <div class="text-gray-800 fs-7"><?php echo lang('series_days_to_use_within'); ?></div>
-                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
+                <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
                {{all_data.series_days_to_use_within}}</div>
                 </div>
 
@@ -4042,7 +3938,7 @@ $this->load->view("partial/offline_header"); ?>
                                                     <div class="col-md-2">
                                                         <a href="javascript:;" data-repeater-delete
                                                             class="btn btn-sm btn-light-danger mt-3 mt-md-8">
-                                                            <i class="fa fa-trash"></i>
+                                                            <i class="fa fa-trash text-danger"></i>
                                                         </a>
                                                     </div>
                                                 </div>

@@ -8132,8 +8132,21 @@ td.actions {
 .editable-click, 
 a.editable-click, 
 a.editable-click:hover {
-    text-decoration: none;
-    border-bottom: dashed 1px #0088cc;
+  text-decoration: none;
+  padding: 5px;
+  border-radius: 5px;
+  border: solid 1px #cfcdcd;
+  color: black;
+}
+
+.myeditable, 
+a.myeditable, 
+a.myeditable:hover {
+  text-decoration: none;
+  padding: 5px;
+  border-radius: 5px;
+  border: solid 1px #cfcdcd;
+  color: black;
 }
 
 .editable-click.editable-disabled, 
@@ -9887,9 +9900,7 @@ button.toast-close-button {
   border-bottom: 1px dotted #D7DCE5;
   padding-top: 10px;
 }
-.register .register-items .register-items-holder .register-item-content .register-item-bottom:hover {
-  background-color: #f5f7f9;
-}
+
 .register .register-items .register-items-holder .register-item-content .register-item-bottom td {
   border-top-width: 0px;
 }
@@ -11216,7 +11227,6 @@ dt {
   display: inline-block;
   position: relative;
   z-index: 1;
-  padding: 2px 8px 2px 8px;
   margin: -2px -8px -2px -8px;
 }
 table {
@@ -18070,16 +18080,17 @@ td a:hover {
 
 
 .toggle_rows {
+  
   cursor: pointer;
-    color: white;
-    background-color: green;
-    border-radius: 50%;
-    width: 20px;
-    margin: 0 auto;
-    line-height: 21px;
-    font-size: 17px;
-    height: 20px;
-    display: block;
+  color: black;
+  background-color: unset;
+  border-radius: 50%;
+  width: 20px;
+  margin: 0 auto;
+  line-height: 21px;
+  font-size: 17px;
+  height: 20px;
+  display: block;
 }
 
 i.icon.ion-android-cancel {
@@ -18103,11 +18114,7 @@ i.icon.ion-android-cancel {
   padding-left: 0px!important;
 }
 
-.table.table-row-dashed tr .col-md-3 {
-    border-bottom-width: 1px;
-    border-bottom-style: dashed;
-    border-bottom-color: var(--kt-border-color);
-}
+
 
 .select2-result .select2-highlighted {
   background-color: var(--kt-component-hover-bg);
@@ -18351,6 +18358,7 @@ input.add-customer-input {
   overflow-y: scroll !important; 
   height: calc(100vh - 200px);
   position: relative;
+  overflow-x: hidden;
 }
 /* .list-group-item {
     z-index: 999;
@@ -19256,17 +19264,9 @@ label.btn.btn-file-upload {
   width: 40% !important;
 }
 
-#register tbody:nth-child(odd) {
-  background-color: var(--kt-light); 
-}
 
-#register tbody:nth-child(even) {
-  background-color: #ffffff; 
-}
 
-#register tbody .register-item-bottom{
-  background-color: #f0f0f9 !important;
-}
+
 .bootbox{
   z-index: 999999999 !important;
 }
