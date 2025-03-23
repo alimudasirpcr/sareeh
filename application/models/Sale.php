@@ -1261,9 +1261,7 @@ class Sale extends MY_Model
 		}
 		else
 		{
-			$this->db->save_queries = true;
 			$this->db->insert('sales',$sales_data);
-			echo $this->db->last_query();
 			$sale_id = $this->db->insert_id();
 		}
 		
