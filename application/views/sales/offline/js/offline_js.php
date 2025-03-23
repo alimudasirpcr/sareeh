@@ -653,14 +653,18 @@ function check_and_get_suspended_sale(sale_id , is_return ) {
             // Simulate a click or trigger any event you want
             dropdownItem.trigger('click');
 
-            var tokens = cart.extra.coupons;
-            // console.log( "cart extra copoin" , cart.extra.coupons);
-            // console.log("token testing" , tokens);
 
-            tokens.forEach(function(token) {
+            if(typeof cart.extra.coupons !="undefined"){
+                var tokens = cart.extra.coupons;
+                // console.log( "cart extra copoin" , cart.extra.coupons);
+                // console.log("token testing" , tokens);
 
-                $('.coupon_codes').tokenfield('createToken', token[0]);
-            });
+                tokens.forEach(function(token) {
+
+                    $('.coupon_codes').tokenfield('createToken', token[0]);
+                });
+            }
+            
             $('#delete_sale_button').removeAttr('style');
 
             renderUi();
@@ -1191,7 +1195,7 @@ $(document).on("click", '#cancel_sale_button', function(event) {
             current_edit_index = null;
             
             $('#delete_sale_button').removeClass('d-flex');
-            $('#delete_sale_button').hide();
+            $('#delete_sale_button').attr('style' , 'display: none !important');
 
             var dropdownItem = $('.dropdown-menu a[data-mode="sale"]');
             
@@ -1289,7 +1293,8 @@ $(document).on("click", '#finish_sale_button', function(e) {
                     if (response.success) {
                         $('#sync_offline_sales_button').remove();
                         $('#delete_sale_button').removeClass('d-flex');
-                        $('#delete_sale_button').hide();
+                        
+                        $('#delete_sale_button').attr('style' , 'display: none !important');
                         $('.coupon_codes').tokenfield('setTokens', []);
                         localStorage.removeItem("sales");
 
@@ -4803,7 +4808,8 @@ $(document).ready(function() {
 
             $('#sync_offline_sales_button').remove();
             localStorage.removeItem("sales");
-            $('#delete_sale_button').hide();
+            
+            $('#delete_sale_button').attr('style' , 'display: none !important');
             $('.coupon_codes').tokenfield('setTokens', []);
 
             <?php if (!$this->config->item('disable_sale_notifications')) { ?>
