@@ -9334,10 +9334,14 @@ class Sales extends Secure_area
 				}else{
 					$offline_sale_cart->set_mode('sale');
 				}
-					 dd($offline_sale_cart);
+
+				ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+					//  dd($offline_sale_cart);
 				
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
-				// dd($sale_id);
+				dd($sale_id);
 				$sale_ids[] = $sale_id;
 			}
 			echo json_encode(array('success' => TRUE,'sale_ids' => $sale_ids));
