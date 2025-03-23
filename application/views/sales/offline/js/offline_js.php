@@ -619,7 +619,7 @@ function getPromoPrice(promo_price, start_date, end_date) {
 }
 
 function check_and_get_suspended_sale(sale_id , is_return ) {
-    // console.log("Checking and getting" , sale_id  , is_return);
+    console.log("Checking and getting" , sale_id  , is_return);
 
     $.post('<?php echo site_url("sales/check_and_get_suspended_sale/"); ?>', {
             offline_sales: '',
@@ -634,18 +634,20 @@ function check_and_get_suspended_sale(sale_id , is_return ) {
                     "<?php echo  lang('error') ?>");
                 return false;
             }
-
+            console.log(response);
             // console.log('is_return' , is_return);
             cart = response;
-
+            console.log(cart);
 
             md = (is_return=='1')?'return' : 'sale';
             var dropdownItem = $('.dropdown-menu a[data-mode="'+md+'"]');
     
            if(is_return){
             cart.extra.return_sale_id = sale_id;
+           }else{
+            cart.extra.return_sale_id = null;
            }
-                
+           console.log(cart);
   
           
 
@@ -3649,17 +3651,7 @@ $(document).ready(function() {
 
         $('.Sale-mode').hide();
 
-        <?php if($this->router->method=='change_sale'): ?>
-            cart['extra']['mode'] = 'sale';
-            localStorage.setItem("cart", JSON.stringify(cart));
-        <?php endif; ?>
-    
-
-        if(typeof cart['extra']['mode'] =='undefined'  ) {
-            cart['extra']['mode'] = 'sale';
-            localStorage.setItem("cart", JSON.stringify(cart));
-        }
-
+       
        
 
         // console.log('onload' , cart['extra']['mode']);

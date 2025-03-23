@@ -5222,7 +5222,7 @@ class Sales extends Secure_area
 		$this->cart->destroy();
 			
 		
-		$this->cart->set_mode('return');
+		// $this->cart->set_mode('return');
 
 
 		 $data = get_query_data(" select * from phppos_sales where sale_id =".$this->input->post('sale_id')." ");
@@ -9014,15 +9014,20 @@ class Sales extends Secure_area
 
 				if((isset($offline_sale['extra']['mode']))  ){
 					$offline_sale_cart->set_mode($offline_sale['extra']['mode']);
+					if($offline_sale['extra']['mode']=='return'){
+						if((isset($offline_sale['extra']['return_sale_id'])) && $offline_sale['extra']['return_sale_id'] !=''){
+							$offline_sale_cart->return_sale_id = $offline_sale['extra']['return_sale_id'];
+							$offline_sale_cart->return_order($offline_sale['extra']['return_sale_id']);
+						}
+					}
 					
 				}else{
 					$offline_sale_cart->set_mode('sale');
 				}
 
-				if((isset($offline_sale['extra']['return_sale_id'])) && $offline_sale['extra']['return_sale_id'] !=''){
-					$offline_sale_cart->return_sale_id = $offline_sale['extra']['return_sale_id'];
-					$offline_sale_cart->return_order($offline_sale['extra']['return_sale_id']);
-				}
+				
+
+				
 					// dd($offline_sale_cart);
 				
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
