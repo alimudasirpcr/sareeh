@@ -1422,7 +1422,7 @@ $this->load->view("partial/offline_header"); ?>
     <!--end::View component-->
     <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left" id="left-section">
         <div id="drag-handle"
-            style="cursor: ew-resize;width: 7px;position: relative;background-color: #0009;height: 100%;float: right;z-index: 99;">
+            style="cursor: ew-resize;width: 7px;position: relative;background-color: #6a6fdf;height: 100%;float: right;z-index: 99;">
         </div>
         <div class="d-flex top-left-pos">
             <div id="kt_app_sidebar_toggle" class="w-70px text-center pt-2  text-light cursor-pointer  rotate"

@@ -40,7 +40,6 @@
     }
     .sale-grid-big-wrapper-parent{
         width: calc(100% - 80px);
-        margin-left: 5px;
     }
 
     html[data-theme='light'] .register-box {
@@ -112,7 +111,7 @@
     }
 
     .order_detail_margin{
-        margin: 0px 6px 0px 2px;
+        margin: 4px 6px 0px 2px !important;
     }
     .vertical {
          transform: rotate(90deg);

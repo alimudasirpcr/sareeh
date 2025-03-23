@@ -18093,6 +18093,7 @@ td a:hover {
   font-size: 17px;
   height: 20px;
   display: block;
+  padding-left: 8px;
 }
 
 i.icon.ion-android-cancel {

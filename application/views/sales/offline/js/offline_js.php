@@ -3695,7 +3695,7 @@ $(document).ready(function() {
         var leftWidth = e.clientX - containerOffsetLeft;
 
         var percentageLeft = (leftWidth / containerWidth) * 100;
-        percentageLeft = Math.max(40, Math.min(percentageLeft, 60)); // Ensure the width is between 40% and 60%
+        percentageLeft = Math.max(45, Math.min(percentageLeft, 55)); // Ensure the width is between 40% and 60%
         var percentageRight = 100 - percentageLeft;
 
         $('#left-section').css('width', `${percentageLeft}%`);
