@@ -9334,7 +9334,7 @@ class Sales extends Secure_area
 				}else{
 					$offline_sale_cart->set_mode('sale');
 				}
-					// dd($offline_sale_cart);
+					 dd($offline_sale_cart);
 				
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
 				// dd($sale_id);
