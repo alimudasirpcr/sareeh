@@ -7731,12 +7731,23 @@ class Sales extends Secure_area
 		if ($this->Register->exists($register_id))
 		{
 			// $data['is_pos'] = true;
+
+			
 			$data = array( 
 				'remove_topbar' => true, 
 				'is_pos' => true, 
 				'register_id' => $register_id,
 				'fullscreen_customer_display'=> $this->session->userdata('fullscreen_customer_display')
 			);
+			$tiers = array();
+
+		$tiers[0] = lang('none');
+		foreach($this->Tier->get_all()->result() as $tier)
+		{
+			$tiers[$tier->id]=$tier->name;
+		}
+		
+		$data['tiers'] = $tiers;
 			$this->load->view('sales/customer_display_initial', $data);
 		}
 	}

@@ -2602,8 +2602,12 @@ $('.xeditable-comment').editable({
 
 
     $("#sub_total").attr('data-value', subtotal).html(subtotal);
+      localStorage.setItem('cart_sub_total' ,subtotal );
+
     $("#taxes").html(taxes);
+    localStorage.setItem('cart_taxes' ,taxes );
     $("#total").html(total);
+    localStorage.setItem('cart_total' ,total );
     check_for_payment_options();
     $('#total_discount').html(total_discount.toFixed(2));
     $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
@@ -2616,6 +2620,7 @@ $('.xeditable-comment').editable({
     $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
     $("#amount_due").html(amount_due);
     $("#amount_tendered").val(amount_due);
+    localStorage.setItem('cart_amount_due' ,amount_due );
     // console.log(cart['customer']);
     $('.balance').removeClass(' text-success text-danger');
     if (cart['customer'] && cart['customer']['person_id']) {

@@ -2785,9 +2785,9 @@ $this->load->view("partial/offline_header"); ?>
 
 
                     <style>
-                    #register tbody {
+                    /* #register tbody {
                         cursor: move;
-                    }
+                    } */
 
                     #register th.item_sort_able {
                         cursor: pointer;
