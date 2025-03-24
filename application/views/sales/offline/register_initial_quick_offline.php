@@ -1596,8 +1596,10 @@ $this->load->view("partial/offline_header"); ?>
                         
                        
                     </div>
-                    <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?>
-                    <div class="d-flex  bg-primary  p-3 flex-center w-100px h-42px me-1 "
+                   
+
+
+                    <div class="d-flex  bg-primary  p-3 flex-center w-100px h-42px me-1 "  <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?>   <?php  else: ?>  style="display:none !important" <?php endif; ?>
                         id="cancel_sale_button">
 
                         <div class=" py-2">
@@ -1622,9 +1624,12 @@ $this->load->view("partial/offline_header"); ?>
                         <!--end::Svg Icon-->
                       
                     </div>
-                    <?php endif; ?>
+
+                   
 
                     <?php } ?>
+
+
                     <?php } ?>
 
 
@@ -2765,9 +2770,8 @@ $this->load->view("partial/offline_header"); ?>
                 </div>
 
                 <div>
-                    <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?> <?php else: ?>
-                        <span class="badge badge-light badge-md text-danger p-2 bg-light-danger" id="cancel_sale_button"> Clear  <i class="icon ti-close m-2 text-danger"></i></span>
-                    <?php endif; ?>
+                        <span class="badge badge-light badge-md text-danger p-2 bg-light-danger" id="clear_sale_button" <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?> style="display:none !important"   <?php  else: ?>   <?php endif; ?>>  Clear  <i class="icon ti-close m-2 text-danger"></i></span>
+                  
                 </div>
                 
 
@@ -4112,5 +4116,17 @@ $this->load->view("partial/offline_header"); ?>
                                 </div>
 <?php $this->load->view("sales/offline/js/offline_js"); ?>
 
+<?php
 
+
+$this->cart->destroy();
+$CI =& get_instance();
+		if ($CI->session->userdata('sale'))
+		{
+            $CI->session->unset_userdata('sale');
+
+        }
+
+?>
 <?php $this->load->view("partial/offline_footer"); ?>
+

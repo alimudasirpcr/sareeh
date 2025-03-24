@@ -647,7 +647,7 @@ function check_and_get_suspended_sale(sale_id , is_return ) {
            }else{
             cart.extra.return_sale_id = null;
            }
-           console.log(cart);
+
   
           
 
@@ -1183,6 +1183,35 @@ $(document).on('click', '.edit_saved_sale', function(event) {
 });
 
 $(document).on("click", '#cancel_sale_button', function(event) {
+    event.preventDefault();
+
+    bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_clear")); ?>, function(result) {
+        if (result) {
+            cart = {};
+            cart['items'] = [];
+            cart['payments'] = [];
+            cart['customer'] = {};
+            cart['extra'] = {};
+            cart['custom_fields'] = {};
+            cart['taxes'] = [];
+            current_edit_index = null;
+            
+            $('#delete_sale_button').removeClass('d-flex');
+            $('#delete_sale_button').attr('style' , 'display: none !important');
+            $('#cancel_sale_button').attr('style' , 'display: none !important');
+            $('#clear_sale_button').removeAttr('style' );
+            var dropdownItem = $('.dropdown-menu a[data-mode="sale"]');
+            
+            // Simulate a click or trigger any event you want
+            dropdownItem.trigger('click');
+             $.post('<?php echo site_url("sales/cancel_sale"); ?>', 'json');
+
+            renderUi();
+        }
+    });
+});
+
+$(document).on("click", '#clear_sale_button', function(event) {
     event.preventDefault();
 
     bootbox.confirm(<?php echo json_encode(lang("are_you_sure_want_to_clear")); ?>, function(result) {
@@ -1976,7 +2005,7 @@ function renderUi() {
 
 
     for (var k = 0; k < cart['items'].length; k++) {
-
+      
         var cart_item = cart['items'][k];
         if (cart_item['quantity'] > 0) {
             total_qty = total_qty + parseInt(cart_item['quantity']);
@@ -1989,7 +2018,6 @@ function renderUi() {
 
         cart['items'][k]['index'] = k;
 
-        cart['items'][k]['index'] = k;
 
         // console.log("length " , cart_item['selected_rule'].length);
         if (typeof cart_item['selected_rule'] != 'undefined' && typeof cart_item['selected_rule'].length ==
@@ -2125,9 +2153,7 @@ function renderUi() {
 
                 if (typeof index !== 'undefined') {
 
-                    cart['items'][index].previous_tier_id = (cart['items'][index][field]) ? cart['items'][
-                        index
-                    ][field] : 0;
+                    cart['items'][index].previous_tier_id = (cart['items'][index][field]) ? cart['items'][index][field] : 0;
                     cart['items'][index][field] = newValue;
                     cart['items'][index].tier_name = $all_tiers[newValue].text;
                 }
@@ -2186,9 +2212,11 @@ function renderUi() {
                 if (typeof index !== 'undefined') {
                     // console.log(newValue);
                     cart['items'][index][field] = newValue;
-                    cart['items'][index].supplier_name = cart_item['all_data']['source_supplier_data'][
-                        newValue
-                    ].text;
+                    console.log(newValue);
+                    console.log(index);
+                   
+
+                    cart['items'][index].supplier_name = cart['items'][index]['all_data']['source_supplier_data'][newValue].text;
                 }
 
 
@@ -2229,7 +2257,7 @@ function renderUi() {
                 if (typeof index !== 'undefined') {
 
                     cart['items'][index][field] = newValue;
-                    cart['items'][index].quantity_units_name = cart_item['quantity_units'][newValue].text;
+                    cart['items'][index].quantity_units_name = cart['items'][index]['all_data']['quantity_units'][newValue].text;
                 }
 
 
@@ -3651,7 +3679,17 @@ $(document).ready(function() {
 
         $('.Sale-mode').hide();
 
-       
+        <?php if($this->router->method=='change_sale'): ?>
+            cart['extra']['mode'] = 'sale';
+            localStorage.setItem("cart", JSON.stringify(cart));
+        <?php endif; ?>
+    
+
+        if(typeof cart['extra']['mode'] =='undefined'  ) {
+            cart['extra']['mode'] = 'sale';
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
        
 
         // console.log('onload' , cart['extra']['mode']);
@@ -4915,8 +4953,8 @@ $(document).ready(function() {
 <?php if($this->cart->suspended || $this->cart->sale_id || $this->cart->return_sale_id)   : ?>
 
 
-
 check_and_get_suspended_sale('<?php echo ($this->cart->sale_id)? $this->cart->sale_id : $this->cart->return_sale_id; ?>' , '<?php echo ($this->cart->sale_id)? 0 :1 ?>');
+
 <?php endif; ?>
 
 $("#delete_sale_button").click(function() {
@@ -5130,6 +5168,12 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
 
         
 	});
+
+    let url = window.location.pathname;  // Get current path
+let updatedUrl = url.replace("/unsuspend", ""); // Remove "/unsuspend"
+
+// Update the URL without reloading
+history.replaceState(null, "", updatedUrl);
 
 
 </script>

@@ -172,6 +172,7 @@ class Sales extends Secure_area
 	{	
 		
 		
+		// $this->cart->destroy();
 		if (count($this->cart->get_items()) > 0)
 		{
 			$dont_switch_employee = 1;
@@ -6514,6 +6515,22 @@ class Sales extends Secure_area
 		$this->Sale->set_default_register_if_not_set($sale_id);
 		
 		$sale_id = $this->input->post('suspended_sale_id') ? $this->input->post('suspended_sale_id') : $sale_id;
+
+		if($sale_id){
+			$sale_data = get_query_data(" select * from phppos_sales where sale_id =".$sale_id." ");
+			if($sale_data){
+				if(!$sale_data[0]->suspended){
+					$this->cart->destroy();
+					redirect(site_url('sales'));
+				}
+				// if($sale_data->suspened)
+			}
+		}else{
+			$this->cart->destroy();
+			redirect(site_url('sales'));
+		}
+		
+
 		$this->cart->destroy();
 		$this->cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id,'sale', TRUE);
 		// dd($this->cart);
