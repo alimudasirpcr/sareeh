@@ -274,6 +274,8 @@ $(document).ready(function()
 
 var submitting = false;
 
+
+
 function doItemSubmit(form)
 {
 $('#grid-loader').show();
@@ -288,8 +290,22 @@ $('#grid-loader').hide();
 			$('#myModal').modal('hide');
 			if (response.success)
 			{
+				<?php if($is_reload){ ?>
+					window.location.href = '<?php echo site_url('items'); ?>';
+			<?php }else{ ?>
 
-				window.location.href = '<?php echo site_url('items'); ?>';
+					$.ajax({
+						type: "method",
+						url: "<?php echo site_url('sales'); ?>/get_quick_item_data/"+response.item_id+"" ,
+						success: function (response) {
+							localStorage.setItem('new_added_item' ,response);
+							$('.close').trigger('click');
+						
+						}
+					});
+
+			<?php } ?>
+				
 				show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>+' #' + response.person_id);
 			}
 			else

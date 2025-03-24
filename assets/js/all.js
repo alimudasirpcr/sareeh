@@ -3032,11 +3032,13 @@ $(document).ready(function()
 
 	$(document).on('click', '#kt_app_layout_builder_close', function(event)
 	{
+		console.log("yess");
 		$('#kt_drawer_gen_sm').removeClass('drawer-on');
 		$('#kt_drawer_gen_md').removeClass('drawer-on');
 		$('#kt_drawer_gen_lg').removeClass('drawer-on');
 		$('#kt_drawer_gen_xl').removeClass('drawer-on');
 		$('#operationsbox_modal').removeClass('drawer-on');
+		$('#kt_drawer_example_basic_save_as').removeClass('drawer-on');
 		$('#discountbox_modal').removeClass('drawer-on');
 		$('.drawer-overlay').remove();
 		$('body').attr("data-kt-drawer", "off");
@@ -3057,6 +3059,7 @@ $(document).ready(function()
 					$('#kt_drawer_gen_lg').removeClass('drawer-on');
 					$('#kt_drawer_gen_xl').removeClass('drawer-on');
 					$('#operationsbox_modal').removeClass('drawer-on');
+					$('#kt_drawer_example_basic_save_as').removeClass('drawer-on');
 					$('#discountbox_modal').removeClass('drawer-on');
 					$('.drawer-overlay').remove();
 					$('body').attr("data-kt-drawer", "off");
@@ -3069,7 +3072,7 @@ $(document).ready(function()
         }
     });
 
-
+	
 	//end mudasir drawer code 
 
 

@@ -39,10 +39,10 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
+                >
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
                     Pos Builder
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
                         Get Ready To Customize Your Own Pos Interface </small>
@@ -51,10 +51,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
-                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
-                                class="path2"></span></i> </button>
+                        x </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -238,10 +237,10 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
+                >
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
                     Pos Builder
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
                         Get Ready To Customize Your Own Pos Interface </small>
@@ -250,10 +249,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
-                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
-                                class="path2"></span></i> </button>
+                        x </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -290,10 +288,10 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
+                >
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
                     Saved Sales
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
                         Get Ready To Customize Your Own Pos Interface </small>
@@ -302,10 +300,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
-                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
-                                class="path2"></span></i> </button>
+                       x</button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -341,11 +338,10 @@ $this->load->view("partial/offline_header"); ?>
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
-                id="kt_app_layout_builder_header"
-                style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+                id="kt_app_layout_builder_header" >
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-black flex-column m-0">
                     <?php echo lang("save_as") ?>
 
                 </h3>
@@ -353,10 +349,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
-                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
-                                class="path2"></span></i> </button>
+                        x </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -404,18 +399,17 @@ $this->load->view("partial/offline_header"); ?>
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
-                id="kt_app_layout_builder_header"
-                style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+                id="kt_app_layout_builder_header" >
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-black flex-column m-0">
                     <?= lang('advance_details') ?>
                 </h3>
                 <!--end::Card title-->
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
                         id="kt_app_layout_builder_close">
                         x </button>
                 </div>
@@ -896,20 +890,18 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
+                >
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
                     Go To
                 </h3>
                 <!--end::Card title-->
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
-                        id="kt_app_layout_builder_close">
-                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
-                                class="path2"></span></i> </button>
+                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
+                        id="kt_app_layout_builder_close">x</button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -2594,16 +2586,16 @@ $this->load->view("partial/offline_header"); ?>
                 <!--begin::Card header-->
                 <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                     id="kt_app_layout_builder_header"
-                    style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
+                    >
 
                     <!--begin::Card title-->
-                    <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
+                    <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
                         Discount Details </h3>
                     <!--end::Card title-->
 
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar">
-                        <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1 slider_button"
+                        <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
                             id="kt_app_layout_builder_close">
                             x </button>
                     </div>

@@ -7489,6 +7489,16 @@ class Items extends Secure_area implements Idata_controller
 		$data['progression'] 		= 	!empty($progression);
 		$data['quick_edit'] 		= 	!empty($quick_edit);
 
+
+		if(isset($_GET['is_reload']) && $_GET['is_reload']=='no'){ 
+			$data['is_reload']  = false;
+		}else{
+			$data['is_reload']  = true;
+		}
+	
+		
+		
+
 		$this->load->view('items/form_quick', $data);
 	}
 

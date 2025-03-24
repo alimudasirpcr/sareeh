@@ -154,5 +154,7 @@ i.fonticon-content-marketing{
 .bg-unset{
     background: unset !important;
 }
-    
+div#kt_app_layout_builder_header {
+    border-bottom: 1px solid black !important;
+}
 </style>

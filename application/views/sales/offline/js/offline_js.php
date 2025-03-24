@@ -329,6 +329,84 @@ for (var k = 0; k < json.suppliers.length; k++) {
 $('#grid-loader').hide();
 }
 
+setInterval(() => {
+    let newItem = localStorage.getItem('new_added_item');
+
+    if (newItem && newItem !== "null" && newItem !== "undefined" && newItem.trim() !== "") {
+        try {
+            let parsedItem = JSON.parse(newItem); // Parse JSON data
+            if(typeof parsedItem.item !='undefined'){
+                item_quick = parsedItem.item
+
+                var image_src = item_quick.image_src;
+                var has_variations = item_quick.has_variations;
+
+                var prod_image = "";
+                var image_class = "no-image";
+                var item_parent_class = "";
+                if (image_src != '') {
+                    var item_parent_class = "item_parent_class";
+                    var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
+                    var image_class = "has-image";
+                } else {
+                    image_src = '' + SITE_URL + '/assets/css_good/media/placeholder.png';
+                }
+
+            currency_ = "<?php echo get_store_currency(); ?>"
+            price = (item_quick.price ? ' ' + decodeHtml(item_quick
+                .price) + ' ' : '');
+            price_val = (item_quick.price ? decodeHtml(item_quick
+                .price) : '');
+            price_val = price_val.replace(currency_, '');
+
+            price_val = parseFloat(price_val.replace(/,/g, ''));
+
+
+            price_val_reg = (item_quick.regular_price ? decodeHtml(item_quick
+                .regular_price) : '');
+                price_val_reg = parseFloat(price_val_reg.replace(/,/g, ''));
+
+
+                items_list[item_quick.id] = {
+                    permissions: item_quick.permissions,
+                    all_data: item_quick,
+                    name: item_quick.name,
+                    description: item_quick.description,
+                    item_id: item_quick.id,
+                    quantity: 1,
+                    cost_price: item_quick.cost_price,
+                    price: price_val,
+                    orig_price: price_val_reg,
+                    discount_percent: 0,
+                    variations: has_variations,
+                    item_attributes_available: item_quick.item_attributes_available,
+                    quantity_units: item_quick.quantity_units,
+                    modifiers: item_quick.modifiers,
+                    taxes: item_quick.item_taxes,
+                    tax_included: item_quick.tax_included
+                }
+
+
+                item_obj = items_list[item_quick.id];
+                                // console.log(item_obj);
+                                addItem(item_obj);
+                                renderUi();
+
+
+                }
+         
+            // Run your operation using parsed JSON data
+            console.log("New item found:", parsedItem);
+            
+            // Clear the localStorage key after operation
+            localStorage.removeItem('new_added_item');
+        } catch (error) {
+            console.error("Error parsing JSON:", error);
+        }
+    }
+}, 1000); // Runs every 1 second
+
+
 function processCategoriesAndItemsResult(json) {
 
 
@@ -405,8 +483,12 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
         price_val = (json.categories_and_items[k].price ? decodeHtml(json.categories_and_items[k]
             .price) : '');
         price_val = price_val.replace(currency_, '');
+        price_val = parseFloat(price_val.replace(/,/g, ''));
         price_val_reg = (json.categories_and_items[k].regular_price ? decodeHtml(json.categories_and_items[k]
             .regular_price) : '');
+             price_val_reg = parseFloat(price_val_reg.replace(/,/g, ''));
+
+
 
         items_list[json.categories_and_items[k].id] = {
             permissions: json.categories_and_items[k].permissions,
@@ -429,6 +511,12 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
 
         //check_and_get_suspended_sale $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
 
+        if(json.categories_and_items[k].id=='add_item'){
+            $plus_button = '<a class=" position-absolute badge   badge-circle badge-light-primary fs-7 h-15px w-15px  bottom-5 end-5  " href="<?= site_url(); ?>/items/quick_modal?is_reload=no" id="new-person-btn" data-toggle="modal" data-target="#myModalDisableClose">+</a>';
+        }else{
+            $plus_button = '<span class=" position-absolute badge   badge-circle badge-light-primary fs-7 h-15px w-15px  bottom-5 end-5  ">+</span>';
+        }
+
         htm =
             '<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' +
             image_class + ' ' + item_parent_class + ' " data-has-variations="' + has_variations +
@@ -445,7 +533,7 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
             price +
             '</span><div class="d-flex align-items-end flex-stack mb-1"><span class="fw-bold text-left text-gray-800 cursor-pointer  fs-8 d-block mt-1 w-80">' +
             json.categories_and_items[k].name +
-            '</span><!--end::Info--><!--end::Body--><div class="w-20"> <span class=" position-absolute badge   badge-circle badge-light-primary fs-7 h-15px w-15px  bottom-5 end-5  ">+</span></div></div></div><!--end::Card widget 14--></div></div>';
+            '</span><!--end::Info--><!--end::Body--><div class="w-20"> '+$plus_button+'</div></div></div><!--end::Card widget 14--></div></div>';
         $("#category_item_selection_wrapper_new").append(htm);
 
     }
@@ -594,6 +682,7 @@ $('#grid-loader').hide();
 
 
 function close_all_drawers(){
+    $('.drawer').removeClass('drawer-on');
     $('#kt_drawer_gen_sm').removeClass('drawer-on');
     $('#kt_drawer_example_basic').removeClass('drawer-on');
 		$('#kt_drawer_gen_md').removeClass('drawer-on');
@@ -601,6 +690,9 @@ function close_all_drawers(){
 		$('#kt_drawer_gen_xl').removeClass('drawer-on');
 		$('#operationsbox_modal').removeClass('drawer-on');
 		$('#discountbox_modal').removeClass('drawer-on');
+        $('#kt_drawer_example_basic_save_as').removeClass('drawer-on');
+        $('#discountbox_modal_reload').removeClass('drawer-on');
+        
 		$('.drawer-overlay').remove();
 		$('body').attr("data-kt-drawer", "off");
 		$('body').attr("data-kt-drawer-null" ,"off");
@@ -2728,6 +2820,11 @@ $('.xeditable-comment').editable({
         };
     })
 
+    $('.slider_button').click(function() { 
+
+            close_all_drawers();
+    });
+
 }
 
 
@@ -4481,11 +4578,14 @@ $(document).ready(function() {
             // console.log("it has variants");
         } else {
             // console.log(items_list);
-            item_obj = items_list[$(this).data('id')];
-            // console.log(item_obj);
-            addItem(item_obj);
-            renderUi();
-            let lastUpdated = localStorage.getItem('lastUpdated');
+            if($(this).data('id') !='add_item'){
+                item_obj = items_list[$(this).data('id')];
+                // console.log(item_obj);
+                addItem(item_obj);
+                renderUi();
+                let lastUpdated = localStorage.getItem('lastUpdated');
+            }
+         
         }
     });
 
@@ -4574,6 +4674,7 @@ $(document).ready(function() {
 
 
         } else {
+            if($(this).data('id') !='add_item'){
             item_obj = items_list[$(this).data('id')];
             cart = JSON.parse(localStorage.getItem('cart'));
             j = 0;
@@ -4595,7 +4696,7 @@ $(document).ready(function() {
 
 
 
-           
+          
            
             // console.log(item_obj);
             addItem(item_obj);
@@ -4603,6 +4704,7 @@ $(document).ready(function() {
             let lastUpdated = localStorage.getItem('lastUpdated');
             renderUi();
             $('#grid-loader').hide();
+            }
         }
     });
 
@@ -5147,6 +5249,14 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
 		}
 	});
 	$(document).ready(function() {
+
+            
+
+        $('.slider_button').click(function() {
+           
+            close_all_drawers();
+        })
+
 		// Attach a change event listener to the checkbox
 		$('input[name="hide_top_item_details"]').change(function() {
 			// When the state of the checkbox changes, toggle the 'd-none' class

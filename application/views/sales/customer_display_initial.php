@@ -411,7 +411,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 		}
 		$('#cart_amount_due').html(currency_symbol + '' + to_currency_no_money(cart_amount_due));
 
-		setTimeout(customer_display_update, 100);
+		setTimeout(customer_display_update, 1000);
 
 		// $("#customer_display_container").load('<?php echo site_url('sales/customer_display_update/' . $register_id); ?>', function()
 		// {
