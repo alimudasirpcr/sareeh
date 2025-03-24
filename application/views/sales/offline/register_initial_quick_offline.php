@@ -1981,8 +1981,8 @@ $this->load->view("partial/offline_header"); ?>
                     <!--begin: Pic-->
                     <div class="me-1 mb-1 w-50px">
                         <div class="symbol symbol-50px  symbol-fixed position-relative symbol-circle">
-                            <img src="<?= base_url(); ?>assets/img/user.png"
-                                onerror="this.onerror=null; this.src='<?= base_url(); ?>assets/css_good/media/avatars/blank.png';"
+                            <img src="{{customer.avatar}}"
+                                onerror="this.onerror=null; this.src='<?= base_url(); ?>assets/img/user.png';"
                                 alt="image">
 
 

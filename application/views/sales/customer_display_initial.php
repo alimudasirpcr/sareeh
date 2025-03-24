@@ -103,7 +103,7 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 					<!-- Customer Badge when customer is added -->
 					<div class="customer-badge">
 						<div class="avatar">
-							<img src="" onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/css_good/media/avatars/blank.png';" alt="">
+							<img src="" id="customer_avatar"  onerror="this.onerror=null; this.src='<?php echo base_url() ?>assets/img/user.png';" alt="">
 						</div>
 						<div class="details">
 							<span id="customer_name"></span>
@@ -325,6 +325,8 @@ $font_size = $this->agent->is_mobile() && !$this->agent->is_tablet() ? '50%' : '
 		if (typeof cart['customer'] != 'undefined' && typeof cart['customer']['customer_name'] != 'undefined') {
 			$('#customer_name').html(cart['customer']['customer_name']);
 			$('#customer_email').html(cart['customer']['email']);
+			$('#customer_avatar').attr( 'src' , cart['customer']['avatar']);
+			
 			$('#customer_reg').show();
 		} else {
 			$('#customer_name').html('');

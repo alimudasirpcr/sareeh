@@ -1419,6 +1419,7 @@ $("#customer").autocomplete({
         var balance = (ui.item.balance) ? ui.item.balance : 0;
         var internal_notes = (ui.item.internal_notes) ? ui.item.internal_notes : '';
         cart['customer']['person_id'] = person_id;
+        cart['customer']['avatar'] = ui.item.avatar;
         cart['customer']['customer_name'] = customer_name;
         // cart['customer'].['phone_number'] = phone_number;
         cart['customer']['email'] = email;
