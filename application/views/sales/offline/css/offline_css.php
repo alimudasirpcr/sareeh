@@ -166,4 +166,46 @@ div#kt_app_layout_builder_header {
 .table td:first-child, .table th:first-child, .table tr:first-child {
     padding-left: 5px;
 }
+
+
+.dummy-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dummy-image {
+    width: 100%;
+    height: 70px;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f8f8f8 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 8px;
+}
+
+.dummy-text {
+    width: 80%;
+    height: 10px;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f8f8f8 50%, #e0e0e0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    margin: 10px auto;
+    border-radius: 4px;
+}
+
+.dummy-text.short {
+    width: 50%;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
 </style>

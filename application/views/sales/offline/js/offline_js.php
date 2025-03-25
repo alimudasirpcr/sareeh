@@ -275,7 +275,7 @@ for (var k = 0; k < json.categories.length; k++) {
 }
 
 updateBreadcrumbs();
-$('#grid-loader').hide();
+$('#grid-loader2').hide();
 }
 
 function processTagsResult(json) {
@@ -297,7 +297,7 @@ for (var k = 0; k < json.tags.length; k++) {
     $("#category_item_selection").append(tag_item);
 }
 
-$('#grid-loader').hide();
+$('#grid-loader2').hide();
 }
 
 function processSuppliersResult(json) {
@@ -326,7 +326,7 @@ for (var k = 0; k < json.suppliers.length; k++) {
 
     $("#category_item_selection").append(supplier_item);
 }
-$('#grid-loader').hide();
+$('#grid-loader2').hide();
 }
 
 setInterval(() => {
@@ -408,7 +408,6 @@ setInterval(() => {
 
 
 function processCategoriesAndItemsResult(json) {
-
 
 $("#category_item_selection_wrapper_new").html('');
 
@@ -567,6 +566,8 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
     }
 }
 
+
+
 // console.log('items_list' , items_list);
 
 $("#category_item_selection_wrapper .pagination").removeClass('categories').removeClass('tags')
@@ -575,9 +576,27 @@ $("#category_item_selection_wrapper .pagination").removeClass('categories').remo
 $("#category_item_selection_wrapper .pagination").html(json.pagination);
 
 updateBreadcrumbs();
-$('#grid-loader').hide();
+$('#grid-loader2').hide();
 
 }
+
+
+$(document).ready(function () {
+    for (let i = 0; i < 10; i++) { // Adjust the number of placeholders
+    $("#category_item_selection_wrapper_new").append(`
+        <div class="col-sm-4 col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item register-holder dummy-card">
+            <div class="card card-flush bg-light h-xl-100 w-100 ">
+                <div class="card-body text-center pb-5">
+                    <div class="dummy-image"></div>
+                    <div class="dummy-text"></div>
+                    <div class="dummy-text short"></div>
+                </div>
+            </div>
+        </div>
+    `);
+}
+});
+
 
 function processTagItemsResult(json) {
 $("#category_item_selection").html('');
@@ -633,7 +652,7 @@ $("#category_item_selection_wrapper .pagination").removeClass('categories').remo
         "supplierItems").addClass('items');
 $("#category_item_selection_wrapper .pagination").html(json.pagination);
 
-$('#grid-loader').hide();
+$('#grid-loader2').hide();
 }
 
 function processFavoriteItemsResult(json) {
@@ -668,7 +687,7 @@ $("#category_item_selection_wrapper .pagination").removeClass('categories').remo
         "supplierItems").addClass('favorite');
 $("#category_item_selection_wrapper .pagination").html(json.pagination);
 
-$('#grid-loader').hide();
+$('#grid-loader2').hide();
 }
 
 function processSupplierItemsResult(json) {
@@ -704,7 +723,7 @@ $("#category_item_selection_wrapper .pagination").removeClass('categories').remo
         'items').addClass("supplierItems");
 $("#category_item_selection_wrapper .pagination").html(json.pagination);
 
-$('#grid-loader').hide();
+$('#grid-loader2').hide();
 }
 
 
@@ -1690,8 +1709,13 @@ async function getSingleTax(id) {
 
 }
 
+window.onload = function () {
+    setTimeout(function () {
+        getAllTaxes();
+    }, 5000); // 5000ms = 5 seconds
+};
 
-getAllTaxes();
+
 
 function salesBeforeSubmit() {
 
@@ -4076,14 +4100,11 @@ function showNextAttribute(currentIndex, attributeKeys) {
             show_feedback('error', "<?php echo  lang('variation_not_found') ?>" , "<?php echo  lang('error') ?>");
         }
 
-
-       
-      
-       
-
-       
         return;
     }
+    
+    
+    
     const currentAttributeKey = attributeKeys[currentIndex];
     const currentAttribute = attributes[currentAttributeKey];
     const options = currentAttribute.attr_values;
@@ -4091,25 +4112,61 @@ function showNextAttribute(currentIndex, attributeKeys) {
     // console.log('Current options Attributes:',options)
     // console.log('Current currentAttributeKey Attributes:',currentAttributeKey)
     let optionsHtml = ``;
+   
     optionsHtml +=
         `
                 <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
     for (let key in options) {
         var isChecked = '';
+        var $stockHtml = "";
+        var $stock_val = 'Not Set';
         if(typeof selectedAttributes != 'undefined'){
              isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
         }
+
+        if(currentIndex + 1  == attributeKeys.length){
+
+
+                        let resultString_n = '';
+                        $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
+                            resultString_n += selectedValueKey;
+
+                        });
+                        resultString_n += key;
+
+                        let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
+                        resultString_n);
+                        if(matchingVariation){
+                            $stock_val = parseInt(matchingVariation.item_location_quantity);
+                            if($stock_val > 10){
+                                $bg = 'primary';
+                            }else if($stock_val < 10 && $stock_val >0){
+                                $bg = 'warning';
+                            }else{
+                                $bg = 'danger';
+                            }
+                            $stock_val = isNaN( $stock_val) ? "Not Set" :  $stock_val;
+                            $stockHtml = '<span class="badge badge-'+$bg+' badge">'+$stock_val+'</span>';
+                           
+                            
+                        }
+                        //     console.log('matchingVariation last step',matchingVariation)
+
+            }
+
+
         
-        optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+        optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active   ">
+ 
                 <!--begin::Input-->
-                <input class="form-check-input" type="radio" name="attributeOption" id="option-${key}" value="${key}" ${isChecked}>
+                <input class="form-check-input" type="radio" name="attributeOption" id="option-${key}" data-stock="${$stock_val}" value="${key}" ${isChecked}>
                 <!--end::Input-->
 
                 <!--begin::Label-->
                 <span class="d-flex">
                 
                     <span class="ms-4">
-                        <span class="fs-3 fw-bold text-gray-900   mt-3 d-block" for="option-${key}">${options[key].name}</span>
+                        <span class="fs-3 fw-bold text-gray-900   mt-3 d-block" for="option-${key}">${options[key].name}  ${$stockHtml}  </span>
 
                     </span>
                     <!--end::Info-->
@@ -4377,44 +4434,71 @@ $(document).ready(function() {
         }
     });
 
-    function loadTopCategories() {
-        $('#grid-loader').show();
-        $.get('<?php echo site_url("sales/categories"); ?>', function(json) {
-            processCategoriesResult(json);
-            if ($('#category_item_selection li:first-child').data('category_id') == 'top' || $(
-                    '#category_item_selection li:first-child').data('category_id') == 'my_sareeh') {
+    function loadTopCategories(retryCount = 3) {
+    $('#grid-loader2').show();
+    
+    $.get('<?php echo site_url("sales/categories"); ?>', function(json) {
+        processCategoriesResult(json);
+
+        setTimeout(function () {
+            if ($('#category_item_selection li:first-child').data('category_id') == 'top' ||
+                $('#category_item_selection li:first-child').data('category_id') == 'my_sareeh') {
                 $('#category_item_selection li:first-child').trigger('click');
             }
-        }, 'json');
-    }
+        }, 5000); 
+
+    }, 'json').fail(function() {
+        if (retryCount > 0) {
+            console.warn('Failed to load categories. Retrying in 3 seconds...');
+            setTimeout(function () {
+                loadTopCategories(retryCount - 1);
+            }, 3000); // Retry after 3 seconds
+        } else {
+            console.error('Failed to load categories after multiple attempts.');
+            $('#grid-loader2').hide(); // Hide loader on failure
+        }
+    });
+}
 
     function loadTags() {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         $.get('<?php echo site_url("sales/tags"); ?>', function(json) {
             processTagsResult(json);
         }, 'json');
     }
 
     function loadSuppliers() {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         $.get('<?php echo site_url("sales/suppliers"); ?>', function(json) {
             processSuppliersResult(json);
         }, 'json');
     }
 
 
-    function loadCategoriesAndItems(category_id, offset) {
-        $('#grid-loader').show();
+    function loadCategoriesAndItems(category_id, offset, retryCount = 3) {
+        $('#grid-loader2').show();
         current_category_id = category_id;
-        //Get sub categories then items
+
         $.get('<?php echo site_url("sales/categories_and_items"); ?>/' + current_category_id + '/' + offset,
             function(json) {
                 processCategoriesAndItemsResult(json);
-            }, "json");
+                $('#grid-loader2').hide(); // Hide loader when successful
+            }, "json"
+        ).fail(function() {
+            if (retryCount > 0) {
+                console.warn('Failed to load categories and items. Retrying in 3 seconds...');
+                setTimeout(function () {
+                    loadCategoriesAndItems(category_id, offset, retryCount - 1);
+                }, 3000); // Retry after 3 seconds
+            } else {
+                console.error('Failed to load categories and items after multiple attempts.');
+                $('#grid-loader2').hide(); // Hide loader on failure
+            }
+        });
     }
 
     function loadCategoriesAndItemsUrl(category_id, url) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         current_category_id = category_id;
         //Get sub categories then items
         $.get(url, function(json) {
@@ -4423,7 +4507,7 @@ $(document).ready(function() {
     }
 
     function loadTagItems(tag_id, offset) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         current_tag_id = tag_id;
         //Get sub categories then items
         $.get('<?php echo site_url("sales/tag_items"); ?>/' + tag_id + '/' + offset, function(json) {
@@ -4432,7 +4516,7 @@ $(document).ready(function() {
     }
 
     function loadTagItemsUrl(tag_id, url) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         current_tag_id = tag_id;
         //Get sub categories then items
         $.get(url, function(json) {
@@ -4441,7 +4525,7 @@ $(document).ready(function() {
     }
 
     function loadFavoriteItems(offset) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         //Get sub categories then items
         $.get('<?php echo site_url("sales/favorite_items"); ?>/' + offset, function(json) {
             processFavoriteItemsResult(json);
@@ -4449,14 +4533,14 @@ $(document).ready(function() {
     }
 
     function loadFavoriteItemsUrl(url) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         $.get(url, function(json) {
             processFavoriteItemsResult(json);
         }, "json");
     }
 
     function loadSupplierItem(supplier_id, offset) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         current_supplier_id = supplier_id;
         //Get sub categories then items
         $.get('<?php echo site_url("sales/supplier_items"); ?>/' + supplier_id + '/' + offset, function(json) {
@@ -4465,7 +4549,7 @@ $(document).ready(function() {
     }
 
     function loadSupplierItemsUrl(supplier_id, url) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         current_supplier_id = supplier_id;
         //Get sub categories then items
         $.get(url, function(json) {
@@ -4476,7 +4560,7 @@ $(document).ready(function() {
 
 
     $(document).on('click', ".pagination.categories a", function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         $.get($(this).attr('href'), function(json) {
             processCategoriesResult(json);
@@ -4485,7 +4569,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', ".pagination.tags a", function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
 
         $.get($(this).attr('href'), function(json) {
@@ -4495,7 +4579,7 @@ $(document).ready(function() {
     });
 
     $(document).on('click', ".pagination.suppliers a", function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
 
         $.get($(this).attr('href'), function(json) {
@@ -4505,25 +4589,25 @@ $(document).ready(function() {
     });
 
     $(document).on('click', ".pagination.categoriesAndItems a", function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadCategoriesAndItemsUrl(current_category_id, $(this).attr('href'));
     });
 
     $(document).on('click', ".pagination.items a", function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadTagItemsUrl(current_tag_id, $(this).attr('href'));
     });
 
     $(document).on('click', ".pagination.favorite a", function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadFavoriteItemsUrl($(this).attr('href'));
     });
 
     $(document).on('click', ".pagination.supplierItems a", function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadSupplierItemsUrl(current_supplier_id, $(this).attr('href'));
     });
@@ -4613,7 +4697,7 @@ $(document).ready(function() {
 
 
         // console.log("clicked");
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         
         if ($(event.target).closest('a').length) {
@@ -4674,6 +4758,14 @@ $(document).ready(function() {
             alert('Please select an option');
             return;
         }
+        attr_stock = $('input[name="attributeOption"]:checked').data('stock');
+        if(attr_stock !='Not Set'){
+            if(  parseInt(attr_stock) <= 0   &&  item_obj.all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold =='1' ){
+                show_feedback('error', "<?= lang('sales_unable_to_add_item_out_of_stock');  ?>",
+                    "<?php echo  lang('error') ?>");
+                return false;
+            }
+        }
 
         currentAttributeKey = attributeKeys[currentIndex];
         if (!selectedAttributes) {
@@ -4721,7 +4813,7 @@ $(document).ready(function() {
     });
     $('#category_item_selection_wrapper_new').on('click', '.category_item.item', function(event) {
         // console.log("clicked");
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
 
        
@@ -4779,7 +4871,7 @@ $(document).ready(function() {
             localStorage.setItem('is_cart_oc_updated', 0);
             let lastUpdated = localStorage.getItem('lastUpdated');
             renderUi();
-            $('#grid-loader').hide();
+            $('#grid-loader2').hide();
             }
         }
     });
@@ -4789,7 +4881,7 @@ $(document).ready(function() {
 
 
     $("#category_item_selection_wrapper").on('click', '#back_to_categories', function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
 
         //Remove element from stack
@@ -4806,19 +4898,19 @@ $(document).ready(function() {
     });
 
     $("#category_item_selection_wrapper").on('click', '#back_to_tags', function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadTags();
     });
 
     $("#category_item_selection_wrapper").on('click', '#back_to_tag', function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadTagItems(current_tag_id, 0);
     });
 
     $("#category_item_selection_wrapper").on('click', '#back_to_category', function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
 
         //Get current last element
@@ -4832,19 +4924,19 @@ $(document).ready(function() {
     });
 
     $("#category_item_selection_wrapper").on('click', '#back_to_favorite', function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadFavoriteItems(0);
     });
 
     $("#category_item_selection_wrapper").on('click', '#back_to_suppliers', function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadSuppliers();
     });
 
     $("#category_item_selection_wrapper").on('click', '#back_to_supplier', function(event) {
-        $('#grid-loader').show();
+        $('#grid-loader2').show();
         event.preventDefault();
         loadSuppliersItems(current_supplier_id, 0);
     });
