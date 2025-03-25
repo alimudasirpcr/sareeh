@@ -511,10 +511,16 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
 
         //check_and_get_suspended_sale $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
         $stock ='';
+        $info ='';
+
+        $info = '<span class=" position-absolute badge  badge-circle badge-light-primary  fs-7 h-18px  w-18px  top-0 start-0 p-1 "><a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/' + json.categories_and_items[k].id +
+            '?redirect=sales" data-target="#kt_drawer_general" data-target-title="View Item" data-target-width="xl" class="register-item-name text-gray-800 text-hover-none " data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Info"><i class="fas fa-info-circle text-white"></i></a></span>';
+
+        
         if(json.categories_and_items[k].id=='add_item'){
-            $plus_button = '<a class=" position-absolute badge   badge-circle badge-light-primary fs-6 h-18px w-18px  bottom-5 end-5  " href="<?= site_url(); ?>/items/quick_modal?is_reload=no" id="new-person-btn" data-toggle="modal" data-target="#myModalDisableClose">+</a>';
+            $plus_button = '<a class=" position-absolute badge   badge-circle badge-primary fs-6 h-18px w-18px  bottom-5 end-5  " href="<?= site_url(); ?>/items/quick_modal?is_reload=no" id="new-person-btn" data-toggle="modal" data-target="#myModalDisableClose">+</a>';
         }else{
-            $plus_button = '<span class=" position-absolute badge   badge-circle badge-light-primary fs-6 h-18px w-18px  bottom-5 end-5  ">+</span>';
+            $plus_button = '<span class=" position-absolute badge   badge-circle badge-primary fs-6 h-18px w-18px  bottom-5 end-5  ">+</span>';
             
             if(json.categories_and_items[k].has_variations){
                 if(typeof json.categories_and_items[k].cur_quantity != 'undefined' ){
@@ -523,9 +529,9 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
             }else{
                 if(typeof json.categories_and_items[k].cur_quantity != 'undefined' ){
                     if( parseInt(json.categories_and_items[k].cur_quantity) <= 0  ){
-                        $stock ='<div class="ribbon-label bg-danger">Out of Stock</div>';
-                    }else if( parseInt(json.categories_and_items[k].cur_quantity) <= 10  ){
                         $stock ='<div class="ribbon-label bg-danger">'+json.categories_and_items[k].cur_quantity+'</div>';
+                    }else if( parseInt(json.categories_and_items[k].cur_quantity) <= 10  ){
+                        $stock ='<div class="ribbon-label bg-warning">'+json.categories_and_items[k].cur_quantity+'</div>';
                     }else{
                         $stock ='<div class="ribbon-label bg-success">'+json.categories_and_items[k].cur_quantity+'</div>';
                     }
@@ -555,7 +561,7 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
             price +
             '</span><div class="d-flex align-items-end flex-stack mb-1"><span class="fw-bold text-left text-gray-800 cursor-pointer  fs-8 d-block mt-1 w-80">' +
             json.categories_and_items[k].name +
-            '</span><!--end::Info--><!--end::Body--><div class="w-20"> '+$plus_button+'</div></div></div><!--end::Card widget 14--></div></div>';
+            '</span><!--end::Info--><!--end::Body--><div class="w-20"> '+$plus_button+'</div></div>'+$info+'</div><!--end::Card widget 14--></div></div>';
         $("#category_item_selection_wrapper_new").append(htm);
 
     }
@@ -4599,6 +4605,10 @@ $(document).ready(function() {
         // console.log("clicked");
         $('#grid-loader').show();
         event.preventDefault();
+        
+        if ($(event.target).closest('a').length) {
+            return; // Simply return without stopping propagation
+        }
 
         var $that = $(this);
         if ($(this).data('has-variations')) {
@@ -4703,6 +4713,14 @@ $(document).ready(function() {
         // console.log("clicked");
         $('#grid-loader').show();
         event.preventDefault();
+
+       
+
+        if ($(event.target).closest('a').length) {
+            return; // Simply return without stopping propagation
+        }
+
+
         edit_variation_index = 'none';
         var $that = $(this);
         if ($(this).data('has-variations')) {
@@ -5216,7 +5234,7 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
     $(document).ready(function() {
 
         function updateHeight() {
-        let baseHeight = 45; // Default height value in vh
+        let baseHeight = 40; // Default height value in vh
         let heightAdjustments = {
             "hide_categories": 15,
             "hide_search_bar": 5,

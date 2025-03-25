@@ -157,4 +157,10 @@ i.fonticon-content-marketing{
 div#kt_app_layout_builder_header {
     border-bottom: 1px solid black !important;
 }
+
+#footers{
+    height: 0px !important;
+    padding: 0px;
+    margin: 0px;
+}
 </style>

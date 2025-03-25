@@ -10535,9 +10535,9 @@ span.price_of_item {
   display: block;
   margin-left: 5px;
 }
-.badge-light-primary {
+/* .badge-light-primary {
   background-color: var(--kt-primary)  !important;
-}
+} */
 .selected-holder {
   position: relative; /* Needed to position the pseudo-element correctly */
 }
