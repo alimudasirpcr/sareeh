@@ -452,7 +452,7 @@ function get_item_data_row($item,$controller)
 /*
 Gets the html table to manage items.
 */
-function get_suspended_sales_manage_table($items,$controller)
+function get_suspended_sales_manage_table($items,$controller , $is_quick= false)
 {
 	$CI =& get_instance();
 	$CI->load->model('Employee');
@@ -460,19 +460,21 @@ function get_suspended_sales_manage_table($items,$controller)
 	$controller_name=strtolower(get_class($CI));
 	
 	$table='<table class="table table-striped table-hover table-row-dashed data-table" id="dTable">';	
-	$columns_to_display = $CI->Employee->get_suspended_sales_columns_to_display();
-	
+	$columns_to_display = $CI->Employee->get_suspended_sales_columns_to_display($is_quick);
+	if(!$is_quick){
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
-
+	}
 	foreach(array_values($columns_to_display) as $value)
 	{
 		$headers[] = H($value);
 	}
-	
-	$headers[] = array('label' => lang('unsuspend'), 'sort_column' => '');
-	$headers[] = array('label' => lang('sales_receipt'), 'sort_column' => '');
-	$headers[] = array('label' => lang('email_receipt'), 'sort_column' => '');
-	
+	if(!$is_quick){
+		$headers[] = array('label' => lang('unsuspend'), 'sort_column' => '');
+		$headers[] = array('label' => lang('sales_receipt'), 'sort_column' => '');
+		$headers[] = array('label' => lang('email_receipt'), 'sort_column' => '');
+		
+	}
+
 	if ($CI->Employee->has_module_action_permission('sales', 'delete_suspended_sale', $CI->Employee->get_logged_in_employee_info()->person_id)){
 		$headers[] = array('label' => lang('delete'), 'sort_column' => '');
 	}
@@ -484,7 +486,7 @@ function get_suspended_sales_manage_table($items,$controller)
 		$count++;
 		$label = $header['label'];
 		$sort_col = $header['sort_column'];
-		if ($count == 1)
+		if ($count == 1 && !$is_quick) 
 		{
 			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
 		}
@@ -498,17 +500,30 @@ function get_suspended_sales_manage_table($items,$controller)
 		}
 	}
 	$table.='</tr></thead><tbody>';
-	$table.=get_suspended_sales_manage_table_data_rows($items,$controller);
+	$table.=get_suspended_sales_manage_table_data_rows($items,$controller , $is_quick);
 	$table.='</tbody></table>';
 
-	$number_per_page = $CI->config->item('number_of_items_per_page') ? (int)$CI->config->item('number_of_items_per_page') : 20;
-	$dropdown_values = [10, $number_per_page, 25, 50, 100];
-	asort($dropdown_values);
-	
-	array_push($dropdown_values, -1);
-	$dropdown_values = array_values(array_unique($dropdown_values));
+	if($is_quick){
+		$number_per_page = 5;
+		$dropdown_values = [$number_per_page, 10,  25, 50, 100];
+		asort($dropdown_values);
+		
+		array_push($dropdown_values, -1);
+		$dropdown_values = array_values(array_unique($dropdown_values));
 
-	$dropdown_option = [10, $number_per_page, 25, 50, 100];
+		$dropdown_option = [ $number_per_page, 10,  25, 50, 100];
+	}else{
+		$number_per_page = $CI->config->item('number_of_items_per_page') ? (int)$CI->config->item('number_of_items_per_page') : 20;
+		$dropdown_values = [10, $number_per_page, 25, 50, 100];
+		asort($dropdown_values);
+		
+		array_push($dropdown_values, -1);
+		$dropdown_values = array_values(array_unique($dropdown_values));
+
+		$dropdown_option = [10, $number_per_page, 25, 50, 100];
+	}
+	
+	
 	asort($dropdown_option);
 	array_push($dropdown_option, "All");
 	$dropdown_option = array_values(array_unique($dropdown_option));
@@ -535,7 +550,7 @@ function get_suspended_sales_manage_table($items,$controller)
 /*
 Gets the html data rows for the items.
 */
-function get_suspended_sales_manage_table_data_rows($items,$controller)
+function get_suspended_sales_manage_table_data_rows($items,$controller , $is_quick = false)
 {
 	$CI =& get_instance();
 	
@@ -545,7 +560,7 @@ function get_suspended_sales_manage_table_data_rows($items,$controller)
 	$items = json_decode(json_encode($items));
 	foreach($items as $item)
 	{
-		$table_data_rows.=get_suspended_sales_data_row($item,$controller);
+		$table_data_rows.=get_suspended_sales_data_row($item,$controller , $is_quick);
 	}
 	/*
 	if(empty($items))
@@ -557,7 +572,7 @@ function get_suspended_sales_manage_table_data_rows($items,$controller)
 	return $table_data_rows;
 }
 
-function get_suspended_sales_data_row($item,$controller)
+function get_suspended_sales_data_row($item,$controller , $is_quick = false)
 {
 	$CI =& get_instance();
 	$CI->load->model('Customer');
@@ -568,10 +583,12 @@ function get_suspended_sales_data_row($item,$controller)
 
 
 	$table_data_row='<tr>';
-
-		$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='item_$item->sale_id' value='".$item->sale_id."'/><label for='item_$item->sale_id'><span></span></label></td>";
-							
-		$displayable_columns = $CI->Employee->get_suspended_sales_columns_to_display();
+		if(!$is_quick){
+			$table_data_row.="<td class='form-check form-check-sm form-check-custom form-check-solid'><input  class='form-check-input' type='checkbox' id='item_$item->sale_id' value='".$item->sale_id."'/><label for='item_$item->sale_id'><span></span></label></td>";
+		
+		}
+						
+		$displayable_columns = $CI->Employee->get_suspended_sales_columns_to_display($is_quick);
 		$CI->load->helper('text');
 		$CI->load->helper('date');
 		$CI->load->helper('currency');
@@ -641,40 +658,47 @@ function get_suspended_sales_data_row($item,$controller)
 		}
 		
 		$table_data_row.='<td>'; 
-		
-		if ($CI->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $CI->Employee->get_logged_in_employee_info()->person_id))
-		{
-			$table_data_row.= form_open('sales/unsuspend');
-			$table_data_row.= form_hidden('suspended_sale_id', $item->sale_id);
-			
-			$table_data_row.='<input type="submit" data-sale_id="'.$item->sale_id.'" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
-			$table_data_row.= form_close();
-		}
-		$table_data_row.='</td>';
-		
-		$table_data_row.='<td>';
-			$table_data_row.= form_open('sales/receipt/'.$item->sale_id, array('method'=>'get', 'class' => 'form_receipt_suspended_sale'));
-			$table_data_row.='<input type="submit" name="submit" value="'.lang('recp').'" class="btn btn-primary" />';
-			$table_data_row.=form_close();
-		$table_data_row.='</td>';
-		
-		$table_data_row.='<td>';
-		if ($item->email) 
-		{
-			$table_data_row .= form_open('sales/email_receipt/'.$item->sale_id, array('method'=>'get', 'class' => 'form_email_receipt_suspended_sale'));
-				$table_data_row .= '<input type="submit" name="submit" value="'.lang('email').'" class="btn btn-primary" />';
-			$table_data_row .= form_close();
-		}
-		
-		$table_data_row .= '</td>';
-		if ($CI->Employee->has_module_action_permission('sales', 'delete_suspended_sale', $CI->Employee->get_logged_in_employee_info()->person_id)){
-			$table_data_row .= '<td>';
-			 	$table_data_row .=  form_open('sales/delete_suspended_sale', array('class' => 'form_delete_suspended_sale'));
-				$table_data_row .=  form_hidden('suspended_sale_id', $item->sale_id);
-				$table_data_row .= '<input type="submit" name="submitf" value="'.lang('delete').'" id="submit_delete" class="btn btn-danger">';
-				$table_data_row .= form_close();
+
+		if(!$is_quick){
+			if ($CI->Employee->has_module_action_permission('sales', 'edit_suspended_sale', $CI->Employee->get_logged_in_employee_info()->person_id))
+				{
+					$table_data_row.= form_open('sales/unsuspend');
+					$table_data_row.= form_hidden('suspended_sale_id', $item->sale_id);
+					
+					$table_data_row.='<input type="submit" data-sale_id="'.$item->sale_id.'" name="submit" value="'.lang('unsuspend').'" id="submit_unsuspend" class="btn btn-primary submit_unsuspend" />';
+					$table_data_row.= form_close();
+				}
+				$table_data_row.='</td>';
+				
+				$table_data_row.='<td>';
+					$table_data_row.= form_open('sales/receipt/'.$item->sale_id, array('method'=>'get', 'class' => 'form_receipt_suspended_sale'));
+					$table_data_row.='<input type="submit" name="submit" value="'.lang('recp').'" class="btn btn-primary" />';
+					$table_data_row.=form_close();
+				$table_data_row.='</td>';
+				
+				$table_data_row.='<td>';
+				if ($item->email) 
+				{
+					$table_data_row .= form_open('sales/email_receipt/'.$item->sale_id, array('method'=>'get', 'class' => 'form_email_receipt_suspended_sale'));
+						$table_data_row .= '<input type="submit" name="submit" value="'.lang('email').'" class="btn btn-primary" />';
+					$table_data_row .= form_close();
+				}
+				
+				$table_data_row .= '</td>';
+				if ($CI->Employee->has_module_action_permission('sales', 'delete_suspended_sale', $CI->Employee->get_logged_in_employee_info()->person_id)){
+					$table_data_row .= '<td>';
+						$table_data_row .=  form_open('sales/delete_suspended_sale', array('class' => 'form_delete_suspended_sale'));
+						$table_data_row .=  form_hidden('suspended_sale_id', $item->sale_id);
+						$table_data_row .= '<input type="submit" name="submitf" value="'.lang('delete').'" id="submit_delete" class="btn btn-danger">';
+						$table_data_row .= form_close();
+					$table_data_row .= '</td>';
+				}
+		}else{
+			$table_data_row.='<button type="button" class="btn btn-primary unsuspend_quick" data-id="'. $item->sale_id.'">'.lang('unsuspend').'</button>';
 			$table_data_row .= '</td>';
 		}
+		
+		
 	
 	$table_data_row.='</tr>';
 	return $table_data_row;

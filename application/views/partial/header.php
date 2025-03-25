@@ -511,16 +511,16 @@ Thank you for your prompt attention to this matter.
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                style="background-image:url('<?php echo base_url() ?>assets/css_good/media/misc/pattern-4.jpg')">
+                >
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0" id="kt_drawer_general_title_xl">
+                <h3 class="card-title fs-3 fw-bold text-black flex-column m-0" id="kt_drawer_general_title_xl">
                 </h3>
                 <!--end::Card title-->
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                    <button type="button" class="btn btn-sm btn-icon fw-bold text-black fs-2 p-0 w-20px h-20px rounded-1"
                         id="kt_app_layout_builder_close">
                         x </button>
                 </div>

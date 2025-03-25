@@ -1,4 +1,4 @@
-<div class="modal-dialog customer-recent-sales">
+<div class="modal-dialog customer-recent-sales top-0">
 	<div class="modal-content">
 		<div class="modal-header" id="myTabHeader" style="display: block;">
 			
@@ -8,7 +8,10 @@
 			<nav>
         <ul id="myTab" class="nav nav-tabs nav-line-tabs mb-5 fs-6">
 					<li class="active"><a href="#ItemInfo" data-toggle="tab"><?php echo lang('item_info'); ?></a></li>
-          <li class=""><a href="#Pricing" data-toggle="tab"><?php echo lang('pricing'); ?></a></li>
+					<?php if($item_variations) { ?>
+						<li ><a href="#item_variations" data-toggle="tab"><?php echo lang('item_variations'); ?></a></li>
+					<?php } ?>
+          			<li class=""><a href="#Pricing" data-toggle="tab"><?php echo lang('pricing'); ?></a></li>
 					<li class=""><a href="#Inventory" data-toggle="tab"><?php echo lang('inventory'); ?></a></li>
 					<li class=""><a href="#Images" data-toggle="tab"><?php echo lang('images'); ?></a></li>
         </ul>
@@ -33,9 +36,9 @@
 						</div>
 						
 						<table class="table table-bordered table-hover table-striped mt-5">
-							<tr><td width="40%"><?php echo lang('category'); ?></td> <td><?php echo H($category); ?></td></tr>
+							<tr><td  width="40%"><?php echo lang('category'); ?></td> <td><?php echo H($category); ?></td></tr>
 							<?php if($item_info->description) { ?><tr><td width="40%"><?php echo lang('description'); ?></td> <td> <?php echo clean_html($item_info->description); ?></td></tr><?php } ?>
-							<tr><td width="40%"><?php echo lang('item_id'); ?></td> <td><?php echo H($item_info->item_id); ?></td></tr>
+							<tr><td  width="40%"><?php echo lang('item_id'); ?></td> <td><?php echo H($item_info->item_id); ?></td></tr>
 							<?php if($item_info->product_id) { ?><tr><td><?php echo lang('product_id'); ?></td> <td><?php echo H($item_info->product_id); ?></td></tr><?php } ?>
 							<?php if($item_info->item_number) { ?><tr><td><?php echo lang('item_number_expanded'); ?></td> <td><?php echo H($item_info->item_number); ?></td></tr><?php } ?>
 							<?php if (isset($additional_item_numbers) && $additional_item_numbers->num_rows() > 0) {?>
@@ -108,7 +111,9 @@
 						</table>
 						
 					</div>
+					</div>
 					<?php if($item_variations) { ?>
+						<div class="tab-pane " id="item_variations">
 					<div class="card ">
 						<div class="card-header rounded rounded-3 p-5">
 							<div class="panel-title">
@@ -129,8 +134,9 @@
 						</table>
 						
 					</div>
+					</div>
 					<?php } ?>
-				</div>
+				
 				<div class="tab-pane" id="Pricing">
 					<div class="card ">
 						<div class="card-header rounded rounded-3 p-5">

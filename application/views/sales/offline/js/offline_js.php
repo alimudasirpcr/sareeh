@@ -754,6 +754,16 @@ function check_and_get_suspended_sale(sale_id , is_return ) {
                     "<?php echo  lang('error') ?>");
                 return false;
             }
+
+            close_all_drawers();
+
+            $('#delete_sale_button').addClass('d-flex');
+            $('#delete_sale_button').removeAttr('style' );
+            $('#cancel_sale_button').removeAttr('style' );
+            $('#clear_sale_button').attr('style' , 'display: none !important' );
+
+
+            
             console.log(response);
             // console.log('is_return' , is_return);
             cart = response;

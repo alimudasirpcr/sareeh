@@ -163,4 +163,7 @@ div#kt_app_layout_builder_header {
     padding: 0px;
     margin: 0px;
 }
+.table td:first-child, .table th:first-child, .table tr:first-child {
+    padding-left: 5px;
+}
 </style>

@@ -2112,23 +2112,29 @@ class Employee extends Person
 		return $columns_to_display;
 	}
 	
-	function get_suspended_sales_columns_to_display(){
+	function get_suspended_sales_columns_to_display($is_quick = false){
 		$this->load->model('Sale');
 		
-		$all_columns = $this->Sale->get_suspended_sales_displayable_columns();
+		$all_columns = $this->Sale->get_suspended_sales_displayable_columns($is_quick);
 		
 		$columns_to_display = array();
 		
 		$this->load->model('Employee_appconfig');
-		if ($choices = $this->Employee_appconfig->get('suspended_sales_column_prefs'))
-		{
-			$columns_to_display_keys = unserialize($choices);
-		}
-		else
-		{
-			$columns_to_display_keys = $this->Sale->get_suspended_sales_default_columns();
 
+		if($is_quick){
+			$columns_to_display_keys = $this->Sale->get_suspended_sales_default_columns($is_quick);
+		}else{
+			if ($choices = $this->Employee_appconfig->get('suspended_sales_column_prefs'))
+			{
+				$columns_to_display_keys = unserialize($choices);
+			}
+			else
+			{
+				$columns_to_display_keys = $this->Sale->get_suspended_sales_default_columns();
+	
+			}
 		}
+		
 		
 		foreach($columns_to_display_keys as $key)
 		{

@@ -1750,6 +1750,32 @@ $this->load->view("partial/offline_header"); ?>
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
+
+                            <span class=" menu-link ">
+
+                            <a tabindex="-1" class="menu-icon w-100 " href="<?= base_url(); ?>/sales/suspended_quick"
+                    data-target="#kt_drawer_general" data-target-title="Suspended Sales"
+                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
+                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
+                    data-bs-placement="top" title="hold cart"><span class="svg-icon svg-icon-muted svg-icon-2x  ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
+                                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                                    <!-- Cart Icon -->
+                                                    <path d="M6 6h15l-1.68 9H6.75A4.75 4.75 0 0 1 2 10.25v-.5A4.75 4.75 0 0 1 6.75 5H19M6 6H4">
+                                                    </path>
+                                                    <circle cx="9" cy="19" r="1"></circle>
+                                                    <circle cx="18" cy="19" r="1"></circle>
+                                                    <line x1="3" y1="3" x2="21" y2="21"></line>
+                                                </g>
+                                            </svg>
+
+                                        </span></a>
+
+
+                            </span>
+
+
+                         
                             <div class="menu-item" >
                                 <a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
                                     <span class="menu-icon  w-100 ">
@@ -3502,35 +3528,9 @@ $this->load->view("partial/offline_header"); ?>
                 </div>
                 {{/supplier_permission}}
 
-                {{#notval permissions.hide_description_on_sales_and_recv  }}
-                    <div class="col-md-6 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('description'); ?></div>
-                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-                            {{#greaterThanZero permissions.allow_alt_description }}
-                        <a
-                                href="#" id="description_{{index}}" class="xeditable-description  editable-click"
-                                data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
-                                data-name="description" data-value="{{description}}"
-                                
-                                data-title="Discount Percentage">{{description}}</a>
+            
 
-                                {{else}}
-                                <span>{{description}}</span>
-
-                                {{/greaterThanZero}}
-
-                        </div>
-                    </div>
-                {{/notval}}
-
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('category'); ?></div>
-                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-                                {{all_data.category_name}}
-                                                        
-
-                        </div>
-                    </div>
+                    
                     {{#if selected_rule}}
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7">{{selected_rule.name}}</div>
@@ -3617,49 +3617,31 @@ $this->load->view("partial/offline_header"); ?>
                                 {{all_data.id_to_show_on_sale_interface_val}}
                         </div>
                     </div>
+                    {{#notval permissions.hide_description_on_sales_and_recv  }}
+                    <div class="col-md-6 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('description'); ?></div>
+                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
+                            {{#greaterThanZero permissions.allow_alt_description }}
+                        <a
+                                href="#" id="description_{{index}}" class="xeditable-description  editable-click"
+                                data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
+                                data-name="description" data-value="{{description}}"
+                                
+                                data-title="Discount Percentage">{{description}}</a>
 
+                                {{else}}
+                                <span>{{description}}</span>
 
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('stock'); ?></div>
-                        <div class="text-muted fs-7 fw-bol text-black" data-kt-table-widget-4="template_cost">
-                                {{all_data.cur_quantity}}
-                                                        
+                                {{/greaterThanZero}}
 
                         </div>
                     </div>
+                {{/notval}}
 
-                    {{#LessThanZero quantity}}
+                   
 
-                            <div class="col-md-3 mt-3">
-                                <!-- cart items details  damaged not returned  -->
-                                <div class="text-gray-800 fs-7 text-black"><?php echo lang('number_damaged_not_return_to_stock'); ?></div>
-                                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                    <a href="#"
-                                        id="damaged_qty_{{index}}" class="xeditable" data-type="text" data-pk="1"
-                                        data-name="damaged_qty" data-value="{{damaged_qty}}"
-                                        data-index="{{index}}"
-                                        data-title="<?php echo H(lang('number_damaged_not_return_to_stock')); ?>">{{damaged_qty}}</a>
-                                </div>
-                            </div>
-                {{/LessThanZero}}
+              
 
-
-                {{#if all_data.is_series_package}}
-                <div class="col-md-3 mt-3">
-                <!-- cart items details  series   -->
-                <div class="text-gray-800 fs-7"><?php echo lang('series_quantity'); ?></div>
-                <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-                  {{all_data.series_quantity}}</div>
-                </div>
-
-                <div class="col-md-3 mt-3">
-                <!-- cart items details  series days to use  -->
-                <div class="text-gray-800 fs-7"><?php echo lang('series_days_to_use_within'); ?></div>
-                <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-               {{all_data.series_days_to_use_within}}</div>
-                </div>
-
-              {{/if}}
 
 
                 </div>

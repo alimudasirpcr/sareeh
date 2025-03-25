@@ -4056,27 +4056,40 @@ class Sale extends MY_Model
 		
 	}
 	
-	function get_suspended_sales_displayable_columns()
+	function get_suspended_sales_displayable_columns( $is_quick = false )
 	{
-		$return  = array(
-			'sale_id' => array('sort_column' => 'sale_id', 'label' => lang('sales_suspended_sale_id')),
-			'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('date')),
-			'sale_type_name' => array('sort_column' => 'sale_type_name', 'label' => lang('type')),
-			'customer_id' => array('sort_column' => 'customer_id', 'label' => lang('sales_customer')),
-			'phone_number' => array('sort_column' => 'phone_number', 'label' => lang('phone_number')),
-			'email' => array('sort_column' => 'email', 'label' => lang('email')),
-			'items' => array('sort_column' => 'items', 'label' => lang('reports_items')),
-			'sale_total' => array('html' => TRUE,'sort_column' => 'sale_total', 'label' => lang('total'), 'format_function' => 'to_currency'),
-			'amount_paid' => array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('amount_paid'), 'format_function' => 'to_currency'),
-			'last_payment_date' => array('sort_column' => 'last_payment_date', 'label' => lang('last_payment_date')),
-			'amount_due' => array('html' => TRUE,'sort_column' => 'amount_due', 'label' => lang('amount_due'), 'format_function' => 'to_currency'),
-			'comment' => array('sort_column' => 'comment', 'label' => lang('comments')),
-			'sales_person' => array('sort_column' => 'sales_person', 'label' => lang('sales_person')),
-			'employee_name' => array('sort_column' => 'employee_name', 'label' => lang('employee')),
-		);	
+
+		if(!$is_quick){
+			$return  = array(
+				'sale_id' => array('sort_column' => 'sale_id', 'label' => lang('sales_suspended_sale_id')),
+				'sale_time' => array('sort_column' => 'sale_time', 'label' => lang('date')),
+				'sale_type_name' => array('sort_column' => 'sale_type_name', 'label' => lang('type')),
+				'customer_id' => array('sort_column' => 'customer_id', 'label' => lang('sales_customer')),
+				'phone_number' => array('sort_column' => 'phone_number', 'label' => lang('phone_number')),
+				'email' => array('sort_column' => 'email', 'label' => lang('email')),
+				'items' => array('sort_column' => 'items', 'label' => lang('reports_items')),
+				'sale_total' => array('html' => TRUE,'sort_column' => 'sale_total', 'label' => lang('total'), 'format_function' => 'to_currency'),
+				'amount_paid' => array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('amount_paid'), 'format_function' => 'to_currency'),
+				'last_payment_date' => array('sort_column' => 'last_payment_date', 'label' => lang('last_payment_date')),
+				'amount_due' => array('html' => TRUE,'sort_column' => 'amount_due', 'label' => lang('amount_due'), 'format_function' => 'to_currency'),
+				'comment' => array('sort_column' => 'comment', 'label' => lang('comments')),
+				'sales_person' => array('sort_column' => 'sales_person', 'label' => lang('sales_person')),
+				'employee_name' => array('sort_column' => 'employee_name', 'label' => lang('employee')),
+			);	
+		}else{
+			$return  = array(
+				'sale_id' => array('sort_column' => 'sale_id', 'label' => lang('sales_suspended_sale_id')),
+			
+				'sale_type_name' => array('sort_column' => 'sale_type_name', 'label' => lang('type')),
+				'sale_total' => array('html' => TRUE,'sort_column' => 'sale_total', 'label' => lang('total'), 'format_function' => 'to_currency'),
+				'amount_paid' => array('html' => TRUE,'sort_column' => 'amount_paid', 'label' => lang('amount_paid'), 'format_function' => 'to_currency'),
+				'amount_due' => array('html' => TRUE,'sort_column' => 'amount_due', 'label' => lang('amount_due'), 'format_function' => 'to_currency'),
+			);	
+		}
 		
 		
-		if ($this->uri->segment(2) == 'work_orders')
+		
+		if ($this->uri->segment(2) == 'work_orders' && !$is_quick)
 		{
 			$this->load->helper('work_order');
 			$return['sale_type_name']['format_function'] = 'work_order_status_badge';
@@ -4159,9 +4172,14 @@ class Sale extends MY_Model
 		return $return;
 			
 	}
-	function get_suspended_sales_default_columns()
+	function get_suspended_sales_default_columns($is_quick = false)
 	{
-		return array('sale_id','sale_time','sale_type_name','customer_id','items','sale_total','amount_paid','last_payment_date','amount_due','comment');
+		if($is_quick){
+			return array('sale_id','sale_time','sale_type_name','sale_total','amount_paid','last_payment_date','amount_due');
+		}else{
+			return array('sale_id','sale_time','sale_type_name','customer_id','items','sale_total','amount_paid','last_payment_date','amount_due','comment');
+		}
+		
 	}
 	function get_list_sales_default_columns()
 	{
