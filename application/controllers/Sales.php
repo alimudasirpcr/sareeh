@@ -717,13 +717,13 @@ class Sales extends Secure_area
 							if (isset($item_info->variation_id)) {
 								$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, $employee_location_id, true , 0);
 
-								$cur_quantity = $item_variation_location_info->quantity;
+								$cur_quantity = (int)$item_variation_location_info->quantity;
 							} else {
 								$item_location_info = $this->Item_location->get_info($item_info->item_id, $employee_location_id, false , 0);
 
-								$cur_quantity = $item_location_info->quantity;
+								$cur_quantity =(int)$item_location_info->quantity;
 							}
-								$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+								$item_location_quantity = (int)$this->Item_location->get_location_quantity($item_info->item_id);
 
 							$item_location_info  = (array) $item_location_info;
 							$item_tier_row= [];
@@ -6890,13 +6890,13 @@ class Sales extends Secure_area
 		if (isset($item_info->variation_id)) {
 			$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, $employee_location_id, true , 0);
 
-			$cur_quantity = $item_variation_location_info->quantity;
+			$cur_quantity =(int) $item_variation_location_info->quantity;
 		} else {
 			$item_location_info = $this->Item_location->get_info($item_info->item_id, $employee_location_id, false , 0);
 
-			$cur_quantity = $item_location_info->quantity;
+			$cur_quantity = (int)$item_location_info->quantity;
 		}
-			$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+			$item_location_quantity =(int) $this->Item_location->get_location_quantity($item_info->item_id);
 
 		$item_location_info  = (array) $item_location_info;
 		$item_tier_row= [];
@@ -7256,16 +7256,18 @@ class Sales extends Secure_area
 			$cur_quantity=0;
 			$item_variation_location_info = [];
 			$item_location_info =[] ;
+			
+		
 			if (isset($item_info->variation_id)) {
-				$item_variation_location_info = $this->Item_variation_location->get_info($item_info->variation_id, $employee_location_id, true , 0);
+				$item_location_quantity = $CI->Item_variation_location->get_location_quantity($item_info->variation_id);
 
-				$cur_quantity = $item_variation_location_info->quantity;
+				$cur_quantity =(int) $item_location_quantity;
 			} else {
 				$item_location_info = $this->Item_location->get_info($item_info->item_id, $employee_location_id, false , 0);
-
-				$cur_quantity = $item_location_info->quantity;
+				$item_location_quantity = (int) $this->Item_location->get_location_quantity($item_info->item_id);
+				$cur_quantity =(int) $item_location_quantity;
 			}
-				$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
+				
 
 			$item_location_info  = (array) $item_location_info;
 			$item_tier_row= [];

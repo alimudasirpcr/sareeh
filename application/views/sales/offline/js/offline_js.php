@@ -510,12 +510,34 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
         }
 
         //check_and_get_suspended_sale $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
-
+        $stock ='';
         if(json.categories_and_items[k].id=='add_item'){
-            $plus_button = '<a class=" position-absolute badge   badge-circle badge-light-primary fs-7 h-15px w-15px  bottom-5 end-5  " href="<?= site_url(); ?>/items/quick_modal?is_reload=no" id="new-person-btn" data-toggle="modal" data-target="#myModalDisableClose">+</a>';
+            $plus_button = '<a class=" position-absolute badge   badge-circle badge-light-primary fs-6 h-18px w-18px  bottom-5 end-5  " href="<?= site_url(); ?>/items/quick_modal?is_reload=no" id="new-person-btn" data-toggle="modal" data-target="#myModalDisableClose">+</a>';
         }else{
-            $plus_button = '<span class=" position-absolute badge   badge-circle badge-light-primary fs-7 h-15px w-15px  bottom-5 end-5  ">+</span>';
+            $plus_button = '<span class=" position-absolute badge   badge-circle badge-light-primary fs-6 h-18px w-18px  bottom-5 end-5  ">+</span>';
+            
+            if(json.categories_and_items[k].has_variations){
+                if(typeof json.categories_and_items[k].cur_quantity != 'undefined' ){
+                    $stock ='<div class="ribbon-label bg-success"><i class="fa fa-layer-group text-white"></i></div>';
+                }
+            }else{
+                if(typeof json.categories_and_items[k].cur_quantity != 'undefined' ){
+                    if( parseInt(json.categories_and_items[k].cur_quantity) <= 0  ){
+                        $stock ='<div class="ribbon-label bg-danger">Out of Stock</div>';
+                    }else if( parseInt(json.categories_and_items[k].cur_quantity) <= 10  ){
+                        $stock ='<div class="ribbon-label bg-danger">'+json.categories_and_items[k].cur_quantity+'</div>';
+                    }else{
+                        $stock ='<div class="ribbon-label bg-success">'+json.categories_and_items[k].cur_quantity+'</div>';
+                    }
+
+                    
+                }
+            }
+            
+            
+           
         }
+        
 
         htm =
             '<div class="col-sm-4  col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item  register-holder ' +
@@ -527,9 +549,9 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
             .override_default_tax + '" data-tax_included="' + json.categories_and_items[k]
             .tax_included + '"   data-name="' + json.categories_and_items[k].name + '"  data-price="' +
             price_val + '" data-id="' + json.categories_and_items[k].id +
-            '" "><div class="card card-flush bg-light h-xl-100"><!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 70px;background-image:url(' +
+            '" "><div class="card card-flush bg-light h-xl-100 ribbon  ribbon ribbon-top ribbon-clip "> '+$stock+' <!--begin::Body--><div class="card-body text-center pb-5"><!--begin::Overlay--><div class="d-block overlay" ><!--begin::Image--><div class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded mb-7" style="height: 70px;background-image:url(' +
             image_src +
-            ')"></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span   class="position-absolute symbol-badge badge  badge-light top-55 fs-9 end-0 price_of_item m ">' +
+            ')"></div><!--end::Image--><!--begin::Action--><div class="overlay-layer card-rounded bg-dark bg-opacity-25"><i class="bi  fs-2x text-white"></i></div><!--end::Action--></div><!--end::Overlay--><!--begin::Info--><span   class="position-absolute symbol-badge badge  badge-light top-55 fs-9 end-0 price_of_item  ">' +
             price +
             '</span><div class="d-flex align-items-end flex-stack mb-1"><span class="fw-bold text-left text-gray-800 cursor-pointer  fs-8 d-block mt-1 w-80">' +
             json.categories_and_items[k].name +
@@ -915,7 +937,7 @@ function check_allow_added(cart, itemIndex, $type, val) {
         
        
      
-        if (cart.items[parseInt(itemIndex)].all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold) {
+        if (cart.items[parseInt(itemIndex)].all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold =='1') {
 
 
             $cart_mode = (cart['extra']['mode'])? cart['extra']['mode'] : 'sale'; /// this need to be set
@@ -2636,6 +2658,11 @@ $('.xeditable-comment').editable({
         $(".menu:visible").each(function () {
             let menu = $(this);
             let button = menu.prev(".btn[data-kt-menu-trigger='custom']");
+                    // Check if button exists
+            if (button.length === 0) {
+                return; // Skip iteration if no button found
+            }
+
             let buttonOffset = button.offset();
             let buttonHeight = button.outerHeight();
             let buttonWidth = button.outerWidth();
@@ -4580,7 +4607,28 @@ $(document).ready(function() {
             // console.log(items_list);
             if($(this).data('id') !='add_item'){
                 item_obj = items_list[$(this).data('id')];
-                // console.log(item_obj);
+
+
+                cart = JSON.parse(localStorage.getItem('cart'));
+            j = 0;
+            if(  parseInt(item_obj.all_data.item_location_quantity) <= 0   &&  item_obj.all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold =='1' ){
+                show_feedback('error', "<?= lang('sales_unable_to_add_item_out_of_stock');  ?>",
+                    "<?php echo  lang('error') ?>");
+                return false;
+            }
+            for (let item of cart.items) {
+
+                    if (item.item_id === item_obj.item_id){
+                        if (!check_allow_added(cart, j , 'quantity', 1) ) {
+                            return false;
+                        }
+                    }
+
+                    j++;
+            }
+
+
+
                 addItem(item_obj);
                 renderUi();
                 let lastUpdated = localStorage.getItem('lastUpdated');
@@ -4678,7 +4726,7 @@ $(document).ready(function() {
             item_obj = items_list[$(this).data('id')];
             cart = JSON.parse(localStorage.getItem('cart'));
             j = 0;
-            if(  parseInt(item_obj.all_data.item_location_quantity) ==0   &&  item_obj.all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold ){
+            if(  parseInt(item_obj.all_data.item_location_quantity) <= 0   &&  item_obj.all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold  =='1' ){
                 show_feedback('error', "<?= lang('sales_unable_to_add_item_out_of_stock');  ?>",
                     "<?php echo  lang('error') ?>");
                 return false;
