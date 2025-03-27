@@ -156,19 +156,85 @@ class Item extends MY_Model
 		return $return;
 	}
 	
-	function get_all_offline($limit=100,$offset=0)
+	function get_all_offline($limit=100,$offset=0 , $hide_out_of_stock_grid = FALSE, $show_hidden=FALSE)
 	{				
-		$items_table = $this->db->dbprefix('items');
-		$item_kits_table = $this->db->dbprefix('item_kits');
-		$categories_table = $this->db->dbprefix('categories');
+					save_query();
+					$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
+					
+					$items_table = $this->db->dbprefix('items');
+					$item_kits_table = $this->db->dbprefix('item_kits');
+					$item_images_table = $this->db->dbprefix('item_images');
+					$location_ban_item_table = $this->db->dbprefix('location_ban_items');
+					$location_ban_item_kit_table = $this->db->dbprefix('location_ban_item_kits');
 
-		$item_images_table = $this->db->dbprefix('item_images');
-		$query = "(SELECT  phppos_items.tax_included, phppos_items.override_default_tax,  phppos_items.category_id, phppos_items.item_id, phppos_items.unit_price, phppos_items.promo_price,phppos_items.start_date,phppos_items.end_date, quantity, phppos_items.name as name, phppos_categories.name as category, description, item_number,product_id,tax_included ,  COALESCE(phppos_items.main_image_id,$item_images_table.image_id) as image_id FROM $items_table   LEFT JOIN $item_images_table on ($items_table.item_id = $item_images_table.item_id) LEFT JOIN $categories_table ON phppos_items.category_id = phppos_categories.id LEFT JOIN phppos_location_items ON phppos_items.item_id = phppos_location_items.item_id and phppos_location_items.location_id=1
-		WHERE phppos_items.deleted = 0 and system_item=0) UNION ALL (SELECT phppos_item_kits.tax_included, phppos_item_kits.override_default_tax, phppos_item_kits.category_id, CONCAT('KIT ',item_kit_id), unit_price,NULL as promo_price,NULL as start_date, NULL as end_date,0 as quantity, phppos_item_kits.name as name,phppos_categories.name as category, description, item_kit_number,product_id,tax_included , 'img' as image_id FROM $item_kits_table  LEFT JOIN $categories_table ON phppos_item_kits.category_id = phppos_categories.id 
-		WHERE phppos_item_kits.deleted = 0) LIMIT $limit OFFSET $offset";
+					$location_ban_item_query_left_join = " LEFT JOIN $location_ban_item_table ON( $items_table.item_id = $location_ban_item_table.item_id and $location_ban_item_table.location_id = $location_id) ";
+					$location_ban_item_query_where = " and $location_ban_item_table.item_id is NULL ";
+					$location_ban_item_kit_query_left_join = " LEFT JOIN $location_ban_item_kit_table ON( $item_kits_table.item_kit_id = $location_ban_item_kit_table.item_kit_id and $location_ban_item_kit_table.location_id = $location_id) ";
+					$location_ban_item_kit_query_where = " and $location_ban_item_kit_table.item_kit_id is NULL ";
 
-		
-		return $this->db->query($query);
+
+				
+
+					
+					if (!$hide_out_of_stock_grid)
+					{
+						$result = $this->db->query("
+						(
+							SELECT 
+								$items_table.item_id, tax_included, override_default_tax, unit_price, name, size, COALESCE(phppos_items.main_image_id,$item_images_table.image_id) as image_id 
+							FROM 
+								$items_table LEFT JOIN $item_images_table on ($items_table.item_id = $item_images_table.item_id) $location_ban_item_query_left_join
+							WHERE 
+								item_inactive = 0  AND item_status =1  and deleted = 0 and system_item = 0 
+								and $items_table.item_id NOT IN 
+								( 
+									SELECT item_id FROM phppos_grid_hidden_items WHERE location_id=$location_id
+								) 
+								$location_ban_item_query_where 
+								GROUP BY $items_table.item_id ORDER BY name
+						) 
+						UNION ALL
+						(
+							SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), tax_included, override_default_tax, unit_price, name, '', main_image_id as image_id
+							FROM $item_kits_table $location_ban_item_kit_query_left_join
+							WHERE 
+								item_kit_inactive = 0 and deleted = 0 $location_ban_item_kit_query_where 
+								and $item_kits_table.item_kit_id NOT IN 
+								(
+									SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id=$location_id
+								) 
+								ORDER BY name
+						) ORDER BY name LIMIT $offset, $limit");
+					}
+					else
+					{
+						$location_items_table = $this->db->dbprefix('location_items ');
+						$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
+						$result = $this->db->query("
+						(
+							SELECT $items_table.item_id, $items_table.unit_price, tax_included, override_default_tax, name,size, COALESCE( $items_table.main_image_id,$item_images_table.image_id) as image_id 
+							FROM $items_table 
+								LEFT JOIN $item_images_table ON( $items_table.item_id =  $item_images_table.image_id) 
+								$location_ban_item_query_left_join 
+								LEFT JOIN $location_items_table as li ON $items_table.item_id = li.item_id and li.location_id = $current_location
+							WHERE 
+								item_inactive = 0  AND item_status = 1 and (quantity > 0 or quantity IS NULL or is_service = 1) and deleted = 0 and system_item = 0 $location_ban_item_query_where and $items_table.item_id NOT IN (SELECT item_id FROM phppos_grid_hidden_items WHERE location_id=$location_id) 
+								
+							GROUP BY item_id ORDER BY name
+						) 
+						UNION ALL 
+						(
+							SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), unit_price, tax_included, override_default_tax, name, '', main_image_id as image_id 
+							FROM $item_kits_table $location_ban_item_kit_query_left_join
+							WHERE 
+								item_kit_inactive = 0 and deleted = 0 $location_ban_item_kit_query_where  
+								and $item_kits_table.item_kit_id NOT IN (SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id=$location_id) 
+							ORDER BY name
+						) ORDER BY name LIMIT $offset, $limit");
+					}
+				
+
+		return $result;
 
 
 

@@ -208,4 +208,11 @@ div#kt_app_layout_builder_header {
         background-position: -200% 0;
     }
 }
+
+.additional_suspend_button{
+    border-radius: 5px;
+    margin: 4px;
+    cursor: pointer;
+    align-self: center;
+}
 </style>

@@ -1,5 +1,15 @@
 importScripts('pouchdb.min.js');
 importScripts('pouchdb.find.js');
+
+function decodeHtml(html) {
+    return html.replace(/&lt;/g, "<")
+               .replace(/&gt;/g, ">")
+               .replace(/&amp;/g, "&")
+               .replace(/&quot;/g, '"')
+               .replace(/&#039;/g, "'");
+}
+
+
 try
 {
 	var customer_limit = 100;
@@ -92,6 +102,28 @@ try
 				}
 			}
 		});	
+
+		db_settings.get('items_sync_last_run_time',async function (error, doc) 
+		{
+			
+			if (error) 
+			{
+				await db_settings.put({'_id':'items_sync_last_run_time','value': 0 });
+				loadItemsOffline();
+			} 
+			else 
+			{
+				var last_run = doc.value;
+				var time_since_last_run_in_minutes = Math.floor((Math.abs(Date.now() - last_run)/1000)/60);
+			
+				if (time_since_last_run_in_minutes >=one_day_in_minutes)
+				{
+					loadItemsOffline();
+				}
+			}
+		});	
+
+
 		db_settings.get('taxes_sync_last_run_time',async function (error, doc) 
 		{
 			if (error) 
@@ -110,29 +142,12 @@ try
 				}
 			}
 		});	
-		db_settings.get('items_sync_last_run_time',async function (error, doc) 
-		{
-			if (error) 
-			{
-				await db_settings.put({'_id':'items_sync_last_run_time','value': 0 });
-				loadItemsOffline();
-			} 
-			else 
-			{
-				var last_run = doc.value;
-				var time_since_last_run_in_minutes = Math.floor((Math.abs(Date.now() - last_run)/1000)/60);
-			
-				if (time_since_last_run_in_minutes >=one_day_in_minutes)
-				{
-					loadItemsOffline();
-				}
-			}
-		});	
+		
 	
 	}, false);
 	// loadTaxesOffline();
-	// loadItemsOffline();
-	// loadCategoryOffline();
+	loadItemsOffline();
+	loadCategoryOffline();
 	// loadCustomersOffline();
 	async function loadCustomersOffline(base_url)
 	{
@@ -449,7 +464,7 @@ try
 
 	async function loadTaxesOffline(base_url)
 	{
-
+		
 		console.log('loadTaxesOffline news');
 		try
 		{
@@ -804,10 +819,53 @@ try
 			for(var k=0;k<items.length;k++)
 			{
 				var item = items[k];
-				var new_item = {'_id': item.item_id+"_item",category_id:item.category_id,name:item.name,description:item.description,item_number: item.item_number, product_id:item.product_id,unit_price:item.unit_price,promo_price: item.promo_price,start_date:item.start_date,end_date:item.end_date,category:item.category,quantity:item.quantity,item_id:item.item_id,variations: item.variations,modifiers: item.modifiers, taxes: item.taxes, tax_included: item.tax_included ,  override_default_tax: item.override_default_tax , img_src: item.img_src};
+
+				var image_src = item.image_src;
+				var has_variations = item.has_variations;
+		
+				var prod_image = "";
+				var image_class = "no-image";
+				var item_parent_class = "";
+				if (image_src != '' ) {
+					var item_parent_class = "item_parent_class";
+					var prod_image = '<img class="rounded-3 mb-4 h-auto" src="' + image_src + '" alt="" />';
+					var image_class = "has-image";
+				} else {
+					image_src =  settings.site_url+ + '/assets/css_good/media/placeholder.png';
+				}
+
+				currency_ = item.currency;
+				price = (item.price ? ' ' + decodeHtml(item.price) + ' ' : '');
+				price_val = (item.price ? decodeHtml(item.price) : '');
+				price_val = price_val.replace(currency_, '');
+				price_val = parseFloat(price_val.replace(/,/g, ''));
+				price_val_reg = (item.regular_price ? decodeHtml(item.regular_price) : '');
+					 price_val_reg = parseFloat(price_val_reg.replace(/,/g, ''));
+					 var new_item = {
+						'_id': item.id+"_item",
+						permissions: item.permissions,
+						all_data: item,
+						name: item.name,
+						description: item.description,
+						item_id: item.id,
+						quantity: 1,
+						cost_price: item.cost_price,
+						price: price_val,
+						orig_price: price_val_reg,
+						discount_percent: 0,
+						variations: has_variations,
+						item_attributes_available: item.item_attributes_available,
+						quantity_units: item.quantity_units,
+						modifiers: item.modifiers,
+						taxes: item.item_taxes,
+						tax_included: item.tax_included,
+						image_src:image_src
+					}
+
+				
 				try
 				{
-					var doc = await db_items.get(items[k].item_id+"_item");
+					var doc = await db_items.get(items[k].id+"_item");
 					new_item['_rev'] = doc._rev;
 					await db_items.put(new_item,{force: true});
 				}

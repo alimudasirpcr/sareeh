@@ -318,6 +318,16 @@ $this->load->view("partial/offline_header"); ?>
                     <div id="saved_sales_list">
 
                     </div>
+
+                    <div id="sync_offline_sales" class="pull-right" style="display: none;">
+                            <br />
+                        
+                            <button class="btn btn-primary" id="sync_offline_sales_button"> 
+                                <?php echo lang('sales_sync_offline_sales'); ?> [<span id="number_of_offline_sales"></span>]
+                                <span id="offline_sync_spining" style="display: none" class="glyphicon glyphicon-refresh spinning"></span>    
+                            </button>
+                        
+                        </div>
                 </div>
                 <!--end::Content-->
             </div>
@@ -1800,7 +1810,21 @@ $this->load->view("partial/offline_header"); ?>
                                 </a>
                             </div>
 
-                               
+                            <div class="menu-item" >
+                            <span class=" menu-link  bg-success">
+                                <span id="kt_drawer_completed_sales" class="menu-icon   w-100"
+                                    data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                                    data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
+                                    data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x text-light ">
+                                        <span id="offline_sync_spining"
+                                            class="glyphicon glyphicon-refresh spinning"></span>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </span>
+                            </div>
 
                         </div>
 
@@ -3203,7 +3227,7 @@ $this->load->view("partial/offline_header"); ?>
                         </div>
 
 
-                        
+                       
    
 </script>
 <script id="cart-payment-template" type="text/x-handlebars-template">
@@ -3430,8 +3454,22 @@ $this->load->view("partial/offline_header"); ?>
                     {{/if}}
 
 
-                    <?php
-													if (count($tiers) > 1) { ?>
+                {{#if is_suspended }}
+                    <div class="col-md-3 mt-3">
+                        <div class="text-gray-800 fs-7"><?php echo lang('qty_picked_up'); ?></div>
+                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
+                                href="#" id="discount_{{index}}" class="xeditable-item-quantity-received  editable-click"
+                                data-type="text" data-validate-number="true" data-index="{{index}}"  data-total-qty="{{quantity}}" data-pk="1"
+                                data-name="quantity_received" data-value="{{quantity_received}}"
+                                
+                                data-title="Discount Percentage">{{quantity_received}}</a>
+
+                        </div>
+                    </div>
+                {{/if}}
+
+
+                {{#if all_data.all_tier_info }}
 														<div class="col-md-3 mt-3">
 															<!-- cart items details  tier  -->
 															<div class="text-gray-800 fs-7"><?php echo lang('tier'); ?> </div>
@@ -3454,25 +3492,7 @@ $this->load->view("partial/offline_header"); ?>
 															</div>
 														</div>
 													
-													
-												<?php } ?>
-                                             
-                {{#if is_suspended }}
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('qty_picked_up'); ?></div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
-                                href="#" id="discount_{{index}}" class="xeditable-item-quantity-received  editable-click"
-                                data-type="text" data-validate-number="true" data-index="{{index}}"  data-total-qty="{{quantity}}" data-pk="1"
-                                data-name="quantity_received" data-value="{{quantity_received}}"
-                                
-                                data-title="Discount Percentage">{{quantity_received}}</a>
-
-                        </div>
-                    </div>
-                {{/if}}
-
-
-                
+                                                        {{/if}}
 
                 {{#if quantity_units }}
                     <div class="col-md-3 mt-3">

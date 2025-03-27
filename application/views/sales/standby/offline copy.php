@@ -1,4 +1,3 @@
-
 <?php 
 
 $this->load->view("partial/offline_header"); ?>
@@ -28,7 +27,7 @@ $this->load->view("partial/offline_header"); ?>
 <div id="sales_page_holder">
 
 </div>
-<div class=" register d-flex pos-container" id="main-container">
+<div class=" register d-flex" id="main-container">
 
     <!--begin::View component-->
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
@@ -39,10 +38,10 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                >
+                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
                     Pos Builder
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
                         Get Ready To Customize Your Own Pos Interface </small>
@@ -51,9 +50,10 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
                         id="kt_app_layout_builder_close">
-                        x </button>
+                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
+                                class="path2"></span></i> </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -70,6 +70,7 @@ $this->load->view("partial/offline_header"); ?>
                     <form class="form" method="POST" id="kt_app_layout_builder_form" action="#">
                         <input type="hidden" id="kt_app_layout_builder_action" name="layout-builder[action]">
 
+                        <!--begin::Card body-->
                         <div class="card-body p-0">
 
 
@@ -223,7 +224,8 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                            </div>
+                        </div>
+                        <!--end::Card body-->
                     </form>
                     <!--end::Form-->
                 </div>
@@ -247,10 +249,10 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                >
+                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
                     Pos Builder
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
                         Get Ready To Customize Your Own Pos Interface </small>
@@ -259,9 +261,10 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
                         id="kt_app_layout_builder_close">
-                        x </button>
+                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
+                                class="path2"></span></i> </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -298,10 +301,10 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                >
+                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
                     Saved Sales
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
                         Get Ready To Customize Your Own Pos Interface </small>
@@ -310,9 +313,10 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
                         id="kt_app_layout_builder_close">
-                       x</button>
+                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
+                                class="path2"></span></i> </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -342,26 +346,29 @@ $this->load->view("partial/offline_header"); ?>
 
 
     <!--begin::View component-->
-    <div id="kt_drawer_example_basic_save_as" class="bg-white" data-kt-drawer="true" data-kt-drawer-activate="true"
-        data-kt-drawer-toggle="#kt_drawer_suspend" data-kt-drawer-close="#kt_drawer_example_basic_close"
-        data-kt-drawer-width="500px">
+
+    <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
+        data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_suspend"
+        data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="900px"
+        style="width: 500px !important;">
         <div class="card border-0 shadow-none rounded-0 w-100">
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
-                id="kt_app_layout_builder_header" >
+                id="kt_app_layout_builder_header"
+                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-black flex-column m-0">
-                    <?php echo lang("save_as") ?>
+                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
 
-                </h3>
+                    <?php echo lang('holded_carts'); ?> </h3>
                 <!--end::Card title-->
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
                         id="kt_app_layout_builder_close">
-                        x </button>
+                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
+                                class="path2"></span></i> </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -369,236 +376,22 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card body-->
             <div class="card-body position-relative" id="kt_app_layout_builder_body">
                 <!-- Check Store Config Change Work Order Status -->
-               
 
-                <ul>
-                <li><a href="#" class="additional_suspend_button"
-                            data-suspend-index=""><i
-                                class="ion-arrow-graph-up-right"></i> <?php echo lang('hold') ?></a>
-                    </li>
+                <div class="card card-flush h-lg-50">
 
-                 
-                </ul>
-
-            </div>
-        </div>
-    </div>
-
-    <div id="operationsbox_modal" class="bg-white hidden-print" data-kt-drawer="true" data-kt-drawer-activate="true"
-        data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="700px">
-
-        <div class="card border-0 shadow-none rounded-0 w-100">
-            <!--begin::Card header-->
-            <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
-                id="kt_app_layout_builder_header" >
-
-                <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-black flex-column m-0">
-                    <?= lang('advance_details') ?>
-                </h3>
-                <!--end::Card title-->
-
-                <!--begin::Card toolbar-->
-                <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
-                        id="kt_app_layout_builder_close">
-                        x </button>
-                </div>
-                <!--end::Card toolbar-->
-            </div>
-            <!--end::Card header-->
-            <!--begin::Card body-->
-            <div class="card-body position-relative" id="kt_app_layout_builder_body">
-                <!--begin::Content-->
-                <div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 px-5"
-                    data-kt-scroll="true" data-kt-scroll-height="auto"
-                    data-kt-scroll-wrappers="#kt_app_layout_builder_body"
-                    data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer"
-                    data-kt-scroll-offset="5px">
-
-
-                    <div class="card-body p-0">
-
-
-                        <div class="row">
-                            <!-- Tiers if its greater than 1 -->
-                            <?php if (  isset($tiers) &&  count($tiers) > 1) {  ?>
-                            <div class="tier-group col-12  border border-dashed rounded min-w-125px h-50px py-5 px-4 ">
-                                <a tabindex="-1" href="#"
-                                    class="item-tier <?php $this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id) ? 'enable-click' : ''; ?>">
-                                    <?php echo lang('sales_item_tiers'); ?>: <span
-                                        class="selected-tier"></span>
-                                </a>
-                                <?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) {	?>
-                                <div class="list-group item-tiers " style="display:none">
-                                    <?php foreach ($tiers as $key => $value) { ?>
-                                    <a tabindex="-1" href="#" data-value="<?php echo $key; ?>"
-                                        class="list-group-item"><?php echo H($value); ?></a>
-                                    <?php } ?>
-                                </div>
-                                <?php } ?>
-                            </div>
-                            <?php  }  ?>
-
-                            <!-- Tiers if its greater than 1 -->
-                            <?php if ($this->config->item('select_sales_person_during_sale')) {  ?>
-                            <div
-                                class="tier-group col-12  border border-dashed rounded min-w-125px  h-50px	 py-5 px-4 ">
-                                <a href="#"
-                                    class="select-sales-person <?php $this->config->item('select_sales_person_during_sale') ? 'enable-click' : ''; ?>">
-                                    <?php echo lang('sales_person'); ?>: <span class="selected-sales-person"></span>
-                                </a>
-
-
-                                <div class="list-group select-sales-persons" style="display:none">
-                                    <?php if(isset($employees) ){ foreach (   $employees as $key => $employee) { ?>
-                                    <a href="#" data-value="<?php echo $key; ?>"
-                                        data-permission_edit_sale_price="<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $key)) { echo "1"; }else{   echo "0"; }  ?>"
-                                        class="list-group-item"><?php echo H($employee); ?></a>
-                                    <?php }} ?>
-                                </div>
-
-                            </div>
-                            <?php  }  ?>
-                            <?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ( isset($cart) && $this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
-                            <div
-                                class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
-                                <div class="d-flex justify-content-start">
-                                    <?php echo form_checkbox(array(
-										'name' => 'change_date_enable',
-										'id' => 'change_date_enable',
-										'value' => '1',
-										'class' => 'form-check-input ml-0',
-										'checked' => (bool) (isset($change_date_enable))?$change_date_enable:false,
-									));
-									echo '<label class="form-check-label w-20" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
-
-									?>
-
-                                    <div id="change_cart_date_picker" class="w-62 date datepicker">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="ion-calendar"></i></span>
-
-                                            <?php echo form_input(array(
-                                            'name' => 'change_cart_date',
-                                            'id' => 'change_cart_date',
-                                            'size' => '8',
-                                            'class' => 'form-control',
-                                            'value' => date(get_date_format() . " " . get_time_format(), isset($change_cart_date) ? strtotime($change_cart_date) : time()),
-                                        )); ?>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <?php } ?>
-
-                            <div class="comment-block col-12  border border-dashed rounded min-w-125px py-1  px-4">
-                                <?php
-                                if(isset($$markup_predictions)){
-							foreach ($markup_predictions as $mark_payment_type => $mark_payment_data) {
-								$amount = $mark_payment_data['amount'];
-							?>
-                                <div class="markup_predictions" id="<?php echo $mark_payment_data['id']; ?>"
-                                    style="display: none;">
-                                    <span
-                                        style="font-size: 19px;font-weight: bold;"><?php echo lang('sales_total_with_markup'); ?>
-                                    </span> <span
-                                        style="color: #6FD64B;font-size: 24px;font-weight: bold;float: right"><?php echo to_currency($total + $amount) ?></span>
-                                </div>
-                                <?php
-							}}
-							?>
-
-                                <div class="d-flex justify-content-start">
-
-                                    <?php echo form_label(lang('comments_receipt'), lang('comments_receipt'), array('class' => 'control-label w-25 mt-3 ')); ?>
-                                    <?php 
-                            echo form_input(array(
-											'name' => "receipt-comment",
-											'id' => "receipt-comment",
-											'class' =>  ' form-control custom-fields customFields',
-											'value' => ''
-										)); ?>
+                    <!--begin::Body-->
+                    <div class="card-body pt-5" id="holded_list">
 
 
 
-                                </div>
-
-
-                            </div>
-
-
-
-
-
-                                    
-                     
-
-                                <!-- Finish Sale Button Handler -->
-
-                                <?php
-							$this->load->helper('sale');
-
-
-							if (isset($has_coupons_for_today)) { ?>
-                                <div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
-                                    <div class="side-heading"><?php echo lang('add_coupon'); ?></div>
-
-                                    <div id="coupons" class="input-group" data-title="coupons">
-                                        <span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
-                                        <?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('enter_a_coupon'))); ?>
-                                    </div>
-
-                                </div>
-                                <?php } ?>
-
-                              
-                                <div id="finish_sale_form"
-                                    class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
-                                    <?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
-                                    <?php
-									if (isset($payments_cover_total) && isset($customer_required_check)) {
-										echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
-									}
-
-
-									echo form_checkbox(array(
-										'name' => 'prompt_for_card',
-										'id' => 'prompt_for_card',
-										'class' => 'form-check-input mt-1',
-										'value' => '1',
-										'checked' => (bool) (isset($prompt_for_card))?$prompt_for_card:false
-									));
-									echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('prompt_for_card') . '</label>';
-
-
-								
-									echo form_close();
-									?>
-                                </div>
-
-                              
-
-
-                        </div>
                     </div>
-
-          
-
-
-
-                    <div class="model-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="kt_app_layout_builder_close_submit"><?= lang('submit') ?></button>
-                    </div>
+                    <!--end::Body-->
                 </div>
 
             </div>
         </div>
     </div>
 
-    <!-- need this div for change_sale </div> -->
 
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_goto"
@@ -608,18 +401,20 @@ $this->load->view("partial/offline_header"); ?>
             <!--begin::Card header-->
             <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                 id="kt_app_layout_builder_header"
-                >
+                style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
 
                 <!--begin::Card title-->
-                <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
+                <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
                     Go To
                 </h3>
                 <!--end::Card title-->
 
                 <!--begin::Card toolbar-->
                 <div class="card-toolbar">
-                    <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
-                        id="kt_app_layout_builder_close">x</button>
+                    <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
+                        id="kt_app_layout_builder_close">
+                        <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
+                                class="path2"></span></i> </button>
                 </div>
                 <!--end::Card toolbar-->
             </div>
@@ -1132,26 +927,33 @@ $this->load->view("partial/offline_header"); ?>
     <!--end::View component-->
     <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left" id="left-section">
         <div id="drag-handle"
-            style="cursor: ew-resize;width: 7px;position: relative;background-color: #6a6fdf;height: 100%;float: right;z-index: 99;">
+            style="cursor: ew-resize;width: 7px;position: relative;background-color: #0009;height: 100%;float: right;z-index: 99;">
         </div>
-        <div class="d-flex top-left-pos">
-            <div id="kt_app_sidebar_toggle" class="w-70px text-center pt-2  text-light cursor-pointer  rotate"
+        <div class="d-flex">
+            <div id="kt_app_sidebar_toggle" class="w-100px text-center pt-2  text-light cursor-pointer bg-black rotate"
                 data-kt-rotate="true">
 
-                <span class="svg-icon svg-icon-muted svg-icon-2x rotate-180" style="margin: 0 auto;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1" transform="rotate(-180 18 13)" fill="currentColor"/>
-<path d="M15.4343 12.5657L11.25 16.75C10.8358 17.1642 10.8358 17.8358 11.25 18.25C11.6642 18.6642 12.3358 18.6642 12.75 18.25L18.2929 12.7071C18.6834 12.3166 18.6834 11.6834 18.2929 11.2929L12.75 5.75C12.3358 5.33579 11.6642 5.33579 11.25 5.75C10.8358 6.16421 10.8358 6.83579 11.25 7.25L15.4343 11.4343C15.7467 11.7467 15.7467 12.2533 15.4343 12.5657Z" fill="currentColor"/>
-</svg>
-            </span>
-
-
+                <span class="svg-icon svg-icon-muted svg-icon-2x rotate-180" style="margin: 0 auto;"><svg width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M14.4 11H2.99999C2.39999 11 1.99999 11.4 1.99999 12C1.99999 12.6 2.39999 13 2.99999 13H14.4V11Z"
+                            fill="currentColor"></path>
+                        <path
+                            d="M17.7762 13.2561C18.4572 12.5572 18.4572 11.4429 17.7762 10.7439L13.623 6.48107C13.1221 5.96697 12.25 6.32158 12.25 7.03934V16.9607C12.25 17.6785 13.1221 18.0331 13.623 17.519L17.7762 13.2561Z"
+                            fill="currentColor"></path>
+                        <rect opacity="0.5" width="2" height="16" rx="1" transform="matrix(-1 0 0 1 22 4)"
+                            fill="currentColor"></rect>
+                    </svg>
+                </span>
+                <!--end::Svg Icon-->
+                <!--end::Svg Icon-->
             </div>
-            <div class="register-box register-items-form  d-flex justify-content-space-between h-70px">
+            <div class="register-box register-items-form w-100 d-flex justify-content-space-between h-70px">
                 <a tabindex="-1" href="#" class="dismissfullscreen hidden"><i class="ion-close-circled"></i></a>
-                <div id="itemForm" class="item-form bg-light-100 w-60 d-flex justify-content-start align-item-center">
+                <div id="itemForm" class="item-form bg-light-100 w-60">
                     <!-- Item adding form -->
 
-                    <form action="<?= base_url(); ?>sales/add" id="add_item_form" class="form-inline w-100 mx-2" autocomplete="off"
+                    <form action="<?= base_url(); ?>sales/add" id="add_item_form" class="form-inline" autocomplete="off"
                         method="post" accept-charset="utf-8">
 
                         <div class="input-group input-group-mobile contacts">
@@ -1160,14 +962,17 @@ $this->load->view("partial/offline_header"); ?>
                                     class="none add-new-item" title="New Item" id="new-item-mobile" tabindex="-1"><i
                                         class="icon ti-pencil-alt"></i> <span class="register-btn-text">New
                                         Item</span></a> </span>
-                            <div class="input-group-text register-mode sale-mode dropdown bg-primary border-radius-left">
+                            <div class="input-group-text register-mode sale-mode dropdown">
                                 <a href="<?= base_url(); ?>#" class="none active" tabindex="-1" title="Sale"
                                     id="select-mode-1" data-target="#" data-toggle="dropdown" aria-haspopup="true"
-                                    role="button" aria-expanded="false"> Sale <i class="icon ti-shopping-cart m-2 text-light"></i>  <span
-                                        class="register-btn-text mode_text"></span></a>
+                                    role="button" aria-expanded="false"><i class="icon ti-shopping-cart"></i> <span
+                                        class="register-btn-text mode_text">Sale</span></a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                    <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" >Return</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode ">Sale</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="return" class="change-mode">Return</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="estimate" class="change-mode">Estimate</a>
+                                    </li>
+                                    <li><a tabindex="-1" href="#" data-mode="store_account_payment"
+                                            class="change-mode">Store Account Payment</a></li>
                                 </ul>
                             </div>
 
@@ -1189,24 +994,25 @@ $this->load->view("partial/offline_header"); ?>
                                 <div class="rect3"></div>
                             </div>
 
-                            <div class="input-group-text register-mode sale-mode dropdown bg-primary border-radius-left">
+                            <div class="input-group-text register-mode sale-mode dropdown">
                                 <a href="<?= base_url(); ?>#"
-                                    class="none active text-light  text-hover-primary mode_text w-75px " tabindex="-1"
+                                    class="none active text-light  text-hover-primary mode_text" tabindex="-1"
                                     title="Sale" id="select-mode-2" data-target="#" data-toggle="dropdown"
-                                    aria-haspopup="true" role="button" aria-expanded="false">Sale<i
-                                        class="icon ti-shopping-cart m-2 text-light"></i> </a>
+                                    aria-haspopup="true" role="button" aria-expanded="false"><i
+                                        class="icon ti-shopping-cart"></i>Sale</a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" >Return</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode ">Sale</a></li>
-                                   
-                                   
+                                    <li><a tabindex="-1" href="#" data-mode="return" class="change-mode">Return</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="estimate" class="change-mode">Estimate</a>
+                                    </li>
+                                    <li><a tabindex="-1" href="#" data-mode="store_account_payment"
+                                            class="change-mode">Store Account Payment</a></li>
                                 </ul>
                             </div>
                             <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
 
 
                             <input type="text" id="item" name="item"
-                                class="add-item-input   w-40  pull-left keyboardTop  ui-autocomplete-input"
+                                class="add-item-input   w-50  pull-left keyboardTop  ui-autocomplete-input"
                                 placeholder=<?php echo json_encode(lang('start_typing_item_name')); ?>
                                 data-title=<?php echo json_encode(lang('item_name')); ?>>
 
@@ -1219,14 +1025,14 @@ $this->load->view("partial/offline_header"); ?>
                                     title="Show Grid"><i class="icon ti-layout"></i> Show Grid</a> <a
                                     href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1" title="Hide Grid"><i
                                         class="icon ti-layout"></i> Hide Grid</a> </span>
-                            <span class="input-group-text  grid-buttons bg-primary border-radius-right  ">
+                            <span class="input-group-text  grid-buttons ">
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
                                     <button id="category_selection_btn"
-                                        class="btn h-20px w-100px btn-icon btn-color-light-400 btn-active-color-primary justify-content-end  d-inline-flex"
+                                        class="btn h-20px w-70px btn-icon btn-color-light-400 btn-active-color-primary justify-content-end"
                                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
                                         data-kt-menu-overflow="true">
-                                        Categories <i class="icon ti-angle-down m-2 text-light"></i> </button>
+                                        Categories </button>
                                     <div id="grid_selection"
                                         class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
                                         data-kt-menu="true" style="">
@@ -1271,96 +1077,77 @@ $this->load->view("partial/offline_header"); ?>
                     </form>
                 </div>
 
-                <div class="d-flex justify-content-end w-40 align-item-center">
+                <div class="d-flex justify-content-end w-40">
 
 
-                    <?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => 'd-flex    h-42px')); ?>
-
-                
-
-                    <?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && !$this->config->item('test_mode')) { ?>
-                    <div class="d-flex bg-primary p-3 flex-center w-100px h-42px me-1  additional_suspend_button"
-                       >
-                        <div class=" py-2">
-                        <?= lang('hold') ?>
-                         
-                        </div>
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                        <span class="svg-icon svg-icon-3x svg-icon-2hx text-light">
-                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
-                            <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z"
-                                    fill="currentColor" />
-                            </svg>
-                            <!--end::Svg Icon-->
-                        </span>
+                    <form action="<?= base_url(); ?>sales/cancel_sale" id="cancel_sale_form" autocomplete="off"
+                        class="d-flex    h-75px" method="post" accept-charset="utf-8">
 
 
-                        <!--end::Svg Icon-->
-                     
-                      
-                        
-                       
-                    </div>
-                   
-
-
-                    <div class="d-flex  bg-primary  p-3 flex-center w-100px h-42px me-1 "    style="display:none !important" 
-                        id="cancel_sale_button">
-
-                        <div class=" py-2">
-                            <?php echo  lang('back');  ?>
-                        </div>
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-                        <span class="svg-icon svg-icon-3x svg-icon-2hx text-light">
-                            <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect opacity="0.3" x="4" y="11" width="12" height="2" rx="1" fill="currentColor" />
-                                <path
-                                    d="M5.86875 11.6927L7.62435 10.2297C8.09457 9.83785 8.12683 9.12683 7.69401 8.69401C7.3043 8.3043 6.67836 8.28591 6.26643 8.65206L3.34084 11.2526C2.89332 11.6504 2.89332 12.3496 3.34084 12.7474L6.26643 15.3479C6.67836 15.7141 7.3043 15.6957 7.69401 15.306C8.12683 14.8732 8.09458 14.1621 7.62435 13.7703L5.86875 12.3073C5.67684 12.1474 5.67684 11.8526 5.86875 11.6927Z"
-                                    fill="currentColor" />
-                                <path
-                                    d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z"
-                                    fill="currentColor" />
-                            </svg>
-                            <!--end::Svg Icon-->
-
-
-                        </span>
-                        <!--end::Svg Icon-->
-                      
-                    </div>
-
-                   
-
-                    <?php } ?>
-
-
-
-
-
-
-                    <div class="d-flex  bg-primary p-3 flex-center w-100px  h-42px me-1 " id="advance_details">
-                        <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
-
-                        <div class=" py-2">
-                            <?= lang('add_info') ?> </div>
-                    
-                            <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
-                            <span class="svg-icon svg-icon-3x svg-icon-2hx text-light"><svg class="pos-top-icon" width="24"
-                                    height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
-                                        fill="currentColor" />
-                                    <rect x="11" y="17" width="7" height="2" rx="1" transform="rotate(-90 11 17)"
-                                        fill="currentColor" />
-                                    <rect x="11" y="9" width="2" height="2" rx="1" transform="rotate(-90 11 9)"
-                                        fill="currentColor" />
+                        <div class="flex-column bg-primary p-3 flex-center w-75px h-50px me-1  d-flex additional_suspend_button"
+                            id="save_as_btn_div" data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                            data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
+                            data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
+                            <span class="svg-icon  svg-icon-3x mt-3">
+                                <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen056.svg-->
+                                <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M16.0077 19.2901L12.9293 17.5311C12.3487 17.1993 11.6407 17.1796 11.0426 17.4787L6.89443 19.5528C5.56462 20.2177 4 19.2507 4 17.7639V5C4 3.89543 4.89543 3 6 3H17C18.1046 3 19 3.89543 19 5V17.5536C19 19.0893 17.341 20.052 16.0077 19.2901Z"
+                                        fill="currentColor"></path>
                                 </svg>
+                                <!--end::Svg Icon-->
                             </span>
                             <!--end::Svg Icon-->
-                        <!--end::Svg Icon-->
+                            <div class=" py-2">
+                                Save As </div>
+                        </div>
+                        <div class="flex-column bg-primary  p-3 flex-center w-75px h-50px me-1  d-flex"
+                            id="cancel_sale_button">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
+                            <span class="svg-icon svg-icon-3x mt-3">
+                                <svg class="pos-top-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect opacity="0.3" x="4" y="11" width="12" height="2" rx="1" fill="currentColor">
+                                    </rect>
+                                    <path
+                                        d="M5.86875 11.6927L7.62435 10.2297C8.09457 9.83785 8.12683 9.12683 7.69401 8.69401C7.3043 8.3043 6.67836 8.28591 6.26643 8.65206L3.34084 11.2526C2.89332 11.6504 2.89332 12.3496 3.34084 12.7474L6.26643 15.3479C6.67836 15.7141 7.3043 15.6957 7.69401 15.306C8.12683 14.8732 8.09458 14.1621 7.62435 13.7703L5.86875 12.3073C5.67684 12.1474 5.67684 11.8526 5.86875 11.6927Z"
+                                        fill="currentColor"></path>
+                                    <path
+                                        d="M8 5V6C8 6.55228 8.44772 7 9 7C9.55228 7 10 6.55228 10 6C10 5.44772 10.4477 5 11 5H18C18.5523 5 19 5.44772 19 6V18C19 18.5523 18.5523 19 18 19H11C10.4477 19 10 18.5523 10 18C10 17.4477 9.55228 17 9 17C8.44772 17 8 17.4477 8 18V19C8 20.1046 8.89543 21 10 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3H10C8.89543 3 8 3.89543 8 5Z"
+                                        fill="currentColor"></path>
+                                </svg>
+                                <!--end::Svg Icon-->
+
+
+                            </span>
+                            <!--end::Svg Icon-->
+                            <div class=" py-2">Clear</div>
+                        </div>
+
+
+
+                        <div class="flex-column bg-primary p-3 flex-center w-75px h-50px ddd  d-flex"
+                            id="advance_details">
+                            <!--begin::Svg Icon | path: icons/duotune/general/gen001.svg-->
+                            <span class="svg-icon svg-icon-3x mt-3">
+                                <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen045.svg-->
+                                <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
+                                        height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="10"
+                                            fill="currentColor"></rect>
+                                        <rect x="11" y="17" width="7" height="2" rx="1" transform="rotate(-90 11 17)"
+                                            fill="currentColor"></rect>
+                                        <rect x="11" y="9" width="2" height="2" rx="1" transform="rotate(-90 11 9)"
+                                            fill="currentColor"></rect>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </span>
+                            <!--end::Svg Icon-->
+                            <div class=" py-2">
+                                Add Info </div>
                         </div>
 
                     </form>
@@ -1373,18 +1160,12 @@ $this->load->view("partial/offline_header"); ?>
             </div>
         </div>
         <div class="d-flex">
-
-            <?php
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-
-
-		?>
-            <div class="w-75px pos-sidebar">
+            <div class="w-100px bg-black pos-sidebar">
                 <!--begin::Sidebar menu-->
-                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y    pos-menu"
+                <div class="app-sidebar-menu app-sidebar-menu-arrow hover-scroll-overlay-y my-5 my-lg-5 px-3  pos-menu"
                     id="kt_app_sidebar_menu_wrapper" data-kt-scroll="true" data-kt-scroll-height="auto"
                     data-kt-scroll-dependencies="#kt_app_sidebar_toolbar, #kt_app_sidebar_footer"
-                    data-kt-scroll-offset="0" style="height: 490px;">
+                    data-kt-scroll-offset="0" style="height: 544px;">
                     <!--begin::Menu-->
                     <div class="menu menu-column menu-sub-indention menu-active-bg fw-semibold     "
                         id="#kt_sidebar_menu" data-kt-menu="true">
@@ -1392,23 +1173,11 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                            class="menu-item <?php echo $this->uri->segment(1) == 'home' && $this->uri->segment(2) != 'payvantage'  ? 'here show' : ''; ?>  ">
+                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" class="menu-item   ">
 
 
 
-                            <span class=" menu-link ">
-                                <span id="kt_drawer_goto" class="menu-icon w-100 "
-                                    data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
-                                    data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
-                                    data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-                                    <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect opacity="0.5" x="16.9497" y="8.46448" width="13" height="2" rx="1" transform="rotate(135 16.9497 8.46448)" fill="currentColor"/>
-                                    <path d="M14.8284 9.97157L14.8284 15.8891C14.8284 16.4749 15.3033 16.9497 15.8891 16.9497C16.4749 16.9497 16.9497 16.4749 16.9497 15.8891L16.9497 8.05025C16.9497 7.49797 16.502 7.05025 15.9497 7.05025L8.11091 7.05025C7.52512 7.05025 7.05025 7.52513 7.05025 8.11091C7.05025 8.6967 7.52512 9.17157 8.11091 9.17157L14.0284 9.17157C14.4703 9.17157 14.8284 9.52975 14.8284 9.97157Z" fill="currentColor"/>
-                                    </svg>
-                                    </span>
-                                </span>
-                            </span>
+
 
 
 
@@ -1419,101 +1188,78 @@ $this->load->view("partial/offline_header"); ?>
                                     data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                                     data-bs-original-title="Metronic Builder" data-kt-initialized="1">
                                     <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x "><svg width="24" height="24"
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x  w-100"><svg width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M13 11H3C2.4 11 2 10.6 2 10V9C2 8.4 2.4 8 3 8H13C13.6 8 14 8.4 14 9V10C14 10.6 13.6 11 13 11ZM22 5V4C22 3.4 21.6 3 21 3H3C2.4 3 2 3.4 2 4V5C2 5.6 2.4 6 3 6H21C21.6 6 22 5.6 22 5Z"
-                                                fill="currentColor" />
+                                                fill="currentColor"></path>
                                             <path opacity="0.3"
                                                 d="M21 16H3C2.4 16 2 15.6 2 15V14C2 13.4 2.4 13 3 13H21C21.6 13 22 13.4 22 14V15C22 15.6 21.6 16 21 16ZM14 20V19C14 18.4 13.6 18 13 18H3C2.4 18 2 18.4 2 19V20C2 20.6 2.4 21 3 21H13C13.6 21 14 20.6 14 20Z"
-                                                fill="currentColor" />
+                                                fill="currentColor"></path>
                                         </svg>
+                                        <span class="menu-title w-100">Pos Builder</span>
                                     </span>
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
-
-                            <span class=" menu-link ">
-
-                            <a tabindex="-1" class="menu-icon w-100 "  id="kt_drawer_suspend_offline"
-                    data-target="#kt_drawer_general" data-target-title="Suspended Sales"
-                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
-                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                    data-bs-placement="top" title="hold cart"><span class="svg-icon svg-icon-muted svg-icon-2x  ">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
-                                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                                    <!-- Cart Icon -->
-                                                    <path d="M6 6h15l-1.68 9H6.75A4.75 4.75 0 0 1 2 10.25v-.5A4.75 4.75 0 0 1 6.75 5H19M6 6H4">
-                                                    </path>
-                                                    <circle cx="9" cy="19" r="1"></circle>
-                                                    <circle cx="18" cy="19" r="1"></circle>
-                                                    <line x1="3" y1="3" x2="21" y2="21"></line>
-                                                </g>
-                                            </svg>
-
-                                        </span></a>
-
-
-                            </span>
-
-
-                         
-                            <div class="menu-item" >
-                                <a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
-                                    <span class="menu-icon  w-100 ">
-                                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
-                                        <span class="svg-icon svg-icon-muted svg-icon-2x "><svg width="24"
-                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.3"
-                                                    d="M21 22H12C11.4 22 11 21.6 11 21V3C11 2.4 11.4 2 12 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22Z"
-                                                    fill="currentColor" />
+                            <span class=" menu-link " id="kt_drawer_suspend">
+                                <span class="menu-icon  w-100 ">
+                                    <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x w-100 ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+                                            viewBox="0 0 24 24">
+                                            <g fill="none" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="2">
+                                                <!-- Cart Icon -->
                                                 <path
-                                                    d="M19 11H6.60001V13H19C19.6 13 20 12.6 20 12C20 11.4 19.6 11 19 11Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.3"
-                                                    d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
+                                                    d="M6 6h15l-1.68 9H6.75A4.75 4.75 0 0 1 2 10.25v-.5A4.75 4.75 0 0 1 6.75 5H19M6 6H4">
+                                                </path>
+                                                <circle cx="9" cy="19" r="1"></circle>
+                                                <circle cx="18" cy="19" r="1"></circle>
+                                                <!-- Single Slash Overlay -->
+                                                <line x1="3" y1="3" x2="21" y2="21"></line>
+                                            </g>
+                                        </svg>
 
-                                </a>
-                            </div>
-                            <div class="menu-item" >
+                                        <span class="menu-title w-100">Hold Cart</span>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </span>
                             <span class=" menu-link  bg-danger">
-                                <span id="kt_drawer_completed_sales" class="menu-icon   w-100"
+                                <span id="kt_drawer_completed_sales" class="menu-icon w-100 "
                                     data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
                                     data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                                     data-bs-original-title="Metronic Builder" data-kt-initialized="1">
                                     <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x text-light ">
+                                    <span class="svg-icon svg-icon-muted svg-icon-2x text-light  w-100">
                                         <span id="offline_sync_spining"
                                             class="glyphicon glyphicon-refresh spinning"></span>
+                                        <span class="menu-title w-100 text-light">Offline</span>
                                     </span>
                                     <!--end::Svg Icon-->
                                 </span>
                             </span>
-                            </div>
-                               
 
                         </div>
 
 
-                     
 
-                       
+
+
+
+
+
                     </div>
                 </div>
             </div>
-            <div class="sale-grid-big-wrapper-parent">
+            <div class="w-100">
                 <div id="sale-grid-big-wrapper" class="clearfix register ">
                     <div class="clearfix" style="" id="category_item_selection_wrapper">
                         <div id="grid_breadcrumbs"
                             class="py-1 pos-bg-dark h-45px p-5 rounded-1 d-flex align-items-center flex-wrap"> </div>
 
-                        <div class="horizontal-scroll h-120px "  id="category_item_selection_parent">
+                        <div class="horizontal-scroll h-120px ">
                             <ul id="category_item_selection"
                                 class="scrollable-list register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0">
 
@@ -1544,7 +1290,7 @@ $this->load->view("partial/offline_header"); ?>
     <!-- /.Col-lg-8 @end of left Column -->
 
     <!-- col-lg-4 @start of right Column -->
-    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 pos_bg_dark" id="sales_section">
+    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id="sales_section">
         <style>
         #category_item_selection_wrapper_new {
             height: calc(100vh - 45vh);
@@ -1556,312 +1302,6 @@ $this->load->view("partial/offline_header"); ?>
             /* Add more styling as needed */
         }
         </style>
-
-
-<script id="selected-customer-form-template" type="text/x-handlebars-template">
-
-                <!-- Sale Top Buttons  -->
-
-
-                <!-- If customer is added to the sale -->
-                <div class="d-flex flex-wrap flex-sm-nowrap p-2 pb-0 gap-2">
-
-                    
-
-
-                    <!--begin: Pic-->
-                    <div class="me-1 mb-1 w-50px">
-                        <div class="symbol symbol-50px  symbol-fixed position-relative symbol-circle">
-                            <img src="{{customer.avatar}}"
-                                onerror="this.onerror=null; this.src='<?= base_url(); ?>assets/img/user.png';"
-                                alt="image">
-
-
-                        </div>
-                    </div>
-                    <!--end::Pic-->
-                    <!--begin::Info-->
-                    <div class="flex-grow-1">
-                        <!--begin::Title-->
-                        <div class="d-flex justify-content-between align-items-start flex-wrap">
-                            <!--begin::User-->
-                            <div class="d-flex flex-column mt-1">
-                                <!--begin::Name-->
-                                <div class="d-flex align-items-center">
-                                    <a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold"> </a><a
-                                        href="<?= base_url(); ?>sales/customer_recent_sales/{{customer.person_id}}" data-toggle="modal"
-                                        data-target="#myModal"
-                                        class="text-gray-700 text-hover-primary fs-7 fw-bold me-1 name"
-                                        id="customer_name">{{customer.customer_name}}</a>
-
-
-                                </div>
-                                <!--end::Name-->
-                                <!--begin::Info-->
-
-
-
-
-
-
-                                <!-- Start: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-                                <!-- Customer Balance -->
-                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2 mt-1 gap-10 vertical-center">
-                                    <div>
-                                            <i class="fa fa-money-bill me-2"></i>
-                                     
-
-                                        <!--end::Svg Icon-->
-
-                                        <span id="customer_balance" class=""> {{customer.balance}}</span>
-                                    </div>
-                                
-                                    <!-- End Customer Balance -->
-
-                                    <!-- Customer Loyalty Points -->
-
-
-
-
-
-                                    <div class="loyalty {{#equal customer.disable_loyalty 0}} d-none  {{/equal}}">
-                                        <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple') { ?>
-                                        <span
-                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 {{#if customer.sales_until_discount}} text-danger {{else}} text-success {{/if}}  sales_until_discount_main">
-                                            <i class="fa fa-gift me-2"></i>
-                                            <div class="fs-6 fw-bold counted  sales_until_discount"
-                                                data-kt-countup="true" data-kt-countup-value="4500"
-                                                data-kt-countup-prefix="$" data-kt-initialized="1">
-                                                <span id="sud_val">
-                                                {{#greaterThanZero customer.sales_until_discount}}  {{customer.sales_until_discount}} {{else}} 0 {{/greaterThanZero}}
-                                                </span>
-                                                {{#conditionCheck (lt customer.sales_until_discount 0) (not extra.redeem)}}
-
-                                                <span title="  <?php echo lang('redeem') ?>" id="redeem_discount"
-                                                    >[<?php echo lang('redeem') ?>]</span>
-                                                    {{else}}
-                                                <span title="  <?php echo lang('unredeem') ?>" id="unredeem_discount"
-                                                   >[<?php echo lang('unredeem') ?>]</span>
-
-                                                    {{/conditionCheck}}
-                                            </div>
-
-                                        </span>
-
-                                        <?php } ?>
-
-                                        <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') { ?>
-                                        <span title="  <?php echo lang('points') ?>"
-                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5  {{#LessThanEqual customer.points 0}} text-danger {{else}} text-success  {{/LessThanEqual}} points_main">
-                                            <i class="fa fa-gift me-2"></i>
-                                            <div class="fs-6 fw-bold counted  points" data-kt-countup="true"
-                                                data-kt-countup-value="4500" data-kt-countup-prefix="$"
-                                                data-kt-initialized="1"> {{customer.points}}
-
-                                            </div>
-
-                                        </span>
-
-                                        <?php } ?>
-
-                                    </div>
-                                    <div class="d-flex">
-                                    <i class="fa fa-comments me-2 mt-2"></i>
-                                    <a href="#" id="internal_notes"
-                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7  editable-click px-2"
-                                        data-type="text" data-validate-number="false" data-pk="1"
-                                        data-name="internal_notes" data-placement="bottom" data-value="{{customer.internal_notes}}">
-                                        <span id="customer_internal_notes">{{customer.internal_notes}}</span>
-                                    </a>
-                                    </div>
-
-
-                                    <div class="d-flex ">
-                                        <div id="popover-content" class="d-none">
-                                            <!--begin::ShareArea-->
-                                            <div class="d-flex flex-wrap justify-content-around fw-semibold fs-6 mb-4 pe-2">
-
-
-                                                <div class="symbol round w-50px h-50px text-center p-4  bg-success me-2">
-                                                    <i class="fa-solid fa-square-phone fs-2rem text-light"></i>
-                                                </div>
-
-
-                                                <div class="symbol round w-50px h-50px text-center p-4  bg-danger me-2">
-
-                                                    <i class="fa-regular fa-envelope fs-2rem text-light  "
-                                                        id="toggle_email_receipt"></i>
-                                                </div>
-
-
-
-
-                                            </div>
-
-
-
-
-
-                                            <!--End::ShareArea-->
-                                        </div>
-
-
-
-
-                                        <!--begin::Menu-->
-                                        <button type="button" class="btn btn-sm btn-icon "
-                                            data-kt-menu-trigger="custom" data-kt-menu-overflow="true"
-                                            data-kt-menu-placement="top-end">
-                                           <i class=" ti ti-more-alt vertical"></i>
-                                        </button>
-                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
-                                            data-kt-menu="true" style="">
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">Quick Actions
-                                                </div>
-                                            </div>
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu separator-->
-                                            <div class="separator mb-3 opacity-75"></div>
-                                            <!--end::Menu separator-->
-
-                                            <!--begin::Menu item-->
-
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu item-->
-
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-
-
-                                                <a href="<?= base_url(); ?>sales/view_delivery_modal/" class="menu-link px-3 "
-                                                    id="open_delivery_modal" data-toggle="modal" data-target="#myModal"> <i
-                                                        class="ion-android-car"></i>Delivery</a>
-
-                                            </div>
-
-
-
-
-
-                                            <div class="menu-item px-3">
-                                                <a href="<?= base_url(); ?>customers/redeem_series/{{customer.person_id}}" id="redeem_series"
-                                                    class="menu-link px-3" title="Redeem Series"><i
-                                                        class="ion-ios-compose-outline"></i> Redeem Series</a>
-                                            </div>
-                                            <div class="menu-item px-3">
-                                                <a href="<?= base_url(); ?>customers/pay_now/{{customer.person_id}}" id="pay_now"
-                                                    class="menu-link px-3" title="Pay Now"><i
-                                                        class="ion-ios-compose-outline"></i> Pay Now</a>
-                                            </div>
-
-                                            <div class="menu-item px-3">
-
-
-
-                                                <a href="<?= base_url(); ?>customers/quick_modal/{{customer.person_id}}/1" id="edit_customer"
-                                                    data-target="#kt_drawer_general" data-target-title="New Customer"
-                                                    data-target-width="xl" class="menu-link px-3" title="Update Customer"><i
-                                                        class="ion-ios-compose-outline"></i> Update Customer</a>
-                                            </div>
-
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu item-->
-
-                                            <!--end::Menu item-->
-
-                                            <!--begin::Menu separator-->
-                                            <div class="separator mt-3 opacity-75"></div>
-                                            <!--end::Menu separator-->
-
-                                            <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
-                                                <div class="menu-content px-3 py-3">
-
-
-
-
-                                                    <a target="_blank"
-                                                        href="<?= base_url(); ?>reports/generate/specific_customer?report_type=complex&amp;start_date=2023-07-11&amp;start_date_formatted=07/11/2023 12:00 am&amp;end_date=2024-07-11%2023:59:59&amp;end_date_formatted=07/11/2024 11:59 pm&amp;customer_id={{customer.person_id}}&amp;sale_type=all&amp;export_excel=0"
-                                                        class="btn btn-success btn-sm px-4">View Report
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!--end::Menu item-->
-                                        </div>
-
-                                        <!--begin::Menu 2-->
-
-                                        <!--end::Menu 2-->
-                                        <!--end::Menu-->
-
-
-
-
-                                    </div>
-
-                                    <a href="#" id="remove_customer" class="vertical-center">
-
-                                        <i class="icon ti-close m-2 text-danger" ></i>
-                                    </a>
-
-                                   
-
-
-                                </div>
-
-
-                            </div>
-                            <!--end::User-->
-                            <!--begin::Actions-->
-                            
-                            <!--end::Actions-->
-                        </div>
-                        <!--end::Title-->
-                    </div>
-                    <!--end::Info-->
-                </div>
-                <!-- Customer Badge when customer is added -->
-
-                <div class="customer-action-buttons  btn-group btn-group-justified  d-flex justify-content-center mb-2">
-
-
-
-
-
-
-
-                    <input type="checkbox" name="email_receipt" value="1" id="email_receipt"
-                        class="email_receipt_checkbox hidden">
-                    <input type="checkbox" name="sms_receipt" value="1" id="sms_receipt"
-                        class="sms_receipt_checkbox hidden">
-                    <input type="checkbox" name="delivery" value="1" id="delivery" class="delivery_checkbox hidden">
-
-
-
-
-
-
-
-
-
-
-
-
-
-                </div>
-
-
-            </script>
-
-
         <script id="item-template" type="text/x-handlebars-template">
             {{#each this}}
 						<tbody  class="fw-bold text-gray-600" data-line="{{@index}}">
@@ -1874,9 +1314,26 @@ $this->load->view("partial/offline_header"); ?>
 
 
 									<span
-										class="toggle_rows "
+										class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"
 										style="position:relative">
-                                        <i class="icon ti-angle-down"></i>
+										<!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+										<span class="svg-icon svg-icon-3 m-0 toggle-off">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+												xmlns="http://www.w3.org/2000/svg">
+												<rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1"
+													transform="rotate(-90 11 18)" fill="currentColor"></rect>
+												<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
+											</svg>
+										</span>
+										<!--end::Svg Icon-->
+										<!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
+										<span class="svg-icon svg-icon-3 m-0 toggle-on">
+											<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+												xmlns="http://www.w3.org/2000/svg">
+												<rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
+											</svg>
+										</span>
+										<!--end::Svg Icon-->
 									</span> &nbsp;
 								</td>
 
@@ -1885,9 +1342,9 @@ $this->load->view("partial/offline_header"); ?>
 									<a tabindex="-1"
 										href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
 										data-target="#kt_drawer_general" data-target-title="View Item"
-										data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
+										data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary "
 										data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-										data-bs-placement="top" title="{{name}}">{{name}}</a>
+										data-bs-placement="top" title="Box Master Sandwich - Original">{{name}}</a>
 								</td>
 								<td class="text-center fs-6">
 									<a href="#" id="price_{{@index}}" class="xeditable xeditable-price editable editable-click"
@@ -1917,12 +1374,11 @@ $this->load->view("partial/offline_header"); ?>
 										data-title="Total">{{currency}} {{multiply price qty}}</a>
 
 
-									
+									<a href="<?= base_url(); ?>/sales/delete_item/{{@index}}"
+										class="delete-item pull-right" tabindex="-1" data-cart-index="{{@index}}" data-id="{{@index}}"><i
+											class="icon ion-android-cancel"></i></a>
 
 								</td>
-                                <td class="text-center fs-7"><a href="<?= base_url(); ?>/sales/delete_item/{{@index}}"
-										class="delete-item " tabindex="-1" data-cart-index="{{@index}}" data-id="{{@index}}"><i
-											class="fa fa-trash text-danger"></i></a></td>
 							</tr>
 							<tr class="register-item-bottom collapse">
 								<td>&nbsp;</td>
@@ -2059,7 +1515,7 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
                         <div class="fw-semibold fs-6 text-dark-400">
                             <a href="<?= base_url(); ?>/sales/delete_tax/5%25%20VAT%20Rate%201"
-                                class="delete-tax remove"><i class="fa fa-trash text-danger"></i></a>
+                                class="delete-tax remove"><i class="icon ion-android-cancel"></i></a>
                             5% VAT Rate 1:
                         </div>
                         <div class="fs-1 fw-bold counted">
@@ -2143,7 +1599,6 @@ $this->load->view("partial/offline_header"); ?>
 
         <script>
         function amount_tendered_input_changed() {
-
             if ($("#payment_types").val() == "Giftcard") {
                 $('#finish_sale').removeClass('hidden');
                 $('#add_payment_button').addClass('hidden');
@@ -2152,15 +1607,16 @@ $this->load->view("partial/offline_header"); ?>
                 $('#add_payment_button').removeClass('hidden');
             } else {
 
-                if ($('#amount_tendered').val() > 0 ) {
-                    // console.log("yes amojnt", $("#payment_types").val(), $('#amount_tendered').val());
+                if (
+                    $('#amount_tendered').val() > 0
+                ) {
+
                     $('#finish_sale').addClass('hidden');
                     $('#add_payment_button').removeClass('hidden');
 
 
                 } else {
 
-                    console.log("herer");
                     $('#finish_sale').removeClass('hidden');
                     $('#add_payment_button').addClass('hidden');
 
@@ -2185,16 +1641,16 @@ $this->load->view("partial/offline_header"); ?>
                 <!--begin::Card header-->
                 <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
                     id="kt_app_layout_builder_header"
-                    >
+                    style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
 
                     <!--begin::Card title-->
-                    <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
+                    <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
                         Discount Details </h3>
                     <!--end::Card title-->
 
                     <!--begin::Card toolbar-->
                     <div class="card-toolbar">
-                        <button type="button" class="btn btn-sm btn-icon text-black fs-2 p-0 w-20px h-20px rounded-1 slider_button"
+                        <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
                             id="kt_app_layout_builder_close">
                             x </button>
                     </div>
@@ -2311,32 +1767,32 @@ $this->load->view("partial/offline_header"); ?>
 
         <div class="tab-content" id="myTabContent">
 
-            <div class="register-right " id="select_customer_form">
+            <div class="register-box register-right " id="select_customer_form">
 
                 <!-- Sale Top Buttons  -->
 
 
                 <!-- If customer is added to the sale -->
 
-                <div class="customer-form d-flex flex-wrap px-1">
+                <div class="customer-form d-flex flex-wrap">
 
                     <!-- if the customer is not set , show customer adding form -->
                     <form action="<?= base_url(); ?>sales/select_customer" autocomplete="off"
                         class="form-inline w-100 mb-2" method="post" accept-charset="utf-8">
-                        <div class="input-group contacts register-input-group d-flex">
-                            
+                        <div class="input-group contacts d-flex">
+                            <span class="input-group-text">
+                                <a href="<?= base_url(); ?>customers/quick_modal/-1/1" class="none "
+                                    title="New Customer" id="new-customer" data-target="#kt_drawer_general"
+                                    data-target-title="New Customer" data-target-width="xl" tabindex="-1"><i
+                                        class="ion-person-add"></i></a> </span>
                             <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
 
 
                             <input type="text" id="customer" name="customer"
-                                class="add-customer-input  keyboardLeft ui-autocomplete-input border-radius-left"
+                                class="add-customer-input w-75 keyboardLeft ui-autocomplete-input"
                                 data-title=<?php echo json_encode(lang('customer_name')); ?>
                                 placeholder=<?php echo json_encode(lang('sales_start_typing_customer_name')); ?>>
-                                <span class="input-group-text   bg-primary border-radius-right ">
-                                <a href="<?= base_url(); ?>customers/quick_modal/-1/1" class="none "
-                                    title="New Customer" id="new-customer" data-target="#kt_drawer_general"
-                                    data-target-title="New Customer" data-target-width="xl" tabindex="-1"><i
-                                        class="ion-person-add text-white"></i></a> </span>
+
 
                         </div>
                     </form>
@@ -2348,26 +1804,332 @@ $this->load->view("partial/offline_header"); ?>
             </div>
 
 
-            
-            <div id="customer-panel"></div>
+            <div class="register-box register-right" id="selected_customer_form">
+
+                <!-- Sale Top Buttons  -->
 
 
-            <div class="py-1 pos-bg-dark h-42px p-5 rounded-1 d-flex align-items-center flex-flex justify-content-space-between mt-1 order_detail_margin" >
-                <div>
-                    <span class="text-light">Order Details</span>
-                    <span class="badge badge-light badge-md text-black p-2 mx-5" >Items:  <span id="total_items">0</span> </span>
-                    
-                    <span class="badge badge-light badge-md text-black p-2">QTY: <span id="total_items_qty"> 0 </span> </span>
+                <!-- If customer is added to the sale -->
+                <div class="d-flex flex-wrap flex-sm-nowrap p-2 pb-0">
+
+                    <div class="ribbon ribbon-triangle ribbon-top-end border-danger">
+
+                        <div class="ribbon-icon mt-n8 me-n6"><a href="#" id="remove_customer">
+
+                                <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/communication/com009.svg-->
+                                <span class="svg-icon svg-icon-muted svg-icon-2hx">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg" style="
+														height: 1.5rem !important;
+														width: 1.5rem !important;
+														color: black;
+													">
+                                        <path opacity="0.3"
+                                            d="M5.78001 21.115L3.28001 21.949C3.10897 22.0059 2.92548 22.0141 2.75004 21.9727C2.57461 21.9312 2.41416 21.8418 2.28669 21.7144C2.15923 21.5869 2.06975 21.4264 2.0283 21.251C1.98685 21.0755 1.99507 20.892 2.05201 20.7209L2.886 18.2209L7.22801 13.879L10.128 16.774L5.78001 21.115Z"
+                                            fill="currentColor"></path>
+                                        <path
+                                            d="M21.7 8.08899L15.911 2.30005C15.8161 2.2049 15.7033 2.12939 15.5792 2.07788C15.455 2.02637 15.3219 1.99988 15.1875 1.99988C15.0531 1.99988 14.92 2.02637 14.7958 2.07788C14.6717 2.12939 14.5589 2.2049 14.464 2.30005L13.74 3.02295C13.548 3.21498 13.4402 3.4754 13.4402 3.74695C13.4402 4.01849 13.548 4.27892 13.74 4.47095L14.464 5.19397L11.303 8.35498C10.1615 7.80702 8.87825 7.62639 7.62985 7.83789C6.38145 8.04939 5.2293 8.64265 4.332 9.53601C4.14026 9.72817 4.03256 9.98855 4.03256 10.26C4.03256 10.5315 4.14026 10.7918 4.332 10.984L13.016 19.667C13.208 19.859 13.4684 19.9668 13.74 19.9668C14.0115 19.9668 14.272 19.859 14.464 19.667C15.3575 18.77 15.9509 17.618 16.1624 16.3698C16.374 15.1215 16.1932 13.8383 15.645 12.697L18.806 9.53601L19.529 10.26C19.721 10.452 19.9814 10.5598 20.253 10.5598C20.5245 10.5598 20.785 10.452 20.977 10.26L21.7 9.53601C21.7952 9.44108 21.8706 9.32825 21.9221 9.2041C21.9737 9.07995 22.0002 8.94691 22.0002 8.8125C22.0002 8.67809 21.9737 8.54505 21.9221 8.4209C21.8706 8.29675 21.7952 8.18392 21.7 8.08899Z"
+                                            fill="currentColor"></path>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </a>
+                        </div>
+
+                        <!--end::Ribbon icon-->
+                    </div>
+
+
+
+                    <!--begin: Pic-->
+                    <div class="me-1 mb-1 w-50px">
+                        <div class="symbol symbol-50px  symbol-fixed position-relative">
+                            <img src="<?= base_url(); ?>assets/img/user.png"
+                                onerror="this.onerror=null; this.src='<?= base_url(); ?>assets/css_good/media/avatars/blank.png';"
+                                alt="image">
+
+
+                        </div>
+                    </div>
+                    <!--end::Pic-->
+                    <!--begin::Info-->
+                    <div class="flex-grow-1">
+                        <!--begin::Title-->
+                        <div class="d-flex justify-content-between align-items-start flex-wrap">
+                            <!--begin::User-->
+                            <div class="d-flex flex-column">
+                                <!--begin::Name-->
+                                <div class="d-flex align-items-center">
+                                    <a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold me-1"> </a><a
+                                        href="<?= base_url(); ?>sales/customer_recent_sales/40" data-toggle="modal"
+                                        data-target="#myModal"
+                                        class="text-gray-700 text-hover-primary fs-5 fw-bold me-1 name"
+                                        id="customer_name"></a>
+
+
+                                </div>
+                                <!--end::Name-->
+                                <!--begin::Info-->
+
+
+
+
+
+
+                                <!-- Start: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+                                <!-- Customer Balance -->
+                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2">
+                                    <a href="#"
+                                        class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-success balance">
+                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3"
+                                                    d="M20 18H4C3.4 18 3 17.6 3 17V7C3 6.4 3.4 6 4 6H20C20.6 6 21 6.4 21 7V17C21 17.6 20.6 18 20 18ZM12 8C10.3 8 9 9.8 9 12C9 14.2 10.3 16 12 16C13.7 16 15 14.2 15 12C15 9.8 13.7 8 12 8Z"
+                                                    fill="currentColor"></path>
+                                                <path
+                                                    d="M18 6H20C20.6 6 21 6.4 21 7V9C19.3 9 18 7.7 18 6ZM6 6H4C3.4 6 3 6.4 3 7V9C4.7 9 6 7.7 6 6ZM21 17V15C19.3 15 18 16.3 18 18H20C20.6 18 21 17.6 21 17ZM3 15V17C3 17.6 3.4 18 4 18H6C6 16.3 4.7 15 3 15Z"
+                                                    fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+
+                                        <!--end::Svg Icon-->
+
+                                        <span id="customer_balance"></span>
+                                    </a>
+                                    <!-- End Customer Balance -->
+
+                                    <!-- Customer Loyalty Points -->
+                                    <a href="#"
+                                        class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 text-danger sales_until_discount">
+                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M21 9V11C21 11.6 20.6 12 20 12H14V8H20C20.6 8 21 8.4 21 9ZM10 8H4C3.4 8 3 8.4 3 9V11C3 11.6 3.4 12 4 12H10V8Z"
+                                                    fill="currentColor"></path>
+                                                <path
+                                                    d="M15 2C13.3 2 12 3.3 12 5V8H15C16.7 8 18 6.7 18 5C18 3.3 16.7 2 15 2Z"
+                                                    fill="currentColor"></path>
+                                                <path opacity="0.3"
+                                                    d="M9 2C10.7 2 12 3.3 12 5V8H9C7.3 8 6 6.7 6 5C6 3.3 7.3 2 9 2ZM4 12V21C4 21.6 4.4 22 5 22H10V12H4ZM20 12V21C20 21.6 19.6 22 19 22H14V12H20Z"
+                                                    fill="currentColor"></path>
+                                            </svg>
+                                        </span>
+                                        Sales Until Discount </a>
+
+                                    <a href="#" id="internal_notes"
+                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7 editable editable-click"
+                                        data-type="text" data-validate-number="false" data-pk="1"
+                                        data-name="internal_notes"
+                                        data-url="http://localhost/sareeh/sales/set_internal_notes" data-title=""
+                                        data-placement="bottom" data-value="t">
+                                        <span class="svg-icon svg-icon-2x svg-icon-primary me-4">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path opacity="0.3"
+                                                    d="M8 8C8 7.4 8.4 7 9 7H16V3C16 2.4 15.6 2 15 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H5V16.1C5 16.8 5.79999 17.1 6.29999 16.6L8 14.9V8Z"
+                                                    fill="currentColor"></path>
+                                                <path
+                                                    d="M22 8V18C22 18.6 21.6 19 21 19H19V21.1C19 21.8 18.2 22.1 17.7 21.6L15 18.9H9C8.4 18.9 8 18.5 8 17.9V7.90002C8 7.30002 8.4 6.90002 9 6.90002H21C21.6 7.00002 22 7.4 22 8ZM19 11C19 10.4 18.6 10 18 10H12C11.4 10 11 10.4 11 11C11 11.6 11.4 12 12 12H18C18.6 12 19 11.6 19 11ZM17 15C17 14.4 16.6 14 16 14H12C11.4 14 11 14.4 11 15C11 15.6 11.4 16 12 16H16C16.6 16 17 15.6 17 15Z"
+                                                    fill="currentColor"></path>
+                                            </svg>
+                                        </span> <span id="customer_internal_notes"></span>
+                                    </a>
+
+
+
+
+
+
+
+                                </div>
+
+
+                            </div>
+                            <!--end::User-->
+                            <!--begin::Actions-->
+                            <div class="d-flex my-4 me-15">
+                                <div id="popover-content" class="d-none">
+                                    <!--begin::ShareArea-->
+                                    <div class="d-flex flex-wrap justify-content-around fw-semibold fs-6 mb-4 pe-2">
+
+
+                                        <div class="symbol round w-50px h-50px text-center p-4  bg-success me-2">
+                                            <i class="fa-solid fa-square-phone fs-2rem text-light"></i>
+                                        </div>
+
+
+                                        <div class="symbol round w-50px h-50px text-center p-4  bg-danger me-2">
+
+                                            <i class="fa-regular fa-envelope fs-2rem text-light  "
+                                                id="toggle_email_receipt"></i>
+                                        </div>
+
+
+
+
+                                    </div>
+
+
+
+
+
+                                    <!--End::ShareArea-->
+                                </div>
+
+
+
+
+                                <!--begin::Menu-->
+                                <button type="button" class="btn btn-sm btn-icon btn-primary btn-active-light-primary"
+                                    data-kt-menu-trigger="click" data-kt-menu-overflow="true"
+                                    data-kt-menu-placement="top-end">
+                                    <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/general/gen052.svg-->
+                                    <span class="svg-icon svg-icon-white svg-icon-muted svg-icon-2hx"><svg width="24"
+                                            height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="10" y="10" width="4" height="4" rx="2" fill="currentColor"></rect>
+                                            <rect x="17" y="10" width="4" height="4" rx="2" fill="currentColor"></rect>
+                                            <rect x="3" y="10" width="4" height="4" rx="2" fill="currentColor"></rect>
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->
+                                </button>
+                                <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
+                                    data-kt-menu="true" style="">
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">Quick Actions
+                                        </div>
+                                    </div>
+                                    <!--end::Menu item-->
+
+                                    <!--begin::Menu separator-->
+                                    <div class="separator mb-3 opacity-75"></div>
+                                    <!--end::Menu separator-->
+
+                                    <!--begin::Menu item-->
+
+                                    <!--end::Menu item-->
+
+                                    <!--begin::Menu item-->
+
+                                    <!--end::Menu item-->
+
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+
+
+                                        <a href="<?= base_url(); ?>sales/view_delivery_modal/" class="menu-link px-3 "
+                                            id="open_delivery_modal" data-toggle="modal" data-target="#myModal"> <i
+                                                class="ion-android-car"></i>Delivery</a>
+
+                                    </div>
+
+
+
+
+
+                                    <div class="menu-item px-3">
+                                        <a href="<?= base_url(); ?>customers/redeem_series/40" id="redeem_series"
+                                            class="menu-link px-3" title="Redeem Series"><i
+                                                class="ion-ios-compose-outline"></i> Redeem Series</a>
+                                    </div>
+                                    <div class="menu-item px-3">
+                                        <a href="<?= base_url(); ?>customers/pay_now/40" id="pay_now"
+                                            class="menu-link px-3" title="Pay Now"><i
+                                                class="ion-ios-compose-outline"></i> Pay Now</a>
+                                    </div>
+
+                                    <div class="menu-item px-3">
+
+
+
+                                        <a href="<?= base_url(); ?>customers/quick_modal/40/1" id="edit_customer"
+                                            data-target="#kt_drawer_general" data-target-title="New Customer"
+                                            data-target-width="xl" class="menu-link px-3" title="Update Customer"><i
+                                                class="ion-ios-compose-outline"></i> Update Customer</a>
+                                    </div>
+
+                                    <!--end::Menu item-->
+
+                                    <!--begin::Menu item-->
+
+                                    <!--end::Menu item-->
+
+                                    <!--begin::Menu separator-->
+                                    <div class="separator mt-3 opacity-75"></div>
+                                    <!--end::Menu separator-->
+
+                                    <!--begin::Menu item-->
+                                    <div class="menu-item px-3">
+                                        <div class="menu-content px-3 py-3">
+
+
+
+
+                                            <a target="_blank"
+                                                href="<?= base_url(); ?>reports/generate/specific_customer?report_type=complex&amp;start_date=2023-07-11&amp;start_date_formatted=07/11/2023 12:00 am&amp;end_date=2024-07-11%2023:59:59&amp;end_date_formatted=07/11/2024 11:59 pm&amp;customer_id=40&amp;sale_type=all&amp;export_excel=0"
+                                                class="btn btn-success btn-sm px-4">View Report
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!--end::Menu item-->
+                                </div>
+
+                                <!--begin::Menu 2-->
+
+                                <!--end::Menu 2-->
+                                <!--end::Menu-->
+
+
+
+
+                            </div>
+                            <!--end::Actions-->
+                        </div>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Info-->
+                </div>
+                <!-- Customer Badge when customer is added -->
+
+                <div class="customer-action-buttons  btn-group btn-group-justified  d-flex justify-content-center mb-2">
+
+
+
+
+
+
+
+                    <input type="checkbox" name="email_receipt" value="1" id="email_receipt"
+                        class="email_receipt_checkbox hidden">
+                    <input type="checkbox" name="sms_receipt" value="1" id="sms_receipt"
+                        class="sms_receipt_checkbox hidden">
+                    <input type="checkbox" name="delivery" value="1" id="delivery" class="delivery_checkbox hidden">
+
+
+
+
+
+
+
+
+
+
+
+
+
                 </div>
 
-                <div>
-                        <span class="badge badge-light badge-md text-danger p-2 bg-light-danger" id="clear_sale_button" >  Clear  <i class="icon ti-close m-2 text-danger"></i></span>
-                  
-                </div>
-                
 
             </div>
-            <div class=" register-items  itemboxnew">
+
+
+
+            <div class="register-box register-items  itemboxnew">
 
 
                 <div class="register-items-holder">
@@ -2376,9 +2138,9 @@ $this->load->view("partial/offline_header"); ?>
 
 
                     <style>
-                    /* #register tbody {
+                    #register tbody {
                         cursor: move;
-                    } */
+                    }
 
                     #register th.item_sort_able {
                         cursor: pointer;
@@ -2392,7 +2154,7 @@ $this->load->view("partial/offline_header"); ?>
                         top: 50%;
                     }
                     </style>
-                    <div class="spinner" id="grid-loader2tes" style="display: none;">
+                    <div class="spinner" id="grid-loader2" style="display: none;">
                         <div class="rect1"></div>
                         <div class="rect2"></div>
                         <div class="rect3"></div>
@@ -2401,16 +2163,18 @@ $this->load->view("partial/offline_header"); ?>
                         class="table table-striped align-middle table-row-dashed fs-6 gy-3 dataTable no-footer">
                         <thead>
                             <tr
-                                class="text-start text-gray-400 fw-bold fs-7  gs-0  pos_bg_dark">
-                                <th class=" py-1  text-center  text-black "><a href="javascript:void(0);"
-                                        id="sale_details_expand_collapse" class="expand"> <i class="icon ti-angle-down"></i>  </a></th>
-                                <th class=" py-1 item_sort_able  text-black item_name_heading vertical-align ">Item Name</th>
-                                <th class=" py-1 item_sort_able min-w-100px text-center text-black sales_price vertical-align ">Price
+                                class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0 bg-light-primary pos-bg-dark">
+                                <th class=" py-1 min-w-50px text-center  text-light "><a href="javascript:void(0);"
+                                        id="sale_details_expand_collapse" class="expand">+</a><span id="total_items"
+                                        class=" symbol-badge badge    badge-circle badge-warning  ">1</span></th>
+                                <th class=" py-1 item_sort_able  text-light item_name_heading ">Item Name</th>
+                                <th class=" py-1 item_sort_able min-w-150px text-center text-light sales_price ">Price
                                 </th>
-                                <th class=" py-1 item_sort_able min-w-100px sales_quantity  text-black vertical-align text-center">Quantity</th>
-                                <th class=" py-1 item_sort_able min-w-100px text-center sales_total text-black vertical-align ">Total
+                                <th class=" py-1 item_sort_able sales_quantity  text-light"><span
+                                        class=" symbol-badge badge   badge-circle badge-warning  "
+                                        id="total_items_qty">1</span>Quantity</th>
+                                <th class=" py-1 item_sort_able min-w-150px text-center sales_total text-light">Total
                                 </th>
-                                <th class="min-w-50px"></th>
                             </tr>
                         </thead>
 
@@ -2421,24 +2185,27 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of Store Account Payment Mode -->
 
                 <!-- /.Register Items first pan end here -->
-                <div class=" register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100 pos_bg_dark justify-content-space-between"
+                <div class="register-box register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100"
                     id="pos_footer">
-                    <div class=" d-flex flex-wrap ">
-
-                    <div class=" d-flex  border border-light  rounded min-w-125px h-80px py-3 px-4 align-item-center flex-direction-column">
 
 
+                    <span
+                        class="list-group-item global-discount-group border border-light border-dashed rounded min-w-125px h-80px py-3 px-4  ">
 
-                        <i class="fonticon-content-marketing fs-6" id="discount_details_reload"></i>
-                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
-                            Discount (OMR) 
+
+
+
+                        <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
+                            Discount (OMR) <i class="fonticon-content-marketing" id="discount_details_reload"></i>
                         </div>
 
-                        <div class="fs-2 fw-bold counted text-center" id="total_discount">0 </div>
-                    </div>
+                        <div class="fs-1 fw-bold counted text-center" id="total_discount">
+
+                            0 </div>
+                    </span>
 
 
-                    <span class="svg-icon   svg-icon-primary svg-icon-2x vertical-center">
+                    <span class="svg-icon   svg-icon-primary svg-icon-2x">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
                         </svg>
@@ -2447,47 +2214,66 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                    <div class="sub-total  min-w-125px h-80px py-3 px-4 d-flex align-item-center flex-direction-column  bg-unset">
-                        <div class="fw-semibold fs-8 text-dark-400 my-2">Sub Total (OMR)
+                    <div
+                        class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
+                        <div class="fw-semibold fs-6 text-dark-400">Sub Total (OMR)
+                            
+                       
                         </div>
                         <div class="fs-1 fw-bold counted">
-                            <a href="#" id="sub_total" class=" xeditable-subtotal editable-click" data-validate-number="true" data-type="text" data-value="0" data-pk="1" data-title="Sub Total"> 0</a>
+
+
+
+                            <a href="#" id="sub_total" class=" editable-click" data-validate-number="true"
+                                data-type="text" data-value="5" data-pk="1" data-title="Sub Total"> 0</a>
+
+
+
                         </div>
+
 
                     </div>
 
-                    <span class="svg-icon   svg-icon-primary svg-icon-2x vertical-center">
+                    <span class="svg-icon   svg-icon-primary svg-icon-2x">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
                                 transform="rotate(-90 11.364 20.364)" fill="currentColor"></rect>
                             <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor"></rect>
                         </svg>
                     </span>
-
-
-                    <div class=" d-flex  border border-light  rounded min-w-125px h-80px py-3 px-4 align-item-center flex-direction-column">
-
-
-
-                            <a href="#" class="" id="edit_taxes_gen" data-id="-1"
-                                    data-target="#kt_drawer_general" data-target-title="Edit Taxes"
-                                    data-target-width="lg"><i class="fonticon-content-marketing fs-6"></i>
-                            </a>
-                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
-                            Tax (OMR)
+                    <div class="d-none" id="list_tax">
+                        <div
+                            class="list-group-item  border border-dashed rounded min-w-125px h-80px py-3 px-4 me-3  mb-3">
+                            <div class="fw-semibold fs-6 text-dark-400">
+                                <a href="<?= base_url(); ?>/sales/delete_tax/5%25%20VAT%20Rate%201"
+                                    class="delete-tax remove"><i class="icon ion-android-cancel"></i></a>
+                                5% VAT Rate 1:
+                            </div>
+                            <div class="fs-1 fw-bold counted">
+                                0 </div>
                         </div>
 
-                        <div class="amount total-tax fs-2 fw-bold counted" data-speed="1000" data-currency="OMR"
-                                data-decimals="0" id="taxes">
-                                0
-                            </div>
+
+
                     </div>
 
 
 
-
-                  
-                    <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x vertical-center">
+                    <div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
+                        <div class="tax amount">
+                            <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
+                                Tax (OMR)   <a
+                                href="#" class="" id="edit_taxes_gen" data-id="-1"
+                                data-target="#kt_drawer_general" data-target-title="Edit Taxes"
+                                data-target-width="lg"><i class="fonticon-content-marketing"></i></a>
+                             </div>
+                            <div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
+                                data-decimals="0" id="taxes">
+                                0
+                            </div>
+                        </div>
+                    </div>
+                    <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
                         <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
                         <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
                                 height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2502,7 +2288,7 @@ $this->load->view("partial/offline_header"); ?>
                         <!--end::Svg Icon-->
                     </span>
 
-                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-unset ">
+                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-primary ">
                         <div class="total amount">
                             <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
                                 Total (OMR)
@@ -2515,7 +2301,7 @@ $this->load->view("partial/offline_header"); ?>
                     </div>
 
 
-                    <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x vertical-center">
+                    <span class="svg-icon   mt-3 svg-icon-primary svg-icon-2x">
                         <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr080.svg-->
                         <span class="svg-icon svg-icon-muted svg-icon-2hx"><svg class="pos-top-icon" width="24"
                                 height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -2529,30 +2315,38 @@ $this->load->view("partial/offline_header"); ?>
                         </span>
                         <!--end::Svg Icon-->
                     </span>
-                    <div class="d-flex flex-direction-column align-items-center rounded amount-block  min-w-125px h-80px py-3 px-4 bg-primary  me-3">
-                    <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>
-                        
-                            <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
+                    <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-due  me-3">
+                        <div class="total amount-due">
+                            <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
                                 Amount Due (OMR)
 
 
-                               
+                                <i class="fonticon-content-marketing" title="" id="kt_drawer_payments_list"></i>
 
 
 
                             </div>
-                        <div class="amount fs-2 fw-bold counted" id="amount_due">
+                            <div class="amount fs-1 fw-bold counted" id="amount_due">
                                 0 </div>
+                        </div>
                     </div>
                     <!-- ./amount block -->
 
                     <!-- Payment Applied -->
-                    </div>
 
                     <!-- Add Payment -->
-                    <div class=" add-payment border border-light border-dashed rounded w-25 py-3 px-4 vertical-center">
+                    <div class=" add-payment border border-light border-dashed rounded min-w-125px py-3 px-4">
                         <!-- Check Work Order Permission -->
-                      
+                        <div class="row">
+                            <div id="create_invoice_holder" class="create_invoice_holder col-md-6 hidden">
+                                <div class="text-left">
+                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
+                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
+                                    <label for="create_invoice"
+                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
+                                </div>
+                            </div>
+                        </div>
                         <form action="#" id="add_payment_form" autocomplete="off" method="post" accept-charset="utf-8">
 
                             <div class="input-group add-payment-form">
@@ -2561,11 +2355,10 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                <div class="input-group-text register-mode sale-mode dropup h-43px border-radius-left">
+                                <div class="input-group-text register-mode sale-mode dropup">
 
 
-                                    <a tabindex="-1" href="#"
-                                        class="none active text-light  text-hover-primary payment_option_selected"
+                                    <a tabindex="-1" href="#" class="none active text-light  text-hover-primary"
                                         title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown"
                                         aria-haspopup="true" role="button" aria-expanded="false"><i
                                             class="fa fa-money-bill"></i>
@@ -2573,7 +2366,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                    <ul class="dropdown-menu sales-dropdown payment_dropdown">
+                                    <ul class="dropdown-menu sales-dropdown">
                                         <?php foreach ($payment_options as $key => $value) {
 										
 										$active_payment =  ($default_payment_type == $value) ? "selected" : "";
@@ -2593,14 +2386,14 @@ $this->load->view("partial/offline_header"); ?>
 
                                 <input type="hidden" name="payment_types" id="payment_types" value="Cash">
                                 <input type="input" name="amount_tendered" value="2" id="amount_tendered"
-                                    class="form-control h-43px" data-title="Payment Amount" placeholder="Enter Cash Amount">
+                                    class="form-control" data-title="Payment Amount" placeholder="Enter Cash Amount">
 
-                                <span class="input-group-text h-43px border-radius-right">
+                                <span class="input-group-text">
                                     <a href="#" class="" id="add_payment_button">Add Payment</a>
                                 </span>
-                                <span class="input-group-text h-43px border-radius-right" id="finish_sale">
+                                <span class="input-group-text" id="finish_sale">
 
-                                    <a href="#" class="text-white" id="finish_sale_button">Complete Sale</a>
+                                    <a href="#" class="" id="finish_sale_button">Complete Sale</a>
                                 </span>
 
                                 <!-- <div class="form-group">
@@ -2618,16 +2411,7 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of pos footer -->
             </div>
 
-            <div class="row">
-                            <div id="create_invoice_holder" class="create_invoice_holder col-md-6 hidden">
-                                <div class="text-left">
-                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
-                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
-                                    <label for="create_invoice"
-                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
-                                </div>
-                            </div>
-                        </div>
+
 
 
 
@@ -2906,7 +2690,7 @@ $this->load->view("partial/offline_header"); ?>
 
     <li class="list-group-item">
 			<span class="key">
-				<a href="#" class="delete-payment remove" id="delete_payment_{{index}}" data-payment-index="{{index}}"><i class="fa fa-trash text-danger"></i></a>
+				<a href="#" class="delete-payment remove" id="delete_payment_{{index}}" data-payment-index="{{index}}"><i class="icon ion-android-cancel"></i></a>
 				{{type}}
 			</span>
 			<span class="value">{{amount}}</span>
@@ -2949,7 +2733,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="d-flex align-items-end flex-stack mb-1"></div>
 
                                 </div>
-                            <span class="position-absolute badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span>
+                            <span class="position-absolute symbol-badge badge   badge-circle badge-light-primary fs-2 h-30px w-30px  bottom-5 end-5 ">+</span>
                         </div>
                         </div>
 </script>
@@ -2957,129 +2741,89 @@ $this->load->view("partial/offline_header"); ?>
 <script id="cart-item-template" type="text/x-handlebars-template">
 
 
+
     <tbody class="fw-bold text-gray-600" data-line="{{index}}">
 
         <tr class="register-item-details">
 
 
-            <td class="text-center  fs-7">
+            <td class="text-center  fs-6">
 
 
 
                 <span
-                    class="toggle_rows   "
+                    class="toggle_rows btn btn-sm btn-icon btn-light btn-active-light-primary toggle h-25px w-25px"
                     style="position:relative">
-                    <i class="icon ti-angle-down"></i>
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr087.svg-->
+                    <span class="svg-icon svg-icon-3 m-0 toggle-off">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="11" y="18" width="12" height="2" rx="1"
+                                transform="rotate(-90 11 18)" fill="currentColor"></rect>
+                            <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr089.svg-->
+                    <span class="svg-icon svg-icon-3 m-0 toggle-on">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect x="6" y="11" width="12" height="2" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
                 </span> &nbsp;
             </td>
 
-            <td class="fs-7">
+            <td class="fs-6">
 
                 <a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
                     data-target="#kt_drawer_general" data-target-title="View Item"
-                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
+                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-primary "
                     data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                     data-bs-placement="top" title="{{name}}">{{name}}</a>
             </td>
-            <td class="text-center fs-7">
+            <td class="text-center fs-6">
                 
 
                     <a href="#" id="price_{{index}}" class="xeditable xeditable-price editable" data-validate-number="true" data-type="text" data-pk="1" data-name="price" data-index="{{index}}" data-title="Price">{{to_currency_no_money price}}</a>									 
 
 
             </td>
-            <td class="text-center fs-7">
-                <i onclick="inc_de_qty('{{index}}', -1)"
-                        class="icon ti-minus text-black cursor-pointer"></i>
+            <td class="text-center fs-6">
+                <button type="button" onclick="inc_de_qty('{{index}}', -1)"
+                    class="btn w-25px h-25px  btn-icon rounded-circle btn-light"><i
+                        class="bi bi-dash fs-1"></i></button>
             
-                <a href="#" id="quantity_{{index}}" class="xeditable edit-quantity mx-1" data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-index="{{index}}" data-title="Qty.">{{to_quantity quantity}}</a>
+                <a href="#" id="quantity_{{index}}" class="xeditable edit-quantity " data-type="text"  data-validate-number="true"  data-pk="1" data-name="quantity" data-index="{{index}}" data-title="Qty.">{{to_quantity quantity}}</a>
             
                 
-               <i
-                        class="icon ti-plus text-black cursor-pointer" onclick="inc_de_qty('{{index}}', 1)"></i>
+                <button type="button" onclick="inc_de_qty('{{index}}', 1)"
+                    class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i
+                        class="bi bi-plus fs-1"></i></button>
             </td>
 
-            <td class="text-center fs-7" style="padding-right:10px">
+            <td class="text-center fs-6" style="padding-right:10px">
 
-                <a href="#" id="total_{{index}}" class=" xeditable edit-price-line-total" data-validate-number="true"  data-pk="1" data-name="price-line-total" data-index="{{index}}">{{to_currency_no_money line_total}}</a>
-
-
-                
+                <a href="#" id="total_{{index}}" class=" editable editable-click">{{to_currency_no_money line_total}}	</a>
 
 
+                <a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item pull-right"
+                    tabindex="-1" data-id="{{index}}" data-item_id="{{item_id}}"><i class="icon ion-android-cancel"></i></a>
 
-
-
-                    {{#sn_check all_data.is_serialized name }}
-                    {{#sn_modal_check  serialnumber  permissions.require_to_add_serial_number_in_pos }}
-                                <div class="modal fade look-up-receipt" id="add_sn_modal_{{index}}"
-                                    role="dialog" aria-labelledby="lookUpReceipt" aria-hidden="true">
-                                    <div class="modal-dialog customer-recent-sales">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label=<?php echo json_encode(lang('close')); ?>><span
-                                                        aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="lookUpReceipt">
-                                                    <?php echo lang('add_serial_number') ?> <? lang('item') ?>: {{name}}</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <label><?php echo lang('Please_select_Serial_Number') ?></label>
-
-
-                                                {{#count all_data.serial_numbers  }}
-                                                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                                        <a href="#" id="sserialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="select" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
-                                                        {{serialnumberText}}
-                                                        </a>
-                                                    </div>
-                                                {{else}}
-                                                <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                                        
-                                                        
-                                                    {{#if  permissions.edit_serail_no}}
-                                                                                
-                                                        <a href="#" id="sserialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"   data-type="text" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
-                                                        {{serialnumberText}} 
-                                                        </a>
-                                                        {{else}}
-                                                        <span id="sserialnumber_{{index}}>" data-type="text" data-pk="1" data-name="serialnumber" data-title="<?php echo H(lang('serial_number')); ?>">              
-                                                            {{serialnumberText}}
-                                                        </span>
-                                                        
-                                                        {{/if}}
-
-                                                    </div>
-
-                                                {{/count}}
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                             
-                                                        
-                        {{/sn_modal_check}}
-                    {{/sn_check}}
             </td>
-            <td class="text-center fs-7"><a href="<?= base_url(); ?>/sales/delete_item/{{index}}" data-cart-index="{{index}}" class="delete-item "
-                    tabindex="-1" data-id="{{index}}" data-item_id="{{item_id}}"><i class="fa fa-trash text-danger"></i></a></td>
-
         </tr>
-        <tr class="register-item-bottom bg-white collapse">
+        <tr class="register-item-bottom collapse">
             <td>&nbsp;</td>
             <td colspan="5">
 
 
 
                 <div class="row">
-
-
                     <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('discount_percent'); ?></div>
+                        <div class="text-gray-800 fs-7">Discount Percentage</div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
-                                href="#" id="discount_{{index}}" class="xeditable-item-percentage editable editable-click"
+                                href="#" id="discount_0" class="xeditable editable editable-click"
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
                                 data-name="discount_percent" data-value="{{discount_percent}}"
                                 
@@ -3088,265 +2832,37 @@ $this->load->view("partial/offline_header"); ?>
                         </div>
                     </div>
 
-                    {{#if all_data.has_variations}}
-                        <?php if ($this->Employee->has_module_action_permission('sales', 'edit_variation', $this->Employee->get_logged_in_employee_info()->person_id)) : ?>
-                                <div class="col-md-3 mt-3">
-                                    <div class="text-gray-800 fs-7"><?php echo lang('variation'); ?></div>
-                                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                    <a class="myeditable" style="cursor:pointer;" onclick="edit_variation({{index}});"><?php echo lang('edit'); ?></a>
 
-                                    </div>
-                                </div>
-                        <?php endif; ?>
-                    {{/if}}
-
-                    {{#if modifiers}}
-                                <div class="col-md-3 mt-3">
-                                    <div class="text-gray-800 fs-7"><?php echo lang('modifiers'); ?></div>
-                                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                    <a style="cursor:pointer;" onclick="enable_popup_modifier({{index}});" class="myeditable"><?php echo lang('edit'); ?></a>
-
-                                    {{#if selected_item_modifiers}}
-                                        <div class="text-muted fs-7 fw-bold">
-                                            <ul>
-                                        {{#each selected_item_modifiers as |modifier modifierIndex|}}
-                                                <li>
-                                                    <!-- {{../index}} is used for outer item_index -->
-                                               <a href="#" id="modifier_{{modifierIndex}}"  data-index="{{../index}}" class="xeditable edit-price" data-type="text" data-validate-number="true" data-pk="1" data-name="modifier_price" data-modifier-item-id="{{modifier_item_id}}" data-title="<?php echo lang('price'); ?>" data-value="{{unit_price}}">{{unit_price_currency}}</a>
-                                               : 
-                                                   {{name}} >>  {{modifier_item_name}} 
-                                                </li>
-                                                
-                                        {{/each}}
-                                            </ul>
-                                        </div>
-                                    {{/if}}
-                                    </div>
-                                </div>
-                    {{/if}}
-
-
-                   
-                                             
-                {{#if is_suspended }}
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('qty_picked_up'); ?></div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
-                                href="#" id="discount_{{index}}" class="xeditable-item-quantity-received  editable-click"
-                                data-type="text" data-validate-number="true" data-index="{{index}}"  data-total-qty="{{quantity}}" data-pk="1"
-                                data-name="quantity_received" data-value="{{quantity_received}}"
-                                
-                                data-title="Discount Percentage">{{quantity_received}}</a>
-
-                        </div>
-                    </div>
-                {{/if}}
-
-                {{#if all_data.all_tier_info }}
-														<div class="col-md-3 mt-3">
-															<!-- cart items details  tier  -->
-															<div class="text-gray-800 fs-7"><?php echo lang('tier'); ?> </div>
-															<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                                            {{#or permissions.allow_price_override_regardless_of_permissions  permission_edit_sale_price}}
-																
-																<a href="# " class="myeditable" id="tier_{{index}}" data-index="{{index}}" data-name="tier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('tier')); ?>">
-                                                                    {{#if tier_id}}
-                                                                                <span>{{tier_name}}</span>
-                                                                    {{/if}}
-
-                                                                </a>
-
-                                                                {{else}}
-
-                                                                {{#if tier_id}}
-                                                                                <span>{{tier_name}}</span>
-                                                                    {{/if}}
-                                                            {{/or}}
-															</div>
-														</div>
-													
-                                                        {{/if}}
                 
 
-                {{#if quantity_units }}
-                    <div class="col-md-3 mt-3">
-                        <!-- cart items details  tier  -->
-                        <div class="text-gray-800 fs-7"><?php echo lang('quantity_units'); ?> </div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                            
-                            <a href="#" id="quantity_unit_{{index}}" data-index="{{index}}" data-name="quantity_unit_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('quantity_unit_id')); ?>">
-                                {{#if quantity_unit_id}}
-                                            <span>{{quantity_unit_name}}</span>
-                                {{/if}}
-
-                            </a>
-
-                        
-                        
-                        </div>
-                    </div>
-                {{/if}}
-
-
-                {{#cost_price_permission permissions.always_use_average_cost_method permissions.change_cost_price permissions.allow_price_override_regardless_of_permissions  permission_edit_sale_price }}
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('cost_price'); ?></div>
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
-                                href="#" id="cost_price_{{index}}" class="xeditable-cost_price  editable-click"
-                                data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
-                                data-name="cost_price" data-value="{{cost_price}}"
-                                
-                                data-title="Discount Percentage">{{cost_price}}</a>
-
-                        </div>
-                    </div>
-                {{/cost_price_permission}}
 
 
 
-                {{#supplier_permission permissions.hide_supplier_on_sales_interface  permissions.disable_supplier_selection_on_sales_interface }}
-                <div class="col-md-3 mt-3">
-                    <div class="text-gray-800 fs-7"><?php echo lang('supplier'); ?> </div>
-                    <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                 
-                        
-                        <a href="#" id="supplier_{{index}}" class="myeditable" data-index="{{index}}" data-name="supplier_id" data-type="select" data-pk="1" data-url="" data-title="<?php echo H(lang('supplier')); ?>">
-                            {{#if supplier_id}}
-                                        <span>{{supplier_name}}</span>
-                            {{/if}}
+                
 
-                        </a>
+                    <!-- Serial Number if exists -->
 
-                   
-                    </div>
-                </div>
-                {{/supplier_permission}}
+                
+                
 
-            
 
-                    
-                    {{#if selected_rule}}
+
                     <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7">{{selected_rule.name}}</div>
-                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-                                {{to_currency_no_money selected_rule.rule_discount}}
-                                                        
-
-                        </div>
-                    </div>
-
-                    {{/if}}
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('tax'); ?></div>
+                        <div class="text-gray-800 fs-7">Tax</div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                            <a href="#" class=" edit_taxes_item myeditable"
+                            <a href="#" class=" edit_taxes_item"
                                  data-target="#kt_drawer_general"
                                 data-target-title="Edit Taxes" id="" data-id="{{index}}" data-target-width="lg">Edit Taxes</a>
                         </div>
                     </div>
-                    {{#sn_check all_data.is_serialized name }}
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('serial_number'); ?></div>
-
-                        {{#count all_data.serial_numbers  }}
-                            <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber"  class="  myeditable" data-index="{{index}}"   data-type="select" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
-                                   {{serialnumberText}}
-                                </a>
-                            </div>
-                        {{else}}
-                        <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
-                                
-                                
-                               {{#if  permissions.edit_serail_no}}
-                                                        
-                                <a href="#" id="serialnumber_{{index}}" data-name="serialnumber" data-index="{{index}}"  class="  myeditable"  data-type="text" data-pk="1"  data-title="<?php echo H(lang('serial_number')); ?>">
-                                   {{serialnumberText}} 
-                                </a>
-                                {{else}}
-                                <span id="serialnumber_{{index}}>" data-type="text" data-pk="1" data-name="serialnumber" data-title="<?php echo H(lang('serial_number')); ?>">              
-                                    {{serialnumberText}}
-                                </span>
-                                
-                                {{/if}}
-
-                            </div>
-
-                        {{/count}}
-
-                        
-
-
-
-                    </div>
-
-                    {{/sn_check}}
-
-
-
-                    <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7">   
-                            <?php
-									switch ($this->config->item('id_to_show_on_sale_interface')) {
-										case 'number':
-											echo lang('item_number_expanded');
-											break;
-
-										case 'product_id':
-											echo lang('product_id');
-											break;
-
-										case 'id':
-											echo lang('item_id');
-											break;
-
-										default:
-											echo lang('item_number_expanded');
-											break;
-									}
-			                    ?>
-                        </div>
-
-                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-                                {{all_data.id_to_show_on_sale_interface_val}}
-                        </div>
-                    </div>
-                    {{#notval permissions.hide_description_on_sales_and_recv  }}
-                    <div class="col-md-6 mt-3">
-                        <div class="text-gray-800 fs-7"><?php echo lang('description'); ?></div>
-                        <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-                            {{#greaterThanZero permissions.allow_alt_description }}
-                        <a
-                                href="#" id="description_{{index}}" class="xeditable-description  editable-click"
-                                data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
-                                data-name="description" data-value="{{description}}"
-                                
-                                data-title="Discount Percentage">{{description}}</a>
-
-                                {{else}}
-                                <span>{{description}}</span>
-
-                                {{/greaterThanZero}}
-
-                        </div>
-                    </div>
-                {{/notval}}
-
-                   
-
-              
-
-
 
                 </div>
-               
-               
             </td>
-           
         </tr>
-        
+
     </tbody>
-   
+
 </script>
 
 <script id="list-hold-cart-template" type="text/x-handlebars-template">
@@ -3418,12 +2934,12 @@ $this->load->view("partial/offline_header"); ?>
 
                     <!--end::Notice-->
                     <!--begin::Input group-->
-                    <div class="row">
+                   <div class="row">
                         <div class="col-md-12">
 
 
 
-                            <input type="hidden" class="current_cart_item">
+                                <input type="hidden" class="current_cart_item">
                             <!-- /////////// -->
 
                             <div class="mb-2 fv-row">
@@ -3431,9 +2947,8 @@ $this->load->view("partial/offline_header"); ?>
                                 <label
                                     class=" fs-5 fw-semibold mb-2 "><?php echo form_label(lang('tax_class') . ': ', 'tax_class'); ?></label>
 
-                                <select name="tax_class" id="tax_class"
-                                    class="form-control form-control-solid tax_class_main">
-                                    <!-- Options will be loaded here -->
+                                 <select name="tax_class" id="tax_class" class="form-control form-control-solid tax_class_main">
+                                <!-- Options will be loaded here -->
                                 </select>
                             </div>
 
@@ -3447,8 +2962,8 @@ $this->load->view("partial/offline_header"); ?>
                                     <!--begin::Form group-->
                                     <div class="">
                                         <div data-repeater-list="kt_docs_repeater_basic">
-
-
+                                            
+                                            
                                             <div class="repeater-item" data-repeater-item>
                                                 <div class=" row">
                                                     <div class="col-md-5">
@@ -3467,7 +2982,7 @@ $this->load->view("partial/offline_header"); ?>
                                                     <div class="col-md-2">
                                                         <a href="javascript:;" data-repeater-delete
                                                             class="btn btn-sm btn-light-danger mt-3 mt-md-8">
-                                                            <i class="fa fa-trash text-danger"></i>
+                                                            <i class="fa fa-trash"></i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -3495,10 +3010,9 @@ $this->load->view("partial/offline_header"); ?>
                     <!--end::Modal body-->
                     <!--begin::Modal footer-->
                     <div class="modal-footer ">
-                        <input type="button" name="submitf" value="Save" id="submitf"
-                            class="submit_button btn btn-primary pt-2">
+                    <input type="button" name="submitf" value="Save" id="submitf" class="submit_button btn btn-primary pt-2">
                         <!--begin::Button-->
-
+                     
                         <!--end::Button-->
                         <!--begin::Button-->
                         <!-- <button type="submit" id="kt_modal_create_api_key_submit" class="btn btn-primary">
@@ -3514,202 +3028,77 @@ $this->load->view("partial/offline_header"); ?>
                 <!--end::Modal content-->
             </div>
             <!--end::Modal dialog-->
-        </div>
-
-                             
-
-
-
-        <script>
-        $("#tax_form").submit(function(e) {
-            e.preventDefault();
-            //If we don't have prop checked for tax_cumulatives add another tax_cumulatives[] = 0 to form
-            if (!$("#tax_cumulatives").prop('checked')) {
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'tax_cumulatives[]',
-                    value: '0'
-                }).appendTo('#tax_form');
-            }
-            $('#myModal').modal('hide');
-            $("#tax_form").ajaxSubmit({
-                success: function(response) {
-                    $("#sales_section").html(response);
+            </div>
+            <script>
+            $("#tax_form").submit(function(e) {
+                e.preventDefault();
+                //If we don't have prop checked for tax_cumulatives add another tax_cumulatives[] = 0 to form
+                if (!$("#tax_cumulatives").prop('checked')) {
+                    $('<input>').attr({
+                        type: 'hidden',
+                        name: 'tax_cumulatives[]',
+                        value: '0'
+                    }).appendTo('#tax_form');
                 }
+                $('#myModal').modal('hide');
+                $("#tax_form").ajaxSubmit({
+                    success: function(response) {
+                        $("#sales_section").html(response);
+                    }
+                });
             });
-        });
-        </script>
-        <script>
-        $(document).ready(function() {
-            $('#tax_class').change(function() {
-                // Check if the selected value is "None"
-                if ($(this).val() == "") {
+            </script>
+            <script>
+            $(document).ready(function() {
+                $('#tax_class').change(function() {
+                    // Check if the selected value is "None"
+                    if ($(this).val() == "") {
+                        $('#all_tax').show(); // Show the div
+                    } else {
+                        $('#all_tax').hide(); // Hide the div
+                    }
+                });
+                if ($('#tax_class').val() == "") {
                     $('#all_tax').show(); // Show the div
                 } else {
                     $('#all_tax').hide(); // Hide the div
                 }
-            });
-            if ($('#tax_class').val() == "") {
-                $('#all_tax').show(); // Show the div
-            } else {
-                $('#all_tax').hide(); // Hide the div
-            }
-            var maxItems = 6;
+                var maxItems = 6;
 
-            $('#kt_docs_repeater_basic').repeater({
-                initEmpty: false,
+                $('#kt_docs_repeater_basic').repeater({
+                    initEmpty: false,
 
-                defaultValues: {
-                    'text-input': 'foo'
-                },
+                    defaultValues: {
+                        'text-input': 'foo'
+                    },
 
-                show: function() {
-                    // Check the current number of items
-                    var currentItems = $('#kt_docs_repeater_basic .repeater-item')
+                    show: function() {
+                        // Check the current number of items
+                        var currentItems = $('#kt_docs_repeater_basic .repeater-item')
                         .length; // +1 includes the one being added now
-                    console.log("s", currentItems);
-                    if (currentItems <= maxItems) {
-                        $(this).slideDown();
-                    } else {
-                        alert('Maximum of 5 items can be added.');
-                        // This is crucial: prevents the item from being added if max is reached
-                        $(this).remove();
+                        console.log("s", currentItems);
+                        if (currentItems <= maxItems) {
+                            $(this).slideDown();
+                        } else {
+                            alert('Maximum of 5 items can be added.');
+                            // This is crucial: prevents the item from being added if max is reached
+                            $(this).remove();
+                        }
+                    },
+
+                    hide: function(deleteElement) {
+                        $(this).slideUp(deleteElement);
                     }
-                },
-
-                hide: function(deleteElement) {
-                    $(this).slideUp(deleteElement);
-                }
+                });
             });
-        });
-        </script>
-    </div>
-    <div id="kt_drawer_general_body_lg_tax_list"></div>
-</div>
-<div class="modal fade" id="attributeModal" tabindex="-1" role="dialog" aria-labelledby="attributeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title" id="attributeModalLabel">Select an Option</h5>
-
-            </div>
-            <div class="modal-body">
-
-
-                <!-- Options will be dynamically inserted here -->
-                <div id="attributeOptions"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="backAttribute">Back</button>
-                <button type="button" class="btn btn-primary" id="nextAttribute">Next</button>
-            </div>
+            </script>
         </div>
-    </div>
-</div>
-
-<div class="modal fade look-up-receipt" id="choose_modifiers" role="dialog" aria-labelledby="lookUpReceipt"
-    aria-hidden="true">
-    <div class="modal-dialog customer-recent-sales">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label=<?php echo json_encode(lang('close')); ?>><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="lookUpReceipt"><?php echo lang('modifiers'); ?></h4>
-            </div>
-            <div class="modal-body clearfix">
-                <div id="modifiersOptions"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveAttribute">Save</button>
-            </div>
+        <div id="kt_drawer_general_body_lg_tax_list"></div>
         </div>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->
-
-
-<div class="modal fade " id="get_return_id" tabindex="-1" role="dialog" aria-labelledby="attributeModalLabel"
-    aria-hidden="true" >
-                                    <div class="modal-dialog customer-recent-sales">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label=<?php echo json_encode(lang('close')); ?>><span
-                                                        aria-hidden="true">&times;</span></button>
-                                                <h4 class="modal-title" id="lookUpReceipt">
-                                                    <?php echo lang('return') ?> </h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <label><?php echo lang('sale_id') ?></label>
-                                                <input type="text" id="return_sale_id" name="return_sale_id" class="form-control" placeholder="<?php echo lang('return_sale_id') ?>" >
-
-
-                                            </div>
-                                            <div class="modal-footer ">
-                                          
-                                           <button type="button" id="submit_return_sale" class="btn btn-primary"><?= lang('submit') ?>
-                                                </button> 
-                                        </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
-                                    data-kt-drawer-activate="true" data-kt-drawer-toggle="#kt_drawer_suspend_offline"
-                                    data-kt-drawer-close="#kt_drawer_example_basic_close" data-kt-drawer-width="900px"
-                                    style="width: 500px !important;">
-                                    <div class="card border-0 shadow-none rounded-0 w-100">
-                                        <!--begin::Card header-->
-                                        <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
-                                            id="kt_app_layout_builder_header"
-                                            style="background-image:url('<?= base_url(); ?>assets/css_good/media/misc/pattern-4.jpg')">
-
-                                            <!--begin::Card title-->
-                                            <h3 class="card-title fs-3 fw-bold text-white flex-column m-0">
-
-                                                <?php echo lang('holded_carts'); ?> </h3>
-                                            <!--end::Card title-->
-
-                                            <!--begin::Card toolbar-->
-                                            <div class="card-toolbar">
-                                                <button type="button" class="btn btn-sm btn-icon btn-color-white p-0 w-20px h-20px rounded-1"
-                                                    id="kt_app_layout_builder_close">
-                                                    <i class="ki-duotone ki-cross-square fs-2"><span class="path1"></span><span
-                                                            class="path2"></span></i> </button>
-                                            </div>
-                                            <!--end::Card toolbar-->
-                                        </div>
-                                        <!--end::Card header-->
-                                        <!--begin::Card body-->
-                                        <div class="card-body position-relative" id="kt_app_layout_builder_body">
-                                            <!-- Check Store Config Change Work Order Status -->
-
-                                            <div class="card card-flush h-lg-50">
-
-                                                <!--begin::Body-->
-                                                <div class="card-body pt-5" id="holded_list">
-
-
-
-                                                </div>
-                                                <!--end::Body-->
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <?php $this->load->view("sales/standby/js/offline_js"); ?>
+        <?php $this->load->view("sales/standby/js/offline_js"); ?>
       
 
          
-      <?php $this->load->view("partial/offline_footer"); ?>
+        <?php $this->load->view("partial/offline_footer"); ?>
 
+      

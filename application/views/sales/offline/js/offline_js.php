@@ -582,7 +582,7 @@ $('#grid-loader2').hide();
 
 
 $(document).ready(function () {
-    for (let i = 0; i < 10; i++) { // Adjust the number of placeholders
+    for (let i = 0; i < 20; i++) { // Adjust the number of placeholders
     $("#category_item_selection_wrapper_new").append(`
         <div class="col-sm-4 col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item register-holder dummy-card">
             <div class="card card-flush bg-light h-xl-100 w-100 ">
@@ -1435,19 +1435,12 @@ $(document).on("click", '#finish_sale_button', function(e) {
             }
 
             //Reset cart
-            cart = {};
-            cart['items'] = [];
-            cart['payments'] = [];
-            cart['customer'] = {};
-            cart['extra'] = {};
-            cart['custom_fields'] = {};
-
-            cart['taxes'] = [];
-            var sale = localStorage.getItem('cart');
-            displayReceipt(JSON.parse(sale));
+           
+            var sale = JSON.parse(localStorage.getItem('cart')|| "{}"); 
+          
 
 
-            check_for_custom = JSON.parse(sale).custom_fields;
+            check_for_custom = sale.custom_fields;
             // console.log(check_for_custom);
             for (var fieldName in check_for_custom) {
                 if (check_for_custom.hasOwnProperty(fieldName)) {
@@ -1455,29 +1448,30 @@ $(document).on("click", '#finish_sale_button', function(e) {
                     $('input[name="' + fieldName + '"]').val('');
                 }
             }
-            //Save sales
-            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-
-            if (current_edit_index !== null) {
-                allSales[current_edit_index] = JSON.parse(sale);
-            } else {
-                allSales.push(JSON.parse(sale));
-            }
-            localStorage.setItem("sales", JSON.stringify(allSales));
-            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
 
             $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
-                    offline_sales: JSON.stringify(allSales),
+                    offline_sales: JSON.stringify([sale]),
                 },
                 function(response) {
                     if (response.success) {
-                        $('#sync_offline_sales_button').remove();
+                        displayReceipt(sale);
+                        cart = {};
+                        cart['items'] = [];
+                        cart['payments'] = [];
+                        cart['customer'] = {};
+                        cart['extra'] = {};
+                        cart['custom_fields'] = {};
+
+                        cart['taxes'] = [];
+
+                        localStorage.removeItem("cart");
+                    
                         $('#delete_sale_button').removeClass('d-flex');
                         
                         $('#delete_sale_button').attr('style' , 'display: none !important');
                         $('.coupon_codes').tokenfield('setTokens', []);
-                        localStorage.removeItem("sales");
-
+                        // localStorage.removeItem("sales");
+                        renderUi();
                         //load items again for top only 
                         $.get('<?php echo site_url("sales/categories_and_items"); ?>/top/1' ,
                         function(json) {
@@ -1491,6 +1485,54 @@ $(document).on("click", '#finish_sale_button', function(e) {
     });
 
 });
+
+if (has_offline_sales()) {
+        $("#sync_offline_sales").show();
+        $("#number_of_offline_sales").text(get_number_of_offline_sales());
+    }
+
+    $("#sync_offline_sales_button").click(sync_offline_sales);
+
+    function sync_offline_sales() {
+        $('#sync_offline_sales_button').prop('disabled', true);
+        $("#offline_sync_spining").show();
+        var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+
+        $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
+                offline_sales: JSON.stringify(allSales),
+            },
+            function(response) {
+                if (response.success) {
+                    $('#sync_offline_sales_button').remove();
+                    localStorage.removeItem("sales");
+                    bootbox.alert(<?php echo json_encode(lang('sales_offline_synced_successfully')); ?> + " [" +
+                        response.sale_ids.length + "]");
+                        renderUi();
+                }
+            }, 'json');
+    }
+
+
+ <?php
+					if ($this->config->item('auto_sync_offline_sales')) {
+					?>
+    if (has_offline_sales()) {
+    //    sync_offline_sales();
+    }
+    <?php
+					}
+					?>
+
+    function has_offline_sales() {
+        var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+        return allSales.length > 0;
+    }
+
+    function get_number_of_offline_sales() {
+        var allSales = JSON.parse(localStorage.getItem("sales")) || [];
+        return allSales.length
+    }
+
 
 $(document).on("click", '.modifier', function(event) {
     var index = $(this).data('index');
@@ -2138,759 +2180,794 @@ $all_tiers = JSON.parse('<?php echo  json_encode(	$all_tiers_source_data); ?>');
 
 function renderUi() {
 
-    $("#saved_sales_list").empty();
-    // console.log("UiRefreshed");
+                    $("#saved_sales_list").empty();
+                    // console.log("UiRefreshed");
+// console.log("UiRefreshed");
+var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
+
+    for (var k = saved_sales.length - 1; k >= 0; k--) {
+        var saved_sale = saved_sales[k];
+        var total = get_total(saved_sale);
+        var items_sold = get_total_items_sold(saved_sale);
 
 
 
-    if( typeof cart['extra']['mode'] =='undefined') {
-     
-        cart['extra']['mode'] = 'sale';
-    }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-
-    refresh_cart_var();
+        let topItems = saved_sales[k].items
+            .map(item => item.name) // Extract names
+            .slice(0, 2) // Limit to first 5 items
+            .join(', '); // Join names with commas
+        // Compile the template with cart data
 
 
 
-    $("#register").find('tbody').remove();
-    var total_qty = 0;
+        var customer = <?php echo json_encode(lang('none')) ?>;
 
-
-    for (var k = 0; k < cart['items'].length; k++) {
-      
-        var cart_item = cart['items'][k];
-        if (cart_item['quantity'] > 0) {
-            total_qty = total_qty + parseInt(cart_item['quantity']);
+        if (saved_sale['customer'] && saved_sale['customer']['person_id']) {
+            customer = saved_sale['customer']['customer_name'];
         }
 
 
-        cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
-            'quantity'] * cart_item['discount_percent'] / 100;
 
 
-        cart['items'][k]['index'] = k;
-
-
-        // console.log("length " , cart_item['selected_rule'].length);
-        if (typeof cart_item['selected_rule'] != 'undefined' && typeof cart_item['selected_rule'].length ==
-            'undefined') {
-
-            cart['extra']['permission_edit_sale_price'] = 0;
-            if (typeof cart['items'][k]['permissions'] !== 'undefined' &&
-                typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined'
-                ) {
-
-                // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
-                cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
-            }
-
-            cart['items'][k]['tier_id'] = 0;
-        }
-
-        // console.log( cart['extra']['permission_edit_sale_price']);
-
-        cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price']) ? cart['extra'][
-            'permission_edit_sale_price'
-        ] : 0;
-
-
-        $("#register").prepend(cart_item_template(cart['items'][k]));
-
-
-        customArray_source_serial_no = [];
-        if (typeof cart_item['all_data']['serial_numbers'] !== 'undefined' ) {
-            customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key,
-            value]) => {
-                return {
-                    text: value.serial_number,
-                    value: value.id,
-                    all_val: value
-                };
-            });
-        }
-        var serialnumber = '<?= lang('empty') ?>';
-        if (typeof cart_item['serialnumber'] !== 'undefined') {
-            serialnumber = cart_item['serialnumber'];
-        }
-
-        $('#serialnumber_' + k).editable({
-            value: serialnumber,
-            source: customArray_source_serial_no,
-            success: function(response, newValue) {
-
-                var field = $(this).data('name');
-                var index = $(this).data('index');
-
-                if (typeof index !== 'undefined') {
-
-                    cart['items'][index][field] = newValue;
-
-                    all_sns = cart['items'][index]['all_data']['serial_numbers'];
-                    var selectedsn = all_sns.find(function(item) {
-                        return item.id ==
-                        newValue; // Match the newValue with the value in the array
-                    });
-                    if (selectedsn) {
-                        cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
-                        cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn
-                            .cost_price : cart['items'][index]['cost_price'];
-                        cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn
-                            .unit_price : cart['items'][index]['orig_price'];
-                        cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price :
-                            cart['items'][index]['price'];
-                    } else {
-                        cart['items'][index]['serialnumberText'] = newValue;
-                    }
-
-
-                }
-                localStorage.setItem("cart", JSON.stringify(cart));
-                renderUi();
-            }
-
-        });
-
-        if(typeof cart['items'][k]['all_data']['permissions'] != 'undefined' ){
-            if ((typeof cart['items'][k]['serialnumber'] == 'undefined' || cart['items'][k]['serialnumber'] == '') && cart[
-                'items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos']) {
-                $('#add_sn_modal_' + k).show();
-            }
-        }
-       
-
-        $('#sserialnumber_' + k).editable({
-            value: serialnumber,
-            source: customArray_source_serial_no,
-            success: function(response, newValue) {
-
-                var field = $(this).data('name');
-                var index = $(this).data('index');
-
-                if (typeof index !== 'undefined') {
-
-                    cart['items'][index][field] = newValue;
-                    all_sns = cart['items'][index]['all_data']['serial_numbers'];
-                    var selectedsn = all_sns.find(function(item) {
-                        return item.id ==
-                        newValue; // Match the newValue with the value in the array
-                    });
-                    if (selectedsn) {
-                        cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
-                        cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn
-                            .cost_price : cart['items'][index]['cost_price'];
-                        cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn
-                            .unit_price : cart['items'][index]['orig_price'];
-                        cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price :
-                            cart['items'][index]['price'];
-
-                    } else {
-                        cart['items'][index]['serialnumberText'] = newValue;
-                    }
-
-
-                }
-                localStorage.setItem("cart", JSON.stringify(cart));
-                renderUi();
-            }
-
-        });
-
-        $('#tier_' + k).editable({
-            value: cart_item['tier_id'],
-            source: <?php echo json_encode($all_tiers_source_data); ?>,
-            success: function(response, newValue) {
-
-                var field = $(this).data('name');
-                var index = $(this).data('index');
-
-                if (typeof index !== 'undefined') {
-
-                    cart['items'][index].previous_tier_id = (cart['items'][index][field]) ? cart['items'][index][field] : 0;
-                    cart['items'][index][field] = newValue;
-                    cart['items'][index].tier_name = $all_tiers[newValue].text;
-                }
-
-
-                localStorage.setItem("cart", JSON.stringify(cart));
-
-
-                refresh_cart_var();
-
-
-                set_tier_id(newValue, true);
-
-            }
-
-        });
-
-
-        $('#damaged_qty_' + k).editable({
-            success: function(response, newValue) {
-                //persist data
-                var field = $(this).data('name');
-                var index = $(this).data('index');
-                // console.log(index, field);
-                if (typeof index !== 'undefined') {
-
-                    cart['items'][index][field] = newValue;
-                }
-                renderUi();
-            }
-        });
-
-
-
-
-        customArray_source_supplier_data = [];
-            if (typeof cart_item['all_data']['source_supplier_data'] !== 'undefined') {
-                customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key,
-                    value
-                ]) => {
-                    return {
-                        text: value.text,
-                        value: value.value
-                    };
-                });
-            }
-
-        $('#supplier_' + k).editable({
-            value: cart_item['supplier_id'],
-            source: customArray_source_supplier_data,
-            success: function(response, newValue) {
-
-                var field = $(this).data('name');
-                var index = $(this).data('index');
-
-                if (typeof index !== 'undefined') {
-                    // console.log(newValue);
-                    cart['items'][index][field] = newValue;
-                    console.log(newValue);
-                    console.log(index);
-                   
-
-                    cart['items'][index].supplier_name = cart['items'][index]['all_data']['source_supplier_data'][newValue].text;
-                }
-
-
-                localStorage.setItem("cart", JSON.stringify(cart));
-
-
-                refresh_cart_var();
-
-                set_supplier_id(newValue, index);
-
-            }
-
-        });
-
-    //  console.log('quantity_units' , cart_item);
-
-     if (typeof cart_item['quantity_units'] !== 'undefined') {
-
-        customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
-            return {
-                text: value.text,
-                value: value.value
-            };
-        });
-
-    }
-
-        // customArray.push(['text' : 'none' , 'value' :  '0'])
-        // console.log(customArray);
-        $('#quantity_unit_' + k).editable({
-            value: cart_item['quantity_unit_id'],
-            source: customArray,
-            success: function(response, newValue) {
-
-                var field = $(this).data('name');
-                var index = $(this).data('index');
-
-                if (typeof index !== 'undefined') {
-
-                    cart['items'][index][field] = newValue;
-                    cart['items'][index].quantity_units_name = cart['items'][index]['all_data']['quantity_units'][newValue].text;
-                }
-
-
-                localStorage.setItem("cart", JSON.stringify(cart));
-
-
-                refresh_cart_var();
-
-
-                set_quantity_unit_id(newValue, index);
-
-            }
-
-        });
-
-
-
-
-
-    }
-
-
-    $('.xeditable-item-percentage').editable({
-        success: function(response, newValue) {
-            //persist data
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            if (typeof index !== 'undefined') {
-
-                if (parseFloat(cart['items'][index]['all_data']['max_discount']) < parseFloat(newValue)) {
-                    show_feedback('error', cart['items'][index]['all_data']['permissions'][
-                            'sales_could_not_discount_item_above_max'
-                        ] + " " + parseFloat(cart['items'][index]['all_data']['max_discount']),
-                        "<?php echo  lang('error') ?>");
-                    return false;
-                }
-                cart['items'][index][field] = newValue;
-            }
-            renderUi();
-        }
-    });
-
-    $('.xeditable-cost_price').editable({
-        success: function(response, newValue) {
-            //persist data
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            if (typeof index !== 'undefined') {
-                cart['items'][index][field] = newValue;
-            }
-            renderUi();
-        }
-    });
-
-    $('.xeditable-description').editable({
-        success: function(response, newValue) {
-            //persist data
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            if (typeof index !== 'undefined') {
-                cart['items'][index][field] = newValue;
-            }
-            renderUi();
-        }
-    });
-
-    function item_subtotal($item){
-        // return to_currency_no_money((get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100));
-        // console.log( 'discount' ,  $item['discount']);
-        return (get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount_percent'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount_percent']/100);
-    }
-
-     function edit_subtotal($new_subtotal)
-	{
-        var item_discount = get_item_discount(cart);
-        var subtotal = get_subtotal(cart);
-
-        // Adjusting subtotal by subtracting item discount
-        subtotal = parseFloat(subtotal) - parseFloat(item_discount);
-
-
-		$cur_subtotal = subtotal;
-		$subtotal_change = $new_subtotal - $cur_subtotal;
-				
-
-    
-        for (var k = 0; k < cart.items.length; k++) {
-            $item = cart.items[k];
-
-            if ($cur_subtotal == 0)
-			{
-				if ($cur_subtotal == 0)
-				{
-					$percentage_of_cart = 1;
-				}
-				else
-				{
-					$percentage_of_cart = 0;
-				}
-			}
-			else
-			{
-				$percentage_of_cart = (item_subtotal($item) + get_modifiers_subtotal($item)) / $cur_subtotal;		
-			}
-
-
-            $item_sub_total = item_subtotal($item)  + ($subtotal_change * $percentage_of_cart);	
-			cart['items'][k]['price'] = -1*((100*$item_sub_total)/($item['quantity']*($item['discount_percent']-100)));
-
-        }
-        
-	}
-
-
-    $('.xeditable-subtotal').editable({
-        success: function(response, newValue) {
-
-            edit_subtotal(newValue);
-            var item_discount = get_item_discount(cart);
-            var subtotal = get_subtotal(cart);
-
-            // Adjusting subtotal by subtracting item discount
-            subtotal = parseFloat(subtotal) - parseFloat(item_discount);
-
-            renderUi();
-
-           
-
-        }
-    });
-
-    $('.xeditable-item-quantity-received').editable({
-        success: function(response, newValue) {
-            qty = $(this).data('total-qty');
-            if (newValue > qty) {
-                show_feedback('error',
-                    "<?php echo  lang('quantity_received_should_not_be_greater_than_item_qty') ?>",
-                    "<?php echo  lang('error') ?>");
-                return false;
-            } else {
-                var field = $(this).data('name');
-                var index = $(this).data('index');
-                if (typeof index !== 'undefined') {
-                    cart['items'][index][field] = newValue;
-                }
-                renderUi();
-            }
-
-
-        }
-    });
-
-    
-
-
-    $('#total_items').html(cart['items'].length);
-    $('#total_items_qty').html(total_qty);
-
-    $('.toggle_rows').click(function() {
-
-        $(this).parent().parent().next().toggleClass('collapse');
-
-        if ($(this).parent().parent().next().hasClass("collapse")) {
-            $(this).html('<i class="icon ti-angle-down"></i>');
-            $(this).parent().parent().next().addClass("d-none")
-        } else {
-            $(this).html('<i class="icon ti-angle-up"></i>');
-            $(this).parent().parent().next().removeClass("d-none")
-        }
-    });
-
-    $("#sale_details_expand_collapse").click(function() {
-        $('.register-item-bottom').toggleClass('collapse');
-
-        if ($('.register-item-bottom').hasClass('collapse')) {
-            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
-                value: '1'
-            });
-            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-down"></i>');
-            $(".show-collpased").show();
-
-        } else {
-            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
-                value: '0'
-            });
-            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-up"></i>');
-            $(".show-collpased").hide();
-
-        }
-    });
-
-
-
-    if (cart['items'].length || cart['payments'].length || (cart['customer'] && cart['customer']['person_id'])) {
-        $("#edit-sale-buttons").show();
-    } else {
-        $("#edit-sale-buttons").hide();
-    }
-
-    if (cart['extra']['tier_id']) {
-        var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tier_id'] + '"]');
-
-        if (tierElement.length > 0) {
-            var tierName = tierElement.text().trim(); // Get the text content and trim any extra spaces
-            $('.selected-tier').html(tierName);
-        }
-
-    } else {
-        $('.selected-tier').html('None');
-    }
-
-
-    if (cart['extra']['sold_by_employee_id']) {
-        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra'][
-            'sold_by_employee_id'
-        ] + '"]');
-
-        if (sold_by_employee_idElement.length > 0) {
-            var employeeName = sold_by_employee_idElement.text()
-                .trim(); // Get the text content and trim any extra spaces
-            $('.selected-sales-person').html(employeeName);
-        } else {
-
-            $('.selected-sales-person').html('Not Set');
-        }
-
-    } else {
-        $('.selected-sales-person').html('Not Set');
-    }
-
-
-   $('#customer-panel').html(selected_customer_template(cart));
-   $('#redeem_discount').on('click', function(e) {
-    redeem_discount();
-});
-$('#unredeem_discount').on('click', function(e) {
-    unredeem_discount();
-});
-$('.xeditable-comment').editable({
-            success: function(response, newValue) {
-                cart['customer']['internal_notes'] = newValue;
-                renderUi();
-            }
-        });
-  
-    $(".btn[data-kt-menu-trigger='custom']").on("click", function (e) {
-        e.stopPropagation(); // Prevent event from bubbling up
-
-        let button = $(this); // Get the clicked button
-        let menu = button.next(".menu-sub-dropdown"); // Get the associated menu
-
-        if (menu.is(":visible")) {
-            menu.hide(); // Hide menu if already visible
-        } else {
-            $(".menu-sub-dropdown").hide(); // Hide all other open menus first
-
-            // Calculate position
-            let buttonOffset = button.offset();
-            let buttonHeight = button.outerHeight();
-            let buttonWidth = button.outerWidth();
-            let menuWidth = menu.outerWidth();
-            let right = $(window).width() - (buttonOffset.left + buttonWidth);
-            menu.css({
-                display: "block",
-                position: "absolute",
-                top: buttonOffset.top + buttonHeight + 5 + "px", // Below the button with 5px gap
-                right: right  + "px", // Centered horizontally
-                display: "block", // Show menu
-                zIndex: 100, // Ensure it's above other elements
-            });
-        }
-    });
-
-    // Hide menu when clicking outside
-    $(document).on("click", function (e) {
-        if (!$(e.target).closest(".menu, .btn[data-kt-menu-trigger='custom']").length) {
-            $(".menu-sub-dropdown").hide();
-        }
-    });
-
-    // Handle window resize to reposition the menu
-    $(window).on("resize", function () {
-        $(".menu:visible").each(function () {
-            let menu = $(this);
-            let button = menu.prev(".btn[data-kt-menu-trigger='custom']");
-                    // Check if button exists
-            if (button.length === 0) {
-                return; // Skip iteration if no button found
-            }
-
-            let buttonOffset = button.offset();
-            let buttonHeight = button.outerHeight();
-            let buttonWidth = button.outerWidth();
-            let menuWidth = menu.outerWidth();
-
-            menu.css({
-                top: buttonOffset.top + buttonHeight + 5 + "px",
-                left: buttonOffset.left + buttonWidth / 2 - menuWidth / 2 + "px",
-            });
-        });
-    });
-
-
-
-    // if (cart['extra']['coupons']) {
-
-    //     var tokens = [{ value: "blue", label: "Blau" }, { value: "red", label: "Rot" }];
-
-    //         // Convert the tokens array into a string of values
-    //         var tokenValues = tokens.map(function(token) {
-    //             return token.value;
-    //         }).join(',');
-    //         console.log( 'ssssss' , tokenValues);
-    //         // Set the tokens
-    //         $('.coupon_codes').tokenfield('setTokens', tokenValues);
-    // }
-    $("#payments").empty();
-
-    for (var k = 0; k < cart['payments'].length; k++) {
-        var payment = cart['payments'][k];
-        cart['payments'][k]['index'] = k;
-        $("#payments").append(cart_payment_template(cart['payments'][k]));
-    }
-
-    if (cart.payments.length) {
-        $("#finish_sale").show();
-        $("#kt_drawer_payments_list").show();
-
-    } else {
-        $("#finish_sale").hide();
-        $("#kt_drawer_payments_list").hide();
-    }
-
-    var cartValues = calculateCartValues(cart);
-
-
-    var total_discount = cartValues.total_discount;
-    var item_discount = cartValues.item_discount;
-    var subtotal = cartValues.subtotal;
-    var taxes = cartValues.taxes;
-    subtotal = cartValues.subtotal;
-    var gen_tax = cartValues.gen_tax;
-
-    var flat_discount = cartValues.flat_discount;
-    total = cartValues.total;
-    var amount_due = cartValues.amount_due;
-
-
-    $("#sub_total").attr('data-value', subtotal).html(subtotal);
-      localStorage.setItem('cart_sub_total' ,subtotal );
-
-    $("#taxes").html(taxes);
-    localStorage.setItem('cart_taxes' ,taxes );
-    $("#total").html(total);
-    localStorage.setItem('cart_total' ,total );
-    check_for_payment_options();
-    $('#total_discount').html(total_discount.toFixed(2));
-    $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
-    $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
-    $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
-        currency_symbol);
-    $('#Discount_from_items').html(item_discount + ' ' +
-        currency_symbol);
-
-    $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
-    $("#amount_due").html(amount_due);
-    $("#amount_tendered").val(amount_due);
-    localStorage.setItem('cart_amount_due' ,amount_due );
-    // console.log(cart['customer']);
-    $('.balance').removeClass(' text-success text-danger');
-    if (cart['customer'] && cart['customer']['person_id']) {
-
-      
-
-
-
-
-        $("#customer-panel").removeClass('hidden');
-        $("#select_customer_form").addClass('hidden');
-    } else {
-        $("#customer").val('');
-        $("#customer-panel").addClass('hidden');
-        $("#select_customer_form").removeClass('hidden');
-    }
-    amount_tendered_input_changed();
-
-
-    $(".edit_taxes_item").click(function(e) {
-        item_id = $(this).data('id');
-
-        onclick_edit_taxes_item(item_id);
-
-
-    });
-
-    $("#edit_taxes_gen").click(function(e) {
-        // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
-
-        item_id = $(this).data('id');
-
-        onclick_edit_taxes_item(item_id);
-
-        renderUi();
-
-    });
-
-
-    $('.xeditable').editable({
-        success: function(response, newValue) {
-            //persist data
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            // console.log(index);
-            if (typeof index !== 'undefined') {
-
-                if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
-                        'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
-                        newValue) < 0) {
-
-                           
-
-
-                    show_feedback('error', cart.items[parseInt(index)].all_data.permissions
-                        .process_returns_error, "<?php echo  lang('error') ?>");
-                    return false;
-                }
-
-                if(field=='price'){
-                        if (!check_allow_added(cart, index, 'price', newValue)) {
-                            return false;
-                        }
-
-                    }
-                    if(field=='price-line-total'){
-                        if (!check_allow_added(cart, index, 'price-line-total', newValue)) {
-                            return false;
-                        }
-
-                    }
-
-                if (field == 'modifier_price') {
-                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
-                        'modifier-item-id'))].unit_price = newValue;
-                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
-                        'modifier-item-id'))].unit_price_currency = currency_symbol + newValue;
-
-                } else {
-
-                    if(field=='quantity'){
-                        if (!check_allow_added(cart, index, 'quantity_bulk', newValue)) {
-                            return false;
-                        }
-
-                    }
-                  
-                    cart['items'][index][field] = newValue;
-                }
-
-
-            }
-            renderUi();
-        }
-    });
-
-    $('.xeditable').on('shown', function(e, editable) {
-
-        editable.input.postrender = function() {
-            //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
-            setTimeout(function() {
-                editable.input.$input.select();
-            }, 200);
+        var sale = {
+            index: k,
+            total: total,
+            customer: customer,
+            items_sold: items_sold,
+            topItems: topItems,
         };
-    })
+        $("#saved_sales_list").append(saved_sale_template(sale));
+    }
 
-    $('.slider_button').click(function() { 
 
-            close_all_drawers();
-    });
+                    if( typeof cart['extra']['mode'] =='undefined') {
+                    
+                        cart['extra']['mode'] = 'sale';
+                    }
+
+                    localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                    refresh_cart_var();
+
+
+
+                    $("#register").find('tbody').remove();
+                    var total_qty = 0;
+
+
+                    for (var k = 0; k < cart['items'].length; k++) {
+                    
+                        var cart_item = cart['items'][k];
+                        if (cart_item['quantity'] > 0) {
+                            total_qty = total_qty + parseInt(cart_item['quantity']);
+                        }
+
+
+                        cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
+                            'quantity'] * cart_item['discount_percent'] / 100;
+
+
+                        cart['items'][k]['index'] = k;
+
+
+                        // console.log("length " , cart_item['selected_rule'].length);
+                        if (typeof cart_item['selected_rule'] != 'undefined' && typeof cart_item['selected_rule'].length ==
+                            'undefined') {
+
+                            cart['extra']['permission_edit_sale_price'] = 0;
+                            if (typeof cart['items'][k]['permissions'] !== 'undefined' &&
+                                typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined'
+                                ) {
+
+                                // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
+                                cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
+                            }
+
+                            cart['items'][k]['tier_id'] = 0;
+                        }
+
+                        // console.log( cart['extra']['permission_edit_sale_price']);
+
+                        cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price']) ? cart['extra'][
+                            'permission_edit_sale_price'
+                        ] : 0;
+
+
+                        $("#register").prepend(cart_item_template(cart['items'][k]));
+
+
+                        customArray_source_serial_no = [];
+                        if (typeof cart_item['all_data']['serial_numbers'] !== 'undefined' ) {
+                            customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key,
+                            value]) => {
+                                return {
+                                    text: value.serial_number,
+                                    value: value.id,
+                                    all_val: value
+                                };
+                            });
+                        }
+                        var serialnumber = '<?= lang('empty') ?>';
+                        if (typeof cart_item['serialnumber'] !== 'undefined') {
+                            serialnumber = cart_item['serialnumber'];
+                        }
+
+                        $('#serialnumber_' + k).editable({
+                            value: serialnumber,
+                            source: customArray_source_serial_no,
+                            success: function(response, newValue) {
+
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+
+                                if (typeof index !== 'undefined') {
+
+                                    cart['items'][index][field] = newValue;
+
+                                    all_sns = cart['items'][index]['all_data']['serial_numbers'];
+                                    var selectedsn = all_sns.find(function(item) {
+                                        return item.id ==
+                                        newValue; // Match the newValue with the value in the array
+                                    });
+                                    if (selectedsn) {
+                                        cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                                        cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn
+                                            .cost_price : cart['items'][index]['cost_price'];
+                                        cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn
+                                            .unit_price : cart['items'][index]['orig_price'];
+                                        cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price :
+                                            cart['items'][index]['price'];
+                                    } else {
+                                        cart['items'][index]['serialnumberText'] = newValue;
+                                    }
+
+
+                                }
+                                localStorage.setItem("cart", JSON.stringify(cart));
+                                renderUi();
+                            }
+
+                        });
+
+                        if(typeof cart['items'][k]['all_data']['permissions'] != 'undefined' ){
+                            if ((typeof cart['items'][k]['serialnumber'] == 'undefined' || cart['items'][k]['serialnumber'] == '') && cart[
+                                'items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos']) {
+                                $('#add_sn_modal_' + k).show();
+                            }
+                        }
+                    
+
+                        $('#sserialnumber_' + k).editable({
+                            value: serialnumber,
+                            source: customArray_source_serial_no,
+                            success: function(response, newValue) {
+
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+
+                                if (typeof index !== 'undefined') {
+
+                                    cart['items'][index][field] = newValue;
+                                    all_sns = cart['items'][index]['all_data']['serial_numbers'];
+                                    var selectedsn = all_sns.find(function(item) {
+                                        return item.id ==
+                                        newValue; // Match the newValue with the value in the array
+                                    });
+                                    if (selectedsn) {
+                                        cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                                        cart['items'][index]['cost_price'] = (selectedsn.cost_price && !selectedsn.cost_price) ? selectedsn
+                                            .cost_price : (cart['items'][index]['cost_price'])?cart['items'][index]['cost_price']:0;
+                                        cart['items'][index]['orig_price'] = (selectedsn.unit_price && !selectedsn.unit_price) ? selectedsn
+                                            .unit_price : (cart['items'][index]['orig_price'])?cart['items'][index]['orig_price']:0;
+                                        cart['items'][index]['price'] = (selectedsn.unit_price && !selectedsn.unit_price) ? selectedsn.unit_price :
+                                        (cart['items'][index]['price'])?cart['items'][index]['price']:0;
+
+                                    } else {
+                                        cart['items'][index]['serialnumberText'] = newValue;
+                                    }
+
+
+                                }
+                                localStorage.setItem("cart", JSON.stringify(cart));
+                                renderUi();
+                            }
+
+                        });
+
+                        $('#tier_' + k).editable({
+                            value: cart_item['tier_id'],
+                            source: <?php echo json_encode($all_tiers_source_data); ?>,
+                            success: function(response, newValue) {
+
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+
+                                if (typeof index !== 'undefined') {
+
+                                    cart['items'][index].previous_tier_id = (cart['items'][index][field]) ? cart['items'][index][field] : 0;
+                                    cart['items'][index][field] = newValue;
+                                    cart['items'][index].tier_name = $all_tiers[newValue].text;
+                                }
+
+
+                                localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                                refresh_cart_var();
+
+
+                                set_tier_id(newValue, true);
+
+                            }
+
+                        });
+
+
+                        $('#damaged_qty_' + k).editable({
+                            success: function(response, newValue) {
+                                //persist data
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+                                // console.log(index, field);
+                                if (typeof index !== 'undefined') {
+
+                                    cart['items'][index][field] = newValue;
+                                }
+                                renderUi();
+                            }
+                        });
+
+
+
+
+                        customArray_source_supplier_data = [];
+                            if (typeof cart_item['all_data']['source_supplier_data'] !== 'undefined') {
+                                customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key,
+                                    value
+                                ]) => {
+                                    return {
+                                        text: value.text,
+                                        value: value.value
+                                    };
+                                });
+                            }
+
+                        $('#supplier_' + k).editable({
+                            value: cart_item['supplier_id'],
+                            source: customArray_source_supplier_data,
+                            success: function(response, newValue) {
+
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+
+                                if (typeof index !== 'undefined') {
+                                    // console.log(newValue);
+                                    cart['items'][index][field] = newValue;
+                                    console.log(newValue);
+                                    console.log(index);
+                                
+
+                                    cart['items'][index].supplier_name = cart['items'][index]['all_data']['source_supplier_data'][newValue].text;
+                                }
+
+
+                                localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                                refresh_cart_var();
+
+                                set_supplier_id(newValue, index);
+
+                            }
+
+                        });
+
+                    //  console.log('quantity_units' , cart_item);
+
+                    if (typeof cart_item['quantity_units'] !== 'undefined') {
+
+                        customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
+                            return {
+                                text: value.text,
+                                value: value.value
+                            };
+                        });
+
+                    }
+
+                        // customArray.push(['text' : 'none' , 'value' :  '0'])
+                        // console.log(customArray);
+                        $('#quantity_unit_' + k).editable({
+                            value: cart_item['quantity_unit_id'],
+                            source: customArray,
+                            success: function(response, newValue) {
+
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+
+                                if (typeof index !== 'undefined') {
+
+                                    cart['items'][index][field] = newValue;
+                                    cart['items'][index].quantity_units_name = cart['items'][index]['all_data']['quantity_units'][newValue].text;
+                                }
+
+
+                                localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                                refresh_cart_var();
+
+
+                                set_quantity_unit_id(newValue, index);
+
+                            }
+
+                        });
+
+
+
+
+
+                    }
+
+
+                    $('.xeditable-item-percentage').editable({
+                        success: function(response, newValue) {
+                            //persist data
+                            var field = $(this).data('name');
+                            var index = $(this).data('index');
+                            if (typeof index !== 'undefined') {
+
+                                if (parseFloat(cart['items'][index]['all_data']['max_discount']) < parseFloat(newValue)) {
+                                    show_feedback('error', cart['items'][index]['all_data']['permissions'][
+                                            'sales_could_not_discount_item_above_max'
+                                        ] + " " + parseFloat(cart['items'][index]['all_data']['max_discount']),
+                                        "<?php echo  lang('error') ?>");
+                                    return false;
+                                }
+                                cart['items'][index][field] = newValue;
+                            }
+                            renderUi();
+                        }
+                    });
+
+                    $('.xeditable-cost_price').editable({
+                        success: function(response, newValue) {
+                            //persist data
+                            var field = $(this).data('name');
+                            var index = $(this).data('index');
+                            if (typeof index !== 'undefined') {
+                                cart['items'][index][field] = newValue;
+                            }
+                            renderUi();
+                        }
+                    });
+
+                    $('.xeditable-description').editable({
+                        success: function(response, newValue) {
+                            //persist data
+                            var field = $(this).data('name');
+                            var index = $(this).data('index');
+                            if (typeof index !== 'undefined') {
+                                cart['items'][index][field] = newValue;
+                            }
+                            renderUi();
+                        }
+                    });
+
+                    function item_subtotal($item){
+                        // return to_currency_no_money((get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100));
+                        // console.log( 'discount' ,  $item['discount']);
+                        return (get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount_percent'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount_percent']/100);
+                    }
+
+                    function edit_subtotal($new_subtotal)
+                    {
+                        var item_discount = get_item_discount(cart);
+                        var subtotal = get_subtotal(cart);
+
+                        // Adjusting subtotal by subtracting item discount
+                        subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+
+
+                        $cur_subtotal = subtotal;
+                        $subtotal_change = $new_subtotal - $cur_subtotal;
+                                
+
+                    
+                        for (var k = 0; k < cart.items.length; k++) {
+                            $item = cart.items[k];
+
+                            if ($cur_subtotal == 0)
+                            {
+                                if ($cur_subtotal == 0)
+                                {
+                                    $percentage_of_cart = 1;
+                                }
+                                else
+                                {
+                                    $percentage_of_cart = 0;
+                                }
+                            }
+                            else
+                            {
+                                $percentage_of_cart = (item_subtotal($item) + get_modifiers_subtotal($item)) / $cur_subtotal;		
+                            }
+
+
+                            $item_sub_total = item_subtotal($item)  + ($subtotal_change * $percentage_of_cart);	
+                            cart['items'][k]['price'] = -1*((100*$item_sub_total)/($item['quantity']*($item['discount_percent']-100)));
+
+                        }
+                        
+                    }
+
+
+                    $('.xeditable-subtotal').editable({
+                        success: function(response, newValue) {
+
+                            edit_subtotal(newValue);
+                            var item_discount = get_item_discount(cart);
+                            var subtotal = get_subtotal(cart);
+
+                            // Adjusting subtotal by subtracting item discount
+                            subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+
+                            renderUi();
+
+                        
+
+                        }
+                    });
+
+                    $('.xeditable-item-quantity-received').editable({
+                        success: function(response, newValue) {
+                            qty = $(this).data('total-qty');
+                            if (newValue > qty) {
+                                show_feedback('error',
+                                    "<?php echo  lang('quantity_received_should_not_be_greater_than_item_qty') ?>",
+                                    "<?php echo  lang('error') ?>");
+                                return false;
+                            } else {
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+                                if (typeof index !== 'undefined') {
+                                    cart['items'][index][field] = newValue;
+                                }
+                                renderUi();
+                            }
+
+
+                        }
+                    });
+
+                    
+
+
+                    $('#total_items').html(cart['items'].length);
+                    $('#total_items_qty').html(total_qty);
+
+                    $('.toggle_rows').click(function() {
+
+                        $(this).parent().parent().next().toggleClass('collapse');
+
+                        if ($(this).parent().parent().next().hasClass("collapse")) {
+                            $(this).html('<i class="icon ti-angle-down"></i>');
+                            $(this).parent().parent().next().addClass("d-none")
+                        } else {
+                            $(this).html('<i class="icon ti-angle-up"></i>');
+                            $(this).parent().parent().next().removeClass("d-none")
+                        }
+                    });
+
+                    $("#sale_details_expand_collapse").click(function() {
+                        $('.register-item-bottom').toggleClass('collapse');
+
+                        if ($('.register-item-bottom').hasClass('collapse')) {
+                            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
+                                value: '1'
+                            });
+                            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-down"></i>');
+                            $(".show-collpased").show();
+
+                        } else {
+                            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
+                                value: '0'
+                            });
+                            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-up"></i>');
+                            $(".show-collpased").hide();
+
+                        }
+                    });
+
+
+
+                    if (cart['items'].length || cart['payments'].length || (cart['customer'] && cart['customer']['person_id'])) {
+                        $("#edit-sale-buttons").show();
+                    } else {
+                        $("#edit-sale-buttons").hide();
+                    }
+
+                    if (cart['extra']['tier_id']) {
+                        var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tier_id'] + '"]');
+
+                        if (tierElement.length > 0) {
+                            var tierName = tierElement.text().trim(); // Get the text content and trim any extra spaces
+                            $('.selected-tier').html(tierName);
+                        }
+
+                    } else {
+                        $('.selected-tier').html('None');
+                    }
+
+
+                    if (cart['extra']['sold_by_employee_id']) {
+                        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra'][
+                            'sold_by_employee_id'
+                        ] + '"]');
+
+                        if (sold_by_employee_idElement.length > 0) {
+                            var employeeName = sold_by_employee_idElement.text()
+                                .trim(); // Get the text content and trim any extra spaces
+                            $('.selected-sales-person').html(employeeName);
+                        } else {
+
+                            $('.selected-sales-person').html('Not Set');
+                        }
+
+                    } else {
+                        $('.selected-sales-person').html('Not Set');
+                    }
+
+
+                $('#customer-panel').html(selected_customer_template(cart));
+                $('#redeem_discount').on('click', function(e) {
+                    redeem_discount();
+                });
+                $('#unredeem_discount').on('click', function(e) {
+                    unredeem_discount();
+                });
+                $('.xeditable-comment').editable({
+                            success: function(response, newValue) {
+                                cart['customer']['internal_notes'] = newValue;
+                                renderUi();
+                            }
+                        });
+                
+                    $(".btn[data-kt-menu-trigger='custom']").on("click", function (e) {
+                        e.stopPropagation(); // Prevent event from bubbling up
+
+                        let button = $(this); // Get the clicked button
+                        let menu = button.next(".menu-sub-dropdown"); // Get the associated menu
+
+                        if (menu.is(":visible")) {
+                            menu.hide(); // Hide menu if already visible
+                        } else {
+                            $(".menu-sub-dropdown").hide(); // Hide all other open menus first
+
+                            // Calculate position
+                            let buttonOffset = button.offset();
+                            let buttonHeight = button.outerHeight();
+                            let buttonWidth = button.outerWidth();
+                            let menuWidth = menu.outerWidth();
+                            let right = $(window).width() - (buttonOffset.left + buttonWidth);
+                            menu.css({
+                                display: "block",
+                                position: "absolute",
+                                top: buttonOffset.top + buttonHeight + 5 + "px", // Below the button with 5px gap
+                                right: right  + "px", // Centered horizontally
+                                display: "block", // Show menu
+                                zIndex: 100, // Ensure it's above other elements
+                            });
+                        }
+                    });
+
+                    // Hide menu when clicking outside
+                    $(document).on("click", function (e) {
+                        if (!$(e.target).closest(".menu, .btn[data-kt-menu-trigger='custom']").length) {
+                            $(".menu-sub-dropdown").hide();
+                        }
+                    });
+
+                    // Handle window resize to reposition the menu
+                    $(window).on("resize", function () {
+                        $(".menu:visible").each(function () {
+                            let menu = $(this);
+                            let button = menu.prev(".btn[data-kt-menu-trigger='custom']");
+                                    // Check if button exists
+                            if (button.length === 0) {
+                                return; // Skip iteration if no button found
+                            }
+
+                            let buttonOffset = button.offset();
+                            let buttonHeight = button.outerHeight();
+                            let buttonWidth = button.outerWidth();
+                            let menuWidth = menu.outerWidth();
+
+                            menu.css({
+                                top: buttonOffset.top + buttonHeight + 5 + "px",
+                                left: buttonOffset.left + buttonWidth / 2 - menuWidth / 2 + "px",
+                            });
+                        });
+                    });
+
+
+
+                    // if (cart['extra']['coupons']) {
+
+                    //     var tokens = [{ value: "blue", label: "Blau" }, { value: "red", label: "Rot" }];
+
+                    //         // Convert the tokens array into a string of values
+                    //         var tokenValues = tokens.map(function(token) {
+                    //             return token.value;
+                    //         }).join(',');
+                    //         console.log( 'ssssss' , tokenValues);
+                    //         // Set the tokens
+                    //         $('.coupon_codes').tokenfield('setTokens', tokenValues);
+                    // }
+                    $("#payments").empty();
+
+                    for (var k = 0; k < cart['payments'].length; k++) {
+                        var payment = cart['payments'][k];
+                        cart['payments'][k]['index'] = k;
+                        $("#payments").append(cart_payment_template(cart['payments'][k]));
+                    }
+
+                    if (cart.payments.length) {
+                        $("#finish_sale").show();
+                        $("#kt_drawer_payments_list").show();
+
+                    } else {
+                        $("#finish_sale").hide();
+                        $("#kt_drawer_payments_list").hide();
+                    }
+
+                    var cartValues = calculateCartValues(cart);
+
+
+                    var total_discount = cartValues.total_discount;
+                    var item_discount = cartValues.item_discount;
+                    var subtotal = cartValues.subtotal;
+                    var taxes = cartValues.taxes;
+                    subtotal = cartValues.subtotal;
+                    var gen_tax = cartValues.gen_tax;
+
+                    var flat_discount = cartValues.flat_discount;
+                    total = cartValues.total;
+                    var amount_due = cartValues.amount_due;
+
+
+                    $("#sub_total").attr('data-value', subtotal).html(subtotal);
+                    localStorage.setItem('cart_sub_total' ,subtotal );
+
+                    $("#taxes").html(taxes);
+                    localStorage.setItem('cart_taxes' ,taxes );
+                    $("#total").html(total);
+                    localStorage.setItem('cart_total' ,total );
+                    check_for_payment_options();
+                    $('#total_discount').html(total_discount.toFixed(2));
+                    $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
+                    $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
+                    $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
+                        currency_symbol);
+                    $('#Discount_from_items').html(item_discount + ' ' +
+                        currency_symbol);
+
+                    $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
+                    $("#amount_due").html(amount_due);
+                    $("#amount_tendered").val(amount_due);
+                    localStorage.setItem('cart_amount_due' ,amount_due );
+                    // console.log(cart['customer']);
+                    $('.balance').removeClass(' text-success text-danger');
+                    if (cart['customer'] && cart['customer']['person_id']) {
+
+                    
+
+
+
+
+                        $("#customer-panel").removeClass('hidden');
+                        $("#select_customer_form").addClass('hidden');
+                    } else {
+                        $("#customer").val('');
+                        $("#customer-panel").addClass('hidden');
+                        $("#select_customer_form").removeClass('hidden');
+                    }
+                    amount_tendered_input_changed();
+
+
+                    $(".edit_taxes_item").click(function(e) {
+                        item_id = $(this).data('id');
+
+                        onclick_edit_taxes_item(item_id);
+
+
+                    });
+
+                    $("#edit_taxes_gen").click(function(e) {
+                        // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
+
+                        item_id = $(this).data('id');
+
+                        onclick_edit_taxes_item(item_id);
+
+                        renderUi();
+
+                    });
+
+
+                    $('.xeditable').editable({
+                        success: function(response, newValue) {
+                            //persist data
+                            var field = $(this).data('name');
+                            var index = $(this).data('index');
+                            // console.log(index);
+                            if (typeof index !== 'undefined') {
+
+                                if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
+                                        'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
+                                        newValue) < 0) {
+
+                                        
+
+
+                                    show_feedback('error', cart.items[parseInt(index)].all_data.permissions
+                                        .process_returns_error, "<?php echo  lang('error') ?>");
+                                    return false;
+                                }
+
+                                if(field=='price'){
+                                        if (!check_allow_added(cart, index, 'price', newValue)) {
+                                            return false;
+                                        }
+
+                                    }
+                                    if(field=='price-line-total'){
+                                        if (!check_allow_added(cart, index, 'price-line-total', newValue)) {
+                                            return false;
+                                        }
+
+                                    }
+
+                                if (field == 'modifier_price') {
+                                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                                        'modifier-item-id'))].unit_price = newValue;
+                                    cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                                        'modifier-item-id'))].unit_price_currency = currency_symbol + newValue;
+
+                                } else {
+
+                                    if(field=='quantity'){
+                                        if (!check_allow_added(cart, index, 'quantity_bulk', newValue)) {
+                                            return false;
+                                        }
+
+                                    }
+                                
+                                    cart['items'][index][field] = newValue;
+                                }
+
+
+                            }
+                            renderUi();
+                        }
+                    });
+
+                    $('.xeditable').on('shown', function(e, editable) {
+
+                        editable.input.postrender = function() {
+                            //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
+                            setTimeout(function() {
+                                editable.input.$input.select();
+                            }, 200);
+                        };
+                    })
+
+                    $('.slider_button').click(function() { 
+
+                            close_all_drawers();
+                    });
 
 }
 
@@ -3992,10 +4069,23 @@ function updateOnlineStatus() {
     const statusDiv = document.getElementById('network-status');
     if (navigator.onLine) {
         statusDiv.className = 'online';
-        statusDiv.textContent = 'Back to online';
+        statusDiv.textContent = '<?= lang('Online_Mode') ?>';
+       
     } else {
         statusDiv.className = 'offline';
-        statusDiv.textContent = 'You are offline';
+        statusDiv.textContent = '<?= lang('Offline_Mode') ?>';
+
+        bootbox.alert({
+    title: '<?= lang('Alert') ?>',
+    closeButton: false,
+    message: <?php echo json_encode(lang("You_are_offline_now_Your_data_is_safe_and_preserved_Please_reconnect_and_reload_to_stay_updated")); ?>,
+    callback: function() {
+        window.location.href = "<?php echo base_url() ?>home/offline";
+    }
+});
+
+
+        
     }
     statusDiv.style.display = 'block'; // Ensure the div is visible before fading out
 
@@ -4123,19 +4213,33 @@ function showNextAttribute(currentIndex, attributeKeys) {
         if(typeof selectedAttributes != 'undefined'){
              isChecked = selectedAttributes[currentAttributeKey] === key ? 'checked' : '';
         }
-
+        ;
         if(currentIndex + 1  == attributeKeys.length){
 
 
                         let resultString_n = '';
-                        $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
-                            resultString_n += selectedValueKey;
+                        var lastKey ='KEY';
+                        if(edit_variation_index!='none'){
+                            var keys = Object.keys(selectedAttributes); // Get all keys as an array
+                            var lastKey = keys[keys.length - 1]; // Get the last key
+                        }
 
+                        $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
+                            if (attributeKey != lastKey) { // Skip the last item
+                                    resultString_n += selectedValueKey;
+                                }
                         });
                         resultString_n += key;
-
-                        let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
+                        let matchingVariation = [];
+                        if(item_obj.variations!=false && item_obj.variations.length > 0 ){
+                             matchingVariation = item_obj.variations.find(variation => variation.attribute_string ==
                         resultString_n);
+                        }else{
+                            let matchingVariation = item_obj.all_data.has_variations.find(variation => variation.attribute_string ==
+                        resultString_n);
+                        }
+
+
                         if(matchingVariation){
                             $stock_val = parseInt(matchingVariation.item_location_quantity);
                             if($stock_val > 10){
@@ -5112,7 +5216,6 @@ $(document).ready(function() {
                 displayReceipt(JSON.parse(sale));
             <?php } ?>
 
-            $('#sync_offline_sales_button').remove();
             localStorage.removeItem("sales");
             
             $('#delete_sale_button').attr('style' , 'display: none !important');
