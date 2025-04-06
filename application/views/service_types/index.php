@@ -17,7 +17,7 @@
         <div class="card-body nopadding table_holder table-responsive mt-5">
             <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer " id="sortable_table">
                 <thead>
-                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+                        <tr class="text-start text-muted fw-bold fs-7 gs-0">
                             <th>NO</th>
                             <th>Name</th>
                             <th>status</th>

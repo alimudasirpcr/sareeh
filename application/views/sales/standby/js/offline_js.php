@@ -1571,6 +1571,10 @@ async function getAllItemsData(category = false) {
         for (var k = 0; k < results.length; k++) {
 
             var row = results[k].doc;
+
+            if(typeof row.all_data =='undefined'){
+                continue;
+            }
             
            
 
@@ -1596,7 +1600,6 @@ async function getAllItemsData(category = false) {
         price_val_reg = (row.regular_price ? decodeHtml(row
             .regular_price) : '');
              price_val_reg = parseFloat(price_val_reg.replace(/,/g, ''));
-
 
 
         items_list[row.item_id] = {
@@ -3225,7 +3228,7 @@ function get_price_without_tax_for_tax_incuded_item(cart_item) {
 
     var tax_info = cart_item.all_data.taxes;
     var item_price_including_tax = cart_item.price;
-
+    if(typeof tax_info!='undefined'){
     if (tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
         console.log('get_price_without_tax_for_tax_incuded_item');
         var to_return = item_price_including_tax / (1 + (tax_info[0]['percent'] / 100) + (tax_info[1]['percent'] /
@@ -3241,7 +3244,9 @@ function get_price_without_tax_for_tax_incuded_item(cart_item) {
 
         var to_return = item_price_including_tax / (1 + (total_tax_percent / 100));
     }
-
+}else{
+        to_return  = item_price_including_tax;
+    }
     return to_return;
 
 }

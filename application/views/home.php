@@ -479,10 +479,77 @@ if (is_on_phppos_host()) {
 
 <?php } ?>
 
+<script src="<?= site_url() ?>assets/js/gsap.min.js"></script>
+
+
+<!--begin::Alert-->
+<div class="alert alert-dismissible bg-primary d-flex flex-center flex-column py-10 px-10 px-lg-20 mb-10 rotating-bg" style="background-image: url('<?= base_url(); ?>assets/css_good/media/svg/misc/eolic-energy.svg');background-repeat: no-repeat;">
+
+    <!--end::Close-->
 
 
 
+    <!--begin::Wrapper-->
+    <div class="text-center">
+        <!--begin::Title-->
+        <h1 class="fw-bold mb-5 text-light"><?php echo lang('Sync_offline_db'); ?></h1>
+        <!--end::Title-->
 
+
+        <!--begin::Buttons-->
+        <div class="d-flex ">
+        <div class="step-container" data-step="2">
+            <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
+            <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
+            <label class="text-light">Category</label>
+        </div>
+        <div class="step-container" data-step="1">
+            <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
+            <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
+            <label class="text-light">Customer </label>
+        </div>
+       
+        <div class="step-container" data-step="3">
+            <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
+            <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
+            <label class="text-light">Items </label>
+        </div>
+    
+    
+  
+
+    <script>
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('assets/js/load_sales_offline_data_worker.js')
+        .then(reg => {
+            console.log('Service Worker registered successfully.');
+
+            if (reg.waiting) {
+                reg.waiting.postMessage({ action: 'skipWaiting' });
+            }
+        })
+        .catch(err => console.error('Service Worker registration failed:', err));
+}
+
+function startServiceWorkerProcess() {
+    if (navigator.serviceWorker.controller) {
+        startWorker('force');
+    } else {
+        console.warn("Service Worker is not ready yet.");
+    }
+}
+
+
+
+    </script>
+        </div>
+        <button class="btn btn-danger h-50px" onclick="startServiceWorkerProcess()"><?php echo lang('sync'); ?></button>
+        <!--end::Buttons-->
+    </div>
+    <!--end::Wrapper-->
+</div>
+<!--end::Alert-->
 
 
 
@@ -771,7 +838,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                         <!--end::Number-->
                                         <!--begin::Desc-->
                                         <span
-                                            class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_sales'); ?></span>
+                                            class="text-gray-600 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_sales'); ?></span>
                                         <!--end::Desc-->
                                     </div>
                                     <!--end::Stats-->
@@ -802,7 +869,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                         <!--end::Number-->
                                         <!--begin::Desc-->
                                         <span
-                                            class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_customers'); ?></span>
+                                            class="text-gray-600 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_customers'); ?></span>
                                         <!--end::Desc-->
                                     </div>
                                     <!--end::Stats-->
@@ -833,7 +900,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                         <!--end::Number-->
                                         <!--begin::Desc-->
                                         <span
-                                            class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_items'); ?></span>
+                                            class="text-gray-600 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_items'); ?></span>
                                         <!--end::Desc-->
                                     </div>
                                     <!--end::Stats-->
@@ -868,7 +935,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                         <!--end::Number-->
                                         <!--begin::Desc-->
                                         <span
-                                            class="text-gray-500 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_item_kits'); ?></span>
+                                            class="text-gray-600 fw-semibold fs-6"><?php echo lang('total') . " " . lang('module_item_kits'); ?></span>
                                         <!--end::Desc-->
                                     </div>
                                     <!--end::Stats-->
@@ -1392,7 +1459,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                     <!--end::Number-->
                                 </div>
                                 <!--begin::Desc-->
-                                <span class="text-gray-500 fw-semibold fs-6"><?= lang('subtotal') ?></span>
+                                <span class="text-gray-600 fw-semibold fs-6"><?= lang('subtotal') ?></span>
                                 <!--end::Desc-->
                             </div>
                             <!--end::Stats-->
@@ -1423,7 +1490,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                     <!--end::Number-->
                                 </div>
                                 <!--begin::Desc-->
-                                <span class="text-gray-500 fw-semibold fs-6"><?= lang('total') ?></span>
+                                <span class="text-gray-600 fw-semibold fs-6"><?= lang('total') ?></span>
                                 <!--end::Desc-->
                             </div>
                             <!--end::Stats-->
@@ -1453,7 +1520,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                     <!--end::Number-->
                                 </div>
                                 <!--begin::Desc-->
-                                <span class="text-gray-500 fw-semibold fs-6"><?= lang('total_items_sold') ?></span>
+                                <span class="text-gray-600 fw-semibold fs-6"><?= lang('total_items_sold') ?></span>
                                 <!--end::Desc-->
                             </div>
                             <!--end::Stats-->
@@ -1488,7 +1555,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                                     <!--end::Number-->
                                 </div>
                                 <!--begin::Desc-->
-                                <span class="text-gray-500 fw-semibold fs-6"><?= lang('profit') ?></span>
+                                <span class="text-gray-600 fw-semibold fs-6"><?= lang('profit') ?></span>
                                 <!--end::Desc-->
                             </div>
                             <!--end::Stats-->
@@ -1912,8 +1979,8 @@ $(document).ready(function() {
 
 		?>
 
-    var start = moment().startOf('month'); // This sets 'start' to the first day of the current month
-    var end = moment(); // 'end' remains the current moment
+var start = moment().subtract(30, 'days').startOf('day'); // 30 days ago from today
+var end = moment().endOf('day'); // Today, end of the day
 
     function cb(start, end) {
         $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));

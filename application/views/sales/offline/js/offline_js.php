@@ -3151,21 +3151,27 @@ function get_price_without_tax_for_tax_incuded_item(cart_item) {
     var tax_info = cart_item.taxes;
     var item_price_including_tax = cart_item.price;
 
-    if (tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
+    if(typeof tax_info!='undefined'){
+        if (    tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
         // console.log('get_price_without_tax_for_tax_incuded_item');
         var to_return = item_price_including_tax / (1 + (tax_info[0]['percent'] / 100) + (tax_info[1]['percent'] /
             100) + ((tax_info[0]['percent'] / 100) * ((tax_info[1]['percent'] / 100))));
-    } else //0 or more taxes NOT cumulative
-    {
-        var total_tax_percent = 0;
+        } else //0 or more taxes NOT cumulative
+        {
+            var total_tax_percent = 0;
 
-        for (var k = 0; k < tax_info.length; k++) {
-            var tax = tax_info[k]
-            total_tax_percent += parseFloat(tax['percent']);
+            for (var k = 0; k < tax_info.length; k++) {
+                var tax = tax_info[k]
+                total_tax_percent += parseFloat(tax['percent']);
+            }
+
+            var to_return = item_price_including_tax / (1 + (total_tax_percent / 100));
         }
-
-        var to_return = item_price_including_tax / (1 + (total_tax_percent / 100));
+    }else{
+        to_return  = item_price_including_tax;
     }
+
+   
 
     return to_return;
 
@@ -4548,6 +4554,8 @@ $(document).ready(function() {
             if ($('#category_item_selection li:first-child').data('category_id') == 'top' ||
                 $('#category_item_selection li:first-child').data('category_id') == 'my_sareeh') {
                 $('#category_item_selection li:first-child').trigger('click');
+            }else{
+                $('#category_item_selection_wrapper_new').html('');
             }
         }, 5000); 
 

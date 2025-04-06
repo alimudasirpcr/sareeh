@@ -45,7 +45,7 @@
 
 	<?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 
-<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+<div class="d-flex flex-column flex-row-fluid gap-5">
 
     <?php if(!$quick_edit) { ?>
     <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query,  'item_kit_info' => $item_kit_info)); ?>

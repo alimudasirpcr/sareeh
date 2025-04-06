@@ -45,7 +45,7 @@
 
 <?php echo form_open('items/save_item_pricing/'.(!isset($is_clone) ? $item_info->item_id : ''),array('id'=>'item_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
 <?php $this->load->view('partial/item_side_bar', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
-<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+<div class="d-flex flex-column flex-row-fluid gap-5">
     <?php if(!$quick_edit) { ?>
     <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_info' => $item_info)); ?>
     <?php } ?>

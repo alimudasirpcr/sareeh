@@ -43,7 +43,7 @@
 <?php echo form_open('item_kits/save_items/'.(!isset($is_clone) ? $item_kit_info->item_kit_id : ''),array('id'=>'item_kit_form','class'=>'form-horizontal form d-flex flex-column flex-lg-row fv-plugins-bootstrap5 fv-plugins-framework')); ?>
 <?php $this->load->view('partial/item_kit_side_bar', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>
 
-<div class="d-flex flex-column flex-row-fluid gap-7 gap-lg-10">
+<div class="d-flex flex-column flex-row-fluid gap-5">
 
     <?php if(!$quick_edit) { ?>
     <?php $this->load->view('partial/nav', array('progression' => $progression, 'query' => $query, 'item_kit_info' => $item_kit_info)); ?>

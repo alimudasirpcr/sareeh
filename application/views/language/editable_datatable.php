@@ -52,9 +52,7 @@
                                         
 </div>
 
-<script src="
-https://cdn.jsdelivr.net/npm/axios@1.6.7/dist/axios.min.js
-"></script>
+<script src="<?site_url()?>assets/js/axios.min16.js"></script>
 <script>
 const urld = "<?php echo site_url() ?>language/update/<?= $code ?>/";
 const updateField = (_id, data, callback) => {

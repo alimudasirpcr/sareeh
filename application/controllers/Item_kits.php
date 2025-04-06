@@ -319,12 +319,13 @@ class Item_kits extends Secure_area implements Idata_controller
 		$category_id = $this->input->post('category_id');
 		$fields = $this->input->post('fields') ? $this->input->post('fields') : 'all';
 		$deleted = isset($params['deleted']) ? $params['deleted'] : 0;
-
+		
 		$item_kits_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'category_id' => $category_id, 'fields' => $fields,'deleted' => $deleted);
 		
 		$this->session->set_userdata("item_kits_search_data",$item_kits_search_data);
 		$per_page=$this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
 		$search_data=$this->Item_kit->search($search,$deleted,$category_id,$per_page,$this->input->post('offset') ? $this->input->post('offset') : 0, $this->input->post('order_col') ? $this->input->post('order_col') : 'name' ,$this->input->post('order_dir') ? $this->input->post('order_dir'): 'asc',$fields);
+		
 		$config['base_url'] = site_url('item_kits/search');
 		$config['total_rows'] = $this->Item_kit->search_count_all($search,$deleted,$category_id);
 		$config['per_page'] = $per_page ;
@@ -332,6 +333,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		$this->load->library('pagination');$this->pagination->initialize($config);				
 		$data['pagination'] = $this->pagination->create_links();
 		$data['manage_table']=get_Item_kits_manage_table_data_rows($search_data,$this);
+		
 		echo json_encode(array('manage_table' => $data['manage_table'], 'pagination' => $data['pagination'],'total_rows' => $config['total_rows']));
 	}
 

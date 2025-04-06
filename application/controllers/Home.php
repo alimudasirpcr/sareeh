@@ -59,9 +59,9 @@ class Home extends Secure_area
 		$current_location = $this->Location->get_info($this->Employee->get_logged_in_employee_current_location_id());
 		$current_location_id = $this->Employee->get_logged_in_employee_current_location_id();
 		$data['message']  = "";
-		
 		if ($this->Employee->has_module_action_permission('reports', 'view_dashboard_stats', $this->Employee->get_logged_in_employee_info()->person_id))
 		{	
+			
 			$data['month_sale'] = $this->sales_widget();
 			$data['weekly_sale'] = $this->sales_widget('weekly');
 		}
@@ -487,6 +487,7 @@ class Home extends Secure_area
 
 	function sales_widget($type = 'monthly')
 	{
+		
 		$day = array();
 		$count = array();
 
@@ -507,6 +508,7 @@ class Home extends Secure_area
 
 		$return = $this->Sale->get_sales_amount_for_range($start_date, $end_date);	
 		$date = array();
+		
 		foreach ($return as $key => $value) {
 			if($type == 'monthly')
 			{
@@ -533,10 +535,12 @@ $endTime = clone $dated;
 $endTime->setTime(23, 59, 59);
 $startTimeformat = date(get_date_format().' '.get_time_format(), strtotime($startTime->format('Y-m-d H:i:s')));
 $endTimeforamt = date(get_date_format().' '.get_time_format(), strtotime($endTime->format('Y-m-d H:i:s')));
-			
+
 $start_date = $startTime->format('Y-m-d H:i:s');
 $end_date = $endTime->format('Y-m-d H:i:s');
-$date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=complex&report_date_range_simple=CUSTOM&start_date='.$start_date.'&start_date_formatted='.$startTimeformat.'&end_date='.$end_date.'&end_date_formatted='.$endTimeforamt.'&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1&location_ids%5B%5D=1&location_ids%5B%5D=2&location_ids%5B%5D=3&company=All&business_type=All&num_labels_skip=';
+$location_id = $this->Employee->get_logged_in_employee_current_location_id(); 
+$location_params = '&location_ids%5B%5D=' . $location_id;
+$date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=complex&report_date_range_simple=CUSTOM&start_date='.$start_date.'&start_date_formatted='.$startTimeformat.'&end_date='.$end_date.'&end_date_formatted='.$endTimeforamt.'&with_time=1&end_date_end_of_day=0&sale_type=all&currency=&register_id=&email=&export_excel=0&select_all=1'.$location_params.'&company=All&business_type=All&num_labels_skip=';
 			
 		}	
 

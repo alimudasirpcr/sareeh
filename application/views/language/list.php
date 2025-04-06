@@ -31,7 +31,7 @@
 												<!--begin::Table head-->
 												<thead>
 													<!--begin::Table row-->
-													<tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
+													<tr class="text-start text-muted fw-bold fs-7 gs-0">
                                                         
                                                     <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" >Language</th>
                                                    

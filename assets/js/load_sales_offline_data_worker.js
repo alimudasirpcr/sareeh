@@ -58,11 +58,39 @@ try
 	var db_category = new PouchDB('phppos_category',{revs_limit: 1});
 	var db_taxes = new PouchDB('phppos_taxes',{revs_limit: 1});
 	
-	self.addEventListener("message", function(e) 
+	
+	function sendUpdateToClient(step) {
+		self.clients.matchAll().then(clients => {
+			clients.forEach(client => client.postMessage({ step }));
+		});
+	}
+	self.addEventListener('install', (event) => {
+		console.log('Service Worker installing...');
+		self.skipWaiting();  // Forces activation
+	});
+	
+	self.addEventListener('activate', (event) => {
+		console.log('Service Worker activated!');
+		event.waitUntil(self.clients.claim());  // Takes control of open pages
+	});
+
+	self.addEventListener("message",  function(e) 
 	{
+
+		
+			console.log("connected");
+			
 		settings = e.data;
+		console.log(settings);
 		if(settings.offline_mode_sync_period)
 		one_day_in_minutes = settings.offline_mode_sync_period * 60;
+
+		if(settings.msg=='force'){
+			loadCustomersOffline();
+			loadCategoryOffline();
+			loadItemsOffline();
+			
+		}
 
 		
 	
@@ -72,6 +100,7 @@ try
 			{
 				await db_settings.put({'_id':'customers_sync_last_run_time','value': 0 });
 				loadCustomersOffline();
+				
 			} 
 			else 
 			{
@@ -146,8 +175,8 @@ try
 	
 	}, false);
 	// loadTaxesOffline();
-	loadItemsOffline();
-	loadCategoryOffline();
+	// loadItemsOffline();
+	// loadCategoryOffline();
 	// loadCustomersOffline();
 	async function loadCustomersOffline(base_url)
 	{
@@ -292,7 +321,7 @@ try
 		}
 		async function processCustomerAjax(data) 
 		{
-	
+			postMessage('1');
 			
 			var customers = JSON.parse(data);
 			console.log('processCustomerAjax' , customers);
@@ -620,7 +649,7 @@ try
 	async function processCategoryAjax(data) 
 	{
 		var categorys = JSON.parse(data);
-
+		postMessage('2');
 		console.log(categorys);
 		// deleteAllCategories();
 		for(var k=0;k<categorys.length;k++)
@@ -808,7 +837,7 @@ try
 		
 		async function processItemAjax(data) 
 		{
-
+			postMessage('3');
 			console.log('offlineitems' , data);
 			
 			// deleteAllDocuments();
@@ -917,3 +946,6 @@ catch(exception_var)
 {
 	
 }
+
+
+

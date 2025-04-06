@@ -1026,7 +1026,7 @@ class Item_kit extends MY_Model
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		$data =  $this->db->get();
-		pq();
+		return $data;
 	}
 	
 

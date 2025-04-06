@@ -1000,7 +1000,7 @@ Thank you for your prompt attention to this matter.
 
                             <div class="app-navbar-item ms-2 ms-lg-4">
                                 <!--begin::Menu wrapper-->
-                                <a href="#" class="btn btn-icon btn-outline  w-100 p-2 fw-bold bg-light text-dark"
+                                <a href="#" class="btn btn-custom btn-outline btn-icon btn-icon-gray-700 btn-active-icon-primary w-100"
                                     data-kt-menu-trigger="click" data-kt-menu-attach="parent"
                                     data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom"
                                     id="unread_message_countdd">
@@ -1024,7 +1024,7 @@ Thank you for your prompt attention to this matter.
                                         <!--begin::Tabs-->
                                         <ul class="nav nav-line-tabs nav-line-tabs-2x nav-stretch fw-semibold px-9">
                                             <li class="nav-item">
-                                                <a class="nav-link text-dark opacity-75 opacity-state-100 pb-4 active"
+                                                <a class="nav-link text-light opacity-75 opacity-state-100 pb-4 active"
                                                     data-bs-toggle="tab"
                                                     href="#kt_topbar_notifications_5"><?php echo lang('list_languages') ?></a>
                                             </li>
@@ -1656,22 +1656,31 @@ Thank you for your prompt attention to this matter.
             <!--begin::Logo-->
             <div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 " id="kt_app_sidebar_logo">
                 <!--begin::Logo image-->
-                <a href="<?php echo site_url(); ?>"
+                <a href="<?php echo site_url(); ?>" class="m-auto"
                     style="<?php echo isset($location_color) && $location_color ? 'background-color: ' . $location_color . ' !important' : ''; ?>">
 
-                    <?php if (!isset($is_pos)) : ?>
+                    <?php if (!isset($is_pos)) :
+                        $path_info = pathinfo($this->config->item('branding')['logo_path']);
+
+                        // Construct the new filename with "_dark" before the extension
+                        $new_logo_path = $path_info['dirname'] . '/' . $path_info['filename'] . '_dark.' . $path_info['extension'];
+                        
+                        
+                        ?>
                     <?php echo img(
                                 array(
                                     'src' => base_url() . $this->config->item('branding')['logo_path'],
-                                    'class' => 'theme-light-show h-50px',
+
+                                    'class' => 'theme-dark-show h-50px',
+                                   
                                     'id' => 'header-logo',
 
                                 )
                             ); ?>
                     <?php echo img(
                                 array(
-                                    'src' => base_url() . $this->config->item('branding')['logo_path'],
-                                    'class' => 'theme-dark-show h-50px',
+                                    'src' => base_url() . $new_logo_path,
+                                    'class' => 'theme-light-show h-50px',
                                     'id' => 'header-logo',
 
                                 )

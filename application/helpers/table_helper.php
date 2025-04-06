@@ -40,7 +40,7 @@ function get_people_manage_table($people,$controller)
 	
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -275,7 +275,7 @@ function get_items_manage_table($items,$controller)
 	
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0"  class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0"  class="text-start text-muted fw-bold fs-7 gs-0">';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -381,7 +381,7 @@ function get_item_data_row($item,$controller)
 		$table_data_row.= '<li>'. anchor($controller_name."/barcodes/$item->item_id?redirect=items", '<i class="ion-android-print"></i> ' .  lang('print') .' ' . lang('barcodes') , array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('barcodes'))).'</li>';
 
 		if(!$CI->config->item('easy_item_clone_button')){
-			$table_data_row.= '<li>'. anchor($controller_name."/clone_item/$item->item_id?redirect=items", '<i class="ion-ios-browsers-outline"></i> ' . lang('clone') .' ' . lang('item'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('clone'))).'</li>';
+			$table_data_row.= '<li>'. anchor($controller_name."/clone_item/$item->item_id?redirect=items", '<i class="ion-ios-browsers-outline"></i> ' . lang('clone') .' ' . lang('item'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary ','title'=>lang('clone'))).'</li>';
 		}
 
 		$table_data_row.= '</ul>
@@ -479,7 +479,7 @@ function get_suspended_sales_manage_table($items,$controller , $is_quick= false)
 		$headers[] = array('label' => lang('delete'), 'sort_column' => '');
 	}
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -731,7 +731,7 @@ function get_suspended_receivings_manage_table($items,$controller)
 	$headers[] = array('label' => lang('email_receipt'), 'sort_column' => '');
 	$headers[] = array('label' => lang('delete'), 'sort_column' => '');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -938,7 +938,7 @@ function get_locations_manage_table($locations,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
+	$table='<table class="tablesorter table  table-row-dashed" id="sortable_table">';	
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
@@ -955,7 +955,7 @@ function get_locations_manage_table($locations,$controller)
 	$headers[] = array('label' => lang('locations_email'), 'sort_column' => 'email');
 		
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1015,7 +1015,7 @@ function get_location_data_row($location,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$location->location_id/2", lang('edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';
+		$table_data_row.='<td>'.anchor($controller_name."/view/$location->location_id/2", lang('edit'),array('class'=>' btn btn-sm btn-light btn-active-light-primary','title'=>lang($controller_name.'_update'))).'</td>';
 	}
 	
 	$table_data_row.='<td>'.$location->location_id.'</td>';
@@ -1039,7 +1039,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
+	$table='<table class="tablesorter table  table-row-dashed" id="sortable_table">';	
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
@@ -1060,7 +1060,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	
 	$headers[] = array('label' => lang('clone'), 'sort_column' => '');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1130,7 +1130,7 @@ function get_giftcard_data_row($giftcard,$controller)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$giftcard->giftcard_id/2	", lang('edit'),array('class'=>' text-gray-800 text-hover-primary mb-1 ','title'=>lang($controller_name.'_update'))).'</td>';
+		$table_data_row.='<td>'.anchor($controller_name."/view/$giftcard->giftcard_id/2	", lang('edit'),array('class'=>' btn btn-sm btn-light btn-active-light-primary','title'=>lang($controller_name.'_update'))).'</td>';
 	}
 	
 	$table_data_row.='<td>'.H($giftcard->giftcard_number).'</td>';
@@ -1184,7 +1184,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1259,9 +1259,9 @@ function get_item_kit_data_row($item_kit,$controller)
 						</button>
 						<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 						
-						$table_data_row.='<li>'. anchor($controller_name."/pricing/$item_kit->item_kit_id?redirect=item_kits/", '<i class="ion-cash"></i> ' . lang('edit').' ' . lang('pricing') ,array('class'=>'text-gray-800 text-hover-primary fs-5 fw-bold ','title'=>lang($controller_name.'_update'))).'</li>';
+						$table_data_row.='<li>'. anchor($controller_name."/pricing/$item_kit->item_kit_id?redirect=item_kits/", '<i class="ion-cash"></i> ' . lang('edit').' ' . lang('pricing') ,array('class'=>'text-gray-800 text-hover-primary','title'=>lang($controller_name.'_update'))).'</li>';
 
-						$table_data_row.= '<li>'. anchor($controller_name."/clone_item_kit/$item_kit->item_kit_id", '<i class="ion-ios-browsers-outline"></i> ' . lang('clone') .' ' . lang('item_kit'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary fs-5 fw-bold','title'=>lang('clone'))).'</li>';
+						$table_data_row.= '<li>'. anchor($controller_name."/clone_item_kit/$item_kit->item_kit_id", '<i class="ion-ios-browsers-outline"></i> ' . lang('clone') .' ' . lang('item_kit'), array('class'=>'clone_manage_table text-gray-800 text-hover-primary ','title'=>lang('clone'))).'</li>';
 						
 						$table_data_row.= '</ul>
 					</div>'
@@ -1335,7 +1335,7 @@ function get_expenses_manage_table($expenses,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
+	$table='<table class="tablesorter table  table-row-dashed" id="sortable_table">';
 
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
@@ -1355,7 +1355,7 @@ function get_expenses_manage_table($expenses,$controller)
 	$headers[] = array('label' => lang('approved_by'), 'sort_column' => 'employee_appr');
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1448,7 +1448,7 @@ function get_appointments_manage_table($appointments,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
+	$table='<table class="tablesorter table  table-row-dashed" id="sortable_table">';
 
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	if(!$params['deleted'])
@@ -1464,7 +1464,7 @@ function get_appointments_manage_table($appointments,$controller)
 	$headers[] = array('label' => lang('appointments_end_date'), 'sort_column' => 'end_time');
 	$headers[] = array('label' => lang('notes'), 'sort_column' => 'notes');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1549,7 +1549,7 @@ function get_permission_template_manage_table($templates,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';	
+	$table='<table class="tablesorter table  table-row-dashed" id="sortable_table">';	
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	
 	if(!$params['deleted'])
@@ -1561,7 +1561,7 @@ function get_permission_template_manage_table($templates,$controller)
 	$headers[] = array('label' => lang('template_name'), 'sort_column' => 'name');
 		
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1654,7 +1654,7 @@ function get_invoices_manage_table( $invoices, $controller )
 
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{
@@ -1779,7 +1779,7 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 	$controller_name=strtolower(get_class($CI));
 	$params = $CI->session->userdata($controller_name.'_search_data') ? $CI->session->userdata($controller_name.'_search_data') : array('deleted' => 0);
 	
-	$table='<table class="tablesorter table table-hover table-row-dashed" id="sortable_table">';
+	$table='<table class="tablesorter table  table-row-dashed" id="sortable_table">';
 
 	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
 	$headers[] = array('label' => lang('edit'), 'sort_column' => '');
@@ -1796,7 +1796,7 @@ function get_subscriptions_manage_table($subscriptions,$controller)
 	$headers[] = array('label' => lang('startup_cost'), 'sort_column' => 'phppos_customer_subscriptions.startup_cost');
 	$headers[] = array('label' => '&nbsp;', 'sort_column' => '');
 		
-	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0" >';
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
 	$count = 0;
 	foreach($headers as $header)
 	{

@@ -46,7 +46,7 @@ class Appconfig extends MY_Model
 			'enable_customer_loyalty_system', 'loyalty_option', 'number_of_sales_for_discount', 
 			'discount_percent_earned', 'hide_sales_to_discount_on_receipt', 'point_value', 
 			'spend_to_point_ratio', 'hide_price_on_barcodes', 'always_use_average_cost_method', 
-			'test_mode', 'speedy_pos', 'require_customer_for_suspended_sale', 
+			'test_mode', 'speedy_pos',  'show_top_items_category' , 'show_my_sareeh_category' ,   'require_customer_for_suspended_sale', 
 			'default_new_items_to_service', 'prompt_for_ccv_swipe', 'disable_store_account_when_over_credit_limit', 
 			'mailing_labels_type', 'phppos_session_expiration', 'do_not_allow_below_cost', 
 			'store_account_statement_message', 'hide_points_on_receipt', 'enable_markup_calculator', 
