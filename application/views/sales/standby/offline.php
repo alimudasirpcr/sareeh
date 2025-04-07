@@ -73,7 +73,6 @@ $this->load->view("partial/offline_header"); ?>
                         <div class="card-body p-0">
 
 
-                            <div class="separator separator-dashed my-5"></div>
 
                             <!--begin::Form group-->
                             <div class="form-group d-flex flex-stack">
@@ -219,6 +218,67 @@ $this->load->view("partial/offline_header"); ?>
                                 <!--end::Option-->
                             </div>
                             <!--end::Form group-->
+                            <div class="separator separator-dashed my-5"></div>
+
+                            <div>
+                              <h4> <?php echo lang('sales_keyboard_help_title'); ?> </h4>
+                            </div>
+
+                            <div class="d-flex flex-column content-justify-center w-100">
+                               <!--begin::Label-->
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[F1,F3] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('start_new_sale'); ?></div>
+                                    </div>
+
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[F4] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('sales_completes_currrent_sale'); ?></div>
+                                    </div>
+
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[F2] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('sales_set_focus_item'); ?></div>
+                                    </div>
+
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[F7] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('sales_set_focus_payment'); ?></div>
+                                    </div>
+
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[F8] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('reports_suspended_sales'); ?></div>
+                                    </div>
+
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[ESC]</div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('sales_esc_cancel_sale'); ?></div>
+                                    </div>
+
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[CTRL + Q] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('quick_cash_help'); ?></div>
+                                    </div>
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[CTRL + C] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('focus_on_customer'); ?></div>
+                                    </div>
+                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[ + or - ] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('press_+_or_-_to_change_item_quantity'); ?></div>
+                                    </div>
+                            </div>
+
                             <div class="separator separator-dashed my-5"></div>
 
 
@@ -1433,13 +1493,12 @@ $this->load->view("partial/offline_header"); ?>
                                 </span>
                             </span>
 
-                            <span class=" menu-link ">
+                            <span class=" menu-link  ">
 
-                            <a tabindex="-1" class="menu-icon w-100 "  id="kt_drawer_suspend_offline"
-                    data-target="#kt_drawer_general" data-target-title="Suspended Sales"
-                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
-                    data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
-                    data-bs-placement="top" title="hold cart"><span class="svg-icon svg-icon-muted svg-icon-2x  ">
+                            <span  id="kt_drawer_suspend_offline" class="menu-icon w-100 suspened_sale_button "
+                                    data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                                    data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
+                                    data-bs-original-title="Metronic Builder" data-kt-initialized="1"  title="hold cart" ><span class="svg-icon svg-icon-muted svg-icon-2x  ">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24">
                                                 <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                                     <!-- Cart Icon -->
@@ -1451,7 +1510,7 @@ $this->load->view("partial/offline_header"); ?>
                                                 </g>
                                             </svg>
 
-                                        </span></a>
+                                        </span></span>
 
 
                             </span>

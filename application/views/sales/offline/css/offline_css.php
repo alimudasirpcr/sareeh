@@ -17,7 +17,7 @@
 
     .pos-sidebar .menu-link {
         height: 70px;
-        border: 1px solid rgb(246, 248, 252);
+        /* border: 1px solid rgb(246, 248, 252); */
         display: flex;
         justify-content: center;
         width: 70px;

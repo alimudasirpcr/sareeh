@@ -4490,3 +4490,106 @@ window.addEventListener('offline', updateOnlineStatus);
 // Initial check to set the correct status as soon as the script loads
 updateOnlineStatus();
 </script>
+
+
+<script type="text/javascript">
+   
+
+
+    //Keyboard events...only want to load once
+    $(document).keyup(function(event) {
+        var mycode = event.keyCode;
+
+        //tab
+        if (mycode == 9) {
+            var $tabbed_to = $(event.target);
+
+            if ($tabbed_to.hasClass('xeditable')) {
+                $tabbed_to.trigger('click').editable('show');
+            }
+        }
+
+    });
+
+    $(document).keydown(function(event) {
+        var mycode = event.keyCode;
+
+        console.log(mycode);
+
+        //F2
+        if (mycode == 113) {
+            $("#item").focus();
+            return;
+        }
+
+        //F4
+        if (mycode == 115) {
+            event.preventDefault();
+            $("#finish_sale_alternate_button").click();
+            $("#finish_sale_button").click();
+            return;
+        }
+
+        //F9
+        if (mycode == 120) {
+            // event.preventDefault();
+            // $(".pop_open_cash_drawer").click();
+            window.open("<?= site_url('sales/open_drawer') ?>", "_blank");
+            return;
+        }
+
+        //F7
+        if (mycode == 118) {
+            event.preventDefault();
+            $("#amount_tendered").focus();
+            $("#amount_tendered").select();
+            return;
+        }
+
+        //F8
+        if (mycode == 119) {
+            $(".suspened_sale_button").click();
+            return;
+        }
+
+        //ESC
+        if (mycode == 27) {
+            event.preventDefault();
+            $("#cancel_sale_button").click();
+            return;
+        }
+
+           //  + 
+           if (mycode == 187) {
+            event.preventDefault();
+            var cart = JSON.parse(localStorage.getItem("cart"));
+            if (cart && cart.items && cart.items.length > 0) {
+                var lastIndex = cart.items.length - 1;
+                inc_de_qty(lastIndex, 1)
+            }
+
+            return;
+          
+        }
+
+        //  -
+        if (mycode == 189) {
+            event.preventDefault();
+            var cart = JSON.parse(localStorage.getItem("cart"));
+            if (cart && cart.items && cart.items.length > 0) {
+                var lastIndex = cart.items.length - 1;
+                inc_de_qty(lastIndex, -1)
+            }
+
+            return;
+        }
+
+        //CTRL + C
+        if (mycode == 67) {
+            $("#customer").focus();
+            return;
+        }
+
+
+    });
+    </script>
