@@ -2710,52 +2710,58 @@ $('.xeditable-description').editable({
     }
 });
 
-function item_subtotal($item){
-    // return to_currency_no_money((get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100));
-    // console.log( 'discount' ,  $item['discount']);
-    return (get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount_percent'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount_percent']/100);
-}
+function item_subtotal($item) {
+                        var modifier_subtotal = get_modifiers_subtotal($item);
+                        var item_price_total = $item['price'] * $item['quantity'];
 
-function edit_subtotal($new_subtotal)
-{
-    var item_discount = get_item_discount(cart);
-    var subtotal = get_subtotal(cart);
+                        var discount = $item['discount_percent'] || 0;
 
-    // Adjusting subtotal by subtracting item discount
-    subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+                        var discounted_modifiers = modifier_subtotal - (modifier_subtotal * discount / 100);
+                        var discounted_items = item_price_total - (item_price_total * discount / 100);
+
+                        var subtotal = discounted_modifiers + discounted_items;
 
 
-    $cur_subtotal = subtotal;
-    $subtotal_change = $new_subtotal - $cur_subtotal;
-            
+                        return subtotal;
+                    }
 
+function edit_subtotal(new_subtotal) {
+                        var modifier_total = 0;
+                        var base_subtotal = 0;
 
-    for (var k = 0; k < cart.items.length; k++) {
-        $item = cart.items[k];
+                        // 1. Calculate totals
+                        for (var i = 0; i < cart.items.length; i++) {
+                            var item = cart.items[i];
+                            var base_total = item_subtotal(item); // base only
+                            var mod_total = get_modifiers_subtotal(item); // modifier only
 
-        if ($cur_subtotal == 0)
-        {
-            if ($cur_subtotal == 0)
-            {
-                $percentage_of_cart = 1;
-            }
-            else
-            {
-                $percentage_of_cart = 0;
-            }
-        }
-        else
-        {
-            $percentage_of_cart = (item_subtotal($item) + get_modifiers_subtotal($item)) / $cur_subtotal;		
-        }
+                            base_subtotal += base_total;
+                            modifier_total += mod_total;
+                        }
 
+                        // 2. New subtotal for base items only
+                        var target_base_subtotal = new_subtotal - modifier_total;
+                        var delta = target_base_subtotal - base_subtotal;
 
-        $item_sub_total = item_subtotal($item)  + ($subtotal_change * $percentage_of_cart);	
-        cart['items'][k]['price'] = -1*((100*$item_sub_total)/($item['quantity']*($item['discount_percent']-100)));
+                        for (var i = 0; i < cart.items.length; i++) {
+                            var item = cart.items[i];
+                            var quantity = item.quantity || 1;
+                            var discount_percent = item.discount_percent || 0;
 
-    }
-    
-}
+                            var item_base_total = item_subtotal(item);
+                            var proportion = base_subtotal === 0 ? 1 : item_base_total / base_subtotal;
+
+                            // Adjust base total
+                            var adjusted_base_total = item_base_total + (delta * proportion);
+                            var unit_base_price = adjusted_base_total / quantity;
+
+                            // Adjust for discount if needed
+                            var new_price = unit_base_price / (1 - (discount_percent / 100));
+
+                            // Set only the base price (excluding modifiers)
+                            item.price = parseFloat(new_price.toFixed(3));
+                        }
+                    }
 
 
 $('.xeditable-subtotal').editable({
@@ -3575,10 +3581,19 @@ function get_modifier_unit_total(cart_item) {
 
 function get_modifiers_subtotal(cart_item) {
     var sub_total = 0;
+    console.log("selected item modifiers:", cart_item.selected_item_modifiers);
 
-    for (var k = 0; k < cart_item.modifiers.length; k++) {
-        var mod_item = cart_item.modifiers[k];
-        sub_total += parseFloat(mod_item['unit_price']) * cart_item['quantity'];
+    if (typeof cart_item.selected_item_modifiers !== 'undefined') {
+        var modifierKeys = Object.keys(cart_item.selected_item_modifiers);
+        console.log("selected item modifier count:", modifierKeys.length);
+
+        for (var k = 0; k < modifierKeys.length; k++) {
+            var key = modifierKeys[k];
+            var mod_item = cart_item.selected_item_modifiers[key];
+
+            console.log("modifier", mod_item);
+            sub_total += parseFloat(mod_item['unit_price']) * cart_item['quantity'];
+        }
     }
 
     return sub_total;
@@ -3941,6 +3956,76 @@ function addItem(newItem) {
 
 }
 
+
+selected_line_modifier = 'none';
+
+function enable_popup_modifier(line) {
+    selected_line_modifier = line;
+    // console.log("enable_popup_modifier", cart.items[line].modifiers);
+
+
+    // console.log("selected_item_modifiers", cart.items[line].selected_item_modifiers);
+
+
+    options = cart.items[line].modifiers;
+    let optionsHtml = ``;
+    optionsHtml +=
+        `
+                <div class="fv-row mb-15 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid" data-kt-buttons="true" data-kt-initialized="1">`;
+    for (let key in options) {
+        let modifier = cart.items[line].modifiers[key];
+        if (!options[key].unit_price) {
+            continue;
+        }
+        // isChecked = '';
+        let isChecked = false;
+        if (cart.items[line].selected_item_modifiers) {
+
+            // cart.items[line].selected_item_modifiers =      Object.entries(cart.items[line].selected_item_modifiers);
+
+
+
+            if (Array.isArray(cart.items[line].selected_item_modifiers)) {
+                // If it's an array, use `.some()` directly
+                isChecked = cart.items[line].selected_item_modifiers.some(
+                    selectedModifier => selectedModifier.id == modifier.id
+                );
+            } else {
+                // If it's an object, convert it to an array of values and then use `.some()`
+                isChecked = Object.values(cart.items[line].selected_item_modifiers).some(
+                    selectedModifier => selectedModifier.id == modifier.id
+                );
+            }
+
+            // console.log(isChecked);
+        }
+
+
+
+        const isChecked_val = isChecked ? 'checked' : '';
+        optionsHtml += ` <label class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex text-start p-6 mb-6 active">
+                <!--begin::Input-->
+               <div class="form-check"> <input class="form-check-input" type="checkbox" name="modifierOption" id="option_modifier-${key}" value="${key}"  ${isChecked_val}> </div>
+                <!--end::Input-->
+
+                <!--begin::Label-->
+                <span class="d-flex">
+                
+                    <span class="ms-4">
+                        <span class="fs-3 fw-bold text-gray-900   mt-3 d-block" for="option_modifier-${key}"> <?= lang('name') ?> : ${options[key].name} <br> <?= lang('unit_price') ?> : ${options[key].unit_price_currency} </span>
+
+                    </span>
+                    <!--end::Info-->
+                </span>
+                <!--end::Label-->
+            </label> `;
+    }
+    optionsHtml += `</div`;
+    $('#modifiersOptions').html(optionsHtml);
+
+    jQuery('#choose_modifiers').modal('show');
+
+}
 $(document).ready(function() {
     var $scrollContainer = $('.horizontal-scroll');
     var scrollSpeed = 10; // Adjust this value for different scroll speeds

@@ -3435,7 +3435,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <a style="cursor:pointer;" onclick="enable_popup_modifier({{index}});" class="myeditable"><?php echo lang('edit'); ?></a>
 
                                     {{#if selected_item_modifiers}}
-                                        <div class="text-muted fs-7 fw-bold">
+                                        <div class="text-muted fs-7 fw-bold mt-3">
                                             <ul>
                                         {{#each selected_item_modifiers as |modifier modifierIndex|}}
                                                 <li>

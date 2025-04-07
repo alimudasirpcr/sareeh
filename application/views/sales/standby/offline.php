@@ -1459,29 +1459,6 @@ $this->load->view("partial/offline_header"); ?>
 
                          
                             <div class="menu-item" >
-                                <a class=" menu-link " href="<?php echo site_url('sales/sales_list'); ?>">
-                                    <span class="menu-icon  w-100 ">
-                                        <!--begin::Svg Icon | path: /var/www/preview.keenthemes.com/keenthemes/good/docs/core/html/src/media/icons/duotune/arrows/arr043.svg-->
-                                        <span class="svg-icon svg-icon-muted svg-icon-2x "><svg width="24"
-                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path opacity="0.3"
-                                                    d="M21 22H12C11.4 22 11 21.6 11 21V3C11 2.4 11.4 2 12 2H21C21.6 2 22 2.4 22 3V21C22 21.6 21.6 22 21 22Z"
-                                                    fill="currentColor" />
-                                                <path
-                                                    d="M19 11H6.60001V13H19C19.6 13 20 12.6 20 12C20 11.4 19.6 11 19 11Z"
-                                                    fill="currentColor" />
-                                                <path opacity="0.3"
-                                                    d="M6.6 17L2.3 12.7C1.9 12.3 1.9 11.7 2.3 11.3L6.6 7V17Z"
-                                                    fill="currentColor" />
-                                            </svg>
-                                        </span>
-                                        <!--end::Svg Icon-->
-                                    </span>
-
-                                </a>
-                            </div>
-                            <div class="menu-item" >
                             <span class=" menu-link  bg-danger">
                                 <span id="kt_drawer_completed_sales" class="menu-icon   w-100"
                                     data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
@@ -1883,9 +1860,9 @@ $this->load->view("partial/offline_header"); ?>
 								<td class="fs-6">
 
 									<a tabindex="-1"
-										href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
-										data-target="#kt_drawer_general" data-target-title="View Item"
-										data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
+										href="#"
+										 data-target-title="View Item"
+										class="register-item-name text-gray-800 text-hover-none "
 										data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
 										data-bs-placement="top" title="{{name}}">{{name}}</a>
 								</td>
@@ -2975,9 +2952,9 @@ $this->load->view("partial/offline_header"); ?>
 
             <td class="fs-7">
 
-                <a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
-                    data-target="#kt_drawer_general" data-target-title="View Item"
-                    data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
+                <a tabindex="-1" href="javascript:void(0)"
+                  
+                  class="register-item-name text-gray-800 text-hover-none "
                     data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                     data-bs-placement="top" title="{{name}}">{{name}}</a>
             </td>
@@ -3107,7 +3084,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <a style="cursor:pointer;" onclick="enable_popup_modifier({{index}});" class="myeditable"><?php echo lang('edit'); ?></a>
 
                                     {{#if selected_item_modifiers}}
-                                        <div class="text-muted fs-7 fw-bold">
+                                        <div class="text-muted fs-7 fw-bold mt-3">
                                             <ul>
                                         {{#each selected_item_modifiers as |modifier modifierIndex|}}
                                                 <li>

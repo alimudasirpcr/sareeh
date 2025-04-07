@@ -2556,51 +2556,57 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                         }
                     });
 
-                    function item_subtotal($item){
-                        // return to_currency_no_money((get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100));
-                        // console.log( 'discount' ,  $item['discount']);
-                        return (get_modifiers_subtotal($item) - (get_modifiers_subtotal($item) * $item['discount_percent'] / 100))+ ($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount_percent']/100);
+                    function item_subtotal($item) {
+                        var modifier_subtotal = get_modifiers_subtotal($item);
+                        var item_price_total = $item['price'] * $item['quantity'];
+
+                        var discount = $item['discount_percent'] || 0;
+
+                        var discounted_modifiers = modifier_subtotal - (modifier_subtotal * discount / 100);
+                        var discounted_items = item_price_total - (item_price_total * discount / 100);
+
+                        var subtotal = discounted_modifiers + discounted_items;
+
+
+                        return subtotal;
                     }
 
-                    function edit_subtotal($new_subtotal)
-                    {
-                        var item_discount = get_item_discount(cart);
-                        var subtotal = get_subtotal(cart);
+                    function edit_subtotal(new_subtotal) {
+                        var modifier_total = 0;
+                        var base_subtotal = 0;
 
-                        // Adjusting subtotal by subtracting item discount
-                        subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+                        // 1. Calculate totals
+                        for (var i = 0; i < cart.items.length; i++) {
+                            var item = cart.items[i];
+                            var base_total = item_subtotal(item); // base only
+                            var mod_total = get_modifiers_subtotal(item); // modifier only
 
-
-                        $cur_subtotal = subtotal;
-                        $subtotal_change = $new_subtotal - $cur_subtotal;
-                                
-
-                    
-                        for (var k = 0; k < cart.items.length; k++) {
-                            $item = cart.items[k];
-
-                            if ($cur_subtotal == 0)
-                            {
-                                if ($cur_subtotal == 0)
-                                {
-                                    $percentage_of_cart = 1;
-                                }
-                                else
-                                {
-                                    $percentage_of_cart = 0;
-                                }
-                            }
-                            else
-                            {
-                                $percentage_of_cart = (item_subtotal($item) + get_modifiers_subtotal($item)) / $cur_subtotal;		
-                            }
-
-
-                            $item_sub_total = item_subtotal($item)  + ($subtotal_change * $percentage_of_cart);	
-                            cart['items'][k]['price'] = -1*((100*$item_sub_total)/($item['quantity']*($item['discount_percent']-100)));
-
+                            base_subtotal += base_total;
+                            modifier_total += mod_total;
                         }
-                        
+
+                        // 2. New subtotal for base items only
+                        var target_base_subtotal = new_subtotal - modifier_total;
+                        var delta = target_base_subtotal - base_subtotal;
+
+                        for (var i = 0; i < cart.items.length; i++) {
+                            var item = cart.items[i];
+                            var quantity = item.quantity || 1;
+                            var discount_percent = item.discount_percent || 0;
+
+                            var item_base_total = item_subtotal(item);
+                            var proportion = base_subtotal === 0 ? 1 : item_base_total / base_subtotal;
+
+                            // Adjust base total
+                            var adjusted_base_total = item_base_total + (delta * proportion);
+                            var unit_base_price = adjusted_base_total / quantity;
+
+                            // Adjust for discount if needed
+                            var new_price = unit_base_price / (1 - (discount_percent / 100));
+
+                            // Set only the base price (excluding modifiers)
+                            item.price = parseFloat(new_price.toFixed(3));
+                        }
                     }
 
 
@@ -3535,13 +3541,21 @@ function get_modifier_unit_total(cart_item) {
     return unit_total;
 
 }
-
 function get_modifiers_subtotal(cart_item) {
     var sub_total = 0;
+    console.log("selected item modifiers:", cart_item.selected_item_modifiers);
 
-    for (var k = 0; k < cart_item.modifiers.length; k++) {
-        var mod_item = cart_item.modifiers[k];
-        sub_total += parseFloat(mod_item['unit_price']) * cart_item['quantity'];
+    if (typeof cart_item.selected_item_modifiers !== 'undefined') {
+        var modifierKeys = Object.keys(cart_item.selected_item_modifiers);
+        console.log("selected item modifier count:", modifierKeys.length);
+
+        for (var k = 0; k < modifierKeys.length; k++) {
+            var key = modifierKeys[k];
+            var mod_item = cart_item.selected_item_modifiers[key];
+
+            console.log("modifier", mod_item);
+            sub_total += parseFloat(mod_item['unit_price']) * cart_item['quantity'];
+        }
     }
 
     return sub_total;
