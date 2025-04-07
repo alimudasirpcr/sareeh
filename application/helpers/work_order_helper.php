@@ -34,7 +34,7 @@ function get_work_orders_manage_table($orders,$controller)
 {
 	$CI =& get_instance();
 	$CI->load->model('Employee');
-	$table='<table class="table tablesorter table-hover" id="sortable_table">';	
+	$table='<table class="table align-middle table-row-dashed tablesorter " id="sortable_table">';	
 	$columns_to_display = $CI->Employee->get_work_order_columns_to_display();
 
 

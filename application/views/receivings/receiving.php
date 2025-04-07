@@ -19,7 +19,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 <?php } ?>
 
 <div class="row register">
-	<div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 no-padding-right no-padding-left">
+	<div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 no-padding-right">
 		<div class="register-box register-items-form">
 
 			<div class="item-form">
@@ -58,7 +58,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 						<?php echo anchor("items/view/-1/?redirect=receivings/&progression=1", "<i class='icon ti-pencil-alt'></i>", array('class' => 'none add-new-item', 'title' => lang('new_item'), 'id' => 'new-item')); ?>
 					</span>
 
-					<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment") ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>" style="width:64%">
+					<input type="text" id="item" name="item" <?php echo ($mode == "store_account_payment") ? 'disabled="disabled"' : '' ?> class="add-item-input pull-left keyboardTop" placeholder="<?php echo lang('start_typing_item_name'); ?>" data-title="<?php echo lang('item_name'); ?>" style="width:50%">
 					<input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id" />
 					<input type="hidden" name="default_supplier_id" id="default_supplier_id" />
 					<div class="input-group-text register-mode <?php echo $mode; ?>-mode dropdown">

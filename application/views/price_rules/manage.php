@@ -5,10 +5,10 @@
 		<div class="row manage-table  card p-5">
 			<div class="card ">
 				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
-				<h3 class="card-title">
+				<h3 class="card-title w-100">
 					
-<div class="manage_buttons mb-5">
-<div class="manage-row-options   px-5 hidden">
+<div class="manage_buttons mb-5 w-100">
+<div class="manage-row-options   px-5 hidden w-100">
 	<div class="email_buttons price_rules text-center">		
 	<?php if(!$deleted) { ?>
 		<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
@@ -47,8 +47,7 @@
 	
 	</div>
 </div>
-				<?php echo ($deleted ? lang('deleted').' ' : '').lang('module_'.$controller_name); ?>
-					<span title="<?php echo $total_rows; ?> total <?php echo $controller_name?>" class="badge bg-primary tip-left" id="manage_total_items"><?php echo $total_rows; ?></span>
+				
 					<span class="panel-options custom">
 							<div class="pagination pagination-top hidden-print  text-center" id="pagination_top">
 								<?php echo $pagination;?>		

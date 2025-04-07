@@ -7226,7 +7226,7 @@ ul#filter_dropdown span.panel li > a {
 #sortable_table th {
   white-space: nowrap;
   cursor: pointer;
-  color: var(--bs-text-gray-500);
+  color: var(--bs-text-gray-800);
 }
 .table-responsive > .table {
   margin-bottom: 20px;
@@ -10686,7 +10686,7 @@ body.open-modal {
 #sales_page_holder {
   width: 100%;
   height: 100%;
-  /* background-color: var(--kt-card-bg); */
+  background-color: var(--kt-card-bg);
 }
 #sales_page_holder.fullscreen-enabled {
   padding-left: 30px !important;
@@ -18059,22 +18059,22 @@ table.dataTable>tbody>tr>.selected {
 }
 
 td{
-  color: var(--kt-text-gray-600) !important;
-  font-weight: 600!important;
+  color: var(--kt-text-gray-800) !important;
+  font-weight: 500 !important;
 }
 
 
 td a {
   color: var(--kt-text-dark);
   transition: color .2s ease;
-  font-weight: 600!important;
+  font-weight: 500 !important;
 }
 i.icon,.ion-calendar {
   color: var(--kt-text-dark);
 }
 td a:hover {
   transition: color .2s ease;
-  color: var(--kt-text-secondary)!important;
+  color: var(--kt-text-dark)!important;
 }
 .dl-horizontal-right dt{
   text-align: left !important;
@@ -19924,11 +19924,11 @@ padding: 1rem 0 !important;
 background-color: #fffefe !important;
 }
 
-.input-group-text {
+/* .input-group-text {
     color: var(--kt-primary-dark) !important;
     background-color: var(--kt-primary-light) !important;
     border: 1px solid var(--kt-primary-light) !important;
-}
+} */
 
 
 .timeline-label:before {
@@ -19995,3 +19995,9 @@ height: 140px;
 .tw-grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+
+
+[data-kt-app-layout=light-sidebar] .app-sidebar-toolbar .form-select-custom {
+  background-color: #f8f6f6 !important;
+}
+

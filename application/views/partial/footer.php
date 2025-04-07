@@ -391,7 +391,7 @@ $(document).ready(function() {
 
 
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="<?= site_url() ?>assets/js/axios.min.js"></script>
 <?php
 
 
@@ -432,7 +432,19 @@ if ($this->config->item('offline_mode'))
 	
 
 	?>
-	
+	function updateStepUI(stepIndex) {
+						let step = document.querySelector(`.step-container[data-step="${stepIndex}"]`);
+						if (step) {
+							let normalImg = step.querySelector(".normal");
+							let successImg = step.querySelector(".success");
+
+							gsap.to(normalImg, { opacity: 0, duration: 0.3, onComplete: () => {
+								normalImg.classList.add("d-none");
+								successImg.classList.remove("d-none");
+								gsap.fromTo(successImg, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+							}});
+						}
+					}
 
 	var offline_mode_sync_period = parseInt("<?php echo $this->config->item('offline_mode_sync_period')?$this->config->item('offline_mode_sync_period'): '24'; ?>");
 
@@ -446,34 +458,40 @@ if ($this->config->item('offline_mode'))
 
 	//Background worker for syncing offline data
 	var w;
-	function startWorker() 
+	function startWorker(force='') 
 	{
 		offline_mode_sync_period =1;
 	
+	
 		if (typeof(Worker) !== "undefined") {
-			if (typeof(w) == "undefined") {
+		
 			
-
+				
 				w = new Worker('<?php echo base_url(); ?>'+"assets/js/load_sales_offline_data_worker.js?<?php echo BUILD_TIMESTAMP;?>");
 					
 				//Event handler coming back from worker that posts messages
 				w.onmessage = function(event) 
 				{
 					var data = event.data;
+					console.log("event " , data);
 					
 					if (data == 'delete_all_client_side_dbs')
 					{
 						delete_all_client_side_dbs();
+					}else{
+						updateStepUI(data);
 					}
+					
 				};
 
 				//Post message to worker; some init params
 				w.postMessage({
 					base_url:BASE_URL,
 					site_url:SITE_URL,
+					msg : force,
 					offline_mode_sync_period: offline_mode_sync_period
 				});
-			}
+			
 		} else{
 			document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
 		}

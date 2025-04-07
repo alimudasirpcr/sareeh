@@ -5,7 +5,7 @@ function create_breadcrumb()
 	$return = '<ol class="breadcrumb hidden-print text-gray-600 fw-bold fs-3 fw-semibold">';
 
 
-	$dashboard_link = ' <li class="breadcrumb-item "><a  tabindex="-1"  class="breadcrumb-link text-muted text-hover-primary breadcrumb-link text-muted text-hover-primary" href="'.site_url('home').'">'.lang('dashboard').'</li></a> ';
+	$dashboard_link = ' <li class="breadcrumb-item "><a  tabindex="-1"  class="breadcrumb-link text-hover-primary breadcrumb-link text-hover-primary" href="'.site_url('home').'">'.lang('dashboard').'</li></a> ';
 
 	$return.=$dashboard_link;
 	if ($ci->uri->segment(1) == 'home')
@@ -15,7 +15,7 @@ function create_breadcrumb()
 		if ($ci->uri->segment(2) == 'work_order_dashboard') //Main page
 		{
 			
-			$customers_home_link = ' <li class="breadcrumb-item "><a tabindex = "-1" class=" breadcrumb-link text-muted text-hover-primary" href="'.site_url('home/work_order_dashboard').'">'.lang('work_order_dashboard').'</li></a>';
+			$customers_home_link = ' <li class="breadcrumb-item "><a tabindex = "-1" class=" breadcrumb-link  text-hover-primary" href="'.site_url('home/work_order_dashboard').'">'.lang('work_order_dashboard').'</li></a>';
 			$return.=$customers_home_link;
 		}
 		
@@ -41,7 +41,7 @@ function create_breadcrumb()
 		else
 		{
 			
-			$customers_home_link = ' <li class="breadcrumb-item "><a tabindex = "-1" class=" breadcrumb-link text-muted text-hover-primary" href="'.site_url('customers').'">'.lang('module_customers').'</li></a>';
+			$customers_home_link = ' <li class="breadcrumb-item "><a tabindex = "-1" class=" breadcrumb-link  text-hover-primary" href="'.site_url('customers').'">'.lang('module_customers').'</li></a>';
 		}
 		
 		$return.=$customers_home_link;
@@ -92,7 +92,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$items_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class=" breadcrumb-link text-muted text-hover-primary" href="'.site_url('items').'">'.lang('module_items').'</li></a>';
+			$items_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class=" breadcrumb-link  text-hover-primary" href="'.site_url('items').'">'.lang('module_items').'</li></a>';
 		}
 				
 		$return.=$items_home_link;
@@ -139,14 +139,14 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'do_count')
 		{
-			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('items/count').'">'.lang('items_count_inventory').'</li></a>';
+			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('items/count').'">'.lang('items_count_inventory').'</li></a>';
 			$return.=create_current_page_url(lang('items_do_count'));
 		}
 		elseif($ci->uri->segment(2) == 'excel_import_count')
 		{
 			$count_id = $ci->session->userdata('current_count_id');	
-			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url("items/count").'">'.lang('items_count_inventory').'</li></a>';
-			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url("items/do_count/$count_id").'">'.lang('items_do_count').'</li></a>';
+			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url("items/count").'">'.lang('items_count_inventory').'</li></a>';
+			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url("items/do_count/$count_id").'">'.lang('items_do_count').'</li></a>';
 			$return.=create_current_page_url(lang('excel_import'));
 		}
 		elseif($ci->uri->segment(2) == 'manage_attributes')
@@ -179,8 +179,8 @@ function create_breadcrumb()
 		}
 		elseif($ci->uri->segment(2) == 'count_not_counted')
 		{
-			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('items/count').'">'.lang('items_count_inventory').'</li></a>';
-			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('items/do_count/'.$ci->uri->segment(3)).'">'.lang('items_do_count').'</li></a>';
+			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('items/count').'">'.lang('items_count_inventory').'</li></a>';
+			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('items/do_count/'.$ci->uri->segment(3)).'">'.lang('items_do_count').'</li></a>';
 			$return.=create_current_page_url(lang('items_not_counted'));
 		
 		}
@@ -202,7 +202,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$price_rules_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('price_rules').'">'.lang('module_price_rules').'</li></a>';
+			$price_rules_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('price_rules').'">'.lang('module_price_rules').'</li></a>';
 		}
 		
 		$return.=$price_rules_home_link;
@@ -237,7 +237,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$item_kits_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('item_kits').'">'.lang('module_item_kits').'</li></a>';
+			$item_kits_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('item_kits').'">'.lang('module_item_kits').'</li></a>';
 		}
 				
 		$return.=$item_kits_home_link;
@@ -267,7 +267,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$suppliers_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('suppliers').'">'.lang('module_suppliers').'</li></a>';
+			$suppliers_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('suppliers').'">'.lang('module_suppliers').'</li></a>';
 		}
 				
 		$return.=$suppliers_home_link;
@@ -300,7 +300,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$reports_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('reports').'">'.lang('module_reports').'</li></a>';
+			$reports_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('reports').'">'.lang('module_reports').'</li></a>';
 		}
 		
 		$return.=$reports_home_link;
@@ -660,7 +660,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$employees_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('employees').'">'.lang('module_employees').'</li></a>';
+			$employees_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('employees').'">'.lang('module_employees').'</li></a>';
 		}
 		
 		$return.=$employees_home_link;
@@ -700,7 +700,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$giftcards_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('giftcards').'">'.lang('module_giftcards').'</li></a>';
+			$giftcards_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('giftcards').'">'.lang('module_giftcards').'</li></a>';
 		}
 		
 		
@@ -749,7 +749,7 @@ function create_breadcrumb()
 		
 		else
 		{
-			$config_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('config').'">'.lang('module_config').'</li></a>';
+			$config_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('config').'">'.lang('module_config').'</li></a>';
 		}
 		
 		$return.=$config_home_link;
@@ -777,7 +777,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$locations_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('locations').'">'.lang('module_locations').'</li></a>';
+			$locations_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('locations').'">'.lang('module_locations').'</li></a>';
 		}
 		
 		$return.=$locations_home_link;
@@ -798,7 +798,7 @@ function create_breadcrumb()
 	{
 		if ($ci->uri->segment(2) == NULL || $ci->uri->segment(2) == 'index' || $ci->uri->segment(2) == 'unsuspend') //Main page
 		{
-			$sales_home_link = ' <li class="breadcrumb-item"><a class="current" tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('sales').'">'.lang('module_sales').'</li></a>';
+			$sales_home_link = ' <li class="breadcrumb-item"><a class="current" tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('sales').'">'.lang('module_sales').'</li></a>';
 			
 			if ($ci->Register->count_all() > 1)
 			{
@@ -811,11 +811,11 @@ function create_breadcrumb()
 					
 					if ($default_register)
 					{
-						$sales_home_link.=' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('sales/clear_register').'">'.$register_name.'</li></a>';
+						$sales_home_link.=' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link  text-hover-primary" href="'.site_url('sales/clear_register').'">'.$register_name.'</li></a>';
 					}
 					else
 					{
-						$sales_home_link.=' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('sales/clear_register').'">'.$register_name.' ['.lang('sales_change_register').']</li></a>';
+						$sales_home_link.=' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link  text-hover-primary" href="'.site_url('sales/clear_register').'">'.$register_name.' ['.lang('sales_change_register').']</li></a>';
 						
 					}
 				}	
@@ -823,7 +823,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$sales_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('sales').'">'.lang('module_sales').'</li></a>';
+			$sales_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('sales').'">'.lang('module_sales').'</li></a>';
 		}
 		
 		$return.=$sales_home_link;
@@ -930,11 +930,11 @@ function create_breadcrumb()
 		
 		if ($ci->uri->segment(2) == NULL) //Main page
 		{
-			$receivings_home_link = ' <li class="breadcrumb-item"><a class="current" tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('receivings').'">'.lang('module_receivings').'</li></a>';
+			$receivings_home_link = ' <li class="breadcrumb-item"><a class="current" tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('receivings').'">'.lang('module_receivings').'</li></a>';
 		}
 		else
 		{
-			$receivings_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('receivings').'">'.lang('module_receivings').'</li></a>';
+			$receivings_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('receivings').'">'.lang('module_receivings').'</li></a>';
 		}
 		
 		$return.=$receivings_home_link;
@@ -979,7 +979,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$expenses_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('expenses').'">'.lang('module_expenses').'</li></a>';
+			$expenses_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('expenses').'">'.lang('module_expenses').'</li></a>';
 		}
 				
 		$return.=$expenses_home_link;
@@ -1006,7 +1006,7 @@ function create_breadcrumb()
 	}
 	else
 	{
-		$customer_subscriptions_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('customer_subscriptions').'">'.lang('module_customer_subscriptions').'</li></a>';
+		$customer_subscriptions_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('customer_subscriptions').'">'.lang('module_customer_subscriptions').'</li></a>';
 	}
 			
 	$return.=$customer_subscriptions_home_link;
@@ -1024,7 +1024,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$timeclock_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('timeclocks').'">'.lang('employees_timeclock').'</li></a>';
+			$timeclock_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('timeclocks').'">'.lang('employees_timeclock').'</li></a>';
 		}
 		
 		$return.=$timeclock_home_link;
@@ -1055,7 +1055,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$messages_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('messages').'">'.lang('module_messages').'</li></a>';
+			$messages_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('messages').'">'.lang('module_messages').'</li></a>';
 		}
 		
 		$return.=$messages_home_link;
@@ -1090,12 +1090,12 @@ function create_breadcrumb()
 
 		if ($ci->uri->segment(2)=='view')
 		{
-			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('deliveries').'">'.lang('deliveries_orders').'</li></a>';
+			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('deliveries').'">'.lang('deliveries_orders').'</li></a>';
 			$return.=create_current_page_url(lang('edit'));
 		}
 		elseif($ci->uri->segment(2)=='manage_template')
 		{
-			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('deliveries').'">'.lang('deliveries_orders').'</li></a>';
+			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('deliveries').'">'.lang('deliveries_orders').'</li></a>';
 			$return.=create_current_page_url(lang('deliveries_templates'));
 		}	
 	}
@@ -1117,7 +1117,7 @@ function create_breadcrumb()
 		else
 		{
 			
-			$appointments_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('appointments').'">'.lang('module_appointments').'</li></a>';
+			$appointments_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('appointments').'">'.lang('module_appointments').'</li></a>';
 		}
 		
 		$return.=$appointments_home_link;
@@ -1161,7 +1161,7 @@ function create_breadcrumb()
 		}
 		else
 		{
-			$employees_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('permission_templates').'">'.lang('permission_templates').'</li></a>';
+			$employees_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('permission_templates').'">'.lang('permission_templates').'</li></a>';
 		}
 		
 		$return.=$employees_home_link;
@@ -1197,7 +1197,7 @@ function create_breadcrumb()
 		else
 		{
 			
-			$work_orders_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="'.site_url('work_orders').'">'.lang('module_work_orders').'</li></a>';
+			$work_orders_home_link = ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('work_orders').'">'.lang('module_work_orders').'</li></a>';
 		}
 		
 		$return.=$work_orders_home_link;
@@ -1221,14 +1221,14 @@ function create_breadcrumb()
 		
 	}
     else if ($ci->uri->segment(1) == 'invoices') {
-        $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices') . '">' . lang('module_invoices') . '</li></a>';
+        $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="' . site_url('invoices') . '">' . lang('module_invoices') . '</li></a>';
         
         if ($ci->uri->segment(3) == 'customer') {
-            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices/index/customer') . '">' . lang('customer') . '</li></a>';
+            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="' . site_url('invoices/index/customer') . '">' . lang('customer') . '</li></a>';
         }
         
         if ($ci->uri->segment(3) == 'supplier') {
-            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link text-muted text-hover-primary" href="' . site_url('invoices/index/supplier') . '">' . lang('supplier') . '</li></a>';
+            $return .= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="' . site_url('invoices/index/supplier') . '">' . lang('supplier') . '</li></a>';
         }
         
         
@@ -1253,12 +1253,12 @@ function create_report_breadcrumb($link_text)
 {
 	$url = parse_url(current_url());
 	$url_without_query_string = sprintf('%s://%s%s', $url['scheme'], $url['host'], $url['path']);
-	return ' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link text-muted text-hover-primary" href="'.$url_without_query_string.'">'.$link_text.'</li></a>';
+	return ' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link  text-hover-primary" href="'.$url_without_query_string.'">'.$link_text.'</li></a>';
 }
 	
 
 function create_current_page_url($link_text)
 {
-	return ' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link text-muted text-hover-primary" href="'.current_url().'">'.$link_text.'</li></a>';
+	return ' <li class="breadcrumb-item"><a tabindex = "-1" class="current" class="breadcrumb-link  text-hover-primary" href="'.current_url().'">'.$link_text.'</li></a>';
 }
 ?>

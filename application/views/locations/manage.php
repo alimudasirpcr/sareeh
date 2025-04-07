@@ -81,7 +81,7 @@ $(document).ready(function()
 
 
 	<div class="container-fluid">
-		<div class="row <?php echo !$deleted ?  'manage-table  card p-5' : ''; ?>">
+		<div class="row <?php echo !$deleted ?  'manage-table  ' : ''; ?>">
 			<div class="card ">
 				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
 				<!-- <h3 class="panel-title">
@@ -97,7 +97,7 @@ $(document).ready(function()
 			
 		<div class="card-title">
 			<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off')); ?>
-				<div class="search no-left-border d-flex justify-content-evenly ">
+				<div class="search no-left-border d-flex justify-content-evenly gap-2">
 					<input type="text" class="form-control form-control-solid" name ='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
 					<select class="form-select" aria-label="Select example" name="company" id="company">
 					<option  value="">Select Company</option>

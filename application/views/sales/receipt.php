@@ -127,7 +127,7 @@ if (isset($error_message)) {
 
 
 						<div class="row">
-							<div class="col-md-6">
+							<div class="col-md-8">
 								<div class="hidden-print search no-left-border">
 									<ul class="list-inline print-buttons">
 										<li></li>
@@ -229,7 +229,7 @@ if (isset($error_message)) {
 									</ul>
 								</div>
 							</div>
-							<div class="col-md-6">
+							<div class="col-md-4">
 								<div class="buttons-list">
 									<div class="">
 										<!-- // pull-right-btn -->

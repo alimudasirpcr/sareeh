@@ -650,8 +650,9 @@
                                 </li>
                                 <?php } ?>
                             </ul>
-                            <?php } ?>
                             <h4 style="padding: 20px;"><?php echo lang('add_files'); ?></h4>
+                            <?php } ?>
+                           
                             <div class="row">
                                 <?php for($k=1;$k<=5;$k++) { ?>
 

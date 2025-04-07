@@ -232,19 +232,40 @@ function init_table_sorting()
 					
 				</h3> -->
 				<div class=" card-toolbar w-100 d-flex justify-content-between">
-				<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
-				<div class="search search-items no-left-border">
-				<span class="btn btn-primary toggle_advance  "  title="Advance Search" >
-						<img src="<?php echo base_url(); ?>assets/css_good/media/illustrations/sigma-1/15.png" width="50" height="50">
-					</span>
-					<ul class="list-inline  advance_search hidden">
-						<li>
-						<i class="fa fa-magnifying-glass ki-magnifier fs-3 position-absolute ms-4 mt-4"></i>
+					<div class="w-50 d-flex">
+				<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+					<i class="fa fa-filter fs-2"></i>        Filter
+				</button>
+				<div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter" style="">
+					<!--begin::Header-->
+					<div class="px-7 py-5">
+						<div class="fs-4 text-gray-900 fw-bold">Filter Options</div>
+					</div>
+					<!--end::Header-->
+
+					<!--begin::Separator-->
+					<div class="separator border-gray-200"></div>
+					<!--end::Separator-->
+					<?php echo form_open("$controller_name/search",array('id'=>'search_form', 'autocomplete'=> 'off', 'class'=>'')); ?>
+					<!--begin::Content-->
+					<div class="px-7 py-5">
+						<!--begin::Input group-->
+						<div class="mb-10">
+							<!--begin::Label-->
+							<label class="form-label fs-5 fw-semibold mb-3"> <?= lang('search')?> </label>
+							<!--end::Label-->
+
 							<input type="text" class="form-control form-control-solid w-250px ps-14" name='search' id='search' value="<?php echo H($search); ?>" placeholder="<?php echo $deleted ? lang('search_deleted') : lang('search'); ?> <?php echo lang('module_'.$controller_name); ?>"/>
-						</li>
-						<li class="hidden-xs">
-						<?php echo lang('fields'); ?>: 
-						<?php 
+						<!--end::Input-->
+						</div>
+						<!--end::Input group-->
+
+
+						<div class="mb-10">
+							<!--begin::Label-->
+							<label class="form-label fs-5 fw-semibold mb-3"> <?= lang('fields')?> </label>
+							<!--end::Label-->
+							<?php 
 						$searchable_fields = array(
 							'all'=>lang('all'),
 							$this->db->dbprefix('item_kits').'.item_kit_id' => lang('item_kit_id'),
@@ -267,28 +288,37 @@ function init_table_sorting()
 						
 						echo form_dropdown('fields', $searchable_fields,$fields, 'class="" id="fields"');
 						?>
-						</li>
-						<li class="hidden-xs">
-							<?php echo lang('category'); ?>: 	
+						</div>
+
+						<div class="mb-10">
+							<!--begin::Label-->
+							<label class="form-label fs-5 fw-semibold mb-3"> <?= lang('category')?> </label>
+							
 							<?php echo form_dropdown('category_id', $categories,$category_id, 'class="" id="category_id"'); ?>
-						</li>
-						<li>
-							<button type="submit" class="btn btn-light btn-active-light-primary btn-lg"><span class="ion-ios-search-strong"></span><span class="hidden-xs hidden-sm"> <?php echo lang("search"); ?></span></button>
-						<li>
-							<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
-								<a class="clear" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
-									<i class="ion ion-close-circled"></i>
+							<!--end::Label-->
+						</div>
+						<!--begin::Actions-->
+						<div class="d-flex justify-content-end">
+					
+							<button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+						</div>
+						<!--end::Actions-->
+					</div>
+					<!--end::Content-->
+
+					<?php echo form_close() ?>
+				</div>
+
+				<div class="clear-block items-clear-block <?php echo ($search=='') ? 'hidden' : ''  ?>">
+								<a class="clear btn btn-light-primary" href="<?php echo site_url($controller_name.'/clear_state'); ?>">
+									<i class="ion ion-close-circled"></i> <?= lang('clear_filter') ?>
 								</a>	
 							</div>
-						</li>
-						<li>
-							<span class="btn btn-danger toggle_advance_close  "  title="Close Advance Search" >
-								x
-							</span>
-						</li>
-					</ul>
-				</div>
-			<?php echo form_close() ?>
+
+							</div>
+				
+				
+			
 			<div class="buttons-list items-buttons">
 				<div class="pull-right-btn">
 					<?php if ($deleted) 

@@ -1206,7 +1206,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
                             <input type="text" id="item" name="item"
-                                class="add-item-input   w-40  pull-left keyboardTop  ui-autocomplete-input"
+                                class="add-item-input   w-30  pull-left keyboardTop  ui-autocomplete-input"
                                 placeholder=<?php echo json_encode(lang('start_typing_item_name')); ?>
                                 data-title=<?php echo json_encode(lang('item_name')); ?>>
 
@@ -1219,7 +1219,7 @@ $this->load->view("partial/offline_header"); ?>
                                     title="Show Grid"><i class="icon ti-layout"></i> Show Grid</a> <a
                                     href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1" title="Hide Grid"><i
                                         class="icon ti-layout"></i> Hide Grid</a> </span>
-                            <span class="input-group-text  grid-buttons bg-primary border-radius-right  ">
+                            <span class="input-group-text  grid-buttons bg-primary border-radius-right p-0 ">
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
                                     <button id="category_selection_btn"
@@ -2306,7 +2306,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
                             <input type="text" id="customer" name="customer"
-                                class="add-customer-input  keyboardLeft ui-autocomplete-input border-radius-left"
+                                class="add-customer-input  keyboardLeft ui-autocomplete-input border-radius-left w-92 "
                                 data-title=<?php echo json_encode(lang('customer_name')); ?>
                                 placeholder=<?php echo json_encode(lang('sales_start_typing_customer_name')); ?>>
                                 <span class="input-group-text   bg-primary border-radius-right ">

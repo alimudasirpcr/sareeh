@@ -103,9 +103,9 @@ function init_table_sorting()
 		<div class="row manage-table  card p-5">
 			<div class="card ">
 				<div class="card-header align-items-center py-1 gap-2 gap-md-5">
-				<h3 class="card-title">
+				<h3 class="card-title w-100">
 
-				<div class="manage_buttons mb-5">
+				<div class="manage_buttons mb-5 w-100">
 	<!-- Css Loader  -->
 	<div class="spinner" id="ajax-loader" style="display:none">
 	  <div class="rect1"></div>

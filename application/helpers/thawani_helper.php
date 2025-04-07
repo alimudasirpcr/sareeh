@@ -673,9 +673,12 @@ if ( ! function_exists('thawani_payment'))
         // $CI->db->delete('phppos_payments');
         // execute_query(' delete from phppos_payments');
         // Process payments
+
         foreach ($payments as $payment) {
             // Check if payment already exists
             if(!get_query_data('select * from phppos_payments where erp_invoice_id = ' . $payment->invoiceid)){
+
+               
                 // Insert new payment
                 $insertPaymentData = [
                     'erp_invoice_id' => $payment->invoiceid,
@@ -1001,7 +1004,6 @@ if ( ! function_exists('thawani_payment'))
        
       
 
-        // dd($erpData);
 
         $result = sync_erp_data($erpData);
         $CI->db->where('id', 1);

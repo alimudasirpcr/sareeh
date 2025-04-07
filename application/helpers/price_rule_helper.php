@@ -80,7 +80,7 @@ function get_price_rule_data_row($rule,$controller_name)
 	
 	if(!$params['deleted'])
 	{
-		$table_data_row.='<td>'.anchor($controller_name."/view/$rule->id	", lang('edit'),array('class'=>' ','title'=>lang($controller_name.'_update'))).'</td>';		
+		$table_data_row.='<td>'.anchor($controller_name."/view/$rule->id	", lang('edit'),array('class'=>'  btn btn-sm btn-light btn-active-light-primary','title'=>lang($controller_name.'_update'))).'</td>';		
 	}
 	$table_data_row.='<td>'.$rule->id.'</td>';
 	$table_data_row.='<td>'.H($rule->name).'</td>';

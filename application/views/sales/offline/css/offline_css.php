@@ -106,9 +106,7 @@
     #pos_footer{
         box-shadow: 0px -2px 1px 1px rgb(0 0 0 / 10%)
     }
-    #customer {
-        width: 94.4%  !important;
-    }
+   
 
     .order_detail_margin{
         margin: 4px 6px 0px 2px !important;
@@ -214,5 +212,12 @@ div#kt_app_layout_builder_header {
     margin: 4px;
     cursor: pointer;
     align-self: center;
+}
+.w-92 {
+     width: 92% !important;
+}
+
+.p-0{
+    padding: 0px !important;
 }
 </style>
