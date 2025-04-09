@@ -992,7 +992,7 @@ if ( ! function_exists('thawani_payment'))
             curl_close($curl);
             
         $res = json_decode($response);
-        curl_close($curl);
+  
 
         $erpData = [
             "invoice" => $res->invoice, // Replace with actual ERP invoice object
