@@ -999,6 +999,8 @@ class Item extends MY_Model
 	//returns an int or false
 	public function lookup_item_id($item_identifer,$skip_lookup = array() , $check_for_serial = false)
 	{	
+
+		$order_type='';
 		if($check_for_serial===false){
 			if (($item_identifer_parts = explode('#', $item_identifer)) !== false)
 			{
@@ -1016,18 +1018,28 @@ class Item extends MY_Model
 								if (!in_array('item_id',$skip_lookup))
 								{
 									$result = $this->lookup_item_by_item_id($item_identifer);
+									if($result){
+										$order_type ='item_id' ;
+									}
+									
 								}
 							  break;
 					case 'item_number':
 								if (!in_array('item_number',$skip_lookup))
 								{
 							$result = $this->lookup_item_by_item_number($item_identifer);
+							if($result){
+								$order_type ='item_number' ;
+							}
 								 }
 								break;
 						case 'item_variation_item_number':
 								if(!in_array('item_variation_item_number',$skip_lookup))
 								{
 									$result = $this->lookup_item_by_item_variation_item_number($item_identifer);
+									if($result){
+										$order_type ='item_variation_item_number' ;
+									}
 								}
 								
 								if(!in_array('item_variation_item_number',$skip_lookup))
@@ -1035,6 +1047,9 @@ class Item extends MY_Model
 									if ($result === FALSE)
 									{
 										$result = $this->lookup_item_by_item_variation_item_number_quantity_unit($item_identifer);
+										if($result){
+											$order_type ='item_variation_item_number' ;
+										}
 									}
 								}							
 								break;
@@ -1042,6 +1057,9 @@ class Item extends MY_Model
 								if (!in_array('product_id',$skip_lookup))
 								{
 								$result = $this->lookup_item_by_product_id($item_identifer);
+								if($result){
+									$order_type ='product_id' ;
+								}
 						}
 								
 								break;
@@ -1049,12 +1067,19 @@ class Item extends MY_Model
 								if (!in_array('additional_item_numbers',$skip_lookup))
 								{
 								$result = $this->lookup_item_by_additional_item_numbers($item_identifer);
+								if($result){
+									$order_type ='additional_item_numbers' ;
+								}
 								}
 								break;
 						case 'serial_numbers':
 								if (!in_array('serial_numbers',$skip_lookup))
 								{
 									$result = $this->lookup_item_by_serial_number($item_identifer);
+									if($result){
+										$order_type ='serial_numbers' ;
+									}
+									
 								}
 								break;	
 				}
@@ -1064,14 +1089,14 @@ class Item extends MY_Model
 	
 					$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 					if($this->is_item_ban($result,$location_id)){
-						$result = FALSE;
+						return ['status' => false , 'value' => ''  , 'order_type' =>   $order_type];
 					}else{
-						return $result;
+						return ['status' => true , 'value' => $result , 'order_type' =>   $order_type];
 					}
 				}
 			}
 			
-			return FALSE;
+			return ['status' => false , 'value' => '' ,  'order_type' =>   $order_type];
 		}else{
 			if (($item_identifer_parts = explode('#', $item_identifer)) !== false)
 		{
@@ -1090,18 +1115,27 @@ class Item extends MY_Model
 							if (!in_array('item_id',$skip_lookup))
 							{
 								$result = $this->lookup_item_by_item_id($item_identifer);
+								if($result){
+									$order_type ='item_id' ;
+								}
 							}
 						  break;
 			    case 'item_number':
 							if (!in_array('item_number',$skip_lookup))
 							{
 			       	 $result = $this->lookup_item_by_item_number($item_identifer);
+						if($result){
+							$order_type ='item_number' ;
+						}
 						 	}
 							break;
 					case 'item_variation_item_number':
 							if(!in_array('item_variation_item_number',$skip_lookup))
 							{
 								$result = $this->lookup_item_by_item_variation_item_number($item_identifer);
+								if($result){
+									$order_type ='item_variation_item_number' ;
+								}
 							}
 							
 							if(!in_array('item_variation_item_number',$skip_lookup))
@@ -1109,6 +1143,9 @@ class Item extends MY_Model
 								if ($result === FALSE)
 								{
 									$result = $this->lookup_item_by_item_variation_item_number_quantity_unit($item_identifer);
+									if($result){
+										$order_type ='item_variation_item_number' ;
+									}
 								}
 							}							
 							break;
@@ -1116,6 +1153,9 @@ class Item extends MY_Model
 							if (!in_array('product_id',$skip_lookup))
 							{
 				    		$result = $this->lookup_item_by_product_id($item_identifer);
+							if($result){
+								$order_type ='product_id' ;
+							}
 			        }
 							
 							break;
@@ -1123,6 +1163,9 @@ class Item extends MY_Model
 							if (!in_array('additional_item_numbers',$skip_lookup))
 							{
 	       	 			$result = $this->lookup_item_by_additional_item_numbers($item_identifer);
+							if($result){
+								$order_type ='additional_item_numbers' ;
+							}
 							}
 							break;
 					case 'serial_numbers':
@@ -1130,6 +1173,9 @@ class Item extends MY_Model
 							{
    	 						$result = $this->lookup_item_by_serial_number($item_identifer);
 								$is_serial = true;
+								if($result){
+									$order_type ='serial_numbers' ;
+								}
 							}
 							break;	
 			}
@@ -1139,16 +1185,16 @@ class Item extends MY_Model
 
 				$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 				if($this->is_item_ban($result,$location_id)){
-					return ['status' => false , 'value' => '' , 'serial_number' =>$is_serial  ];
+					return ['status' => false , 'value' => '' , 'serial_number' =>$is_serial , 'order_type' =>   $order_type];
 				}else{
 					
-					return ['status' => true , 'value' => $result , 'serial_number' =>$is_serial ];
+					return ['status' => true , 'value' => $result , 'serial_number' =>$is_serial  , 'order_type' =>   $order_type ];
 
 				}
 			}
 		}
 		
-		return ['status' => false , 'value' => '' , 'serial_number' =>$is_serial ];
+		return ['status' => false , 'value' => '' , 'serial_number' =>$is_serial , 'order_type' =>   $order_type ];
 		}
 		
 	}
@@ -1244,7 +1290,7 @@ class Item extends MY_Model
 	{
 		$this->load->model('Item_serial_number');
 		
-		if ($item_id_from_serial_number = $this->Item_serial_number->get_item_id($serial_number))
+		if ($item_id_from_serial_number = $this->Item_serial_number->get_item_id($serial_number , true))
 		{
 			
 			$variation_id_from_serial_number = $this->Item_serial_number->get_variation_id($serial_number);
@@ -1254,13 +1300,18 @@ class Item extends MY_Model
 
 		return false;
 	}
-	
+
+
+
 	/*
 	Get an item id given an item number or product_id or additional item number
 	*/
 	function get_item_id($item_identifer)
 	{
-		return $this->lookup_item_id($item_identifer,array('item_id'));
+		$res =  $this->lookup_item_id($item_identifer,array('item_id'));
+		
+		return $res['value'];
+		
 	}
 
 	/*

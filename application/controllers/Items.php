@@ -6483,7 +6483,14 @@ class Items extends Secure_area implements Idata_controller
 							$item_id = $this->Item->get_item_id($item_identifer);
 						}
 
-						$item_id = $this->Item->lookup_item_id($item_identifer);
+						$res = $this->Item->lookup_item_id($item_identifer);
+
+						$item_id = false;
+						if($res['status']){
+							$item_id = $res['value'];
+						}
+
+
 						$item_variation_id = $this->Item_variations->lookup_item_variation_id($item_identifer);
 
 						if ($item_id) {
@@ -6895,15 +6902,23 @@ class Items extends Secure_area implements Idata_controller
 				//category process
 				$new_item_category_list = explode(";", $item_category_list_str);
 
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
-
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$search_item_id = false;
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
 				$new_item = 0;
 				if ($search_item_id == false) { // new insert
 					$new_item = 1;
 				}
 
 				$this->Item->save($item_data, $search_item_id);
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+
+				$search_item_id = false;
+						if($res['status']){
+							$search_item_id = $res['value'];
+						}
 
 				if ($new_item == 1) {
 					$item_image_link = "https://www.injuredgadgets.com/pub/media/catalog/product" . $item_image;
@@ -7111,16 +7126,22 @@ class Items extends Secure_area implements Idata_controller
 				$item_image = $item_info->image_url;
 				$item_category = ((isset($item_info->category) && $item_info->category) ? $item_info->category : "");
 
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
-
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$search_item_id = false;
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
 				$new_item = 0;
 				if ($search_item_id == false) { // new insert
 					$new_item = 1;
 				}
 
 				$this->Item->save($item_data, $search_item_id);
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
-
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+			
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
 				$this->set_supplier_item("WGP", $search_item_id);
 
 				if ($new_item == 1) {
@@ -7277,16 +7298,22 @@ class Items extends Secure_area implements Idata_controller
 				}
 				$item_data['description'] = $item_description;
 
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
-
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$search_item_id = false;
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
 				$new_item = 0;
 				if ($search_item_id == false) { // new insert
 					$new_item = 1;
 				}
 
 				$this->Item->save($item_data, $search_item_id);
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
-
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+			
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
 				if ($new_item == 1) {
 					$item_image_link = "https://parts4cells.com/media/catalog/product" . $item_image;
 
@@ -7421,7 +7448,12 @@ class Items extends Secure_area implements Idata_controller
 					$this->load->model('Item_location');
 
 					// Verify Item
-					$item_number = $this->Item->lookup_item_id($item_number);
+					$res = $this->Item->lookup_item_id($item_number);
+
+					$item_number = false;
+					if($res['status']){
+						$item_number = $res['value'];
+					}
 					$date 					=	date('Y-m-d H:i:s');
 					$employee_id 			=	$this->Employee->get_logged_in_employee_info()->person_id;
 					$cur_item_location_info = 	$this->Item_location->get_info($item_number);
@@ -7538,7 +7570,12 @@ class Items extends Secure_area implements Idata_controller
 		if (count($this->input->post())) //Show price page
 		{
 			$item = $this->input->post('item');
-			$item_id = $this->Item->lookup_item_id($item);
+			$res = $this->Item->lookup_item_id($item);
+
+			$item_id = false;
+					if($res['status']){
+						$item_id = $res['value'];
+					}
 			$item_variation_id = $this->Item_variations->lookup_item_variation_id($item);
 
 			$item_kit_id = FALSE;

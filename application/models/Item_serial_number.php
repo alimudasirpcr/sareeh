@@ -37,7 +37,7 @@ class Item_serial_number extends MY_Model
 		{
 			$this->db->group_start();
 			$this->db->where('serial_location_id',$location_id);
-			$this->db->or_where('serial_location_id',NULL);
+			$this->db->or_where('serial_location_id',0);
 			$this->db->group_end();
 			$this->db->order_by('id');
 		}
@@ -94,7 +94,7 @@ class Item_serial_number extends MY_Model
 		{
 			$this->db->group_start();
 			$this->db->where('serial_location_id',$location_id);
-			$this->db->or_where('serial_location_id',NULL);
+			$this->db->or_where('serial_location_id',0);
 			$this->db->group_end();
 			
 		}
@@ -475,11 +475,29 @@ class Item_serial_number extends MY_Model
 		return ($query->num_rows()==1);
 	}
 	
-	function get_item_id($serial_number)
+	function get_item_id($serial_number , $check_location = false)
 	{
+
+
+		$location_id = 0; //zero is used for all locations
+		if($check_location){
+			$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
+		
+		}
+					
 		$this->db->from('items_serial_numbers');
 		$this->db->where('serial_number',$serial_number);
 
+		if ($location_id)
+		{
+			$this->db->group_start();
+			$this->db->where('serial_location_id',$location_id);
+			$this->db->or_where('serial_location_id',0);
+			$this->db->group_end();
+			
+		}
+
+		
 		$query = $this->db->get();
 
 	if($query !=false && $query->num_rows() >= 1)

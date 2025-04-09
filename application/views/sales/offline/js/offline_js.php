@@ -1,11 +1,18 @@
 <script>
 
+    function sound(type = 'success'){
+        if (ENABLE_SOUNDS) {
+                $.playSound(BASE_URL + 'assets/sounds/'+type);
+            }
+    }
+
 
 function getSalePrice(params) {
 
     let itemInfo = params.all_data;
     console.log(params);
     let quantityUnitId = params.quantity_unit_id || null;
+    let serial_number = params.serialnumber || null;
     let quantityUnitQuantity = itemInfo.quantity_unit_quantity ? itemInfo.quantity_unit_quantity : 1;
     let itemId = params.item_id;
     let tierId = params.tier_id || false;
@@ -66,8 +73,16 @@ function getSalePrice(params) {
     }
 
     console.log('variationInfo' , matchingVariation); 
-    let variationInfo = matchingVariation;
-    let variationLocationInfo = variationInfo.item_variation_location_info;
+    let variationInfo = null;
+
+    if(typeof   matchingVariation !='undefined'){
+        variationInfo = matchingVariation;
+    }
+    let variationLocationInfo = null;
+    
+    variationLocationInfo =  variationInfo?.item_variation_location_info;
+    
+  
 
     console.log('variationInfo' , variationInfo); 
     console.log('variationLocationInfo' , variationLocationInfo); 
@@ -88,6 +103,19 @@ function getSalePrice(params) {
             params.orig_price = itemInfo.regular_price;
             params.cost_price=itemInfo.cost_price;
             params.price=itemInfo.regular_price;
+        }
+
+        return to_currency_no_money(params.price );
+    }
+
+    if (serial_number) {
+        console.log("step serial_number" ,itemInfo);
+        let qui =  itemInfo.serial_numbers[0];
+        console.log("step qui" ,qui);
+        if(qui && qui.unit_price !== null){
+            params.orig_price =  parseFloat(qui.unit_price);
+            params.cost_price=parseFloat(qui.cost_price);
+            params.price=parseFloat(qui.unit_price);
         }
 
         return to_currency_no_money(params.price );
@@ -1790,6 +1818,152 @@ if ($("#item").length) {
     <?php
 if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_suggestions_for_sales', $this->Employee->get_logged_in_employee_info()->person_id)) {
 ?>
+
+$('#item').keydown(function(e) {
+    // Enter key
+    if (e.keyCode === 13) {
+        e.preventDefault();
+
+        let term = $('#item').val().trim();
+        if (!term) return;
+
+        // Optional: close autocomplete menu if open
+        $(this).autocomplete("close");
+
+        // Trigger item search manually
+        $.ajax({
+            url: '<?php echo site_url("sales/item_validate_and_add"); ?>',
+            dataType: 'json',
+            data: {
+                term: term
+            },
+            success: function(data) {
+                if (data.response =='true') {
+                    item_quick = data.data;
+
+                    if (items_list.hasOwnProperty(item_quick.value)) {
+
+                        console.log("Item already exists in items_list");
+                        // You can update quantity or ignore duplicate here
+                    } else {
+
+            currency_ = "<?php echo get_store_currency(); ?>"
+            price = (item_quick.price ? ' ' + decodeHtml(item_quick
+                .price) + ' ' : '');
+            price_val = (item_quick.price ? decodeHtml(item_quick
+                .price) : '');
+            price_val = price_val.replace(currency_, '');
+
+            price_val = parseFloat(price_val.replace(/,/g, ''));
+
+
+            price_val_reg = (item_quick.regular_price ? decodeHtml(item_quick
+                .regular_price) : '');
+                price_val_reg = parseFloat(price_val_reg.replace(/,/g, ''));
+
+                $get_price = {
+                    permissions: item_quick.all_data.permissions,
+                    all_data: item_quick.all_data,
+                    name: item_quick.label,
+                    description: item_quick.description,
+                    item_id: item_quick.value,
+                    quantity:  parseFloat(item_quick.quantity),
+                    cost_price: item_quick.cost_price,
+                    price: price_val,
+                    orig_price: price_val_reg,
+                    discount_percent: 0,
+                    variations: item_quick.all_data.has_variations ,
+                    item_attributes_available: item_quick.all_data.item_attributes_available,
+                    quantity_units: item_quick.quantity_units,
+                    modifiers: item_quick.modifiers,
+                    taxes: item_quick.item_taxes,
+                    tax_included: item_quick.tax_included
+            };
+
+            if(item_quick.variation_id > 0){
+                $get_price.selectedAttributes = item_quick.selectedAttributes;
+                $get_price.variation_id = item_quick.variation_id;
+                $get_price.selected_variation = item_quick.selected_variation;
+                
+            }
+            if(typeof  item_quick.serialnumber !='undefined' &&  item_quick.serialnumber!='' ){
+                $get_price.serialnumber = item_quick.serialnumber;
+                $get_price.serialnumberText = item_quick.serialnumberText;
+                
+            }
+
+
+                $price=   getSalePrice($get_price);
+
+                $get_price.price = $price;
+                $get_price.orig_price = $price;
+
+                    items_list[item_quick.value] = $get_price;
+            
+            }
+
+
+
+                    edit_variation_index = 'none';
+                var $that = $(this);
+                if (item_quick.all_data.has_variations &&  item_quick.variation_id ==0) {
+
+                    item_obj = items_list[item_quick.value];
+                    attributes = item_obj.item_attributes_available;
+                    attributeKeys = Object.keys(attributes);
+                    currentIndex = 0;
+                    selectedAttributes = {};
+
+
+
+
+                    // Start the process
+                    showNextAttribute(currentIndex, attributeKeys);
+
+
+
+                } else {
+                    item_obj = items_list[item_quick.value];
+                    cart = JSON.parse(localStorage.getItem('cart'));
+                    j = 0;
+                    if(  parseInt(item_obj.all_data.item_location_quantity) <= 0   &&  item_obj.all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold  =='1' ){
+                        show_feedback('error', "<?= lang('sales_unable_to_add_item_out_of_stock');  ?>",
+                            "<?php echo  lang('error') ?>");
+                        return false;
+                    }
+                    for (let item of cart.items) {
+
+                            if (item.item_id === item_obj.item_id){
+                                if (!check_allow_added(cart, j , 'quantity', 1) ) {
+                                    return false;
+                                }
+                            }
+
+                            j++;
+                    }
+                
+                    console.log(item_obj);
+                    addItem(item_obj);
+                    localStorage.setItem('is_cart_oc_updated', 0);
+                    let lastUpdated = localStorage.getItem('lastUpdated');
+                    renderUi();
+                    $('#grid-loader2').hide();
+                    
+                }
+
+
+                } else {
+
+
+                    show_feedback('error', "No item found for:" + term, "<?php echo  lang('error') ?>");
+                }
+            }
+        });
+    }
+});
+
+
+
     $("#item").autocomplete({
         source: '<?php echo site_url("sales/item_search"); ?>',
         delay: 500,
@@ -1811,13 +1985,8 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
            
                
                   
-               
-                
-                   
-
-
-
-           $price=   getSalePrice({
+               //// start from here in case of varition popup not comming seek help from above function 
+               $get_price =  {
                 permissions: ui.item.all_data.permissions,
                 name: ui.item.label,
                 all_data: ui.item.all_data,
@@ -1832,24 +2001,21 @@ if ($this->Employee->has_module_action_permission('sales', 'allow_item_search_su
                 taxes: ui.item.item_taxes,
                 tax_included: ui.item.tax_included,
                 quantity_units: ui.item.quantity_units
-            });
+            }
+                   
+               if (ui.item.serial_number != undefined && ui.item.serial_number != '') {
+                    $get_price.serialnumber = ui.item.serial_number;
+                    $get_price.serialnumberText = ui.item.serialnumberText;
+                    
+                }
+
+
+           $price=   getSalePrice( $get_price);
+
+           $get_price.sprice = $price;
+           $get_price.orig_price= $price;
             
-            addItem({
-                permissions: ui.item.all_data.permissions,
-                name: ui.item.label,
-                all_data: ui.item.all_data,
-                description: '',
-                item_id: ui.item.value,
-                quantity: 1,
-                price: $price,
-                orig_price: $price,
-                discount_percent: 0,
-                variations: ui.item.tax_included,
-                modifiers: ui.item.modifiers,
-                taxes: ui.item.item_taxes,
-                tax_included: ui.item.tax_included,
-                quantity_units: ui.item.quantity_units
-            });
+            addItem($get_price);
             salesBeforeSubmit();
             itemScannedSuccess();
             renderUi();
@@ -4333,6 +4499,11 @@ function edit_variation(index) {
 
 
 function addItem(newItem) {
+
+    setTimeout(function() {
+			$('#item').focus();
+            $('#item').val('');
+		}, 10);
     currency_ = "<?php echo get_store_currency(); ?>"
        
     let found = false;
@@ -4418,7 +4589,7 @@ function addItem(newItem) {
         var newIndex = cart['items'].length - 1;
 
 
-
+        sound();
 
 
     }
@@ -5601,7 +5772,6 @@ history.replaceState(null, "", updatedUrl);
         var mycode = event.keyCode;
 
         console.log(mycode);
-
         //F2
         if (mycode == 113) {
             $("#item").focus();
@@ -5645,7 +5815,7 @@ history.replaceState(null, "", updatedUrl);
             return;
         }
         //  + 
-        if (mycode == 187) {
+        if (mycode == 187 || mycode ==107) {
             event.preventDefault();
             var cart = JSON.parse(localStorage.getItem("cart"));
             if (cart && cart.items && cart.items.length > 0) {
@@ -5658,7 +5828,7 @@ history.replaceState(null, "", updatedUrl);
         }
 
         //  -
-        if (mycode == 189) {
+        if (mycode == 189 ||    mycode == 109) {
             event.preventDefault();
             var cart = JSON.parse(localStorage.getItem("cart"));
             if (cart && cart.items && cart.items.length > 0) {
@@ -5669,8 +5839,8 @@ history.replaceState(null, "", updatedUrl);
             return;
         }
 
-           // Detect CTRL + C
-        if (event.ctrlKey && mycode === 67) {
+           // F6
+        if (mycode === 117) {
             event.preventDefault(); // Optional: prevent default copy
             $("#customer").focus(); // Your custom action
             return false;

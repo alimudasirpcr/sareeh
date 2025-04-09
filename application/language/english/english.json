@@ -2760,5 +2760,8 @@
     "sales_list_of_work_order_sales": "Sales list of work order sales",
     "focus_on_customer": "Focus on customer",
     "press_+_or_-_to_increase_decrease_item_quantity": "Press + or - to increase decrease item quantity",
-    "press_+_or_-_to_change_item_quantity": "Press + or - to change item quantity"
+    "press_+_or_-_to_change_item_quantity": "Press + or - to change item quantity",
+    "item_not_found": "Item not found",
+    "pricing_for_secondary_suppliers": "Pricing for secondary suppliers",
+    "for": "For"
 }

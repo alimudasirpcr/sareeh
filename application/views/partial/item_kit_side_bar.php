@@ -1,5 +1,5 @@
 <script src="<?= site_url(); ?>assets/css_good/plugins/custom/typedjs/typedjs.bundle.js"></script>
-<div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-10">
+<div class="d-flex flex-column gap-7 gap-lg-10 w-100 w-lg-300px mb-7 me-lg-4">
     <!--begin::Thumbnail settings-->
     <div class="card card-flush py-4">
         <!--begin::Card header-->

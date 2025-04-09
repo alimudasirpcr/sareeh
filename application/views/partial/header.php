@@ -1657,7 +1657,7 @@ Thank you for your prompt attention to this matter.
             <div class="app-sidebar-logo d-none d-lg-flex flex-stack flex-shrink-0 px-8 " id="kt_app_sidebar_logo">
                 <!--begin::Logo image-->
                 <a href="<?php echo site_url(); ?>" class="m-auto"
-                    style="<?php echo isset($location_color) && $location_color ? 'background-color: ' . $location_color . ' !important' : ''; ?>">
+                   >
 
                     <?php if (!isset($is_pos)) :
                         $path_info = pathinfo($this->config->item('branding')['logo_path']);

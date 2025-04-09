@@ -463,12 +463,22 @@ function parse_item_scan_data($scan)
 	{
 		$scan = str_replace('|FORCE_ITEM_ID|','',$scan);
 		//Lookup item based on just store config; ignore all other fields
-		$return['item_id'] = $CI->Item->lookup_item_id($scan,array('item_number','product_id','additional_item_numbers','item_variation_item_number','serial_numbers'));
+		$res = $CI->Item->lookup_item_id($scan,array('item_number','product_id','additional_item_numbers','item_variation_item_number','serial_numbers'));
+		
+		if($res['status']){
+			$return['item_id'] = $res['value'];
+		}
+
 	}
 	else
 	{
 		//Lookup item based on lookup order defined in store config
-		$return['item_id'] = $CI->Item->lookup_item_id($scan);			
+		$res = $CI->Item->lookup_item_id($scan);		
+		
+		if($res['status']){
+			$return['item_id'] = $res['value'];
+			$return['order_type'] = $res['order_type'];
+		}
 	}
 
 
@@ -524,7 +534,11 @@ function parse_item_scan_data($scan)
 		$return['variation_name'] = $return['variation_choices'][$return['variation_id']];
 
 	}
-	
+	if ($return['order_type'] =='serial_numbers')
+	{
+		$CI->load->model('Item_serial_number');
+		$return['serial_numbers'] = $CI->Item_serial_number->get_info_via_sn($scan);
+	}
 	
 	return $return;
 	
@@ -603,7 +617,14 @@ function parse_scale_data($scan)
 	
 	$item_number = substr($scan,$number_start_index,($number_end_index+1) - $number_start_index);
 	
-	$item_id = $CI->Item->lookup_item_id($item_number);
+	$res = $CI->Item->lookup_item_id($item_number);
+
+	$item_id = false;
+	if($res['status']){
+		$item_id = $res['value'];
+	}
+
+	
 	
 	if(!$item_id)
 		return false;
@@ -651,6 +672,8 @@ function parse_scale_data($scan)
 	{
 		$divide_by = $CI->config->item('scale_divide_by') ? $CI->config->item('scale_divide_by')  : 100;
 		$total_price = substr($scan,$price_start_index,($price_end_index+1) - $price_start_index)/$divide_by;
+
+		
 		$sell_quantity = $total_price/$item_price;
 		$cost_quantity = $total_price/$item_cost_price;
 	

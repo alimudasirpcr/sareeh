@@ -226,24 +226,24 @@ $this->load->view("partial/offline_header"); ?>
 
                             <div class="d-flex flex-column content-justify-center w-100">
                                <!--begin::Label-->
-                                    <div class="d-flex fs-6 fw-semibold align-items-center">
+                                    
+                               <div class="d-flex fs-6 fw-semibold align-items-center">
                                         <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
-                                        <div class="text-gray-500 flex-grow-1 me-4">[F1,F3] </div>
-                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('start_new_sale'); ?></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[F2] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('sales_set_focus_item'); ?></div>
                                     </div>
-
                                     <div class="d-flex fs-6 fw-semibold align-items-center">
                                         <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
                                         <div class="text-gray-500 flex-grow-1 me-4">[F4] </div>
                                         <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('sales_completes_currrent_sale'); ?></div>
                                     </div>
 
+                                 
                                     <div class="d-flex fs-6 fw-semibold align-items-center">
                                         <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
-                                        <div class="text-gray-500 flex-grow-1 me-4">[F2] </div>
-                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('sales_set_focus_item'); ?></div>
+                                        <div class="text-gray-500 flex-grow-1 me-4">[F6] </div>
+                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('focus_on_customer'); ?></div>
                                     </div>
-
                                     <div class="d-flex fs-6 fw-semibold align-items-center">
                                         <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
                                         <div class="text-gray-500 flex-grow-1 me-4">[F7] </div>
@@ -267,11 +267,7 @@ $this->load->view("partial/offline_header"); ?>
                                         <div class="text-gray-500 flex-grow-1 me-4">[CTRL + Q] </div>
                                         <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('quick_cash_help'); ?></div>
                                     </div>
-                                    <div class="d-flex fs-6 fw-semibold align-items-center">
-                                        <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
-                                        <div class="text-gray-500 flex-grow-1 me-4">[CTRL + C] </div>
-                                        <div class="fw-bolder text-gray-700 text-xxl-end"><?php echo lang('focus_on_customer'); ?></div>
-                                    </div>
+                                 
                                     <div class="d-flex fs-6 fw-semibold align-items-center">
                                         <div class="bullet w-8px h-6px rounded-2 bg-danger me-3"></div>
                                         <div class="text-gray-500 flex-grow-1 me-4">[ + or - ] </div>

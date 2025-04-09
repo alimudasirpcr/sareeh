@@ -749,14 +749,23 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 				$item_image_link = $item_info['image_url'];
 			}
 
-			$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+			$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+			$search_item_id = false;
+			if($res['status']){
+				$search_item_id = $res['value'];
+			}
+
+
 			$new_item = 0;
 			if($search_item_id == false){
 				$new_item = 1;
 			}
 			$this->Item->save($item_data, $search_item_id);
-			$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
-
+			$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+			
+			if($res['status']){
+				$search_item_id = $res['value'];
+			}
 			if($new_item == 1){
 
 				$image_contents = @file_get_contents($item_image_link);
@@ -889,14 +898,24 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 					$item_image = $item_info['image'];
 				}
 
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+
+				$search_item_id = false;
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
+
+
 				$new_item = 0;
 				if($search_item_id == false){
 					$new_item = 1;
 				}
 				$this->Item->save($item_data, $search_item_id);
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
-
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+			
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
 				if($new_item == 1){
 
 					$item_image_link = "https://www.injuredgadgets.com/pub/media/catalog/product".$item_image;
@@ -1049,13 +1068,23 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 				}
 				$item_data['description'] = $item_description;
 
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$search_item_id = false;
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
+
+
 				$new_item = 0;
 				if($search_item_id == false){
 					$new_item = 1;
 				}
 				$this->Item->save($item_data, $search_item_id);
-				$search_item_id = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+				$res = $this->Item->lookup_item_id($item_data['product_id'], array('item_id', 'item_number'));
+			
+				if($res['status']){
+					$search_item_id = $res['value'];
+				}
 
 				if($new_item == 1){
 

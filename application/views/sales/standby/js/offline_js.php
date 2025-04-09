@@ -1,9 +1,16 @@
 <script>
+
+function isNumeric(str) {
+  return /^[0-9]+$/.test(str);
+}
+
+
 function getSalePrice(params) {
 
 let itemInfo = params.all_data;
 console.log(params);
 let quantityUnitId = params.quantity_unit_id || null;
+let serial_number = params.serialnumber || null;
 let quantityUnitQuantity = itemInfo.quantity_unit_quantity ? itemInfo.quantity_unit_quantity : 1;
 let itemId = params.item_id;
 let tierId = params.tier_id || false;
@@ -64,8 +71,14 @@ if(itemInfo.has_variations != false){
 }
 
 console.log('variationInfo' , matchingVariation); 
-let variationInfo = matchingVariation;
-let variationLocationInfo = variationInfo.item_variation_location_info;
+    let variationInfo = null;
+
+    if(typeof   matchingVariation !='undefined'){
+        variationInfo = matchingVariation;
+    }
+    let variationLocationInfo = null;
+    
+    variationLocationInfo =  variationInfo?.item_variation_location_info;
 
 console.log('variationInfo' , variationInfo); 
 console.log('variationLocationInfo' , variationLocationInfo); 
@@ -86,6 +99,19 @@ if (quantityUnitId) {
         params.orig_price = itemInfo.regular_price;
         params.cost_price=itemInfo.cost_price;
         params.price=itemInfo.regular_price;
+    }
+
+    return to_currency_no_money(params.price );
+}
+
+if (serial_number) {
+    console.log("step serial_number" ,itemInfo);
+    let qui =  itemInfo.serial_numbers[0];
+    console.log("step qui" ,qui);
+    if(qui && qui.unit_price !== null){
+        params.orig_price =  parseFloat(qui.unit_price);
+        params.cost_price=parseFloat(qui.cost_price);
+        params.price=parseFloat(qui.unit_price);
     }
 
     return to_currency_no_money(params.price );
@@ -1974,8 +2000,396 @@ function updateBreadcrumbs(breadcrumbTrail) {
 // Initial call to load top-level categories
 getAllCategories();
 
-//Refactor for performance based on https://stackoverflow.com/questions/58999498/pouch-db-fast-search
 
+const config = {
+    scale_format: '<?= $this->config->item('scale_format') ?>',
+    scale_divide_by: parseInt('<?= $this->config->item('scale_divide_by') ?>'),
+    enable_scale: parseInt('<?= $this->config->item('enable_scale') ?>'),
+    item_lookup_order : '<?= json_encode(unserialize($this->config->item('item_lookup_order'))) ?>',
+    // item_lookup_order : '["item_id","item_number","product_id","additional_item_numbers","serial_numbers","item_variation_item_number"]'
+}
+console.log(config);
+
+async function lookupItemId(item_number) {
+    const default_image = '<?php echo base_url(); ?>' + 'assets/img/item.png';
+    const search = item_number.toString();
+    const item_lookup_order = JSON.parse(config.item_lookup_order);
+
+    try {
+        const result = await db_items.find({
+            selector: {
+                $or: item_lookup_order.map((field) => {
+                    // For demonstration, let's assume "item_number"
+                    // is the only field that needs $elemMatch
+                    if (field === "item_variation_item_number") {
+                        return {
+                            "all_data.has_variations": {
+                                $elemMatch: {
+                                    "variation_main.item_number": search
+                                }
+                            }
+                        };
+
+                    }else if (field === "additional_item_numbers") {
+                        return {
+                            "all_data.additional_item_numbers": {
+                                $elemMatch: {
+                                    "item_number": search
+                                }
+                            }
+                        };
+
+                    }else if (field === "serial_numbers") {
+                        return {
+                            "all_data.serial_numbers": {
+                                $elemMatch: {
+                                    "serial_number": search
+                                }
+                            }
+                        };
+
+                    }else if (field === "product_id" || field === "item_number"){
+                        field  = 'all_data.'+field;
+
+                        return {
+                            [field]: { $in: [search] }
+                        };
+                    } else {
+                        // Otherwise, do a simple "$in: [search]" match
+                        return {
+                            [field]: { $in: [search] }
+                        };
+                    }
+                })
+            }
+        });
+
+        const results = result.docs;
+        if (!results || results.length === 0) {
+            return null; // No match
+        }
+
+        // Let’s just pick the first matched doc. (You could handle multiple docs if needed.)
+        const item = results[0];
+
+        // Now figure out which field(s) actually matched.
+        const matchedFields = [];
+        var variation_id_matched =0;
+        var matched_serial = [];
+
+        for (const field of item_lookup_order) {
+            if (field === "item_variation_item_number") {
+                if (Array.isArray(item?.all_data?.has_variations)) {
+                    const matchedVariation = item.all_data.has_variations.find(
+                        (v) => v?.variation_main?.item_number === search
+                    );
+                    if (matchedVariation) {
+                        variation_id_matched = matchedVariation.id;
+                    }
+                }
+            }else if (field === "serial_numbers") {
+                if (Array.isArray(item?.all_data?.serial_numbers)) {
+                    const matchedSerialno = item.all_data.serial_numbers.find(
+                        (v) => v?.serial_number === search
+                    );
+                    if (matchedSerialno) {
+                        matched_serial = matchedSerialno;
+                    }
+                }
+            } else {
+                const value = item[field];
+
+                if (Array.isArray(value)) {
+                    if (value.includes(search)) {
+                        matchedFields.push(field);
+                    }
+                } else {
+                    if (value === search) {
+                        matchedFields.push(field);
+                    }
+                }
+            }
+        }
+
+        // You can store matchedFields on the item object
+
+
+        // Optionally store in items_list
+        items_list[item.item_id] = item;
+
+        // Attach helpful UI fields
+        item.image = item.image_src || default_image;
+        item.label = item.name;
+
+        if(variation_id_matched){
+            item.item_id = variation_id_matched;
+        }
+        
+        item.matched_serial = matched_serial;
+        item.value = item.item_id;
+        
+
+        return item;
+    } catch (err) {
+        console.error('Error in lookupItemId:', err);
+        return null;
+    }
+}
+
+
+async function parseItemScanData(scan) {
+    let result = {
+        item_id: null,
+        variation_id: null,
+        quantity_unit_id: null,
+        variation_name: '',
+        variation_choices: {},
+        variation_choices_model: {}
+    };
+
+    // Step 1: Handle |FORCE_ITEM_ID| and extract variation_id
+    let is_forced = scan.includes('|FORCE_ITEM_ID|');
+    scan = scan.replace('|FORCE_ITEM_ID|', '');
+
+    let parts = scan.split('#');
+    if (parts.length > 1) {
+        result.variation_id = parts[1];
+    }
+
+    // Step 2: Lookup item ID
+    const item_lookup_key = parts[0];
+
+    let item_doc = await lookupItemId(item_lookup_key); // should return a single item or null
+    if (!item_doc || !item_doc.item_id) return false;
+
+    result.item_id = item_doc.item_id;
+
+  
+
+    // Step 4: Re-check if item_id includes # for variation
+    let variationParts = result.item_id.split('#');
+    console.log('variationParts' , variationParts);
+    if (variationParts.length > 1) {
+        result.item_id = variationParts[0];
+        result.variation_id = variationParts[1];
+    }
+    result.matched_serial = item_doc.matched_serial;
+  
+    return result;
+}
+
+
+async function   parseScaleData(scan, config) {
+    const result = {};
+    const scaleFormat = config.scale_format;
+    const divideBy = config.scale_divide_by || 100;
+
+   
+    if(!config.enable_scale  || isNumeric(scan) ==false ){
+        return false;
+    }
+
+    let number_start_index = null;
+    let number_end_index = null;
+    let price_start_index = null;
+    let price_end_index = null;
+    let quantity_start_index = null;
+    let quantity_end_index = null;
+
+    // Determine format indices
+    switch (scaleFormat) {
+        case 'scale_2':
+            number_start_index = 1;
+            number_end_index = 5;
+            price_start_index = 6;
+            price_end_index = 10;
+            break;
+        case 'scale_3':
+            number_start_index = 1;
+            number_end_index = 5;
+            price_start_index = 7;
+            price_end_index = 11;
+            break;
+        case 'scale_4':
+            number_start_index = 1;
+            number_end_index = 5;
+            price_start_index = 6;
+            price_end_index = 11;
+            break;
+        case 'scale_5':
+            number_start_index = 1;
+            number_end_index = 5;
+            quantity_start_index = 6;
+            quantity_end_index = 11;
+            break;
+        case 'scale_6':
+            number_start_index = 2;
+            number_end_index = 6;
+            quantity_start_index = 7;
+            quantity_end_index = 11;
+            break;
+        case 'scale_7':
+            number_start_index = 2;
+            number_end_index = 7;
+            quantity_start_index = 8;
+            quantity_end_index = 11;
+            break;
+        case 'scale_8':
+            number_start_index = 2;
+            number_end_index = 6;
+            quantity_start_index = 7;
+            quantity_end_index = 10;
+            break;
+        case 'scale_1':
+        default:
+            number_start_index = 1;
+            number_end_index = 5;
+            price_start_index = 7;
+            price_end_index = 10;
+            break;
+    }
+
+    // Extract item number
+    const item_number = scan.substring(number_start_index, number_end_index + 1);
+   
+
+    // Lookup item_id (you must implement this logic yourself)
+    // Example: result.item_id = lookupItemId(item_number);
+    // For now, let's assume item_id = item_number
+    console.log(item_number);
+    item =   await  lookupItemId(Number(item_number));
+     
+
+    if (!item) return false;
+
+    const item_price = item.promo_price ?? item.price;
+    const item_cost_price = item.cost_price;
+
+    if (['scale_5', 'scale_6', 'scale_7', 'scale_8'].includes(scaleFormat)) {
+        const quantity_raw = scan.substring(quantity_start_index, quantity_end_index + 1);
+        const total_quantity = parseFloat(quantity_raw) / divideBy;
+
+        result.sell_quantity = total_quantity;
+        result.cost_quantity = total_quantity;
+        result.sell_price = item_price;
+        result.cost_price = item_cost_price;
+    } else {
+        const price_raw = scan.substring(price_start_index, price_end_index + 1);
+        const total_price = parseFloat(price_raw) / divideBy;
+
+        result.sell_quantity = total_price / item_price;
+        result.cost_quantity = total_price / item_cost_price;
+        result.sell_price = item_price;
+        result.cost_price = item_cost_price;
+    }
+    result.item_id = item.item_id;
+    return result;
+}
+
+
+
+
+
+
+//Refactor for performance based on https://stackoverflow.com/questions/58999498/pouch-db-fast-search
+    $('#item').keydown(function(e) {
+    // Enter key
+    if (e.keyCode === 13) {
+        e.preventDefault();
+
+        let term = $('#item').val().trim();
+        if (!term) return;
+
+        // Optional: close autocomplete menu if open
+        $(this).autocomplete("close");
+        (async () => {
+
+            item =   await  parseItemScanData(term);
+           
+            if(item==null || item==false){
+                item = await parseScaleData(term, config);
+
+                if(item){
+                    $item_var =   items_list[item.item_id];
+                    // console.log($item_var);
+                    $item_var.price = item.sell_price;
+                    $item_var.quantity = item.sell_quantity;
+
+                    $price  =    getSalePrice($item_var);
+                    $item_var.cost_price = $price;
+                    $item_var.orig_price = $price;
+
+                    addItem($item_var);
+                    renderUi();
+
+                }else{
+                    show_feedback('error', "<?php echo  lang('item_not_found') ?>" , "<?php echo  lang('error') ?>");
+                }
+            }else{
+                console.log("correct parrset item" ,item );
+                if(item.variation_id==null){
+                    $item_var =   items_list[item.item_id]
+                    if(typeof item.matched_serial.id !='undefined'){    
+                        console.log("check serial no id" ,item.matched_serial.id );
+                      
+                        $item_var.serialnumber = item.matched_serial.id;
+                        $item_var.serialnumberText = item.matched_serial.serial_number;
+                        
+                    }   
+
+                    
+                    $price  =    getSalePrice($item_var);
+                    $item_var.cost_price = $price;
+                    $item_var.orig_price = $price;
+                    addItem( $item_var);
+                    renderUi();
+                }else{
+                   $item_var =   items_list[item.item_id];
+                   item_full_data = $item_var.all_data;
+               
+                   if (Array.isArray(item_full_data.has_variations)) {
+                        variation_match = item_full_data.has_variations.find(variation => {
+                            
+                            if(term.includes("#")){
+                                return variation.id ==  term; // Use `==` if `term` is string/number mix
+                            }else{
+                                return variation.id ==  item.item_id + '#' +  item.variation_id; // Use `==` if `term` is string/number mix
+                            }
+                          
+                        });
+                        if(variation_match){
+                            if(term.includes("#")){
+                                $item_var.item_id = $item_var.item_id  + '#' +  item.variation_id;
+                            }else{
+                                $item_var.item_id = $item_var.item_id ;
+                            }
+                           
+                            $item_var.name = $item_var.name + '[ ' + variation_match.name + ']';
+                            $item_var.variation_id = item.variation_id;
+                            
+
+                            const attributesIndexedFormatted = {};
+
+                            variation_match.variation_main.attributes.forEach((attr, index) => {
+                                attributesIndexedFormatted[index + 1] = attr.value;
+                            });
+                            $item_var.selectedAttributes = attributesIndexedFormatted;
+
+                            $item_var.selected_variation = variation_match.attribute_string;
+                        }
+                    }
+                    $price  =    getSalePrice($item_var);
+                    $item_var.cost_price = $price;
+                    $item_var.orig_price = $price;
+                    addItem($item_var);
+                    renderUi();
+
+                }
+            }
+          
+        })();
+    }
+});
 
 
 
@@ -2029,9 +2443,15 @@ $("#item").autocomplete({
     select: function(event, ui) {
 
         var item_id = ui.item.value;
-     
-        console.log("selected" , items_list[item_id]);
-        addItem(items_list[item_id]);
+        $item_var =  items_list[item_id];
+
+        $price  =    getSalePrice($item_var);
+                    $item_var.cost_price = $price;
+                    $item_var.orig_price = $price;
+                    addItem($item_var);
+
+
+        addItem($item_var);
         renderUi();
         $(this).val('');
         return false;
@@ -2124,9 +2544,9 @@ function removeAllExceptFirstRepeater() {
 
 function onclick_edit_taxes_item(item_id){
 
-            console.log("item_id:", item_id);
+           
             if(item_id >= 0){
-                taxes  = cart.items[item_id].all_data.taxes;
+                taxes  = cart.items[item_id].all_data.item_taxes;
             }else{
                 taxes  = cart.taxes;
             }
@@ -3867,6 +4287,10 @@ function edit_variation(index) {
 
 
 function addItem(newItem) {
+    setTimeout(function() {
+			$('#item').focus();
+            $('#item').val('');
+		}, 10);
     currency_ = "<?php echo get_store_currency(); ?>"
        
     let found = false;
@@ -4560,7 +4984,7 @@ updateOnlineStatus();
         }
 
            //  + 
-           if (mycode == 187) {
+           if (mycode == 187 || mycode ==107) {
             event.preventDefault();
             var cart = JSON.parse(localStorage.getItem("cart"));
             if (cart && cart.items && cart.items.length > 0) {
@@ -4573,7 +4997,7 @@ updateOnlineStatus();
         }
 
         //  -
-        if (mycode == 189) {
+        if (mycode == 189 ||    mycode == 109) {
             event.preventDefault();
             var cart = JSON.parse(localStorage.getItem("cart"));
             if (cart && cart.items && cart.items.length > 0) {
@@ -4584,11 +5008,13 @@ updateOnlineStatus();
             return;
         }
 
-        //CTRL + C
-        if (mycode == 67) {
-            $("#customer").focus();
-            return;
+           // F6
+        if (mycode === 117) {
+            event.preventDefault(); // Optional: prevent default copy
+            $("#customer").focus(); // Your custom action
+            return false;
         }
+
 
 
     });
