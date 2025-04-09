@@ -232,7 +232,7 @@ class Item extends MY_Model
 							ORDER BY name
 						) ORDER BY name LIMIT $offset, $limit");
 					}
-				echo $this->db->last_query(); exit();
+				// echo $this->db->last_query(); exit();
 
 		return $result;
 
@@ -6068,6 +6068,7 @@ class Item extends MY_Model
 		$sup_query2 = $this->db->get_compiled_select();
 		
 		$sql = $sup_query1 . "\nUNION ALL\n".$sup_query2;
+		echo $sql; exit();
 		
 		return $this->db->query($sql);
 	}
