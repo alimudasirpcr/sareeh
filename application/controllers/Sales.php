@@ -5459,6 +5459,7 @@ class Sales extends Secure_area
 		$data['work_order_statuses'] = $this->Work_order->get_all_statuses();
 		// Get Work Order ID 
 		$data['work_order_id'] = $this->Work_order->get_info_by_sale_id($data['cart']->sale_id)->row()->id ?? NULL;
+		
 		$data['is_pos'] = true;
  		$credit_card_processor = $this->_get_cc_processor();
 

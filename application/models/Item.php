@@ -3720,8 +3720,8 @@ class Item extends MY_Model
 				$by_name = $this->db->query($sql, array($wrap_like,$wrap_like,$wrap_like,$wrap_like, $limit));
 				
 			}
-			// echo $this->db->last_query();
-			
+			 echo $this->db->last_query();
+				exit();
 
 			$temp_suggestions = array();
 			
