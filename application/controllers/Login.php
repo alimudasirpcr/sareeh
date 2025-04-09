@@ -41,7 +41,7 @@ class Login extends MY_Controller
 
 		if(!is_on_phppos_host() && (APPLICATION_VERSION!=$this->config->item('version') || ($this->migration->get_migration_version() != $this->migration->get_version())))
 		{
-			redirect('migrate/start');
+			// redirect('migrate/start');
 		}
 		
 		if($this->Employee->is_logged_in())
