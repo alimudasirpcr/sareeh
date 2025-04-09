@@ -232,7 +232,7 @@ class Item extends MY_Model
 							ORDER BY name
 						) ORDER BY name LIMIT $offset, $limit");
 					}
-				// echo $this->db->last_query(); exit();
+				echo $this->db->last_query(); exit();
 
 		return $result;
 
