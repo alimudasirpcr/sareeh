@@ -1,3 +1,8 @@
+<?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: text/html; charset=utf-8");
+header("Cache-Control: no-store, must-revalidate");
+?>
 <!DOCTYPE html>
 <html class="<?php echo $this->config->item('language'); ?>">
 
