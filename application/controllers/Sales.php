@@ -7848,8 +7848,17 @@ class Sales extends Secure_area
 
 				$this->load->model('Item_attribute');
 				// $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
-				dd($variatons);
-				$item_attributes_available = $this->Item_variations->get_attributes($variatons);
+				// dd($variatons);
+				$variation_ids_to_lookup = [];
+
+				foreach($variatons as $var)
+				{
+					$variation_ids_to_lookup[] = $suggestion['id'];
+				}
+
+
+
+				$item_attributes_available = $this->Item_variations->get_attributes($variation_ids_to_lookup);
 
 				$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($item->item_id)->result_array();
 				
