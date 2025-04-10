@@ -166,7 +166,7 @@ class Item_attribute extends MY_Model
 		$this->db->or_where('item_attributes.item_id IS NULL', null, false);
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
-		$attrs_for_item = $this->db->get()->result_array();
+		$attrs_for_item = $this->db->get();
 	
 		echo $this->db->query();
 		$return = array();
