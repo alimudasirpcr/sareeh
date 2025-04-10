@@ -1916,7 +1916,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 </div>
                 <div class="row">
-                    <div class="pagination hidden-print alternate text-center" id="pagination"></div>
+                    <div class="pagination hidden-print alternate text-center" id="pagination" style="margin-top: -40px !important"></div>
                 </div>
 
              

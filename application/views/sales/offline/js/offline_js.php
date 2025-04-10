@@ -439,6 +439,16 @@ function processCategoriesAndItemsResult(json) {
 
 $("#category_item_selection_wrapper_new").html('');
 $("#pagination").html(json.pagination);
+
+$('.page-link').click(function(event){
+    event.preventDefault();
+    $('#grid-loader2').show();
+        $.get($(this).attr('href'), function(json) {
+            processCategoriesAndItemsResult(json);
+        }, "json");
+
+});
+
 if (json.categories_count > 0) {
     $("#category_item_selection").html('');
     var back_to_categories_button =
