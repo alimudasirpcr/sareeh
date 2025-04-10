@@ -179,7 +179,7 @@ class Item_variations extends MY_Model
 				$return[$result['id']]['reorder_level'] = $result['reorder_level'];
 				$return[$result['id']]['replenish_level'] = $result['replenish_level'];
 				$return[$result['id']]['ecommerce_variation_id'] = $result['ecommerce_variation_id'];
-				$return[$result['id']]['attributes'] = $this->get_attributes($result['id']);
+				$return[$result['id']]['attributes'] = $this->get_attributes($result['id'] , $item_id);
 				$return[$result['id']]['image'] = $this->get_image($result['id']);
 				$return[$result['id']]['supplier_id'] = $result['supplier_id'];
 				$return[$result['id']]['supplier_name'] = $this->Supplier->get_name($result['supplier_id']);
