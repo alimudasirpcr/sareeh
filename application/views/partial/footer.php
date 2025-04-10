@@ -453,7 +453,8 @@ if ($this->config->item('offline_mode'))
 		'cache-version': '<?php echo BUILD_TIMESTAMP; ?>',
 		'content-url': '<?php echo site_url('home/offline/').BUILD_TIMESTAMP?>',
 		'assets': <?php echo json_encode($offline_assets); ?>,
-		'service-worker-url': '<?php echo  base_url().'upup.sw.min.js?'.BUILD_TIMESTAMP;?>'
+		'service-worker-url': '<?php echo  base_url().'upup.sw.min.js?'.BUILD_TIMESTAMP;?>',
+		'content': '<h1>Offline Mode</h1><p>Please check your internet connection.</p>'
 	});
 
 	//Background worker for syncing offline data
