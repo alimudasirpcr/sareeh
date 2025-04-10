@@ -5868,12 +5868,18 @@ class Item extends MY_Model
 			$this->db->where('1', '2', FALSE);
 		}
 		
-		echo $this->db->last_query(); exit();
-		
-		foreach($this->db->get()->result_array() as $row)
+		$query = $this->db->get();
+
+		if( $query!=false && $query->num_rows() > 0)
 		{
-			$item_ids_banned[] = $row['item_id'];
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$item_ids_banned[] = $row['item_id'];
+			}
 		}
+		
+		
+		
 		
 		
 		return array_unique($item_ids_banned);
