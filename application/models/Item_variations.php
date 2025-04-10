@@ -258,8 +258,7 @@ class Item_variations extends MY_Model
 
 
 		$attributes_and_values = $this->db->get()->result_array();
-
-		echo $this->db->last_query(); exit();
+		
 		
 		$return = array();
 		
