@@ -7853,7 +7853,7 @@ class Sales extends Secure_area
 
 				foreach($variatons as $var)
 				{
-					$variation_ids_to_lookup[] = $suggestion['id'];
+					$variation_ids_to_lookup[] = $var['id'];
 				}
 
 
