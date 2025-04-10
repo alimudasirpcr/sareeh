@@ -163,7 +163,7 @@ class Item_attribute extends MY_Model
 		$this->db->join('item_attributes', 'attributes.id = item_attributes.attribute_id');
 		$this->db->group_start();
 		$this->db->where('item_attributes.item_id', $item_id);
-		$this->db->or_where('item_attributes.item_id IS NULL', null, false);
+		$this->db->or_where('phppos_item_attributes.item_id IS NULL', null, false);
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
 		$attrs_for_item = $this->db->get();
