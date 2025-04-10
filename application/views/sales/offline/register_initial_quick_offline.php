@@ -1915,6 +1915,11 @@ $this->load->view("partial/offline_header"); ?>
                     <!--end::Card widget 14-->
 
                 </div>
+                <div class="row">
+                    <div class="pagination hidden-print alternate text-center" id="pagination"></div>
+                </div>
+
+             
 
             </div>
         </div>

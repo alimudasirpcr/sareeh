@@ -438,7 +438,7 @@ setInterval(() => {
 function processCategoriesAndItemsResult(json) {
 
 $("#category_item_selection_wrapper_new").html('');
-
+$("#pagination").html(json.pagination);
 if (json.categories_count > 0) {
     $("#category_item_selection").html('');
     var back_to_categories_button =
