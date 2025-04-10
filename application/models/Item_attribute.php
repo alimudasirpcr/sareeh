@@ -155,7 +155,39 @@ class Item_attribute extends MY_Model
 		
 		return $return;
 	}
+	function get_attributes_for_item_with_attribute_values_updated($item_id)
+	{
+		$this->db->select('id, name, ecommerce_attribute_id, attributes.item_id');
+		$this->db->from('attributes');
+		$this->db->join('item_attributes', 'attributes.id = item_attributes.attribute_id');
+		$this->db->where('item_attributes.item_id', $item_id);
+		$this->db->or_where('item_attributes.item_id IS NULL', null, false);
+		$this->db->where('deleted', 0);
+		$attrs_for_item = $this->db->get()->result_array();
 	
+		$return = array();
+		
+		$this->load->model('Item_attribute_value');
+		foreach($attrs_for_item as $attr_item)
+		{
+			$attr_id = $attr_item['id'];
+			$return[$attr_id]['name'] = $attr_item['name'];
+			$return[$attr_id]['ecommerce_attribute_id'] = $attr_item['ecommerce_attribute_id'];
+			$return[$attr_id]['item_id'] = $attr_item['item_id'];
+			
+			$attr_values = $this->Item_attribute_value->get_attribute_values_for_item($item_id, $attr_id)->result_array();
+			$return[$attr_id]['attr_values'] = array();
+			foreach($attr_values as $attr_value)
+			{
+				$return[$attr_id]['attr_values'][$attr_value['attribute_value_id']] = array(
+					"name" => $attr_value['attribute_value_name'],
+					"ecommerce_attribute_term_id" => $attr_value['ecommerce_attribute_term_id']
+				);
+			}
+		}
+		
+		return $return;
+	}
 	function exists($id)
 	{
 		$this->db->from('attributes');

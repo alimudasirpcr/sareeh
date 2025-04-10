@@ -231,25 +231,25 @@ class Item_variations extends MY_Model
 			$this->db->where('item_variations.id', $item_variation_id);
 		}
 
-		if (is_array($item_id))
-		{
-			if (!empty($item_id))
-			{
-				$this->db->group_start();
-				$item_id_chunks = array_chunk($item_id,25);
+		// if (is_array($item_id))
+		// {
+		// 	if (!empty($item_id))
+		// 	{
+		// 		$this->db->group_start();
+		// 		$item_id_chunks = array_chunk($item_id,25);
 				
-				foreach($item_id_chunks as $item_id_chunk)
-				{
-					$this->db->or_where_in('attributes.item_id',$item_id_chunk);
-				}
+		// 		foreach($item_id_chunks as $item_id_chunk)
+		// 		{
+		// 			$this->db->or_where_in('attributes.item_id',$item_id_chunk);
+		// 		}
 				
-				$this->db->group_end();
-			}
-		}
-		else
-		{
-			$this->db->where('attributes.item_id', $item_id);
-		}
+		// 		$this->db->group_end();
+		// 	}
+		// }
+		// else
+		// {
+		// 	$this->db->where('attributes.item_id', $item_id);
+		// }
 
 
 		
@@ -259,8 +259,6 @@ class Item_variations extends MY_Model
 
 
 		$attributes_and_values = $this->db->get()->result_array();
-
-		echo $this->db->last_query(); exit();
 		
 		$return = array();
 		
