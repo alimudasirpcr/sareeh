@@ -4313,13 +4313,14 @@ function showNextAttribute(currentIndex, attributeKeys) {
             resultString += selectedValueKey;
 
         });
-        // console.log('resultString',resultString);
+        console.log('resultString',resultString);
 
         let matchingVariation = item_obj.variations.find(variation => variation.attribute_string ===
             resultString);
         // var selling_price = parseFloat(matchingVariation.price);
 
-       
+        console.log('matchingVariation',matchingVariation);
+
 
         if( typeof matchingVariation != 'undefined' ){
 
