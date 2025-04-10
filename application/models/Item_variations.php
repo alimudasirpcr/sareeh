@@ -158,7 +158,7 @@ class Item_variations extends MY_Model
 				$return[$result['item_id']][$result['id']]['reorder_level'] = $result['reorder_level'];
 				$return[$result['item_id']][$result['id']]['replenish_level'] = $result['replenish_level'];
 				$return[$result['item_id']][$result['id']]['ecommerce_variation_id'] = $result['ecommerce_variation_id'];
-				$return[$result['item_id']][$result['id']]['attributes'] = $this->get_attributes($result['id']);
+				$return[$result['item_id']][$result['id']]['attributes'] = $this->get_attributes($result['id'] , $item_id);
 				$return[$result['item_id']][$result['id']]['image'] = $this->get_image($result['id']);
 				$return[$result['item_id']][$result['id']]['supplier_id'] = $result['supplier_id'];
 				$return[$result['item_id']][$result['id']]['supplier_name'] = $this->Supplier->get_name($result['supplier_id']);
@@ -196,7 +196,7 @@ class Item_variations extends MY_Model
 		return $this->db->get()->row_array();
 	}
 	
-	function get_attributes($item_variation_id = array())
+	function get_attributes($item_variation_id = array() , $item_id = array())
 	{
 		//get attributes
 		$this->db->select('attributes.name as attribute_name, '.$this->db->dbprefix('attributes').'.id as attribute_id,'.
@@ -228,6 +228,28 @@ class Item_variations extends MY_Model
 		{
 			$this->db->where('item_variations.id', $item_variation_id);
 		}
+
+		if (is_array($item_id))
+		{
+			if (!empty($item_id))
+			{
+				$this->db->group_start();
+				$item_id_chunks = array_chunk($item_id,25);
+				
+				foreach($item_id_chunks as $item_id_chunk)
+				{
+					$this->db->or_where_in('attributes.item_id',$item_id_chunk);
+				}
+				
+				$this->db->group_end();
+			}
+		}
+		else
+		{
+			$this->db->where('attributes.item_id', $item_id);
+		}
+
+
 		
 		//This order by is here so we get consistent order for variation attribute grid selection
 		$this->db->order_by('attributes.id');
