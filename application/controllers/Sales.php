@@ -7688,7 +7688,7 @@ class Sales extends Secure_area
 		{
 			$category_id = NULL;
 		}
-		$number = 9999999;
+		$number = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14;
 
 		$config['base_url'] = site_url('sales/categories_and_items/'.($category_id ? $category_id : 0));
 		$config['uri_segment'] = 4;
@@ -7718,6 +7718,8 @@ class Sales extends Secure_area
 		if($category_id=='my_sareeh'){
 
 		}else{
+
+			
 			$items_result = $this->Item->get_all_by_category($category_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $items_offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14)->result();
 	
 		}
@@ -8049,10 +8051,11 @@ class Sales extends Secure_area
 	
 		$items_count = $this->Item->count_all_by_category($category_id);		
 		$categories_and_items_response = array_slice($categories_and_items_response, $offset > $categories_count ? $categories_count : $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14);
-		
+
+
 		$data = array();
 		$data['categories_and_items'] = H($categories_and_items_response);
-		$config['total_rows'] = $categories_count + $items_count;
+		$config['total_rows'] =  $items_count;
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();

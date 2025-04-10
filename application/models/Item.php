@@ -449,7 +449,7 @@ class Item extends MY_Model
 		}
 		else
 		{
-			$location_items_table = $this->db->dbprefix('location_items ');
+			$location_items_table = $this->db->dbprefix('location_items');
 			$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 			$result = $this->db->query("
 			(
