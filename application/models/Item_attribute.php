@@ -158,14 +158,27 @@ class Item_attribute extends MY_Model
 	function get_attributes_for_item_with_attribute_values_updated($item_id)
 	{
 		
-		$this->db->select('id, name, ecommerce_attribute_id, attributes.item_id');
-		$this->db->from('attributes');
-		$this->db->join('item_attributes', 'attributes.id = item_attributes.attribute_id');
-		$this->db->group_start();
-		$this->db->where('item_attributes.item_id', $item_id);
-		$this->db->or_where('phppos_item_attributes.item_id IS NULL', null, false);
-		$this->db->group_end();
-		$this->db->where('deleted', 0);
+		// $this->db->select('id, name, ecommerce_attribute_id, attributes.item_id');
+		// $this->db->from('attributes');
+		// $this->db->join('item_attributes', 'attributes.id = item_attributes.attribute_id');
+		// $this->db->group_start();
+		// $this->db->where('item_attributes.item_id', $item_id);
+		// $this->db->or_where('phppos_item_attributes.item_id IS NULL', null, false);
+		// $this->db->group_end();
+		// $this->db->where('deleted', 0);
+
+
+
+		$this->db->select('attributes.id as id, attributes.name as name   , ecommerce_attribute_id, attributes.item_id  ', FALSE);
+		$this->db->from('item_variations');
+		$this->db->join('item_variation_attribute_values', 'item_variations.id = item_variation_attribute_values.item_variation_id');
+		$this->db->join('attribute_values', 'attribute_values.id = item_variation_attribute_values.attribute_value_id');
+		// $this->db->join('item_attributes', 'item_attributes.item_id = attribute_values.attribute_id');
+		$this->db->join('attributes', 'attributes.id = attribute_values.attribute_id');
+		$this->db->join('people', 'people.person_id = item_variations.supplier_id', 'left');
+		$this->db->where('item_variations.item_id', $item_id);
+
+
 		$attrs_for_item = $this->db->get()->result_array();
 	
 		$return = array();
