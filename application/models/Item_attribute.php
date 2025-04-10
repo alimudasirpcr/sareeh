@@ -157,6 +157,7 @@ class Item_attribute extends MY_Model
 	}
 	function get_attributes_for_item_with_attribute_values_updated($item_id)
 	{
+		save_query();
 		$this->db->select('id, name, ecommerce_attribute_id, attributes.item_id');
 		$this->db->from('attributes');
 		$this->db->join('item_attributes', 'attributes.id = item_attributes.attribute_id');
@@ -167,6 +168,7 @@ class Item_attribute extends MY_Model
 		$this->db->where('deleted', 0);
 		$attrs_for_item = $this->db->get()->result_array();
 	
+		echo $this->db->query();
 		$return = array();
 		
 		$this->load->model('Item_attribute_value');
