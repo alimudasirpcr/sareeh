@@ -4266,13 +4266,13 @@ function updateOnlineStatus() {
         statusDiv.textContent = '<?= lang('Offline_Mode') ?>';
 
         bootbox.alert({
-    title: '<?= lang('Alert') ?>',
-    closeButton: false,
-    message: <?php echo json_encode(lang("You_are_offline_now_Your_data_is_safe_and_preserved_Please_reconnect_and_reload_to_stay_updated")); ?>,
-    callback: function() {
-        window.location.href = "<?php echo base_url() ?>home/offline";
-    }
-});
+            title: '<?= lang('Alert') ?>',
+            closeButton: false,
+            message: <?php echo json_encode(lang("You_are_offline_now_Your_data_is_safe_and_preserved_Please_reconnect_and_reload_to_stay_updated")); ?>,
+            callback: function() {
+                window.location.href = "<?php echo base_url() ?>home/offline";
+            }
+        });
 
 
         

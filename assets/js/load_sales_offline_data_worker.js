@@ -1,5 +1,5 @@
-importScripts('pouchdb.min.js');
-importScripts('pouchdb.find.js');
+importScripts('/assets/js/pouchdb.min.js');
+importScripts('/assets/js/pouchdb.find.js');
 
 function decodeHtml(html) {
     return html.replace(/&lt;/g, "<")
