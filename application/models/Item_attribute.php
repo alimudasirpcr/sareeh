@@ -168,7 +168,7 @@ class Item_attribute extends MY_Model
 		$this->db->where('deleted', 0);
 		$attrs_for_item = $this->db->get();
 	
-		echo $this->db->query();
+		echo $this->db->last_query();
 		$return = array();
 		
 		$this->load->model('Item_attribute_value');
