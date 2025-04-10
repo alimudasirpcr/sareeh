@@ -667,6 +667,9 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 	
 	function offline($ignore_timestamp='0')
 	{
+
+		header("Access-Control-Allow-Origin: *");
+		header("Content-Type: text/html");
 		$this->load->model('Appconfig');
 		
 		$data  = array();
