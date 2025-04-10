@@ -199,6 +199,7 @@ class Item_variations extends MY_Model
 	function get_attributes($item_variation_id = array() , $item_id = array())
 	{
 		//get attributes
+		save_query();
 		$this->db->select('attributes.name as attribute_name, '.$this->db->dbprefix('attributes').'.id as attribute_id,'.
 		$this->db->dbprefix('attribute_values').'.name as attribute_value_name, CONCAT('.$this->db->dbprefix('attributes').'.name,": ",'.
 		$this->db->dbprefix('attribute_values').'.name) as label, item_variation_attribute_values.attribute_value_id as attribute_value_id, '.
@@ -254,7 +255,11 @@ class Item_variations extends MY_Model
 		//This order by is here so we get consistent order for variation attribute grid selection
 		$this->db->order_by('attributes.id');
 		
+
+
 		$attributes_and_values = $this->db->get()->result_array();
+
+		echo $this->db->last_query(); exit();
 		
 		$return = array();
 		
