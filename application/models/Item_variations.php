@@ -199,7 +199,7 @@ class Item_variations extends MY_Model
 	function get_attributes($item_variation_id = array() , $item_id = array())
 	{
 		//get attributes
-		save_query();
+		
 		$this->db->select('attributes.name as attribute_name, '.$this->db->dbprefix('attributes').'.id as attribute_id,'.
 		$this->db->dbprefix('attribute_values').'.name as attribute_value_name, CONCAT('.$this->db->dbprefix('attributes').'.name,": ",'.
 		$this->db->dbprefix('attribute_values').'.name) as label, item_variation_attribute_values.attribute_value_id as attribute_value_id, '.
@@ -230,25 +230,25 @@ class Item_variations extends MY_Model
 			$this->db->where('item_variations.id', $item_variation_id);
 		}
 
-		if (is_array($item_id))
-		{
-			if (!empty($item_id))
-			{
-				$this->db->group_start();
-				$item_id_chunks = array_chunk($item_id,25);
+		// if (is_array($item_id))
+		// {
+		// 	if (!empty($item_id))
+		// 	{
+		// 		$this->db->group_start();
+		// 		$item_id_chunks = array_chunk($item_id,25);
 				
-				foreach($item_id_chunks as $item_id_chunk)
-				{
-					$this->db->or_where_in('attributes.item_id',$item_id_chunk);
-				}
+		// 		foreach($item_id_chunks as $item_id_chunk)
+		// 		{
+		// 			$this->db->or_where_in('attributes.item_id',$item_id_chunk);
+		// 		}
 				
-				$this->db->group_end();
-			}
-		}
-		else
-		{
-			$this->db->where('attributes.item_id', $item_id);
-		}
+		// 		$this->db->group_end();
+		// 	}
+		// }
+		// else
+		// {
+		// 	$this->db->where('attributes.item_id', $item_id);
+		// }
 
 
 		
@@ -258,7 +258,6 @@ class Item_variations extends MY_Model
 
 
 		$attributes_and_values = $this->db->get()->result_array();
-		
 		
 		$return = array();
 		
