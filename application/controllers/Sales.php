@@ -7847,8 +7847,8 @@ class Sales extends Secure_area
 				$variatons = 	$this->item_variations($item->item_id , true);
 
 				$this->load->model('Item_attribute');
-				// $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
-				// dd($variatons);
+				 $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
+				 dd($item_attributes_available);
 				$variation_ids_to_lookup = [];
 
 				foreach($variatons as $var)
