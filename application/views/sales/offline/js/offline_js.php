@@ -4305,7 +4305,7 @@ function showNextAttribute(currentIndex, attributeKeys) {
     if (currentIndex >= attributeKeys.length) {
         $('#attributeModal').modal('hide');
         // alert('All attributes selected!');
-        // console.log('selectedAttributes:', selectedAttributes);
+        console.log('selectedAttributes:', selectedAttributes);
         console.log('item_obj:', item_obj);
         console.log('item_obj var:', item_obj.variations);
         let resultString = '';
