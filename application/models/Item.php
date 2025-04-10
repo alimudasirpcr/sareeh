@@ -3721,7 +3721,7 @@ class Item extends MY_Model
 				
 			}
 
-			
+
 
 			$temp_suggestions = array();
 			
@@ -5816,6 +5816,7 @@ class Item extends MY_Model
 	
 	function get_banned_items($item_ids,$location_id = NULL)
 	{
+		save_query();
 		if (!$location_id)
 		{
 			$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
@@ -5867,6 +5868,7 @@ class Item extends MY_Model
 			$this->db->where('1', '2', FALSE);
 		}
 		
+		echo $this->db->last_query(); exit();
 		
 		foreach($this->db->get()->result_array() as $row)
 		{
