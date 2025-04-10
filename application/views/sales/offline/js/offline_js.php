@@ -4306,8 +4306,8 @@ function showNextAttribute(currentIndex, attributeKeys) {
         $('#attributeModal').modal('hide');
         // alert('All attributes selected!');
         // console.log('selectedAttributes:', selectedAttributes);
-        // console.log('item_obj:', item_obj);
-        // console.log('item_obj var:', item_obj.variations);
+        console.log('item_obj:', item_obj);
+        console.log('item_obj var:', item_obj.variations);
         let resultString = '';
         $.each(selectedAttributes, function(attributeKey, selectedValueKey) {
             resultString += selectedValueKey;
