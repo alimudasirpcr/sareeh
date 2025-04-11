@@ -59,8 +59,8 @@ try
 	var db_items = new PouchDB('phppos_items',{revs_limit: 1});
 	var db_category = new PouchDB('phppos_category',{revs_limit: 1});
 	var db_taxes = new PouchDB('phppos_taxes',{revs_limit: 1});
-	const OFFLINE_URL = '/home/offline/1705559579';
-	
+	const OFFLINE_URL = '/home/offline';
+	const CACHE_NAME = 'offline-v2';
 	function sendUpdateToClient(step) {
 		self.clients.matchAll().then(clients => {
 			clients.forEach(client => client.postMessage({ step }));
@@ -79,18 +79,32 @@ try
 
 
 	self.addEventListener('install', (event) => {
-		console.log('Service Worker installing...');
+		console.log('[SW] Install');
 		event.waitUntil(
-			caches.open('offline-cache-v1').then(cache => {
-			  return cache.add(OFFLINE_URL);
-			})
-		  );
+		  caches.open(CACHE_NAME).then(cache => {
+			console.log('[SW] Caching offline page:', OFFLINE_URL);
+			return cache.add(OFFLINE_URL);
+		  }).catch(err => {
+			console.error('[SW] Failed to cache offline page', err);
+		  })
+		);
 	});
 	
-	self.addEventListener('activate', (event) => {
-		console.log('Service Worker activated!');
-		event.waitUntil(self.clients.claim());  // Takes control of open pages
-	});
+	self.addEventListener('activate', event => {
+		console.log('[SW] Activated');
+		return self.clients.claim();
+	  });
+
+	  self.addEventListener('fetch', event => {
+		if (event.request.mode === 'navigate') {
+		  event.respondWith(
+			fetch(event.request).catch(() => {
+			  console.warn('[SW] Network failed, showing offline page');
+			  return caches.match(OFFLINE_URL);
+			})
+		  );
+		}
+	  });
 
 	self.addEventListener("message",  function(e) 
 	{
