@@ -449,13 +449,13 @@ if ($this->config->item('offline_mode'))
 	var offline_mode_sync_period = parseInt("<?php echo $this->config->item('offline_mode_sync_period')?$this->config->item('offline_mode_sync_period'): '24'; ?>");
 
 	//Offline support
-	UpUp.start({
-		'cache-version': '<?php echo BUILD_TIMESTAMP; ?>',
-		'content-url': '<?php echo site_url('home/offline/').BUILD_TIMESTAMP?>',
-		'assets': <?php echo json_encode($offline_assets); ?>,
-		'service-worker-url': '<?php echo  base_url().'upup.sw.min.js?'.BUILD_TIMESTAMP;?>',
-		'content': '<h1>Offline Mode</h1><p>Please check your internet connection.</p>'
-	});
+	// UpUp.start({
+	// 	'cache-version': '<?php echo BUILD_TIMESTAMP; ?>',
+	// 	'content-url': '<?php echo site_url('home/offline/').BUILD_TIMESTAMP?>',
+	// 	'assets': <?php echo json_encode($offline_assets); ?>,
+	// 	'service-worker-url': '<?php echo  base_url().'upup.sw.min.js?'.BUILD_TIMESTAMP;?>',
+	// 	'content': '<h1>Offline Mode</h1><p>Please check your internet connection.</p>'
+	// });
 
 	//Background worker for syncing offline data
 	var w;
@@ -509,6 +509,20 @@ if ($this->config->item('offline_mode'))
 	startWorker();	
 	
 
+</script>
+
+<script>
+  const buildTimestamp = "<?php echo BUILD_TIMESTAMP; ?>";
+  const offlineAssets = <?php echo json_encode($offline_assets); ?>;
+
+  // Expose to service worker
+  self.__ASSETS__ = offlineAssets;
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register(`<?= site_url(); ?>service-worker.js?ts=${buildTimestamp}`)
+      .then(reg => console.log('[SW] Registered'))
+      .catch(err => console.error('[SW] Error:', err));
+  }
 </script>
 
 

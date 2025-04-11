@@ -18,37 +18,35 @@ try
 	var taxes_limit = 100;
 	var one_day_in_minutes = 24*60;//init value 24 hours
 
-	const ajax = async function(url, data = {}, callback = () => {}, type = 'GET') {
-		let options = {
-		  method: type,
-		  headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		  }
-		};
-	  
-		// Convert data to query string
-		const data_array = Object.entries(data).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
-		const data_string = data_array.join("&");
-	  
-		if (type.toUpperCase() === 'POST') {
-		  options.body = data_string;
-		} else if (type.toUpperCase() === 'GET' && data_string) {
-		  url += (url.includes('?') ? '&' : '?') + data_string;
-		}
-	  
-		try {
-		  const response = await fetch(url, options);
-	  
-		  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-	  
-		  const text = await response.text();
-		  callback(text); // call callback with the response text
-		  return text;
-		} catch (error) {
-		  console.error("AJAX fetch error:", error);
-		  return null;
-		}
+	var ajax = function(url, data, callback, type) {
+	  var data_array, data_string, idx, req, value;
+	  if (data == null) {
+	    data = {};
+	  }
+	  if (callback == null) {
+	    callback = function() {};
+	  }
+	  if (type == null) {
+	    //default to a GET request
+	    type = 'GET';
+	  }
+	  data_array = [];
+	  for (idx in data) {
+	    value = data[idx];
+	    data_array.push("" + idx + "=" + value);
+	  }
+	  data_string = data_array.join("&");
+	  req = new XMLHttpRequest();
+	  req.open(type, url, false);
+	  req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	  req.onreadystatechange = function() {
+	    if (req.readyState === 4 && req.status === 200) {
+	      return callback(req.responseText);
+	    }
 	  };
+	  req.send(data_string);
+	  return req;
+	};
 
 	settings = {};
 
@@ -59,52 +57,22 @@ try
 	var db_items = new PouchDB('phppos_items',{revs_limit: 1});
 	var db_category = new PouchDB('phppos_category',{revs_limit: 1});
 	var db_taxes = new PouchDB('phppos_taxes',{revs_limit: 1});
-	const OFFLINE_URL = '/home/offline';
-	const CACHE_NAME = 'offline-v2';
+	
+	
 	function sendUpdateToClient(step) {
 		self.clients.matchAll().then(clients => {
 			clients.forEach(client => client.postMessage({ step }));
 		});
 	}
-
-	self.addEventListener('fetch', function(event) {
-		if (event.request.mode === 'navigate') {
-		  event.respondWith(
-			fetch(event.request).catch(() => {
-			  return caches.match(OFFLINE_URL);
-			})
-		  );
-		}
-	  });
-
-
 	self.addEventListener('install', (event) => {
-		console.log('[SW] Install');
-		event.waitUntil(
-		  caches.open(CACHE_NAME).then(cache => {
-			console.log('[SW] Caching offline page:', OFFLINE_URL);
-			return cache.add(OFFLINE_URL);
-		  }).catch(err => {
-			console.error('[SW] Failed to cache offline page', err);
-		  })
-		);
+		console.log('Service Worker installing...');
+		self.skipWaiting();  // Forces activation
 	});
 	
-	self.addEventListener('activate', event => {
-		console.log('[SW] Activated');
-		return self.clients.claim();
-	  });
-
-	  self.addEventListener('fetch', event => {
-		if (event.request.mode === 'navigate') {
-		  event.respondWith(
-			fetch(event.request).catch(() => {
-			  console.warn('[SW] Network failed, showing offline page');
-			  return caches.match(OFFLINE_URL);
-			})
-		  );
-		}
-	  });
+	self.addEventListener('activate', (event) => {
+		console.log('Service Worker activated!');
+		event.waitUntil(self.clients.claim());  // Takes control of open pages
+	});
 
 	self.addEventListener("message",  function(e) 
 	{
