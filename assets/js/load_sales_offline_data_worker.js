@@ -57,16 +57,32 @@ try
 	var db_items = new PouchDB('phppos_items',{revs_limit: 1});
 	var db_category = new PouchDB('phppos_category',{revs_limit: 1});
 	var db_taxes = new PouchDB('phppos_taxes',{revs_limit: 1});
-	
+	const OFFLINE_URL = '/home/offline/1705559579';
 	
 	function sendUpdateToClient(step) {
 		self.clients.matchAll().then(clients => {
 			clients.forEach(client => client.postMessage({ step }));
 		});
 	}
+
+	self.addEventListener('fetch', function(event) {
+		if (event.request.mode === 'navigate') {
+		  event.respondWith(
+			fetch(event.request).catch(() => {
+			  return caches.match(OFFLINE_URL);
+			})
+		  );
+		}
+	  });
+
+	  
 	self.addEventListener('install', (event) => {
 		console.log('Service Worker installing...');
-		self.skipWaiting();  // Forces activation
+		event.waitUntil(
+			caches.open('offline-cache-v1').then(cache => {
+			  return cache.add(OFFLINE_URL);
+			})
+		  );
 	});
 	
 	self.addEventListener('activate', (event) => {
