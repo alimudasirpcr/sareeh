@@ -18,35 +18,37 @@ try
 	var taxes_limit = 100;
 	var one_day_in_minutes = 24*60;//init value 24 hours
 
-	var ajax = function(url, data, callback, type) {
-	  var data_array, data_string, idx, req, value;
-	  if (data == null) {
-	    data = {};
-	  }
-	  if (callback == null) {
-	    callback = function() {};
-	  }
-	  if (type == null) {
-	    //default to a GET request
-	    type = 'GET';
-	  }
-	  data_array = [];
-	  for (idx in data) {
-	    value = data[idx];
-	    data_array.push("" + idx + "=" + value);
-	  }
-	  data_string = data_array.join("&");
-	  req = new XMLHttpRequest();
-	  req.open(type, url, false);
-	  req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	  req.onreadystatechange = function() {
-	    if (req.readyState === 4 && req.status === 200) {
-	      return callback(req.responseText);
-	    }
+	const ajax = async function(url, data = {}, callback = () => {}, type = 'GET') {
+		let options = {
+		  method: type,
+		  headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		  }
+		};
+	  
+		// Convert data to query string
+		const data_array = Object.entries(data).map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+		const data_string = data_array.join("&");
+	  
+		if (type.toUpperCase() === 'POST') {
+		  options.body = data_string;
+		} else if (type.toUpperCase() === 'GET' && data_string) {
+		  url += (url.includes('?') ? '&' : '?') + data_string;
+		}
+	  
+		try {
+		  const response = await fetch(url, options);
+	  
+		  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+	  
+		  const text = await response.text();
+		  callback(text); // call callback with the response text
+		  return text;
+		} catch (error) {
+		  console.error("AJAX fetch error:", error);
+		  return null;
+		}
 	  };
-	  req.send(data_string);
-	  return req;
-	};
 
 	settings = {};
 
@@ -75,7 +77,7 @@ try
 		}
 	  });
 
-	  
+
 	self.addEventListener('install', (event) => {
 		console.log('Service Worker installing...');
 		event.waitUntil(
