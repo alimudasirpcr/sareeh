@@ -404,7 +404,10 @@ class Sales extends Secure_area
 		$cash_register = $this->Register->get_current_register_log();
 		$register_log_id = $cash_register->register_log_id;
 		$payment_types = unserialize($this->config->item('track_payment_types'));
-		
+		$open_amounts=0;
+		$total_payment_additions=0;
+		$total_payment_subtractions=0;
+		$closeout_amounts=0;
 		$payment_sales = array();
 		foreach($payment_types as $payment_type)
 		{
