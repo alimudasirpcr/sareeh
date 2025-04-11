@@ -1,6 +1,6 @@
 const CACHE_NAME = 'custom-offline-cache-v1';
 const TIMESTAMP = new URL(self.location).searchParams.get('ts') || 'default';
-const OFFLINE_PAGE_URL = `sareeh/home/offline/${TIMESTAMP}`;
+const OFFLINE_PAGE_URL = `/home/offline/${TIMESTAMP}`;
 
 // Injected from your PHP view via <script> or inline config
 const OFFLINE_ASSETS = self.__ASSETS__ || [
