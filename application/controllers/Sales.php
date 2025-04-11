@@ -758,7 +758,7 @@ class Sales extends Secure_area
 								}
 						
 						$this->load->model('Item_attribute');
-						$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item_info->item_id);
+						$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item_info->item_id);
 						$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 
 						if(isset($return['variation_id']) &&  $return['variation_id']){
@@ -1074,7 +1074,7 @@ class Sales extends Secure_area
 								}
 						
 						$this->load->model('Item_attribute');
-						$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item_info->item_id);
+						$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item_info->item_id);
 						$item_location_quantity = $this->Item_location->get_location_quantity($item_info->item_id);
 						$serial_numbers = [];
 							$employee_location_id = $this->Employee->get_logged_in_employee_current_location_id();
@@ -5819,7 +5819,7 @@ class Sales extends Secure_area
 					"quantity_units" => $quantity_units_res,
 					"selected_item_modifiers" => $item->modifier_items,
 					"taxes" => $this->cart->get_item($line)->get_override_tax_info(),
-					"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id),
+					"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item->item_id),
 					"tax_included" => $item->tax_included,
 					"line_total" => isset($item->line_total) ?$item->line_total : 0,
 					"index" => $line,
@@ -5859,7 +5859,7 @@ class Sales extends Secure_area
 				"quantity_units" => $quantity_units_res,
 				"selected_item_modifiers" => $item->modifier_items,
 				"taxes" => $this->cart->get_item($line)->get_override_tax_info(),
-				"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id),
+				"item_attributes_available" =>$this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item->item_id),
 				"tax_included" => $item->tax_included,
 				"line_total" => isset($item->line_total) ?$item->line_total : 0,
 				"index" => $line,
@@ -7476,7 +7476,7 @@ class Sales extends Secure_area
 		$variatons = 	$this->item_variations($item->item_id , true);
 
 		$this->load->model('Item_attribute');
-		$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
+		$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item->item_id);
 
 		$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($item->item_id)->result_array();
 		
@@ -9484,7 +9484,7 @@ class Sales extends Secure_area
 				$variatons = 	$this->item_variations($item->item_id , true);
 
 				$this->load->model('Item_attribute');
-				$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values($item->item_id);
+				$item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item->item_id);
 
 				$mods_for_item = $this->Item_modifier->get_modifiers_for_item_id($item->item_id)->result_array();
 				
