@@ -514,12 +514,19 @@ if ($this->config->item('offline_mode'))
 <script>
   const buildTimestamp = "<?php echo BUILD_TIMESTAMP; ?>";
   const offlineAssets = <?php echo json_encode($offline_assets); ?>;
+  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
 
   // Expose to service worker
   self.__ASSETS__ = offlineAssets;
 
+  const offlineURL = isLocalhost 
+    ? `/home/offline-local/${buildTimestamp}`  // for local testing
+    : `/home/offline/${buildTimestamp}`;
+
+  
+
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register(`<?= site_url(); ?>service-worker.js?ts=${buildTimestamp}`)
+    navigator.serviceWorker.register(`<?= site_url(); ?>service-worker.js?ts=${buildTimestamp}&offline_url=${encodeURIComponent(offlineURL)}`)
       .then(reg => console.log('[SW] Registered'))
       .catch(err => console.error('[SW] Error:', err));
   }
