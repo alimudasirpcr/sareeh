@@ -1,5 +1,7 @@
 <?php
-
+		header("Access-Control-Allow-Origin: *");
+		header("Content-Type: text/html; charset=utf-8");
+		header("Cache-Control: no-store, must-revalidate");
 
 require_once ("Secure_area.php");
 
@@ -693,10 +695,7 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		if($this->agent->is_mobile()){
 			$this->load->view('sales/standby/mobile',$data);
 		}else{
-			header("Access-Control-Allow-Origin: *");
-			header("Content-Type: text/html; charset=utf-8");
-			header("Cache-Control: no-store, must-revalidate");
-			echo "under development"; exit();
+	
 			$this->load->view('sales/standby/offline',$data);
 		}
 	}
