@@ -3681,7 +3681,7 @@ function get_price_without_tax_for_tax_incuded_modifier_item(cart_item, modifier
 
     var tax_info = cart_item.taxes;
     var item_price_including_tax = modifier_item.unit_price;
-
+    if(typeof tax_info!='undefined'){
     if (tax_info.length == 2 && tax_info[1]['cumulative'] == '1') {
         var to_return = item_price_including_tax / (1 + (tax_info[0]['percent'] / 100) + (tax_info[1]['percent'] /
             100) + ((tax_info[0]['percent'] / 100) * ((tax_info[1]['percent'] / 100))));
@@ -3696,7 +3696,9 @@ function get_price_without_tax_for_tax_incuded_modifier_item(cart_item, modifier
 
         var to_return = item_price_including_tax / (1 + (total_tax_percent / 100));
     }
-
+}else{
+        to_return  = item_price_including_tax;
+    }
     return to_return;
 
 }
