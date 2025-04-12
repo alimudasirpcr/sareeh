@@ -1864,19 +1864,24 @@ $this->load->view("partial/offline_header"); ?>
                             </div>
 
                             <div class="menu-item" >
-                            <span class=" menu-link  bg-success">
-                                <span id="kt_drawer_completed_sales" class="menu-icon   w-100"
-                                    data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
-                                    data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
-                                    data-bs-original-title="Metronic Builder" data-kt-initialized="1">
-                                    <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
-                                    <span class="svg-icon svg-icon-muted svg-icon-2x text-light ">
-                                        <span id="offline_sync_spining"
-                                            class="glyphicon glyphicon-refresh spinning"></span>
+                                <span class=" menu-link  bg-success">
+                                    <span id="kt_drawer_completed_sales" class="menu-icon   w-100"
+                                        data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                                        data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
+                                        data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                                        <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
+                                        <span class="svg-icon svg-icon-muted svg-icon-2x text-light ">
+                                            <span id="offline_sync_spining"
+                                                class="glyphicon glyphicon-refresh spinning"></span>
+                                        </span>
+                                        <!--end::Svg Icon-->
                                     </span>
-                                    <!--end::Svg Icon-->
                                 </span>
-                            </span>
+                            </div>
+                            <div class="menu-item">
+                            <div class="row">
+                                    <div class="pagination hidden-print alternate text-center" id="pagination" style="margin-top: -40px !important"></div>
+                                </div>
                             </div>
 
                         </div>
@@ -1915,9 +1920,7 @@ $this->load->view("partial/offline_header"); ?>
                     <!--end::Card widget 14-->
 
                 </div>
-                <div class="row">
-                    <div class="pagination hidden-print alternate text-center" id="pagination" style="margin-top: -40px !important"></div>
-                </div>
+                
 
              
 
