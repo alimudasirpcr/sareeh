@@ -433,40 +433,46 @@ if ($this->config->item('offline_mode'))
 
 	?>
 	function updateStepUI(data) {
-		const step = document.querySelector(`.step-container[data-step="${data.entity}"]`);
-		if (!step) return;
+			const step = document.querySelector(`.step-container[data-step="${data.entity}"]`);
+			if (!step) return;
 
-		const normalImg = step.querySelector(".normal");
-		const successImg = step.querySelector(".success");
+			const normalImg = step.querySelector(".normal");
+			const successImg = step.querySelector(".success");
+			
 
-		// Show progress (e.g., "Syncing 42 customers")
-		if (data.type === 'progress') {
-			let label = step.querySelector("label");
-			if (label) {
-			label.innerText = `Syncing ${data.count} ${data.entity}`;
-			}
-		}
-
-		// Show success and animation
-		if (data.type === 'sync-complete') {
-			// Animate from normal to success
-			gsap.to(normalImg, {
-			opacity: 0,
-			duration: 0.3,
-			onComplete: () => {
-				normalImg.classList.add("d-none");
-				successImg.classList.remove("d-none");
-
-				gsap.fromTo(successImg, { opacity: 0 }, { opacity: 1, duration: 0.5 });
-
-				// Optional: update label to show total synced
+			// Show progress (e.g., "Syncing 42 customers")
+			if (data.type === 'progress') {
 				let label = step.querySelector("label");
 				if (label) {
-				label.innerText = `✔ ${data.processed_items} ${data.entity} synced`;
+				label.innerText = `Syncing ${data.count} ${data.entity}`;
 				}
 			}
-			});
-		}
+			if (data.type === 'started') {
+				let label = step.querySelector("label");
+				if (label) {
+				label.innerText = `Syncing started ${data.entity}`;
+				}
+			}
+			// Show success and animation
+			if (data.type === 'sync-complete') {
+				// Animate from normal to success
+				gsap.to(normalImg, {
+				opacity: 0,
+				duration: 0.3,
+				onComplete: () => {
+					normalImg.classList.add("d-none");
+					successImg.classList.remove("d-none");
+
+					gsap.fromTo(successImg, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+
+					// Optional: update label to show total synced
+					let label = step.querySelector("label");
+					if (label) {
+					label.innerText = `✔ All ${data.entity} synced`;
+					}
+				}
+				});
+			}
 		}
 
 	var offline_mode_sync_period = parseInt("<?php echo $this->config->item('offline_mode_sync_period')?$this->config->item('offline_mode_sync_period'): '24'; ?>");
@@ -488,7 +494,7 @@ if ($this->config->item('offline_mode'))
 	
 	
 		if (typeof(Worker) !== "undefined") {
-		
+			
 			
 				
 				w = new Worker('<?php echo base_url(); ?>'+"assets/js/load_sales_offline_data_worker.js?<?php echo BUILD_TIMESTAMP;?>");

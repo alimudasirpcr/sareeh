@@ -450,6 +450,23 @@ if ('serviceWorker' in navigator) {
 function startServiceWorkerProcess() {
     if (navigator.serviceWorker.controller) {
         startWorker('force');
+        updateStepUI({
+					'type' : 'started',
+					'entity': 'customer',
+					'count':0,
+				});
+				updateStepUI({
+					'type' : 'started',
+					'entity': 'categories',
+					'count':0,
+				});
+				updateStepUI({
+					'type' : 'started',
+					'entity': 'items',
+					'count':0,
+				});
+
+                
     } else {
         console.warn("Service Worker is not ready yet.");
     }
