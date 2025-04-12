@@ -497,7 +497,7 @@ class Home extends Secure_area
 
 		if($type == 'monthly')
 		{
-			$start_date = date('Y-m-d', mktime(0,0,0,date("m"),1,date("Y"))).' 00:00:00';
+			$start_date = date('Y-m-01 00:00:00');
 			$end_date = date('Y-m-d').' 23:59:59';
 		}
 		else
