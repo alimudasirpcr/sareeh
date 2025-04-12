@@ -2340,7 +2340,7 @@ Thank you for your prompt attention to this matter.
                                                         <span class="bullet bullet-dot"></span>
                                                     </span>
                                                     <span
-                                                        class="menu-title"><?php echo lang('reports_customers') ?></span>
+                                                        class="menu-title"><?php echo lang('customers') ?></span>
                                                 </a>
                                             </div>
 
