@@ -385,3 +385,4 @@
 
 
 <?php echo form_hidden('redirect_code', $redirect_code); ?>
+															</div>
