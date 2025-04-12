@@ -497,12 +497,8 @@ class Home extends Secure_area
 
 		if($type == 'monthly')
 		{
-			$current_month = strtotime("first day of this month");
-			$current_start_month = strtotime("midnight", $current_month);
-			$current_end_month = strtotime("last day of this month", $current_month);
-
-			$start_date = date("Y-m-d", $current_start_month) . ' 00:00:00';
-			$end_date = date("Y-m-d", $current_end_month) . ' 23:59:59';
+			$start_date = date('Y-m-d', mktime(0,0,0,date("m"),1,date("Y"))).' 00:00:00';
+			$end_date = date('Y-m-d').' 23:59:59';
 		}
 		else
 		{
@@ -515,6 +511,7 @@ class Home extends Secure_area
 		}
 
 		$return = $this->Sale->get_sales_amount_for_range($start_date, $end_date);	
+		dd($return);
 		$date = array();
 		
 		foreach ($return as $key => $value) {
