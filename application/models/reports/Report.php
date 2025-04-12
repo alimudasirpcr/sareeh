@@ -110,107 +110,61 @@ abstract class Report extends MY_Model
 		
 	}
 	
-	// public function sale_time_where($skip_suspended = false)
-	// {
-	// 	$CI =& get_instance();
-		
-	// 	if (!$CI->input->get('location_ids'))
-	// 	{
-	// 		static $location_ids;
-	// 	}
-	// 	else
-	// 	{
-	// 		$location_ids  = NULL;
-	// 	}
-		
-		
-	// 	if (isset($this->params['override_location_id']))
-	// 	{
-	// 		$location_ids = array($this->params['override_location_id']);
-	// 		$location_ids = implode(',',$location_ids);
-			
-	// 	}
-	// 	elseif (!$location_ids)
-	// 	{
-	// 		$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
-	// 		$location_ids = implode(',',$location_ids);
-	// 	}
-		
-	// 	$where = 'sale_time BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']).' and '.$this->db->dbprefix('sales').'.location_id IN ('.$location_ids.')'. (($this->config->item('hide_store_account_payments_in_reports') ) ? ' and '.$this->db->dbprefix('sales').'.store_account_payment=0' : '');
-	
-	// 	//Added for detailed_suspended_report, we don't need this for other reports as we are always going to have start + end date
-		
-	// 	if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
-	// 	{
-	// 		if (!$skip_suspended)
-	// 		{
-	// 			if (isset($this->settings['force_suspended']) && $this->settings['force_suspended'])
-	// 			{
-	// 				$where .=' and (suspended != 0 or (was_layaway = 1 or was_estimate = 1))';				
-	// 			}	
-	// 			elseif ($this->config->item('hide_layaways_sales_in_reports'))
-	// 			{
-	// 				$where .=' and suspended = 0';
-	// 			}
-	// 			else
-	// 			{
-	// 				$where .=' and suspended < 2';					
-	// 			}
-	// 		}
-	// 	}
-	
-			
-	// 	$this->db->where($where);
-	// }
 	public function sale_time_where($skip_suspended = false)
-{
-	$CI =& get_instance();
-
-	// Get location_ids from input or override
-	if ($CI->input->get('location_ids')) {
-		$location_ids_array = explode(',', $CI->input->get('location_ids'));
-	} elseif (isset($this->params['override_location_id'])) {
-		$location_ids_array = array($this->params['override_location_id']);
-	} else {
-		$location_ids_array = Report::get_selected_location_ids();
-	}
-
-	// Ensure all values are integers (to prevent SQL injection issues)
-	$location_ids_array = array_map('intval', $location_ids_array);
-	$location_ids = implode(',', $location_ids_array);
-
-	// Ensure start and end date exist
-	if (!isset($this->params['start_date']) || !isset($this->params['end_date'])) {
-		throw new Exception("Start date or end date is not defined in report parameters.");
-	}
-
-	// Build WHERE clause
-	$where = 'sale_time BETWEEN ' . $this->db->escape($this->params['start_date']) .
-			 ' AND ' . $this->db->escape($this->params['end_date']) .
-			 ' AND ' . $this->db->dbprefix('sales') . '.location_id IN (' . $location_ids . ')';
-
-	// Optional: hide store account payments
-	if ($this->config->item('hide_store_account_payments_in_reports')) {
-		$where .= ' AND ' . $this->db->dbprefix('sales') . '.store_account_payment = 0';
-	}
-
-	// Suspended sales filtering
-	if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended']) {
-		if (!$skip_suspended) {
-			if (isset($this->settings['force_suspended']) && $this->settings['force_suspended']) {
-				$where .= ' AND (suspended != 0 OR (was_layaway = 1 OR was_estimate = 1))';
-			} elseif ($this->config->item('hide_layaways_sales_in_reports')) {
-				$where .= ' AND suspended = 0';
-			} else {
-				$where .= ' AND suspended < 2';
+	{
+		$CI =& get_instance();
+		
+		if (!$CI->input->get('location_ids'))
+		{
+			static $location_ids;
+			echo "three";
+		}
+		else
+		{
+			echo "four";
+			$location_ids  = NULL;
+		}
+		
+		
+		if (isset($this->params['override_location_id']))
+		{
+			$location_ids = array($this->params['override_location_id']);
+			$location_ids = implode(',',$location_ids);
+			
+		}
+		elseif (!$location_ids)
+		{
+			$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
+			$location_ids = implode(',',$location_ids);
+		}
+		
+		$where = 'sale_time BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']).' and '.$this->db->dbprefix('sales').'.location_id IN ('.$location_ids.')'. (($this->config->item('hide_store_account_payments_in_reports') ) ? ' and '.$this->db->dbprefix('sales').'.store_account_payment=0' : '');
+	
+		//Added for detailed_suspended_report, we don't need this for other reports as we are always going to have start + end date
+		
+		if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
+		{
+			if (!$skip_suspended)
+			{
+				if (isset($this->settings['force_suspended']) && $this->settings['force_suspended'])
+				{
+					$where .=' and (suspended != 0 or (was_layaway = 1 or was_estimate = 1))';				
+				}	
+				elseif ($this->config->item('hide_layaways_sales_in_reports'))
+				{
+					$where .=' and suspended = 0';
+				}
+				else
+				{
+					$where .=' and suspended < 2';					
+				}
 			}
 		}
+	
+			
+		$this->db->where($where);
 	}
-
-	// Apply the WHERE clause
-	$this->db->where($where);
-}
-
+	
 	public function delivery_time_where()
 	{
 		$CI =& get_instance();
