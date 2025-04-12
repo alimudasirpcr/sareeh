@@ -8072,6 +8072,8 @@ class Sales extends Secure_area
 		$config['total_rows'] =  $items_count;
 		$config['first_link'] = '<<';
 		$config['last_link']  = '>>';
+		$config['full_tag_open'] = '<ul class="pagination" style="margin:0px !important">'; // or any class
+		$config['full_tag_close'] = '</ul>';
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
