@@ -6412,7 +6412,8 @@ ORDER BY total DESC
 LIMIT 5';
 
 $data = get_query_data($query, 'array');
-echo $this->db->last_query(); // For debugging
+echo $this->db->last_query(); // For debugging 
+exit();
 return $data;
 		
 
