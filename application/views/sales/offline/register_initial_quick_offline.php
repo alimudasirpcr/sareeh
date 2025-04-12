@@ -1880,7 +1880,7 @@ $this->load->view("partial/offline_header"); ?>
                             </div>
                             <div class="menu-item">
                             <div class="row">
-                                    <div class="pagination hidden-print alternate text-center" id="pagination" ></div>
+                                    <div class=" hidden-print alternate text-center" id="pagination"  ></div>
                                 </div>
                             </div>
 
