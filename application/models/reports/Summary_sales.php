@@ -354,7 +354,7 @@ class Summary_sales extends Report
 	
 	public function getData()
 	{		
-		
+		save_query();
 		if (isset($this->params['category_id']) && $this->params['category_id'])
 		{
 			if ($this->config->item('include_child_categories_when_searching_or_reporting'))
@@ -496,6 +496,7 @@ class Summary_sales extends Report
 			}
 		}
 		 $data = $this->db->get();
+		 echo $this->db->last_query();
 		 if ($data !== FALSE && $data->num_rows()>0) {
 			 return $data->result_array();
 		 }else{
