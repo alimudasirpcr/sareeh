@@ -2007,10 +2007,13 @@ class Employee extends Person
 
 		}
 		// dd($columns_to_display_keys);
-		foreach($columns_to_display_keys as $key)
-		{
-			$columns_to_display[$key] = $all_columns[$key];
+		if(!empty($columns_to_display_keys)){
+			foreach($columns_to_display_keys as $key)
+			{
+				$columns_to_display[$key] = $all_columns[$key];
+			}
 		}
+		
 	
 		return $columns_to_display;
 		
