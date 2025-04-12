@@ -69,7 +69,7 @@ class Home extends Secure_area
 			$data['month_sale'] = $this->sales_widget();
 			$data['weekly_sale'] = $this->sales_widget('weekly');
 		}
-		dd($data['weekly_sale']);
+		dd($data['month_sale']);
 		$this->load->helper('demo');
 		$data['can_show_mercury_activate'] =0; // (!is_on_demo_host() && !$this->config->item('mercury_activate_seen')) && !$this->Location->get_info_for_key('enable_credit_card_processing') && $this->config->item('branding_code') == 'phpsalesmanager';		
 		$data['can_show_setup_wizard'] = !$this->config->item('shown_setup_wizard');
@@ -497,8 +497,12 @@ class Home extends Secure_area
 
 		if($type == 'monthly')
 		{
-			$start_date = date('Y-m-d', mktime(0,0,0,date("m"),1,date("Y"))).' 00:00:00';
-			$end_date = date('Y-m-d').' 23:59:59';
+			$current_month = strtotime("first day of this month");
+			$current_start_month = strtotime("midnight", $current_month);
+			$current_end_month = strtotime("last day of this month", $current_month);
+
+			$start_date = date("Y-m-d", $current_start_month) . ' 00:00:00';
+			$end_date = date("Y-m-d", $current_end_month) . ' 23:59:59';
 		}
 		else
 		{
