@@ -8070,6 +8070,8 @@ class Sales extends Secure_area
 		$data = array();
 		$data['categories_and_items'] = H($categories_and_items_response);
 		$config['total_rows'] =  $items_count;
+		$config['first_link'] = '<<';
+		$config['last_link']  = '>>';
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		$data['pagination'] = $this->pagination->create_links();
