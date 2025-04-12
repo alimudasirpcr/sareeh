@@ -1857,6 +1857,8 @@ $(document).ready(function() {
 
     var seriesedont;
 
+    console.log(<?= json_encode($totals); ?>);
+
     seriesedont = Object.values(<?= json_encode($totals); ?>);
 
 
@@ -1879,7 +1881,7 @@ $(document).ready(function() {
                 offsetY: 20,
             },
             stroke: {
-                colors: undefined
+                colors: ''
             }
         },
         colors: colorPalette,
