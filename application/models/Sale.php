@@ -6376,32 +6376,36 @@ class Sale extends MY_Model
 	}
 
 	function get_stats_for_graph( $time ='all_time' , $from_date='' , $to_date = ''){
-		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
-		$prefix = $this->db->dbprefix;
-		$this->db->save_queries = true;
-		$query = 'SELECT count(sales.sale_id) as total , CONCAT(pep.first_name ," ", pep.last_name) as full_name   FROM `'.$prefix.'sales` as sales left join '.$prefix.'employees as emp on emp.id=sales.employee_id left join '.$prefix.'people as pep on pep.person_id = emp.person_id  WHERE sales.is_work_order=0 and sales.location_id='.$location_id.'  ';
-		
-		if($time!='all_time'){
-			if($time=='THIS_MONTH'){
-				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
-			}else if($time=='THIS_YEAR'){
-				$query .=' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
-			}else if($time=='THIS_WEEK'){
-				$query .=' AND YEAR(sales.sale_time) = YEAR(CURDATE()) AND WEEK(sales.sale_time, 1) = WEEK(CURDATE(), 1) ';
-			}
-			else if($time=='TODAY'){
-				$query .=' AND DATE(sales.sale_time) = CURDATE() ';
-			}  else if ($time == 'CUSTOM') {
-				// Ensure $from_date and $to_date are properly sanitized to prevent SQL injection
-				$query .= ' AND DATE(sales.sale_time) BETWEEN \'' . $from_date . '\' AND \'' . $to_date . '\' ';
-			}
-			
-		}
-		$query .='GROUP by sales.employee_id ORDER BY count(sales.sale_id) DESC  ';
+						$location_id = $this->Employee->get_logged_in_employee_current_location_id();
+				$prefix = $this->db->dbprefix;
+				$this->db->save_queries = true;
+				$top = 5;
 
-		$data = get_query_data($query , 'array');
-		echo $this->db->last_query();
-		return $data;
+				$query = 'SELECT COUNT(sales.sale_id) AS total, CONCAT(pep.first_name, " ", pep.last_name) AS full_name 
+						FROM `' . $prefix . 'sales` AS sales 
+						LEFT JOIN ' . $prefix . 'employees AS emp ON emp.id = sales.employee_id 
+						LEFT JOIN ' . $prefix . 'people AS pep ON pep.person_id = emp.person_id 
+						WHERE sales.is_work_order = 0 AND sales.location_id = ' . $location_id . ' ';
+
+				if ($time != 'all_time') {
+					if ($time == 'THIS_MONTH') {
+						$query .= ' AND MONTH(sales.sale_time) = MONTH(CURDATE()) AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+					} elseif ($time == 'THIS_YEAR') {
+						$query .= ' AND YEAR(sales.sale_time) = YEAR(CURDATE()) ';
+					} elseif ($time == 'THIS_WEEK') {
+						$query .= ' AND YEAR(sales.sale_time) = YEAR(CURDATE()) AND WEEK(sales.sale_time, 1) = WEEK(CURDATE(), 1) ';
+					} elseif ($time == 'TODAY') {
+						$query .= ' AND DATE(sales.sale_time) = CURDATE() ';
+					} elseif ($time == 'CUSTOM') {
+						$query .= ' AND DATE(sales.sale_time) BETWEEN \'' . $from_date . '\' AND \'' . $to_date . '\' ';
+					}
+				}
+
+				$query .= ' GROUP BY sales.employee_id ORDER BY COUNT(sales.sale_id) DESC LIMIT ' . (int)$top;
+
+				$data = get_query_data($query, 'array');
+				echo $this->db->last_query();
+				return $data;
 
 	}
 	function get_price_for_item($item_id , $tier_id ,  $selected_tier_id , $variation_id = null , $quantity_unit_quantity= null)
