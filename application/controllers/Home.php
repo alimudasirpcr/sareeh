@@ -511,7 +511,7 @@ class Home extends Secure_area
 		}
 
 		$return = $this->Sale->get_sales_amount_for_range($start_date, $end_date);	
-		dd($return);
+		
 		$date = array();
 		
 		foreach ($return as $key => $value) {
