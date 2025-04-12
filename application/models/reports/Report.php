@@ -116,13 +116,27 @@ abstract class Report extends MY_Model
 		
 
 		if(empty( $location_ids)){
-			if (!$CI->input->get('location_ids')) {
-				$location_ids = isset($this->params['override_location_id']) 
-					? array($this->params['override_location_id']) 
-					: array($CI->Employee->get_logged_in_employee_current_location_id());
-			} else {
-				$location_ids = explode(',', $CI->input->get('location_ids'));
-			}
+			if (!$CI->input->get('location_ids'))
+				{
+					static $location_ids;
+				}
+				else
+				{
+					$location_ids  = NULL;
+				}
+				
+				
+				if (isset($this->params['override_location_id']))
+				{
+					$location_ids = array($this->params['override_location_id']);
+					$location_ids = implode(',',$location_ids);
+					
+				}
+				elseif (!$location_ids)
+				{
+					$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
+					$location_ids = implode(',',$location_ids);
+				}
 		}
 		
 		
