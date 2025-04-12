@@ -69,7 +69,7 @@ class Home extends Secure_area
 			$data['month_sale'] = $this->sales_widget();
 			$data['weekly_sale'] = $this->sales_widget('weekly');
 		}
-		//dd($data['month_sale']);
+		dd($data['month_sale']);
 		$this->load->helper('demo');
 		$data['can_show_mercury_activate'] =0; // (!is_on_demo_host() && !$this->config->item('mercury_activate_seen')) && !$this->Location->get_info_for_key('enable_credit_card_processing') && $this->config->item('branding_code') == 'phpsalesmanager';		
 		$data['can_show_setup_wizard'] = !$this->config->item('shown_setup_wizard');
