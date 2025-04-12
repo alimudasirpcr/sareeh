@@ -66,8 +66,9 @@ class Home extends Secure_area
 		if ($this->Employee->has_module_action_permission('reports', 'view_dashboard_stats', $this->Employee->get_logged_in_employee_info()->person_id))
 		{	
 			
-			$data['month_sale'] = $this->sales_widget();
+			
 			$data['weekly_sale'] = $this->sales_widget('weekly');
+			$data['month_sale'] = $this->sales_widget();
 		}
 		dd($data['month_sale']);
 		$this->load->helper('demo');
