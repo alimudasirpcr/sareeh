@@ -6376,6 +6376,7 @@ class Sale extends MY_Model
 	}
 
 	function get_stats_for_graph( $time ='all_time' , $from_date='' , $to_date = ''){
+		save_query();
 		$location_id = $this->Employee->get_logged_in_employee_current_location_id();
 $prefix = $this->db->dbprefix;
 
