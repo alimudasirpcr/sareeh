@@ -376,6 +376,7 @@ class Summary_sales extends Report
 		
 		if((isset($this->params['item_id']) && $this->params['item_id']) || isset($category_ids))
 		{
+			echo "item"; 
 			$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id','left');
 			$this->db->join('items','items.item_id = sales_items.item_id','left');
 			$this->db->join('sales_item_kits','sales_item_kits.sale_id = sales.sale_id','left');
