@@ -410,22 +410,25 @@ if (is_on_phppos_host()) {
 
         <!--begin::Buttons-->
         <div class="d-flex ">
-        <div class="step-container" data-step="2">
-            <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
-            <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-            <label class="text-light">Category</label>
-        </div>
-        <div class="step-container" data-step="1">
-            <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
-            <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-            <label class="text-light">Customer </label>
-        </div>
-       
-        <div class="step-container" data-step="3">
-            <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
-            <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-            <label class="text-light">Items </label>
-        </div>
+
+
+
+            <div class="step-container" data-step="categories">
+                <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
+                <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
+                <label class="text-light">Category</label>
+            </div>
+            <div class="step-container" data-step="customers">
+                <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
+                <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
+                <label class="text-light">Customer </label>
+            </div>
+        
+            <div class="step-container" data-step="items">
+                <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
+                <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
+                <label class="text-light">Items </label>
+            </div>
     
     
   

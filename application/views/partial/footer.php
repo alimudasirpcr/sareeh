@@ -432,19 +432,42 @@ if ($this->config->item('offline_mode'))
 	
 
 	?>
-	function updateStepUI(stepIndex) {
-						let step = document.querySelector(`.step-container[data-step="${stepIndex}"]`);
-						if (step) {
-							let normalImg = step.querySelector(".normal");
-							let successImg = step.querySelector(".success");
+	function updateStepUI(data) {
+		const step = document.querySelector(`.step-container[data-step="${data.entity}"]`);
+		if (!step) return;
 
-							gsap.to(normalImg, { opacity: 0, duration: 0.3, onComplete: () => {
-								normalImg.classList.add("d-none");
-								successImg.classList.remove("d-none");
-								gsap.fromTo(successImg, { opacity: 0 }, { opacity: 1, duration: 0.5 });
-							}});
-						}
-					}
+		const normalImg = step.querySelector(".normal");
+		const successImg = step.querySelector(".success");
+
+		// Show progress (e.g., "Syncing 42 customers")
+		if (data.type === 'progress') {
+			let label = step.querySelector("label");
+			if (label) {
+			label.innerText = `Syncing ${data.count} ${data.entity}`;
+			}
+		}
+
+		// Show success and animation
+		if (data.type === 'sync-complete') {
+			// Animate from normal to success
+			gsap.to(normalImg, {
+			opacity: 0,
+			duration: 0.3,
+			onComplete: () => {
+				normalImg.classList.add("d-none");
+				successImg.classList.remove("d-none");
+
+				gsap.fromTo(successImg, { opacity: 0 }, { opacity: 1, duration: 0.5 });
+
+				// Optional: update label to show total synced
+				let label = step.querySelector("label");
+				if (label) {
+				label.innerText = `✔ ${data.processed_items} ${data.entity} synced`;
+				}
+			}
+			});
+		}
+		}
 
 	var offline_mode_sync_period = parseInt("<?php echo $this->config->item('offline_mode_sync_period')?$this->config->item('offline_mode_sync_period'): '24'; ?>");
 

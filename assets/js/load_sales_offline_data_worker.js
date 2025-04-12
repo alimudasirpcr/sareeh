@@ -356,6 +356,11 @@ try
 				//Keep going
 				if (customers.length)
 				{
+					postMessage({
+						type: 'progress',
+						entity: 'customers',
+						count : doc.value,
+					  });
 					var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': parseInt(doc.value)+customer_limit};
 					new_offline_customer_offset['_rev'] = doc._rev;
 					await db_settings.put(new_offline_customer_offset,{force: true});
@@ -365,6 +370,11 @@ try
 				}
 				else
 				{
+					postMessage({
+						type: 'sync-complete',
+						entity: 'customers',
+						processed_items : doc.value,
+					  });
 					var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': 0};
 					new_offline_customer_offset['_rev'] = doc._rev;
 					await db_settings.put(new_offline_customer_offset,{force: true});
@@ -678,6 +688,12 @@ try
 			//Keep going
 			if (category.length)
 			{
+
+				postMessage({
+					type: 'progress',
+					entity: 'categories',
+					count : doc.value,
+				  });
 				var new_offline_category_offset = {'_id': 'offline_category_offset','value': parseInt(doc.value)+category_limit};
 				new_offline_category_offset['_rev'] = doc._rev;
 				await db_settings.put(new_offline_category_offset,{force: true});
@@ -687,6 +703,11 @@ try
 			}
 			else
 			{
+				postMessage({
+					type: 'sync-complete',
+					entity: 'categories',
+					processed_items : doc.value,
+				  });
 				var new_offline_category_offset = {'_id': 'offline_category_offset','value': 0};
 				new_offline_category_offset['_rev'] = doc._rev;
 				await db_settings.put(new_offline_category_offset,{force: true});
@@ -837,7 +858,7 @@ try
 		
 		async function processItemAjax(data) 
 		{
-			postMessage('3');
+			
 			console.log('offlineitems' , data);
 			
 			// deleteAllDocuments();
@@ -913,6 +934,11 @@ try
 				//Keep going
 				if (items.length)
 				{
+					postMessage({
+						type: 'progress',
+						entity: 'items',
+						count : doc.value,
+					  });
 					var new_offline_item_offset = {'_id': 'offline_item_offset','value': parseInt(doc.value)+item_limit};
 					new_offline_item_offset['_rev'] = doc._rev;
 					await db_settings.put(new_offline_item_offset,{force: true});
@@ -922,6 +948,14 @@ try
 				}
 				else
 				{
+
+					postMessage({
+						type: 'sync-complete',
+						entity: 'items',
+						processed_items : doc.value,
+					  });
+
+
 					var new_offline_item_offset = {'_id': 'offline_item_offset','value': 0};
 					new_offline_item_offset['_rev'] = doc._rev;
 					await db_settings.put(new_offline_item_offset,{force: true});
