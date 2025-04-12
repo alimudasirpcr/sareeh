@@ -468,7 +468,7 @@ class Summary_sales extends Report
 			$this->db->where('is_ecommerce', 0);
 		}
 		
-		$this->sale_time_where();
+		// $this->sale_time_where();
 		$this->db->where('sales.deleted', 0);
 		$this->db->where_in('sales.location_id', $location_ids);
 		
