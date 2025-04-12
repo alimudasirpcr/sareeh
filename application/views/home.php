@@ -1858,7 +1858,7 @@ $(document).ready(function() {
     var seriesedont;
 
     console.log(<?= json_encode($totals); ?>);
-
+    console.log(<?= json_encode($fullNames); ?>);
     seriesedont = Object.values(<?= json_encode($totals); ?>);
 
 
