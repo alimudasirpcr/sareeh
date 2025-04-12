@@ -321,7 +321,7 @@ try
 		}
 		async function processCustomerAjax(data) 
 		{
-			postMessage('1');
+			
 			
 			var customers = JSON.parse(data);
 			console.log('processCustomerAjax' , customers);
@@ -359,7 +359,7 @@ try
 					postMessage({
 						type: 'progress',
 						entity: 'customers',
-						count : doc.value,
+						count : (parseInt(doc.value)==0)?customer_limit:doc.value,
 					  });
 					var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': parseInt(doc.value)+customer_limit};
 					new_offline_customer_offset['_rev'] = doc._rev;
@@ -373,7 +373,7 @@ try
 					postMessage({
 						type: 'sync-complete',
 						entity: 'customers',
-						processed_items : doc.value,
+						processed_items :  (parseInt(doc.value)==0)?customer_limit:doc.value,
 					  });
 					var new_offline_customer_offset = {'_id': 'offline_customer_offset','value': 0};
 					new_offline_customer_offset['_rev'] = doc._rev;
@@ -659,7 +659,7 @@ try
 	async function processCategoryAjax(data) 
 	{
 		var categorys = JSON.parse(data);
-		postMessage('2');
+	
 		console.log(categorys);
 		// deleteAllCategories();
 		for(var k=0;k<categorys.length;k++)
@@ -692,7 +692,7 @@ try
 				postMessage({
 					type: 'progress',
 					entity: 'categories',
-					count : doc.value,
+					count : (parseInt(doc.value)==0)?category_limit:doc.value,
 				  });
 				var new_offline_category_offset = {'_id': 'offline_category_offset','value': parseInt(doc.value)+category_limit};
 				new_offline_category_offset['_rev'] = doc._rev;
@@ -706,7 +706,7 @@ try
 				postMessage({
 					type: 'sync-complete',
 					entity: 'categories',
-					processed_items : doc.value,
+					processed_items : (parseInt(doc.value)==0)?category_limit:doc.value,
 				  });
 				var new_offline_category_offset = {'_id': 'offline_category_offset','value': 0};
 				new_offline_category_offset['_rev'] = doc._rev;
@@ -937,7 +937,7 @@ try
 					postMessage({
 						type: 'progress',
 						entity: 'items',
-						count : doc.value,
+						count : (parseInt(doc.value)==0)?item_limit:doc.value,
 					  });
 					var new_offline_item_offset = {'_id': 'offline_item_offset','value': parseInt(doc.value)+item_limit};
 					new_offline_item_offset['_rev'] = doc._rev;
@@ -952,7 +952,7 @@ try
 					postMessage({
 						type: 'sync-complete',
 						entity: 'items',
-						processed_items : doc.value,
+						processed_items :  (parseInt(doc.value)==0)?item_limit:doc.value,
 					  });
 
 
