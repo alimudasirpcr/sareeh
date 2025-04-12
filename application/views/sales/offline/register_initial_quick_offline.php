@@ -24,7 +24,7 @@ $this->load->view("partial/offline_header"); ?>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<script src="<?php echo base_url() ?>assets/css_good/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
 <div id="sales_page_holder">
 
@@ -3788,7 +3788,7 @@ $this->load->view("partial/offline_header"); ?>
 <div id="kt_drawer_general_body_lg_container" style="display: none;">
 
 
-    <script src="<?php echo base_url() ?>assets/css_good/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
+  
 
     <div class="" style="width: inherit;">
         <!--begin::Modal content-->
