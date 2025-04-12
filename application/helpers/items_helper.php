@@ -328,7 +328,7 @@ function get_commission_for_item($cart,$item_id, $price, $cost, $quantity,$disco
 	
 	if ($item_info->commission_fixed !== NULL)
 	{
-		return $quantity*$item_info->commission_fixed;
+		return $quantity* (float)$item_info->commission_fixed;
 	}
 	elseif($item_info->commission_percent !== NULL)
 	{
