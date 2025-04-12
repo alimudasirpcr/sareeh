@@ -6385,8 +6385,8 @@ SELECT
     COUNT(sales.sale_id) AS total, 
     IFNULL(CONCAT(pep.first_name, " ", pep.last_name), "Unknown") AS full_name 
 FROM `' . $prefix . 'sales` AS sales
-LEFT JOIN `' . $prefix . 'employees` AS emp ON emp.id = sales.employee_id
-LEFT JOIN `' . $prefix . 'people` AS pep ON pep.person_id = emp.person_id
+
+LEFT JOIN `' . $prefix . 'people` AS pep ON pep.person_id = sales.employee_id
 WHERE 
     sales.is_work_order = 0 
     AND sales.location_id = ' . (int)$location_id . ' ';
@@ -6413,8 +6413,7 @@ ORDER BY total DESC
 LIMIT 5';
 
 $data = get_query_data($query, 'array');
-echo $this->db->last_query(); // For debugging 
-exit();
+
 return $data;
 		
 
