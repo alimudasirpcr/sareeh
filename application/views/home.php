@@ -2207,7 +2207,7 @@ var end = moment().endOf('day'); // Today, end of the day
         $.ajax({
             type: "GET",
 
-            url: "<?php echo base_url() ?>reports/generate_ajax/summary_profit_and_loss?report_type=simple&report_date_range_simple=LAST_MONTH&start_date_formatted=01%2F17%2F2024+12%3A00+am&start_date=2024-01-17+00%3A00&end_date_formatted=01%2F17%2F2024+11%3A59+pm&end_date=2024-01-17+23%3A59&with_time=1&end_date_end_of_day=0&location_ids%5B%5D=<?= $current_logged_in_location_id; ?>&company=All&business_type=All&items%5B%5D=pos&items%5B%5D=items&items%5B%5D=receivings&items%5B%5D=customerss&compare=no",
+            url: "<?php echo base_url() ?>reports/generate_ajax/summary_profit_and_loss?report_type=simple&report_date_range_simple=LAST_MONTH&start_date_formatted=01%2F17%2F2024+12%3A00+am&start_date=2024-01-17+00%3A00&end_date_formatted=01%2F17%2F2024+11%3A59+pm&end_date=2024-01-17+23%3A59&with_time=1&end_date_end_of_day=0&location_ids%5B%5D=<?= $current_logged_in_location_id; ?>&company=All&business_type=All&items%5B%5D=pos&items%5B%5D=items&items%5B%5D=receivings&items%5B%5D=customers&compare=no",
             success: function(response) {
                 var data = JSON.parse(response);
                 var options = {
