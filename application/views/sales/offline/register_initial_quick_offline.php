@@ -2,6 +2,31 @@
 <?php 
 
 $this->load->view("partial/offline_header"); ?>
+<script>
+function clean_html(dirty_html) {
+    // Create a DOM parser
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(dirty_html, 'text/html');
+
+    // Remove <script> and <style> tags
+    const scripts = doc.querySelectorAll('script, style, iframe');
+    scripts.forEach(el => el.remove());
+
+    // Remove dangerous attributes (like onClick, onError, etc.)
+    const elements = doc.body.querySelectorAll('*');
+    elements.forEach(el => {
+        [...el.attributes].forEach(attr => {
+            if (attr.name.startsWith('on')) {
+                el.removeAttribute(attr.name);
+            }
+        });
+    });
+
+    // Return cleaned HTML
+    return doc.body.innerHTML;
+}
+
+</script>
 <?php $this->load->view("sales/offline/css/offline_css"); ?>
 <div id="network-status">You are offline</div>
 <div class="modal fade look-up-receipt" id="print_modal" role="dialog" aria-labelledby="lookUpReceipt"
@@ -3706,12 +3731,12 @@ $this->load->view("partial/offline_header"); ?>
                         <a
                                 href="#" id="description_{{index}}" class="xeditable-description  editable-click"
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
-                                data-name="description" data-value="{{description}}"
+                                data-name="description" data-value="{{clean_html(description)}}"
                                 
-                                data-title="Discount Percentage">{{description}}</a>
+                                data-title="Discount Percentage">{{clean_html(description)}}</a>
 
                                 {{else}}
-                                <span>{{description}}</span>
+                                <span>{{clean_html(description)}}</span>
 
                                 {{/greaterThanZero}}
 
