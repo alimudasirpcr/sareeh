@@ -4288,8 +4288,7 @@ class Sale extends MY_Model
 	
 	function get_sales_amount_for_range($start_date, $end_date)
 	{
-		echo "<br> start_date" . $start_date ;
-		echo "<br> end_date" . $end_date;
+		
 		$this->load->model('Sale');
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
