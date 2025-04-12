@@ -114,13 +114,12 @@ abstract class Report extends MY_Model
 	{
 		$CI =& get_instance();
 		
-		if (!$CI->input->get('location_ids'))
-		{
-			static $location_ids;
-		}
-		else
-		{
-			$location_ids  = NULL;
+		if (!$CI->input->get('location_ids')) {
+			$location_ids = isset($this->params['override_location_id']) 
+				? array($this->params['override_location_id']) 
+				: Report::get_selected_location_ids();
+		} else {
+			$location_ids = explode(',', $CI->input->get('location_ids'));
 		}
 		
 		
