@@ -8,8 +8,8 @@ $this->load->view("partial/offline_header"); ?>
 <div class="modal fade look-up-receipt" id="print_modal" role="dialog" aria-labelledby="lookUpReceipt"
     aria-hidden="true">
     <div class="modal-dialog customer-recent-sales">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content border-none" >
+            <div class="modal-header hidden-print">
                 <button type="button" class="close" data-dismiss="modal"
                     aria-label=<?php echo json_encode(lang('close')); ?>><span
                         aria-hidden="true">&times;</span></button>
@@ -29,7 +29,7 @@ $this->load->view("partial/offline_header"); ?>
 <div id="sales_page_holder">
 
 </div>
-<div class=" register d-flex pos-container" id="main-container">
+<div class=" register d-flex pos-container hidden-print" id="main-container">
 
     <!--begin::View component-->
     <div id="kt_drawer_example_basic" class="bg-white drawer drawer-end" data-kt-drawer="true"
@@ -3039,7 +3039,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 <script id="sale-receipt-template" type="text/x-handlebars-template">
-    <div class="row manage-table  card p-5 receipt_small" id="receipt_wrapper">
+    <div class="row manage-table  card p-5 receipt_small border-none" id="receipt_wrapper">
 		<div class="col-md-12 text-center hidden-print">
 			<div class="row">
 				<button class="btn btn-primary btn-lg" id="print_button" onclick="window.print()" > <?php echo lang('print','',array(),TRUE); ?> </button>		

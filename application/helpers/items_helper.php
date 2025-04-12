@@ -534,7 +534,7 @@ function parse_item_scan_data($scan)
 		$return['variation_name'] = $return['variation_choices'][$return['variation_id']];
 
 	}
-	if ($return['order_type'] =='serial_numbers')
+	if ( isset($return['order_type']) && $return['order_type'] =='serial_numbers')
 	{
 		$CI->load->model('Item_serial_number');
 		$return['serial_numbers'] = $CI->Item_serial_number->get_info_via_sn($scan);
