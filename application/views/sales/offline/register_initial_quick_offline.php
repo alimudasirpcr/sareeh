@@ -1865,11 +1865,11 @@ $this->load->view("partial/offline_header"); ?>
                             </div>
 
                             <div class="menu-item" >
-                                <span class=" menu-link  bg-success">
-                                    <span id="kt_drawer_completed_sales" class="menu-icon   w-100"
-                                        data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
+                                <span class=" menu-link  bg-success" id="kt_drawer_completed_sales"  data-bs-custom-class="tooltip-inverse" data-bs-toggle="tooltip"
                                         data-bs-placement="left" data-bs-dismiss="click" data-bs-trigger="hover"
                                         data-bs-original-title="Metronic Builder" data-kt-initialized="1">
+                                    <span  class="menu-icon   w-100" 
+                                       >
                                         <!--begin::Svg Icon | path: /Users/shuhratsaipov/www/keenthemes/products/core/html/src/media/icons/duotune/text/txt001.svg-->
                                         <span class="svg-icon svg-icon-muted svg-icon-2x text-light ">
                                             <span id="offline_sync_spining"
