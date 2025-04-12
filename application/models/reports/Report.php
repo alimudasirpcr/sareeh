@@ -124,21 +124,21 @@ abstract class Report extends MY_Model
 			echo "four";
 			$location_ids  = NULL;
 		}
-		echo  $location_ids;
+		
 		
 		if (isset($this->params['override_location_id']))
 		{
-			
+			echo "five";
 			$location_ids = array($this->params['override_location_id']);
 			$location_ids = implode(',',$location_ids);
 			
 		}
 		elseif (!$location_ids)
 		{
-			// echo "six";
-			// $location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
-			// $location_ids = implode(',',$location_ids);
-			// dd($location_ids);
+			echo "six";
+			$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
+			$location_ids = implode(',',$location_ids);
+			dd($location_ids);
 		}
 		
 		$where = 'sale_time BETWEEN '.$this->db->escape($this->params['start_date']).' and '.$this->db->escape($this->params['end_date']).' and '.$this->db->dbprefix('sales').'.location_id IN ('.$location_ids.')'. (($this->config->item('hide_store_account_payments_in_reports') ) ? ' and '.$this->db->dbprefix('sales').'.store_account_payment=0' : '');
@@ -147,7 +147,7 @@ abstract class Report extends MY_Model
 		
 		if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
 		{
-			
+			echo "seven";
 			if (!$skip_suspended)
 			{
 				if (isset($this->settings['force_suspended']) && $this->settings['force_suspended'])
