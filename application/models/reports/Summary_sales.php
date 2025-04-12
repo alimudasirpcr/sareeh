@@ -498,7 +498,6 @@ class Summary_sales extends Report
 			}
 		}
 		 $data = $this->db->get();
-		 echo $this->db->last_query();
 		 if ($data !== FALSE && $data->num_rows()>0) {
 			 return $data->result_array();
 		 }else{
