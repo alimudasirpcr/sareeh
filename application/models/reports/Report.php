@@ -110,17 +110,21 @@ abstract class Report extends MY_Model
 		
 	}
 	
-	public function sale_time_where($skip_suspended = false)
+	public function sale_time_where( $location_ids = array() ,   $skip_suspended = false)
 	{
 		$CI =& get_instance();
 		
-		if (!$CI->input->get('location_ids')) {
-			$location_ids = isset($this->params['override_location_id']) 
-				? array($this->params['override_location_id']) 
-				: array($CI->Employee->get_logged_in_employee_current_location_id());
-		} else {
-			$location_ids = explode(',', $CI->input->get('location_ids'));
+
+		if(empty( $location_ids)){
+			if (!$CI->input->get('location_ids')) {
+				$location_ids = isset($this->params['override_location_id']) 
+					? array($this->params['override_location_id']) 
+					: array($CI->Employee->get_logged_in_employee_current_location_id());
+			} else {
+				$location_ids = explode(',', $CI->input->get('location_ids'));
+			}
 		}
+		
 		
 		$location_ids = implode(',', $location_ids);
 		
