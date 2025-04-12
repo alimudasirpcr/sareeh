@@ -6400,7 +6400,7 @@ class Sale extends MY_Model
 		$query .='GROUP by sales.employee_id ORDER BY count(sales.sale_id) DESC  ';
 
 		$data = get_query_data($query , 'array');
-		// echo $this->db->last_query();
+		echo $this->db->last_query();
 		return $data;
 
 	}
