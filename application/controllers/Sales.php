@@ -8038,7 +8038,7 @@ class Sales extends Secure_area
 					'image_src' => 	$img_src,
 					'category_name' => 	$this->Category->get_full_path($item_info->category_id),
 					'category_id' => 	$item_info->category_id,
-					'description' => 	clean_html($item_info->description),
+					'description' => 	'test',
 					'has_variations' => count($variatons) > 0 ? $variatons : FALSE,
 					'item_attributes_available' => $item_attributes_available,
 					'type' => 'item',	
