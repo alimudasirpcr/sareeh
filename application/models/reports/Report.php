@@ -128,12 +128,14 @@ abstract class Report extends MY_Model
 		
 		if (isset($this->params['override_location_id']))
 		{
+			echo "five";
 			$location_ids = array($this->params['override_location_id']);
 			$location_ids = implode(',',$location_ids);
 			
 		}
 		elseif (!$location_ids)
 		{
+			echo "six";
 			$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
 			$location_ids = implode(',',$location_ids);
 		}
@@ -144,6 +146,7 @@ abstract class Report extends MY_Model
 		
 		if (!isset($this->params['show_all_suspended']) || !$this->params['show_all_suspended'])
 		{
+			echo "seven";
 			if (!$skip_suspended)
 			{
 				if (isset($this->settings['force_suspended']) && $this->settings['force_suspended'])
