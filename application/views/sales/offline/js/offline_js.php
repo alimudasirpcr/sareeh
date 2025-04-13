@@ -657,6 +657,7 @@ $('#grid-loader2').hide();
 
 }
 function add_dummy_cards(){
+    console.log("add_dummy_cards");
     for (let i = 0; i < 20; i++) { // Adjust the number of placeholders
     $("#category_item_selection_wrapper_new").append(`
         <div class="col-sm-4 col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item register-holder dummy-card">
