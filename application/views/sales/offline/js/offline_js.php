@@ -463,7 +463,7 @@ function processCategoriesAndItemsResult(json , is_dummy_card = false) {
 
 // });
 
-$("#pagination").html(json.pagination).hide();
+$("#pagination").html(json.pagination);
 
   // Store next page URL (if exists)
   let nextLink = $("#pagination .page-link").last().attr('href') || null;
