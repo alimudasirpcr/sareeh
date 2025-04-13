@@ -474,7 +474,7 @@ $("#pagination").html(json.pagination);
 
   let isLoading = false;
 
-$(window).on('scroll', function () {
+$('#category_item_selection_wrapper_new').on('scroll', function () {
     console.log("callled");
   if (
     $(window).scrollTop() + $(window).height() >= $(document).height() - 200 &&
