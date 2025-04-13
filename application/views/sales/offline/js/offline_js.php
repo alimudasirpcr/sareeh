@@ -479,9 +479,8 @@ $('.page-link').click(function(event){
     });
 });
 
-if($("#pagination").html()==''){
+
     $("#pagination").html(json.pagination);
-}
 
 
 
