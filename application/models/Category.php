@@ -284,7 +284,7 @@ class Category extends MY_Model
 		return $return;
 	}
 		
-	function get_all($parent_id = NULL, $show_hidden = FALSE, $limit=10000, $offset=0,$col='name',$order='asc',$can_use_cache = TRUE)
+	function get_all($parent_id = NULL, $show_hidden = FALSE, $limit=10000, $offset=0,$col='name',$order='asc',$can_use_cache = TRUE )
 	{
 		static $cache = array();
 		
@@ -320,8 +320,12 @@ class Category extends MY_Model
 				$return[$row['id']] = array('category_info_popup' => $row['category_info_popup'],'name' => $row['name'], 'color' => $row['color'], 'image_id' => $row['image_id'], 'hide_from_grid' => $row['hide_from_grid'],'exclude_from_e_commerce' => $row['exclude_from_e_commerce'], 'parent_id' => $row['parent_id'], 'depth' => NULL);
 			}
 		}
-	
-		return array_slice($return,$offset,$limit, TRUE);
+		if($limit == -1){
+			return $return;
+		}else{
+			return array_slice($return,$offset,$limit, TRUE);
+		}
+		
 		
 	}
 	

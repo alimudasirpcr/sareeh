@@ -976,4 +976,18 @@ function perfex_saas_invoice_is_on_trial(object $invoice)
 function erp_server_url ($url){
 	return getenv('ERP_SERVER_URL'). '/' . $url;
 }
+
+function get_all_categories(){
+	$ci = &get_instance();
+	$ci->load->model('Category');
+	return count($ci->Category->get_all('', 0, -1, 0));
+}
+
+function get_all_customers(){
+	$ci = &get_instance();
+	$ci->load->model('Customer');
+	$customers = $ci->Customer->get_all('', 0, -1, 0);
+	return $customers->unbuffered_row('array')['total'];
+}
+
 ?>

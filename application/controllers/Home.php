@@ -47,7 +47,8 @@ class Home extends Secure_area
 		}
 
 		
-
+		
+		
 		$data['choose_location'] = $choose_location;
 		
 		$data['total_items']=$this->Item->count_all();

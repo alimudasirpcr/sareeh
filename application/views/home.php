@@ -414,9 +414,9 @@ if ($this->config->item('offline_mode'))
         <h1 class="fw-bold mb-5 text-light"><?php echo lang('Sync_offline_db'); ?></h1>
         <!--end::Title-->
 
-
+                  
         <!--begin::Buttons-->
-        <div class="d-flex ">
+        <div class=" ">
 
 
 
@@ -424,17 +424,26 @@ if ($this->config->item('offline_mode'))
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
                 <label class="text-light">Category</label>
+                <div class="progress h-6px w-100 me-2 bg-light-success">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
             </div>
             <div class="step-container" data-step="customers">
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
                 <label class="text-light">Customer </label>
+                <div class="progress h-6px w-100 me-2 bg-light-success">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
             </div>
         
             <div class="step-container" data-step="items">
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
                 <label class="text-light">Items </label>
+                <div class="progress h-6px w-100 me-2 bg-light-success">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
             </div>
     
     

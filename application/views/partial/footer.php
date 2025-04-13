@@ -402,7 +402,13 @@ if ($this->config->item('offline_mode'))
 ?>
 <script>
 	<?php
+	
 	$offline_assets = array();
+	$total_items = count($this->Item->get_all_offline_count()->result());
+	$total_categories = get_all_categories(); 
+	$total_customers =get_all_customers();
+
+
 	foreach(get_css_files() as $css_file)
 	{
 		$offline_assets[] = base_url().$css_file['path'].'?'.ASSET_TIMESTAMP;
@@ -433,7 +439,15 @@ if ($this->config->item('offline_mode'))
 
 	?>
 	function updateStepUI(data) {
+		var total = {}; // Create an object
+			 total['items'] = parseInt(<?= $total_items;  ?>);
+			 total['categories'] = parseInt(<?= $total_categories;  ?>);
+			 total['customers'] = parseInt(<?= $total_customers;  ?>);
+
+
 			const step = document.querySelector(`.step-container[data-step="${data.entity}"]`);
+
+			$('.progress-bar');
 			if (!step) return;
 
 			const normalImg = step.querySelector(".normal");
@@ -442,16 +456,21 @@ if ($this->config->item('offline_mode'))
 
 			// Show progress (e.g., "Syncing 42 customers")
 			if (data.type === 'progress') {
-				let label = step.querySelector("label");
-				if (label) {
-				label.innerText = `Syncing ${data.count} ${data.entity}`;
-				}
+
+				let progressBar = step.querySelector('.progress-bar');
+				let percentage = Math.round((data.count / total[data.entity]) * 100);
+			
+
+				progressBar.style.width = percentage + '%';
+				progressBar.setAttribute('aria-valuenow', percentage);
+				progressBar.innerText = percentage + '%'; // Optional
 			}
 			if (data.type === 'started') {
-				let label = step.querySelector("label");
-				if (label) {
-				label.innerText = `Syncing started ${data.entity}`;
-				}
+				let progressBar = step.querySelector('.progress-bar');
+				let percentage = 0;
+				progressBar.style.width = percentage + '%';
+				progressBar.setAttribute('aria-valuenow', percentage);
+				progressBar.innerText = percentage + '%'; // Optional
 			}
 			// Show success and animation
 			if (data.type === 'sync-complete') {
@@ -470,6 +489,12 @@ if ($this->config->item('offline_mode'))
 					if (label) {
 					label.innerText = `✔ All ${data.entity} synced`;
 					}
+
+					let progressBar = step.querySelector('.progress-bar');
+						let percentage = 100;
+						progressBar.style.width = percentage + '%';
+						progressBar.setAttribute('aria-valuenow', percentage);
+						progressBar.innerText = percentage + '%'; // Optional
 				}
 				});
 			}

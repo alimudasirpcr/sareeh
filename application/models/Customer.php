@@ -68,14 +68,27 @@ class Customer extends Person
 		$people=$this->db->dbprefix('people');
 		$customers=$this->db->dbprefix('customers');
 		$price_tiers=$this->db->dbprefix('price_tiers');
-		$data=$this->db->query("SELECT *,${people}.person_id as pid 
-						FROM ".$people."
-							JOIN ".$customers." ON 												                       
-						".$people.".person_id = ".$customers.".person_id
-						LEFT JOIN ".$price_tiers." ON 										                       
-						".$price_tiers.".id = ".$customers.".tier_id
-						WHERE deleted =$deleted $location_where $order_by 
-						LIMIT  ".$offset.",".$limit);	
+
+		if($limit == -1){
+			$data=$this->db->query("SELECT count(${people}.person_id) as total
+			FROM ".$people."
+				JOIN ".$customers." ON 												                       
+			".$people.".person_id = ".$customers.".person_id
+			LEFT JOIN ".$price_tiers." ON 										                       
+			".$price_tiers.".id = ".$customers.".tier_id
+			WHERE deleted =$deleted $location_where $order_by 
+			  ");
+		}else{
+			$data=$this->db->query("SELECT *,${people}.person_id as pid 
+			FROM ".$people."
+				JOIN ".$customers." ON 												                       
+			".$people.".person_id = ".$customers.".person_id
+			LEFT JOIN ".$price_tiers." ON 										                       
+			".$price_tiers.".id = ".$customers.".tier_id
+			WHERE deleted =$deleted $location_where $order_by 
+			LIMIT  ".$offset.",".$limit);	
+		}
+		
 		return $data;
 	}
 	
