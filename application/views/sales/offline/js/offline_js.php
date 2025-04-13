@@ -491,7 +491,8 @@ if($("#pagination").html()==''){
 
   $('#category_item_selection_wrapper_new').on('scroll', function () {
     const $wrapper = $(this);
-
+    console.log($wrapper.scrollTop() + $wrapper.innerHeight());
+    console.log($wrapper[0].scrollHeight - 50)
     if ($wrapper.scrollTop() + $wrapper.innerHeight() >= $wrapper[0].scrollHeight - 50) {
         if (!isLoading) {
             const $nextPage = $("#pagination .page-link").filter(function () {
