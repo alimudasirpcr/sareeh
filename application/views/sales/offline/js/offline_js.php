@@ -435,7 +435,7 @@ setInterval(() => {
 }, 1000); // Runs every 1 second
 
 function remove_dummy_cards(){
-    console.error("remove dummy card");
+    console.log("remove dummy card");
     $('.dummy-card').remove();
 }
 function processCategoriesAndItemsResult(json) {
