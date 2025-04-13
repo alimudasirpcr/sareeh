@@ -545,7 +545,8 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
         } else {
             category_style = "";
         }
-        var category_item = '<li data-category_id="' + json.categories_and_items[k].id +
+        var category_item = '<li data-category_count="' + json.categories[k].categories_count +
+        '" data-category_id="' + json.categories_and_items[k].id +
             '" class=" category_item category nav-item mb-3 me-3  pr-0 pl-0 register-holder" role="presentation" ' +
             category_style +
             '><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">' +
