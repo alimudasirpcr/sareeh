@@ -463,40 +463,46 @@ function processCategoriesAndItemsResult(json , is_dummy_card = false) {
 
 // });
 
+
+$('.page-link').click(function(event){
+    event.preventDefault();
+    $('#grid-loader2').show();
+
+    $.get($(this).attr('href'), function(json) {
+        add_dummy_cards();
+        processCategoriesAndItemsResult(json , true);
+        isLoading = false; // Allow next scroll trigger
+        $('#grid-loader2').hide();
+    }, "json").fail(() => {
+        isLoading = false;
+        $('#grid-loader2').hide();
+    });
+});
+
+
+
 $("#pagination").html(json.pagination);
 
-  // Store next page URL (if exists)
-  let nextLink = $("#pagination .page-link").last().attr('href') || null;
-
-  // Update scroll trigger
-  window.nextPageUrl = nextLink;
-  window.paginationEnabled = !!nextLink;
 
   let isLoading = false;
 
-$('#category_item_selection_wrapper_new').on('scroll', function () {
-    console.log("callled");
-  if (
-    $(window).scrollTop() + $(window).height() >= $(document).height() - 200 &&
-    !isLoading &&
-    window.paginationEnabled
-  ) {
-    isLoading = true;
-    $('#grid-loader2').show();
 
-    if (window.nextPageUrl) {
-        add_dummy_cards();
-      $.get(window.nextPageUrl, function (json) {
-        processCategoriesAndItemsResult(json , true);
-        isLoading = false;
-        $('#grid-loader2').hide();
-      }, "json").fail(() => {
-        isLoading = false;
-        $('#grid-loader2').hide();
-      });
+  $('#category_item_selection_wrapper_new').on('scroll', function () {
+    if ($('#category_item_selection_wrapper_new').scrollTop() + $(window).height() >= $(document).height() - 100) {
+        if (!isLoading) {
+            const $nextPage = $("#pagination .page-link").filter(function () {
+                return $(this).text().toLowerCase().includes("next") || $(this).attr('rel') === 'next';
+            });
+
+            if ($nextPage.length) {
+                isLoading = true;
+                $nextPage.trigger('click');
+            }
+        }
     }
-  }
 });
+
+
 
 
 
