@@ -434,10 +434,12 @@ setInterval(() => {
     }
 }, 1000); // Runs every 1 second
 
-
+function remove_dummy_cards(){
+    $('.dummy-card').remove();
+}
 function processCategoriesAndItemsResult(json) {
-
-$("#category_item_selection_wrapper_new").html('');
+    remove_dummy_cards();
+// $("#category_item_selection_wrapper_new").html('');
 // $("#pagination").html(json.pagination);
 
 // $('.page-link').click(function(event){
@@ -471,6 +473,7 @@ $(window).on('scroll', function () {
     $('#grid-loader2').show();
 
     if (window.nextPageUrl) {
+        add_dummy_cards();
       $.get(window.nextPageUrl, function (json) {
         processCategoriesAndItemsResult(json);
         isLoading = false;
