@@ -461,6 +461,7 @@ $("#pagination").html(json.pagination).hide();
   let isLoading = false;
 
 $(window).on('scroll', function () {
+    console.log("callled");
   if (
     $(window).scrollTop() + $(window).height() >= $(document).height() - 200 &&
     !isLoading &&
