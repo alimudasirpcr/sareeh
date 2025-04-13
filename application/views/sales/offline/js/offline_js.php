@@ -438,16 +438,51 @@ setInterval(() => {
 function processCategoriesAndItemsResult(json) {
 
 $("#category_item_selection_wrapper_new").html('');
-$("#pagination").html(json.pagination);
+// $("#pagination").html(json.pagination);
 
-$('.page-link').click(function(event){
-    event.preventDefault();
+// $('.page-link').click(function(event){
+//     event.preventDefault();
+//     $('#grid-loader2').show();
+//         $.get($(this).attr('href'), function(json) {
+//             processCategoriesAndItemsResult(json);
+//         }, "json");
+
+// });
+
+$("#pagination").html(json.pagination).hide();
+
+  // Store next page URL (if exists)
+  let nextLink = $("#pagination .page-link").last().attr('href') || null;
+
+  // Update scroll trigger
+  window.nextPageUrl = nextLink;
+  window.paginationEnabled = !!nextLink;
+
+  let isLoading = false;
+
+$(window).on('scroll', function () {
+  if (
+    $(window).scrollTop() + $(window).height() >= $(document).height() - 200 &&
+    !isLoading &&
+    window.paginationEnabled
+  ) {
+    isLoading = true;
     $('#grid-loader2').show();
-        $.get($(this).attr('href'), function(json) {
-            processCategoriesAndItemsResult(json);
-        }, "json");
 
+    if (window.nextPageUrl) {
+      $.get(window.nextPageUrl, function (json) {
+        processCategoriesAndItemsResult(json);
+        isLoading = false;
+        $('#grid-loader2').hide();
+      }, "json").fail(() => {
+        isLoading = false;
+        $('#grid-loader2').hide();
+      });
+    }
+  }
 });
+
+
 
 if (json.categories_count > 0) {
     $("#category_item_selection").html('');
@@ -617,9 +652,7 @@ updateBreadcrumbs();
 $('#grid-loader2').hide();
 
 }
-
-
-$(document).ready(function () {
+function add_dummy_cards(){
     for (let i = 0; i < 20; i++) { // Adjust the number of placeholders
     $("#category_item_selection_wrapper_new").append(`
         <div class="col-sm-4 col-md-3 col-lg-2 mb-2 col-xxl-2 category_item item register-holder dummy-card">
@@ -633,6 +666,12 @@ $(document).ready(function () {
         </div>
     `);
 }
+
+}
+
+$(document).ready(function () {
+
+    add_dummy_cards();
 });
 
 
