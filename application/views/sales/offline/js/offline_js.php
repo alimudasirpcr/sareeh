@@ -443,7 +443,8 @@ function remove_dummy_cards(){
 
 function processCategoriesAndItemsResult(json , is_dummy_card = false , categories_stack_ = false) {
     if(categories_stack_){
-        console.log('before 2  updateBreadcrumbs' , categories_stack);
+        categories_stack = categories_stack_;
+        console.log('before 2  updateBreadcrumbs' , categories_stack_);
     }
   
 
