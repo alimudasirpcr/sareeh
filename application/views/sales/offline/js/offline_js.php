@@ -440,7 +440,7 @@ function remove_dummy_cards(){
     $('.dummy-card').remove();
 }
 function processCategoriesAndItemsResult(json , is_dummy_card = false) {
-
+    console.log('before 2  updateBreadcrumbs' , categories_stack);
 
     if(is_dummy_card){
         remove_dummy_cards();
