@@ -7691,7 +7691,7 @@ class Sales extends Secure_area
 		{
 			$category_id = NULL;
 		}
-		$number = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14;
+		$number = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40;
 
 		$config['base_url'] = site_url('sales/categories_and_items/'.($category_id ? $category_id : 0));
 		$config['uri_segment'] = 4;
@@ -7723,7 +7723,7 @@ class Sales extends Secure_area
 		}else{
 
 			
-			$items_result = $this->Item->get_all_by_category($category_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $items_offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14)->result();
+			$items_result = $this->Item->get_all_by_category($category_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $items_offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40)->result();
 	
 		}
 		$tax = 0;
@@ -8064,7 +8064,7 @@ class Sales extends Secure_area
 		}
 	
 		$items_count = $this->Item->count_all_by_category($category_id);		
-		$categories_and_items_response = array_slice($categories_and_items_response, $offset > $categories_count ? $categories_count : $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14);
+		$categories_and_items_response = array_slice($categories_and_items_response, $offset > $categories_count ? $categories_count : $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40);
 
 
 		$data = array();
@@ -8276,13 +8276,13 @@ class Sales extends Secure_area
 		//allow parallel searchs to improve performance.
 		session_write_close();
 		
-		$tags = $this->Tag->get_all($this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14, $offset,'name','asc',FALSE);
+		$tags = $this->Tag->get_all($this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40, $offset,'name','asc',FALSE);
 		
 		$tags_count = $this->Tag->count_all(FALSE);		
 		$config['base_url'] = site_url('sales/tags');
 		$config['uri_segment'] = 3;
 		$config['total_rows'] = $tags_count;
-		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14; 
+		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40; 
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		
@@ -8305,13 +8305,13 @@ class Sales extends Secure_area
 		//allow parallel searchs to improve performance.
 		session_write_close();
 		
-		$suppliers = $this->Supplier->get_all(0, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14, $offset);
+		$suppliers = $this->Supplier->get_all(0, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 49, $offset);
 		
 		$suppliers_count = $this->Supplier->count_all();		
 		$config['base_url'] = site_url('sales/suppliers');
 		$config['uri_segment'] = 3;
 		$config['total_rows'] = $suppliers_count;
-		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14; 
+		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40; 
 		$this->load->library('pagination');
 		$this->pagination->initialize($config);
 		
@@ -8339,13 +8339,13 @@ class Sales extends Secure_area
 		
 		$config['base_url'] = site_url('sales/tag_items/'.($tag_id ? $tag_id : 0));
 		$config['uri_segment'] = 4;
-		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14; 
+		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40; 
 		
 				
 		//Items
 		$items = array();
 		
-		$items_result = $this->Item->get_all_by_tag($tag_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14)->result();
+		$items_result = $this->Item->get_all_by_tag($tag_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40)->result();
 		
 		
 		foreach($items_result as $item)
@@ -8396,7 +8396,7 @@ class Sales extends Secure_area
 		
 		$config['base_url'] = site_url('sales/favorite_items/');
 		$config['uri_segment'] = 3;
-		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14; 
+		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40; 
 		
 		//Items
 		$items = array();
@@ -8454,13 +8454,13 @@ class Sales extends Secure_area
 		
 		$config['base_url'] = site_url('sales/supplier_items/'.($supplier_id ? $supplier_id : 0));
 		$config['uri_segment'] = 4;
-		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14; 
+		$config['per_page'] = $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40; 
 		
 				
 		//Items
 		$items = array();
 		
-		$items_result = $this->Item->get_all_item_by_supplier($supplier_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 14)->result();
+		$items_result = $this->Item->get_all_item_by_supplier($supplier_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40)->result();
 		
 		
 		foreach($items_result as $item)

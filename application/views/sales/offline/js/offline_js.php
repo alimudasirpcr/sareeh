@@ -490,8 +490,6 @@ function processCategoriesAndItemsResult(json , is_dummy_card = false) {
 
   $('#category_item_selection_wrapper_new').on('scroll', function () {
     const $wrapper = $(this);
-    console.log($wrapper.scrollTop() + $wrapper.innerHeight());
-    console.log($wrapper[0].scrollHeight - 50)
     if ($wrapper.scrollTop() + $wrapper.innerHeight() >= $wrapper[0].scrollHeight - 50) {
         if (!isLoading) {
             const $nextPage = $("#pagination .page-link").filter(function () {
@@ -4988,6 +4986,8 @@ $(document).ready(function() {
 
 
     $('#category_item_selection_wrapper').on('click', '.category_item.category', function(event) {
+
+        console.log('category_obj');
         event.preventDefault();
         current_category_id = $(this).data('category_id');
         category_count = $(this).data('category_count');
@@ -4995,6 +4995,7 @@ $(document).ready(function() {
             category_id: current_category_id,
             name: $(this).find('p').text()
         };
+        console.log('category_obj' ,category_obj );
         if (category_count > 0) {
             categories_stack.push(category_obj);
         }
