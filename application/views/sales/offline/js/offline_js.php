@@ -5005,6 +5005,8 @@ $(document).ready(function() {
             category_id: current_category_id,
             name: $(this).find('p').text()
         };
+        console.log('categories_stack' ,categories_stack );
+        console.log('category_count' ,category_count );
         console.log('category_obj' ,category_obj );
         if (category_count > 0) {
             categories_stack.push(category_obj);
