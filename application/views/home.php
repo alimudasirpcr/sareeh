@@ -393,7 +393,14 @@ if (is_on_phppos_host()) {
 
 <script src="<?= site_url() ?>assets/js/gsap.min.js"></script>
 
+<?php
 
+
+
+
+if ($this->config->item('offline_mode'))
+{
+?>
 <!--begin::Alert-->
 <div class="alert alert-dismissible bg-primary d-flex flex-center flex-column py-10 px-10 px-lg-20 mb-10 rotating-bg" style="background-image: url('<?= base_url(); ?>assets/css_good/media/svg/misc/eolic-energy.svg');background-repeat: no-repeat;">
 
@@ -482,6 +489,8 @@ function startServiceWorkerProcess() {
     <!--end::Wrapper-->
 </div>
 <!--end::Alert-->
+
+<?php }  ?>
 
 
 
