@@ -4850,6 +4850,7 @@ $(document).ready(function() {
 
 
     function loadCategoriesAndItems(category_id, offset, retryCount = 3) {
+        console.log('categories_stack' ,categories_stack );
         $('#grid-loader2').show();
         current_category_id = category_id;
 
