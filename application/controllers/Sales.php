@@ -8070,6 +8070,8 @@ class Sales extends Secure_area
 		$data = array();
 		$data['categories_and_items'] = H($categories_and_items_response);
 		$config['total_rows'] =  $items_count;
+		$config['next_tag_open'] = '<li class="paginate_button  page-item"><a class="page-link" rel="next" href="';
+		$config['next_tag_close'] = '</a></li>';
 		$config['first_link'] = '<<';
 		$config['last_link']  = '>>';
 		$config['full_tag_open'] = '<ul class="pagination " style="marigin : 10px 0px 0px 0px !important" >'; // or any class
