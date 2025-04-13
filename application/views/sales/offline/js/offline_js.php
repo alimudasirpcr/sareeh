@@ -490,8 +490,9 @@ if($("#pagination").html()==''){
 
 
   $('#category_item_selection_wrapper_new').on('scroll', function () {
-    console.log("scroll");
-    if ($('#category_item_selection_wrapper_new').scrollTop() + $('#category_item_selection_wrapper_new').height() >= $(document).height() - 100) {
+    const $wrapper = $(this);
+
+    if ($wrapper.scrollTop() + $wrapper.innerHeight() >= $wrapper[0].scrollHeight - 50) {
         if (!isLoading) {
             const $nextPage = $("#pagination .page-link").filter(function () {
                 return $(this).text().toLowerCase().includes("next") || $(this).attr('rel') === 'next';
