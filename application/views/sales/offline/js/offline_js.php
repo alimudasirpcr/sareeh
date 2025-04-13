@@ -439,8 +439,13 @@ function remove_dummy_cards(){
     console.log("remove dummy card");
     $('.dummy-card').remove();
 }
-function processCategoriesAndItemsResult(json , is_dummy_card = false) {
-    console.log('before 2  updateBreadcrumbs' , categories_stack);
+
+
+function processCategoriesAndItemsResult(json , is_dummy_card = false , categories_stack_ = false) {
+    if(categories_stack_){
+        console.log('before 2  updateBreadcrumbs' , categories_stack);
+    }
+  
 
     if(is_dummy_card){
         remove_dummy_cards();
@@ -4856,7 +4861,7 @@ $(document).ready(function() {
 
         $.get('<?php echo site_url("sales/categories_and_items"); ?>/' + current_category_id + '/' + offset,
             function(json) {
-                processCategoriesAndItemsResult(json);
+                processCategoriesAndItemsResult(json , false  ,  categories_stack);
                 $('#grid-loader2').hide(); // Hide loader when successful
             }, "json"
         ).fail(function() {
