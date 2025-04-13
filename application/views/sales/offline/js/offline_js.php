@@ -473,9 +473,9 @@ function processCategoriesAndItemsResult(json , is_dummy_card = false) {
     $('.page-link').click(function(event){
             event.preventDefault();
             $('#grid-loader2').show();
-
+            add_dummy_cards();
             $.get($(this).attr('href'), function(json) {
-                add_dummy_cards();
+               
                 processCategoriesAndItemsResult(json , true);
                 isLoading = false; // Allow next scroll trigger
                 $('#grid-loader2').hide();
