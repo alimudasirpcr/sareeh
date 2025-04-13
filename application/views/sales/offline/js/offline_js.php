@@ -438,9 +438,20 @@ function remove_dummy_cards(){
     console.log("remove dummy card");
     $('.dummy-card').remove();
 }
-function processCategoriesAndItemsResult(json) {
-    remove_dummy_cards();
-// $("#category_item_selection_wrapper_new").html('');
+function processCategoriesAndItemsResult(json , is_dummy_card = false) {
+
+
+    if(is_dummy_card){
+        remove_dummy_cards();
+    }else{
+        $("#category_item_selection_wrapper_new").html('');
+    }
+    
+
+
+
+
+
 // $("#pagination").html(json.pagination);
 
 // $('.page-link').click(function(event){
@@ -476,7 +487,7 @@ $(window).on('scroll', function () {
     if (window.nextPageUrl) {
         add_dummy_cards();
       $.get(window.nextPageUrl, function (json) {
-        processCategoriesAndItemsResult(json);
+        processCategoriesAndItemsResult(json , true);
         isLoading = false;
         $('#grid-loader2').hide();
       }, "json").fail(() => {
