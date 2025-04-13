@@ -467,7 +467,7 @@ function processCategoriesAndItemsResult(json , is_dummy_card = false) {
 
 
 
-    $("#pagination").html(json.pagination);
+    $("#pagination").html(json.pagination).hide();
 
 
     $('.page-link').click(function(event){
