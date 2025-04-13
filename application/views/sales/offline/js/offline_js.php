@@ -464,26 +464,26 @@ function processCategoriesAndItemsResult(json , is_dummy_card = false) {
 // });
 
 
-$('.page-link').click(function(event){
-    event.preventDefault();
-    $('#grid-loader2').show();
 
-    $.get($(this).attr('href'), function(json) {
-        add_dummy_cards();
-        processCategoriesAndItemsResult(json , true);
-        isLoading = false; // Allow next scroll trigger
-        $('#grid-loader2').hide();
-    }, "json").fail(() => {
-        isLoading = false;
-        $('#grid-loader2').hide();
-    });
-});
 
 
     $("#pagination").html(json.pagination);
 
 
+    $('.page-link').click(function(event){
+            event.preventDefault();
+            $('#grid-loader2').show();
 
+            $.get($(this).attr('href'), function(json) {
+                add_dummy_cards();
+                processCategoriesAndItemsResult(json , true);
+                isLoading = false; // Allow next scroll trigger
+                $('#grid-loader2').hide();
+            }, "json").fail(() => {
+                isLoading = false;
+                $('#grid-loader2').hide();
+            });
+        });
 
   let isLoading = false;
 
