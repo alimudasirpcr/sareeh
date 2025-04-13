@@ -302,7 +302,7 @@ for (var k = 0; k < json.categories.length; k++) {
         }
     })
 }
-
+console.log('before 1 updateBreadcrumbs' , categories_stack);
 updateBreadcrumbs();
 $('#grid-loader2').hide();
 }
@@ -672,7 +672,7 @@ $("#category_item_selection_wrapper .pagination").removeClass('categories').remo
     .removeClass('items').removeClass('favorite').removeClass('suppliers').removeClass("supplierItems")
     .addClass('categoriesAndItems');
 $("#category_item_selection_wrapper .pagination").html(json.pagination);
-
+console.log('before 2  updateBreadcrumbs' , categories_stack);
 updateBreadcrumbs();
 $('#grid-loader2').hide();
 
