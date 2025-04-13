@@ -545,7 +545,7 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
         } else {
             category_style = "";
         }
-        var category_item = '<li data-category_count="' + json.categories[k].categories_count +
+        var category_item = '<li data-category_count="' + json.categories_and_items[k].categories_count +
         '" data-category_id="' + json.categories_and_items[k].id +
             '" class=" category_item category nav-item mb-3 me-3  pr-0 pl-0 register-holder" role="presentation" ' +
             category_style +
