@@ -5002,7 +5002,7 @@ $(document).ready(function() {
         if (category_count > 0) {
             categories_stack.push(category_obj);
         }
-
+        console.log('categories_stack' ,categories_stack );
         loadCategoriesAndItems($(this).data('category_id'), 0);
     });
 
