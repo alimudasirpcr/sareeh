@@ -416,31 +416,31 @@ if ($this->config->item('offline_mode'))
 
                   
         <!--begin::Buttons-->
-        <div class=" ">
+        <div class="  d-flex gap-2">
 
 
 
-            <div class="step-container" data-step="categories" style="text-align:start;">
+            <div class="step-container d-flex align-items-center flex-column mt-3 w-100 border border-dashed border-gray-300 rounded px-4 py-3 mb-6 text-start" data-step="categories" >
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-                <label class="text-light">Category</label>
+                <label class="text-light w-200px text-center">Category</label>
                 <div class="progress h-15px w-100 me-2 bg-light">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
             </div>
-            <div class="step-container" data-step="customers" style="text-align:start;">
+            <div class="step-container d-flex align-items-center flex-column mt-3 w-100 border border-dashed border-gray-300 rounded px-4 py-3 mb-6 text-start" data-step="customers" >
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-                <label class="text-light">Customer </label>
+                <label class="text-light w-200px text-center">Customer </label>
                 <div class="progress h-15px w-100 me-2 bg-light">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
             </div>
         
-            <div class="step-container" data-step="items" style="text-align:start;">
+            <div class="step-container d-flex align-items-center flex-column mt-3 w-100 border border-dashed border-gray-300 rounded px-4 py-3 mb-6 text-start" data-step="items" >
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-                <label class="text-light">Items </label>
+                <label class="text-light w-200px text-center">Items </label>
                 <div class="progress h-15px w-100 me-2 bg-light">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
