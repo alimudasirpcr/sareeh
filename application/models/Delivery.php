@@ -867,12 +867,11 @@ class Delivery extends MY_Model
 	function save(&$delivery_data, $delivery_id = false, $delivery_items = false)
 	{		
 		//If we are overwriting a delivery make sure sale is gone
-		
 		if (isset($delivery_data['sale_id']))
 		{
 			$this->delete_by_sale_id($delivery_data['sale_id']);
 		}
-		echo $delivery_id;
+		
 		if(isset($delivery_data['contact_preference'])){
 			$delivery_data['contact_preference'] = is_serialized($delivery_data['contact_preference']) ? $delivery_data['contact_preference'] : serialize($delivery_data['contact_preference']);
 		}else{
@@ -881,8 +880,6 @@ class Delivery extends MY_Model
 		
 		if (!$delivery_id or !$this->exists($delivery_id))
 		{	
-
-			save_query();
 			if($this->db->replace('sales_deliveries',$delivery_data))
 			{
 				$delivery_data['id'] = $this->db->insert_id();
@@ -891,11 +888,6 @@ class Delivery extends MY_Model
 				}
 				return true;
 			}
-
-			echo $this->db->last_query();
-			exit();
-
-			
 			
 			return false;
 		}
@@ -904,8 +896,6 @@ class Delivery extends MY_Model
 			$this->save_items($delivery_items, $delivery_id);
 		}
 		
-	
-
 
 		$this->db->where('id', $delivery_id);
 		return $this->db->update('sales_deliveries', $delivery_data);
