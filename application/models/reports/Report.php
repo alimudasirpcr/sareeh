@@ -114,7 +114,7 @@ abstract class Report extends MY_Model
 	{
 		$CI =& get_instance();
 		
-
+		dd($location_ids);
 		if(empty( $location_ids)){
 			if (!$CI->input->get('location_ids'))
 				{
