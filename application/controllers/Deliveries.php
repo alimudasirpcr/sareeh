@@ -315,7 +315,7 @@ class Deliveries extends Secure_area implements Idata_controller
 			'country' => $this->input->post('country'),
 		);
 
-		dd($delivery_person_data);
+	
 
 		$delivery_data = array(
 			'comment' => $this->input->post('comment'),
@@ -366,7 +366,7 @@ class Deliveries extends Secure_area implements Idata_controller
 				$email_send = true;
 			}
 		}
-
+		dd($delivery_data);
 
 		//delivery = delivery_id
 		if($this->Delivery->save($delivery_data, $delivery, $delivery_items))
