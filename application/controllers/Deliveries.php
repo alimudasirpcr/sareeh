@@ -315,6 +315,8 @@ class Deliveries extends Secure_area implements Idata_controller
 			'country' => $this->input->post('country'),
 		);
 
+		dd($delivery_person_data);
+
 		$delivery_data = array(
 			'comment' => $this->input->post('comment'),
 			'tracking_number' => $this->input->post('tracking_number'),
