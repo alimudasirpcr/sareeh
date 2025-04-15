@@ -879,7 +879,7 @@ class Delivery extends MY_Model
 		}
 		
 		if (!$delivery_id or !$this->exists($delivery_id))
-		{	save_query();
+		{	
 			if($this->db->replace('sales_deliveries',$delivery_data))
 			{
 				$delivery_data['id'] = $this->db->insert_id();
@@ -888,7 +888,6 @@ class Delivery extends MY_Model
 				}
 				return true;
 			}
-			echo $this->db->last_query(); exit();
 			
 			return false;
 		}
