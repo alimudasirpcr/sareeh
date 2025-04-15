@@ -447,7 +447,7 @@ if ($this->config->item('offline_mode'))
 
 			const step = document.querySelector(`.step-container[data-step="${data.entity}"]`);
 
-			$('.progress-bar');
+			
 			if (!step) return;
 
 			const normalImg = step.querySelector(".normal");

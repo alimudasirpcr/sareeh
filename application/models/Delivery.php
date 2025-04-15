@@ -896,6 +896,8 @@ class Delivery extends MY_Model
 			$this->save_items($delivery_items, $delivery_id);
 		}
 		
+		echo $this->db->last_query(); exit();
+
 
 		$this->db->where('id', $delivery_id);
 		return $this->db->update('sales_deliveries', $delivery_data);
