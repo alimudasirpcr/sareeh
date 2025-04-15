@@ -415,7 +415,7 @@ if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name !
 ?>
 
 <?php
-if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name != "login")
+if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name != "login" && 1==2)
 {
 	$this->load->helper('platformly');
 ?>
@@ -432,19 +432,19 @@ if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name 
 
                         <?php
     
-	foreach(get_all_platformly_segments() as $segment)
-	{
-		echo '<li>';
-		echo form_checkbox(array('name'=> 'segments[]',
-		'id' => $segment['id'],
-		'value' => $segment['id'],
-		'checked' => email_subscribed_to_segment($person_info->email, $segment['id']),
-		'label'	=> $segment['id']));
-		
-		echo '<label for="'.$segment['id'].'"><span></span></label> '.$segment['name'];
-		echo '</li>';
-	}
-	?>
+                            foreach(get_all_platformly_segments() as $segment)
+                            {
+                                echo '<li>';
+                                echo form_checkbox(array('name'=> 'segments[]',
+                                'id' => $segment['id'],
+                                'value' => $segment['id'],
+                                'checked' => email_subscribed_to_segment($person_info->email, $segment['id']),
+                                'label'	=> $segment['id']));
+                                
+                                echo '<label for="'.$segment['id'].'"><span></span></label> '.$segment['name'];
+                                echo '</li>';
+                            }
+                        ?>
                     </div>
 
                 </div>
