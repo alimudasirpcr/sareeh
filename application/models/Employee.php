@@ -1981,10 +1981,14 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Supplier->get_default_columns();
 
 		}
+
+
+		if(!empty($columns_to_display_keys)){
 		
-		foreach($columns_to_display_keys as $key)
-		{
-			$columns_to_display[$key] = $all_columns[$key];
+			foreach($columns_to_display_keys as $key)
+			{
+				$columns_to_display[$key] = $all_columns[$key];
+			}
 		}
 	
 		return $columns_to_display;
@@ -2040,9 +2044,12 @@ class Employee extends Person
 			
 		}
 		
-		foreach($columns_to_display_keys as $key)
-		{
-			$columns_to_display[$key] = $all_columns[$key];
+		if(!empty($columns_to_display_keys)){
+			
+			foreach($columns_to_display_keys as $key)
+			{
+				$columns_to_display[$key] = $all_columns[$key];
+			}
 		}
 	
 		return $columns_to_display;
@@ -2082,12 +2089,13 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Item->get_default_columns();
 
 		}
-		
-		foreach($columns_to_display_keys as $key)
-		{
-			if (isset($all_columns[$key]))
+		if(!empty($columns_to_display_keys)){
+			foreach($columns_to_display_keys as $key)
 			{
-				$columns_to_display[$key] = $all_columns[$key];
+				if (isset($all_columns[$key]))
+				{
+					$columns_to_display[$key] = $all_columns[$key];
+				}
 			}
 		}
 		
@@ -2138,7 +2146,7 @@ class Employee extends Person
 			}
 		}
 		
-		
+		if(!empty($columns_to_display_keys)){
 		foreach($columns_to_display_keys as $key)
 		{
 			if (isset($all_columns[$key]))
@@ -2146,6 +2154,7 @@ class Employee extends Person
 				$columns_to_display[$key] = $all_columns[$key];
 			}
 		}
+	}
 		
 		return $columns_to_display;
 		
@@ -2167,7 +2176,7 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Sale->get_list_sales_default_columns();
 
 		}
-		
+		if(!empty($columns_to_display_keys)){
 		foreach($columns_to_display_keys as $key)
 		{
 			if (isset($all_columns[$key]))
@@ -2175,6 +2184,7 @@ class Employee extends Person
 				$columns_to_display[$key] = $all_columns[$key];
 			}
 		}
+	}
 		
 		return $columns_to_display;
 		
@@ -2197,6 +2207,7 @@ class Employee extends Person
 
 		}
 		
+		if(!empty($columns_to_display_keys)){
 		foreach($columns_to_display_keys as $key)
 		{
 			if (isset($all_columns[$key]))
@@ -2204,7 +2215,7 @@ class Employee extends Person
 				$columns_to_display[$key] = $all_columns[$key];
 			}
 		}
-		
+	}
 		return $columns_to_display;
 		
 	}
@@ -2235,11 +2246,12 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Item_kit->get_default_columns();
 
 		}
-		
+		if(!empty($columns_to_display_keys)){
 		foreach($columns_to_display_keys as $key)
 		{
 			$columns_to_display[$key] = $all_columns[$key];
 		}
+	}
 		
 		if (!$has_cost_price_permission)
 		{
@@ -2275,11 +2287,12 @@ class Employee extends Person
 			$columns_to_display_keys = $this->get_default_columns();
 
 		}
-		
+		if(!empty($columns_to_display_keys)){
 		foreach($columns_to_display_keys as $key)
 		{
 			$columns_to_display[$key] = $all_columns[$key];
 		}
+	}
 	
 		return $columns_to_display;
 	}
@@ -2570,7 +2583,7 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Inventory->get_default_columns();
 
 		}
-		
+		if(!empty($columns_to_display_keys)){
 		foreach($columns_to_display_keys as $key)
 		{
 			if (isset($all_columns[$key]))
@@ -2578,7 +2591,7 @@ class Employee extends Person
 				$columns_to_display[$key] = $all_columns[$key];
 			}
 		}
-		
+	}
 		if (!$has_cost_price_permission)
 		{
 			if (isset($columns_to_display['cost_price']))
@@ -2636,7 +2649,7 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Inventory->get_item_not_count_default_columns();
 
 		}
-		
+		if(!empty($columns_to_display_keys)){
 		foreach($columns_to_display_keys as $key)
 		{
 			if (isset($all_columns[$key]))
@@ -2644,6 +2657,7 @@ class Employee extends Person
 				$columns_to_display[$key] = $all_columns[$key];
 			}
 		}
+	}
 		
 		if (!$has_cost_price_permission)
 		{
@@ -2687,10 +2701,11 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Work_order->get_default_columns();
 
 		}
-		
-		foreach($columns_to_display_keys as $key)
-		{
-			$columns_to_display[$key] = $all_columns[$key];
+		if(!empty($columns_to_display_keys)){
+			foreach($columns_to_display_keys as $key)
+			{
+				$columns_to_display[$key] = $all_columns[$key];
+			}
 		}
 		// dd($columns_to_display);
 		return $columns_to_display;
@@ -2727,11 +2742,12 @@ class Employee extends Person
 			$columns_to_display_keys = $this->Invoice->get_default_columns($invoice_type);
 
 		}
-		
-		foreach($columns_to_display_keys as $key)
-		{
-			if($all_columns[$key]){
-				$columns_to_display[$key] = $all_columns[$key];
+		if(!empty($columns_to_display_keys)){
+			foreach($columns_to_display_keys as $key)
+			{
+				if($all_columns[$key]){
+					$columns_to_display[$key] = $all_columns[$key];
+				}
 			}
 		}
 		
