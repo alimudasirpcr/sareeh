@@ -381,6 +381,12 @@ show_feedback('success', <?php echo json_encode($this->session->flashdata('manag
 
 
         url =  '<?= site_url(); ?>/reports/generate_ajax/summary_items?tier_id=&report_type=simple&report_date_range_simple=LAST_30&start_date_formatted=10%2F01%2F2024+12%3A00+am&start_date=2024-10-01+00%3A00&end_date_formatted=10%2F01%2F2024+11%3A59+pm&end_date=2024-10-01+23%3A59&with_time=1&end_date_end_of_day=0&supplier_id=&manufacturer_id=&customer_id=&category_id=&register_id=&item_id=<?= $item_info->item_id; ?>&sale_type=all&items_to_show=items_with_sales&select_all=1&location_ids%5B%5D=1&company=All&business_type=All&sale_type_suspended=&items%5B%5D=pos&items%5B%5D=items&items%5B%5D=customers&items%5B%5D=work_orders&items%5B%5D=sales_list&compare=no&export_excel=false';
+       
+
+        is_item = '<?= $item_kit_info->item_id; ?>';
+
+if(is_item != -1 && is_item !=''){
+       
         setTimeout(function(){
             $.ajax({
     type: "GET",
@@ -443,7 +449,7 @@ show_feedback('success', <?php echo json_encode($this->session->flashdata('manag
     }
 });
     }, 5000); 
-
+}
     });
 
 
