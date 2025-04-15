@@ -872,7 +872,6 @@ class Delivery extends MY_Model
 		{
 			$this->delete_by_sale_id($delivery_data['sale_id']);
 		}
-		echo $delivery_id;
 		if(isset($delivery_data['contact_preference'])){
 			$delivery_data['contact_preference'] = is_serialized($delivery_data['contact_preference']) ? $delivery_data['contact_preference'] : serialize($delivery_data['contact_preference']);
 		}else{
@@ -888,12 +887,12 @@ class Delivery extends MY_Model
 					$this->save_items($delivery_items, $delivery_data['id']);
 				}
 				return true;
+			}else{
+				return false;
 			}
 
 			
-		dd($delivery_data);
-			
-			return false;
+	
 		}
 
 		if($delivery_items){
