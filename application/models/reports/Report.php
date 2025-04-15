@@ -140,8 +140,6 @@ abstract class Report extends MY_Model
 		}else{
 			if(is_array($location_ids)){
 				$location_ids = implode(',',$location_ids);
-			}else{
-				$location_ids[] = $location_ids;
 			}
 			
 		}
