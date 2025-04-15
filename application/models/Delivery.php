@@ -867,6 +867,8 @@ class Delivery extends MY_Model
 	function save(&$delivery_data, $delivery_id = false, $delivery_items = false)
 	{		
 		//If we are overwriting a delivery make sure sale is gone
+
+		dd($delivery_data);
 		if (isset($delivery_data['sale_id']))
 		{
 			$this->delete_by_sale_id($delivery_data['sale_id']);

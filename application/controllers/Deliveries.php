@@ -366,7 +366,7 @@ class Deliveries extends Secure_area implements Idata_controller
 				$email_send = true;
 			}
 		}
-		dd($delivery_data);
+		
 
 		//delivery = delivery_id
 		if($this->Delivery->save($delivery_data, $delivery, $delivery_items))
