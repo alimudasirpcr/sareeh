@@ -321,6 +321,7 @@ class Giftcards extends Secure_area implements Idata_controller
 		//Unset unique identifiers
 		$data['giftcard_info']->giftcard_number = '';
 		$data['is_clone'] = TRUE;
+		$data['giftcard_id'] = $giftcard_id;
 		$this->load->view("giftcards/form",$data);
 	}
 	
