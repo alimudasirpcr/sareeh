@@ -19,9 +19,9 @@ class Summary_expenses extends Report
 	
 	public function getInputData()
 	{
-		dd("calling");
 		
-		$input_params = array();
+		
+		// $input_params = array();
 
 		if ($this->settings['display'] == 'tabular')
 		{
