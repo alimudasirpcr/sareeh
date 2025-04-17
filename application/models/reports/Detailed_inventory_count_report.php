@@ -216,7 +216,7 @@ class Detailed_inventory_count_report extends Report
 		{
 				for($k=0;$k<count($data['details'][$inventory_count_id]);$k++)
 				{
-					if ($data['details'][$inventory_count_id][$k]['item_variation_id'])
+					if ($data['details'][$inventory_count_id][$k]['item_variation_id'] && isset($variation_names[$data['details'][$inventory_count_id][$k]['item_variation_id']]))
 					{
 						$data['details'][$inventory_count_id][$k]['name'].=': '.$variation_names[$data['details'][$inventory_count_id][$k]['item_variation_id']];
 					}					
