@@ -732,7 +732,7 @@ if (isset($error_message)) {
 												<?php
 
 												
-												if (property_exists($item, 'quantity_unit_quantity') && $item->quantity_unit_quantity !== NULL) {
+												if (property_exists($item, 'quantity_unit_quantity') && $item->quantity_unit_quantity !== NULL && isset($item->quantity_units[$item->quantity_unit_id])) {
 												?>
 													<div class="invoice-desc">
 														<?php
