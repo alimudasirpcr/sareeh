@@ -387,7 +387,7 @@ class Register extends MY_Model
 		$this->db->where('register_log_payments.register_log_id',$register_log_id);
 		$this->db->where('deleted', 0);
 		$query = $this->db->get();
-		dd($total_payments);
+		// dd($total_payments);
 		
 		if($query->num_rows())
 		{
