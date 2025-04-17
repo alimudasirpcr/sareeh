@@ -415,7 +415,10 @@ class Employees extends Person_controller
 	function save($employee_id=-1)
 	{
 
-		$validation_result = check_limitations_staff(); 
+		if($employee_id == -1 ){
+			$validation_result = check_limitations_staff(); 
+		}
+		
 
 		if (!$validation_result['success']) {
 			echo json_encode([
