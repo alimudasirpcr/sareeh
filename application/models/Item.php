@@ -1171,7 +1171,7 @@ return $result;
 	
 				if ($result !== FALSE)
 				{
-					echo "yes result"; 
+					echo "yes result".$item_lookup_order; 
 					echo "order type" . $order_type;
 					$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 					if($this->is_item_ban($result,$location_id)){
@@ -1184,6 +1184,7 @@ return $result;
 					}
 				}
 			}
+			dd(); 
 			exit();
 			return ['status' => false , 'value' => '' ,  'order_type' =>   $order_type];
 		}else{
