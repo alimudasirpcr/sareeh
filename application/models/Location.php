@@ -214,18 +214,8 @@ class Location extends MY_Model
 			{
 				$location_data['location_id']=$this->db->insert_id();
 
-				$from_location_id = 1; // Source location
-				$to_location_id   = $location_data['location_id']; // New location you want to copy to
+				$this->add_setting_for_new_location($location_data['location_id']);
 
-				$sql = "
-				INSERT INTO phppos_app_config (`key`, `value`, `location_id`)
-				SELECT `key`, `value`, ?
-				FROM phppos_app_config
-				WHERE location_id = ?
-				";
-
-				// Run the query with bindings (to prevent SQL injection)
-				$this->db->query($sql, [$to_location_id, $from_location_id]);
 
 
 				return true;
@@ -237,6 +227,42 @@ class Location extends MY_Model
 		return $this->db->update('locations',$location_data);
 	}
 
+
+	function add_setting_for_new_location($to_location_id){
+		$from_location_id = 1; 
+
+	
+
+		$sql = "
+		INSERT INTO phppos_app_config (`key`, `value`, `location_id`)
+		SELECT `key`, `value`, ?
+		FROM phppos_app_config
+		WHERE location_id = ?
+		";
+
+		$this->db->query($sql, [$to_location_id, $from_location_id]);
+
+
+		$sql = "
+		INSERT INTO phppos_sale_types (`name`, `sort`, `system_sale_type`, `remove_quantity`, `location`)
+		SELECT 
+			s.name, 
+			s.sort, 
+			s.system_sale_type, 
+			s.remove_quantity, 
+			? AS location
+		FROM phppos_sale_types s
+		WHERE s.location = 1
+		AND NOT EXISTS (
+			SELECT 1 FROM phppos_sale_types st
+			WHERE st.location = ?
+			LIMIT 1
+		)
+		";
+	
+		$this->db->query($sql, [$to_location_id, $to_location_id]);
+
+	}
 
 	function search_count_all($search,$deleted=0, $limit=10000,$search_field = NULL)
 	{
