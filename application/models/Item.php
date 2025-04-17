@@ -1171,12 +1171,10 @@ return $result;
 	
 				if ($result !== FALSE)
 				{
-					echo "yes result".$item_lookup_order; 
-					echo "order type" . $order_type;
+					
 					$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 					if($this->is_item_ban($result,$location_id)){
-						echo "baned";
-						exit();
+				
 						return ['status' => false , 'value' => ''  , 'order_type' =>   $order_type];
 					}else{
 						exit();
@@ -1184,8 +1182,7 @@ return $result;
 					}
 				}
 			}
-			dd($item_lookup_order); 
-			exit();
+			
 			return ['status' => false , 'value' => '' ,  'order_type' =>   $order_type];
 		}else{
 			if (($item_identifer_parts = explode('#', $item_identifer)) !== false)
