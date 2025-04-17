@@ -188,7 +188,7 @@ class Summary_manufacturers extends Report
     $tabular_data = array();
     $report_data = $this->getData();
     $summary_data = $this->getSummaryData();
-	dd($this->settings['display']);
+	
 
     if ($this->settings['display'] == 'tabular')
     {
@@ -264,8 +264,27 @@ class Summary_manufacturers extends Report
             "export_excel" => $this->params['export_excel'],
             "pagination" => $this->pagination->create_links(),
         );
-    }else{
-		$data = array();
+    }elseif($this->settings['display'] == 'graphical')
+	{
+		
+		$graph_data = array();
+		foreach($report_data as $row)
+		{
+			$graph_data[$row['manufacturer'] ? $row['manufacturer'] : lang('none')] = to_currency_no_money($row['total']);
+		}
+
+		$currency_symbol = $this->config->item('currency_symbol') ? $this->config->item('currency_symbol') : '$';
+		
+
+		$data = array(
+			'view' => 'graphical',
+			'graph' => 'pie',
+			"summary_data" => $summary_data,
+			"title" => lang('reports_manufacturers_report'),
+			"data" => $graph_data,
+			"tooltip_template" => "<%=label %>: ".((!$this->config->item('currency_symbol_location') || $this->config->item('currency_symbol_location') =='before') ? $currency_symbol : '')."<%= parseFloat(Math.round(value * 100) / 100).toFixed(".$this->decimals.") %>".($this->config->item('currency_symbol_location') =='after' ? $currency_symbol: ''),
+		   "legend_template" => "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%> (".((!$this->config->item('currency_symbol_location') || $this->config->item('currency_symbol_location') =='before') ? $currency_symbol : '')."<%=parseFloat(Math.round(segments[i].value * 100) / 100).toFixed(".$this->decimals.")%>".($this->config->item('currency_symbol_location') =='after' ?  $currency_symbol : '').")<%}%></li><%}%></ul>"
+			);
 	}
 
     return $data;
