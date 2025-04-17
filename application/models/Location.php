@@ -213,6 +213,21 @@ class Location extends MY_Model
 			if($this->db->insert('locations',$location_data))
 			{
 				$location_data['location_id']=$this->db->insert_id();
+
+				$from_location_id = 1; // Source location
+				$to_location_id   = $location_data['location_id']; // New location you want to copy to
+
+				$sql = "
+				INSERT INTO phppos_app_config (`key`, `value`, `location_id`)
+				SELECT `key`, `value`, ?
+				FROM phppos_app_config
+				WHERE location_id = ?
+				";
+
+				// Run the query with bindings (to prevent SQL injection)
+				$this->db->query($sql, [$to_location_id, $from_location_id]);
+
+
 				return true;
 			}
 			return false;
