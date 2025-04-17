@@ -579,15 +579,15 @@ class Employees extends Person_controller
 		}
 		elseif((is_array($location_data) && count($location_data) > 0) && $this->Employee->save_employee($person_data,$employee_data,$permission_data, $permission_action_data, $location_data, $employee_id, $action_location, $module_location))
 		{
-			if ($this->Location->get_info_for_key('mailchimp_api_key'))
-			{
-				$this->Person->update_mailchimp_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('mailing_lists'));
-			}
+			// if ($this->Location->get_info_for_key('mailchimp_api_key'))
+			// {
+			// 	$this->Person->update_mailchimp_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('mailing_lists'));
+			// }
 			
-			if ($this->Location->get_info_for_key('platformly_api_key'))
-			{
-				$this->Person->update_platformly_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('segments'));
-			}
+			// if ($this->Location->get_info_for_key('platformly_api_key'))
+			// {
+			// 	$this->Person->update_platformly_subscriptions($this->input->post('email'), $this->input->post('first_name'), $this->input->post('last_name'), $this->input->post('segments'));
+			// }
 			
 			$cur_location_id = $this->Employee->get_logged_in_employee_current_location_id();
 			$cur_employee_id = $employee_id==-1 ? $employee_data['person_id'] : $employee_id;
