@@ -188,6 +188,7 @@ class Summary_manufacturers extends Report
     $tabular_data = array();
     $report_data = $this->getData();
     $summary_data = $this->getSummaryData();
+	dd($this->settings['display']);
 
     if ($this->settings['display'] == 'tabular')
     {
@@ -263,7 +264,9 @@ class Summary_manufacturers extends Report
             "export_excel" => $this->params['export_excel'],
             "pagination" => $this->pagination->create_links(),
         );
-    }
+    }else{
+		$data = array();
+	}
 
     return $data;
 }
