@@ -417,16 +417,17 @@ class Employees extends Person_controller
 
 		if($employee_id == -1 ){
 			$validation_result = check_limitations_staff(); 
+			if (!$validation_result['success']) {
+				echo json_encode([
+					'success' => false,
+					'message' => $validation_result['message']
+				]);
+				exit;
+			}
 		}
 		
 
-		if (!$validation_result['success']) {
-			echo json_encode([
-				'success' => false,
-				'message' => $validation_result['message']
-			]);
-			exit;
-		}
+	
 		$this->check_action_permission('add_update');
 		
 		//Catch an error if our first name is NOT set. This can happen if logo uploaded is larger than post size
