@@ -5334,15 +5334,15 @@ $(document).ready(function() {
 
     <?php if ($this->config->item('default_type_for_grid') == 'tags') {  ?>
     <?php if($this->config->item('hide_tags_sales_grid') != 1 ){ ?>
-    loadTags();
+    // loadTags();
     <?php } ?>
     <?php } else if ($this->config->item('default_type_for_grid') == 'favorites') { ?>
     <?php if($this->config->item('hide_favorites_sales_grid') != 1 ){ ?>
-    loadFavoriteItems(0);
+    // loadFavoriteItems(0);
     <?php } ?>
     <?php } else if ($this->config->item('default_type_for_grid') == 'suppliers') { ?>
     <?php if($this->config->item('hide_suppliers_sales_grid') != 1 ){ ?>
-    loadSuppliers();
+    // loadSuppliers();
     <?php } ?>
     <?php } else { ?>
     <?php if($this->config->item('hide_categories_sales_grid') != 1 ){ ?>
@@ -5350,7 +5350,7 @@ $(document).ready(function() {
     <?php } ?>
     <?php	} ?>
 
-
+    loadTopCategories();
 
 
 
