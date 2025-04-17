@@ -232,7 +232,7 @@ class Location extends MY_Model
 		$from_location_id = 1; 
 
 	
-
+		//add basic configuration for new location
 		$sql = "
 		INSERT INTO phppos_app_config (`key`, `value`, `location_id`)
 		SELECT `key`, `value`, ?
@@ -242,6 +242,7 @@ class Location extends MY_Model
 
 		$this->db->query($sql, [$to_location_id, $from_location_id]);
 
+		//add sales_types
 
 		$sql = "
 		INSERT INTO phppos_sale_types (`name`, `sort`, `system_sale_type`, `remove_quantity`, `location`)
