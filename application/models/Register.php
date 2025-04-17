@@ -387,7 +387,7 @@ class Register extends MY_Model
 		$this->db->where('register_log_payments.register_log_id',$register_log_id);
 		$this->db->where('deleted', 0);
 		$query = $this->db->get();
-		// dd($total_payments);
+		
 		
 		if($query->num_rows())
 		{
@@ -396,7 +396,10 @@ class Register extends MY_Model
 			
 			foreach($payments as $payment)
 			{
-				$return[$payment['payment_type']] = $payment['open_amount'] + $total_payments[$payment['payment_type']] + $payment['total_payment_additions'] - $payment['total_payment_subtractions'];
+				if(isset($total_payments[$payment['payment_type']])){
+					$return[$payment['payment_type']] = $payment['open_amount'] + $total_payments[$payment['payment_type']] + $payment['total_payment_additions'] - $payment['total_payment_subtractions'];
+				}
+				
 			}
 			
 			return $return;
