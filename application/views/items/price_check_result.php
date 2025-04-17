@@ -73,7 +73,7 @@
       <a href="<?php echo current_url(); ?>" class="back-button btn">&lt; <?php echo lang('back');?></a>
     <div class="result-container">
       <div class="price"><?php echo to_currency($item_price);?></div>
-	  <?php?>
+	
       <img src="<?php echo $item_image_src;?>" alt="Item Image" class="item-image">
 	  
 	  <?php if ($in_stock === TRUE) { ?>
