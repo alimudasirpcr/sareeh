@@ -1184,7 +1184,7 @@ return $result;
 					}
 				}
 			}
-			dd(); 
+			dd($item_lookup_order); 
 			exit();
 			return ['status' => false , 'value' => '' ,  'order_type' =>   $order_type];
 		}else{
