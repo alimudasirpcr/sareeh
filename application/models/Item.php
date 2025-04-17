@@ -1096,6 +1096,7 @@ return $result;
 				
 			foreach($item_lookup_order as $item_lookup_number)
 			{
+				echo "yes foreach"; 
 				switch ($item_lookup_number) 
 				{
 					case 'item_id':
@@ -1170,16 +1171,20 @@ return $result;
 	
 				if ($result !== FALSE)
 				{
-	
+					echo "yes result"; 
+					echo "order type" . $order_type;
 					$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 					if($this->is_item_ban($result,$location_id)){
+						echo "baned";
+						exit();
 						return ['status' => false , 'value' => ''  , 'order_type' =>   $order_type];
 					}else{
+						exit();
 						return ['status' => true , 'value' => $result , 'order_type' =>   $order_type];
 					}
 				}
 			}
-			
+			exit();
 			return ['status' => false , 'value' => '' ,  'order_type' =>   $order_type];
 		}else{
 			if (($item_identifer_parts = explode('#', $item_identifer)) !== false)
