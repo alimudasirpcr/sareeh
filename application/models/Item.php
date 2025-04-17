@@ -1096,7 +1096,6 @@ return $result;
 				
 			foreach($item_lookup_order as $item_lookup_number)
 			{
-				echo "yes foreach"; 
 				switch ($item_lookup_number) 
 				{
 					case 'item_id':
@@ -1177,7 +1176,6 @@ return $result;
 				
 						return ['status' => false , 'value' => ''  , 'order_type' =>   $order_type];
 					}else{
-						exit();
 						return ['status' => true , 'value' => $result , 'order_type' =>   $order_type];
 					}
 				}
