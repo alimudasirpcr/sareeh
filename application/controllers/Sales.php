@@ -8224,7 +8224,7 @@ class Sales extends Secure_area
 		
 		$categories_response = array();
 		$this->load->model('Appfile');
-		if($this->config->item('show_top_items_category') ){   
+	
 			$categories_response[] = array(
 				'items_count' => 0,
 				'categories_count'=>0,
@@ -8234,8 +8234,8 @@ class Sales extends Secure_area
 				'image_id' => 0, 
 				'image_timestamp' =>''
 			);
-		}
-		if($this->config->item('show_my_sareeh_category') ){
+		
+		
 		
 		$categories_response[] = array(
 			'items_count' => 0,
@@ -8246,7 +8246,7 @@ class Sales extends Secure_area
 			'image_id' => 0, 
 			'image_timestamp' =>''
 		);
-	}
+	
 		foreach($categories as $id=>$value)
 		{
 
