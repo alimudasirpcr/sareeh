@@ -113,7 +113,7 @@
                <div class="w-50 px-1 ">
                <div class="border border-gray-300 border-dashed rounded py-3 px-2 mb-3  min-h-100px">
                 <div class="fs-4 fw-bold text-gray-700">
-                    <span class="w-75px">  <?php echo to_currency($spend_amount_for_points - $person_info->current_spend_for_points); ?></span>
+                    <span class="w-75px">  <?php echo to_currency((float) $spend_amount_for_points - (float) $person_info->current_spend_for_points); ?></span>
                 </div>
                 <div class="fw-semibold text-muted"><?php 
 						
