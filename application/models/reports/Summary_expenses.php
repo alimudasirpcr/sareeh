@@ -93,7 +93,7 @@ class Summary_expenses extends Report
 				$this->db->offset($this->params['offset']);
 			}
 		}
-		
+	
 		return $this->db->get()->result_array();		
 	}
 	

@@ -5620,7 +5620,7 @@ class Sales extends Secure_area
 		$this->Sale->save_open_suspended_sale($sale_id);
 
 
-		if ($this->config->item('allow_drag_drop_sale') == 1 && !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
+		if ( !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
 			$cart_items = $this->cart->get_list_sort_by_receipt_sort_order();
 		}
 		// dd($this->cart);
