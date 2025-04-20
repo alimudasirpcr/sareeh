@@ -301,7 +301,6 @@ class Specific_employee extends Report
 		
 		$ret = $this->db->get();
 		
-		echo $this->db->last_query(); exit();
 		return $ret['sale_count'];
 
 	}
