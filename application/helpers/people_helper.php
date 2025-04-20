@@ -21,7 +21,7 @@ function employee_name_data_function($person)
 	$twelve_months_ago = date('Y-m-d', strtotime('-12 months'));
 	$today = date('Y-m-d').'%2023:59:59';
 	
-	$data['link']= site_url('reports/generate/specific_employee?report_type=complex&report_date_range_simple=CUSTOM&start_date='.$twelve_months_ago.'&start_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime($twelve_months_ago)).'&end_date='.$today.'&end_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime(date('Y-m-d'))).'&employee_id='.$person->person_id.'&sale_type=all&export_excel=0');
+	$data['link']= site_url('reports/generate/specific_employee?employee_type=logged_in_employee&report_type=complex&report_date_range_simple=CUSTOM&start_date='.$twelve_months_ago.'&start_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime($twelve_months_ago)).'&end_date='.$today.'&end_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime(date('Y-m-d'))).'&employee_id='.$person->person_id.'&sale_type=all&export_excel=0');
 
 	return $data;
 }
