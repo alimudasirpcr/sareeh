@@ -435,12 +435,7 @@ $this->load->view("partial/offline_header"); ?>
                 <?php } else { ?>
 
                 <ul>
-                    <li><a href="#" id="layaway_sale_button" class="text-danger"><i class="ion-pause"></i>
-                            <?php echo ($this->config->item('user_configured_layaway_name') ? $this->config->item('user_configured_layaway_name') : lang('layaway')); ?></a>
-                    </li>
-                    <li><a href="#" id="estimate_sale_button"><i class="ion-help-circled"></i>
-                            <?php echo ($this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate')); ?></a>
-                    </li>
+                    
 
                     <?php if (isset($additional_sale_types_suspended)) : foreach ($additional_sale_types_suspended as $sale_suspend_type) { ?>
                     <li><a href="#" class="additional_suspend_button"
