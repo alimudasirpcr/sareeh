@@ -264,6 +264,7 @@ class Specific_employee extends Report
 
 	public function getTotalRows()
 	{
+		save_query();
 		$location_ids = self::get_selected_location_ids();
 		$this->db->select("COUNT(sale_id) as sale_count");
 		$this->db->from('sales');
@@ -298,7 +299,9 @@ class Specific_employee extends Report
 		
 		$this->db->where('sales.deleted', 0);
 		
-		$ret = $this->db->get()->row_array();
+		$ret = $this->db->get();
+		echo $this->db->last_query(); exit();
+
 		
 		return $ret['sale_count'];
 
