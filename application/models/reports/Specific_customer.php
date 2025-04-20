@@ -299,7 +299,7 @@ class Specific_customer extends Report
 		
 		$ret = $this->db->get();
     
-		if (!$ret) {
+		if (!$ret || $ret->num_rows() ==0 ) {
 			error_log("DB Error: " . $this->db->error()['message']); 
 			return 0;
 		}
