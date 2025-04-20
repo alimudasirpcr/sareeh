@@ -68,7 +68,7 @@ class Woo_tax_classes extends MY_Woo
 			$tax_class_info = $this->CI->Tax_class->get_info($phppos_tax_class_id);
 			$this->data['name'] = $tax_class_info->name;
 			
-			if (!$tax_class_info->ecommerce_tax_class_id)
+			if (!$tax_class_info->ecommerce_tax_class_id && isset($this->response['slug']))
 			{
 				$this->response = parent::do_post(self::post_endpoint);
 				if ($phppos_tax_class_id !== FALSE)
