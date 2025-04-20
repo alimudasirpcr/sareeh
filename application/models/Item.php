@@ -494,7 +494,7 @@ return $result;
 			$result = $this->db->query("
 			(
 				SELECT 
-					$items_table.item_id, tax_included, override_default_tax, unit_price, name, size, COALESCE(phppos_items.main_image_id,$item_images_table.image_id) as image_id 
+					$items_table.item_id, tax_included, $items_table.override_default_tax, unit_price, name, size, COALESCE(phppos_items.main_image_id,$item_images_table.image_id) as image_id 
 				FROM 
 					$items_table LEFT JOIN $item_images_table on ($items_table.item_id = $item_images_table.item_id) $location_ban_item_query_left_join
 				WHERE 
@@ -514,7 +514,7 @@ return $result;
 			) 
 			UNION ALL
 			(
-				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), tax_included, override_default_tax, unit_price, name, '', main_image_id as image_id
+				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), tax_included, $item_kits_table.override_default_tax, unit_price, name, '', main_image_id as image_id
 				FROM $item_kits_table $location_ban_item_kit_query_left_join
 				WHERE 
 					item_kit_inactive = 0 and deleted = 0 $location_ban_item_kit_query_where and 
@@ -537,7 +537,7 @@ return $result;
 			$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 			$result = $this->db->query("
 			(
-				SELECT $items_table.item_id, $items_table.unit_price, tax_included, override_default_tax, name,size, COALESCE( $items_table.main_image_id,$item_images_table.image_id) as image_id 
+				SELECT $items_table.item_id, $items_table.unit_price, tax_included, $items_table.override_default_tax, name,size, COALESCE( $items_table.main_image_id,$item_images_table.image_id) as image_id 
 				FROM $items_table 
 					LEFT JOIN $item_images_table ON( $items_table.item_id =  $item_images_table.image_id) 
 					$location_ban_item_query_left_join 
@@ -555,7 +555,7 @@ return $result;
 			) 
 			UNION ALL 
 			(
-				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), unit_price, tax_included, override_default_tax, name, '', main_image_id as image_id 
+				SELECT CONCAT('KIT ',$item_kits_table.item_kit_id), unit_price, tax_included, $item_kits_table.override_default_tax, name, '', main_image_id as image_id 
 				FROM $item_kits_table $location_ban_item_kit_query_left_join
 				WHERE 
 					item_kit_inactive = 0 and deleted = 0 $location_ban_item_kit_query_where and 
@@ -579,7 +579,7 @@ return $result;
 			SELECT 
 				phppos_items.item_id, 
 				tax_included, 
-				override_default_tax, 
+				phppos_items.override_default_tax, 
 				unit_price, 
 				name, 
 				size, 
@@ -605,7 +605,7 @@ return $result;
 			SELECT 
 				phppos_item_kits.item_kit_id, 
 				tax_included, 
-				override_default_tax, 
+				phppos_items.override_default_tax, 
 				unit_price, 
 				name, 
 				'', 
@@ -627,8 +627,6 @@ return $result;
 		name 
 	LIMIT 0, 20;");
 	}
-
-	echo $this->db->last_query();
 
 		return $result;
 	}
