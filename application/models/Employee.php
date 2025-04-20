@@ -1147,7 +1147,7 @@ class Employee extends Person
 		if($this->session->userdata('person_id')!=false){
 			//now check in db
 
-			return 0;
+			
 			if($this->exists($this->session->userdata('person_id'))){
 				return $this->login_failed_time_period_via_id($this->session->userdata('person_id'));
 			}else{
@@ -1225,7 +1225,7 @@ class Employee extends Person
 	function get_logged_in_employee_current_location_id()
 	{
 		
-		if($this->is_logged_in())
+		if($this->session->userdata('person_id')!=false)
 		{
 			//If we have a location in the session
 			if ($this->session->userdata('employee_current_location_id')!==NULL)
