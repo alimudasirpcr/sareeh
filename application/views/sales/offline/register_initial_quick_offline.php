@@ -2555,6 +2555,7 @@ $this->load->view("partial/offline_header"); ?>
 
         <script>
         function amount_tendered_input_changed() {
+            console.log("callled");
 
             if ($("#payment_types").val() == "Giftcard") {
                 $('#finish_sale').removeClass('hidden');
