@@ -3465,8 +3465,8 @@ return $result;
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'price_field' => $row->$price_field,
 					'override_default_tax' => $row->override_default_tax,
-				'max_discount' => $max_discount,
-				'can_override_price_adjustments' => $can_override_price_adjustments,
+					'max_discount' => $max_discount,
+					'can_override_price_adjustments' => $can_override_price_adjustments,
 					'tax_included' => $row->tax_included,
 					'tax_percent' => $tax ,
 					'category' => $row->category,
@@ -4060,7 +4060,7 @@ return $result;
 
       		// Query 4
 
-			$this->db->select("$quantity_field as quantity,additional_item_numbers.*, item_variations.id as item_variation_id, items.main_image_id as image_id, items.unit_price, items.cost_price, categories.name as category, (CASE WHEN ".$item_variations_table.".supplier_id THEN ".$item_variations_table.".supplier_id ELSE ".$items_table.".supplier_id END) AS supplier_id", false);
+			$this->db->select("$quantity_field as quantity,additional_item_numbers.*, item_variations.id as item_variation_id, items.name as item_name, items.main_image_id as image_id, items.unit_price, items.cost_price, categories.name as category, (CASE WHEN ".$item_variations_table.".supplier_id THEN ".$item_variations_table.".supplier_id ELSE ".$items_table.".supplier_id END) AS supplier_id", false);
 			$this->db->from('additional_item_numbers');
 			$this->db->join('items', 'additional_item_numbers.item_id = items.item_id');
 			if (!$this->config->item('speed_up_search_queries'))
@@ -4097,7 +4097,7 @@ return $result;
 			foreach($by_additional_item_numbers->result() as $row)
 			{
 				$data = array(
-					'label' => $row->item_number. ' - '.($price_field ? to_currency($row->$price_field) : ''),
+					'label' => $row->item_number. '('.$row->item_name.') - '.($price_field ? to_currency($row->$price_field) : ''),
 					'price_field' => $row->$price_field,
 					'image' => $row->image_id && !$this->config->item('dont_show_images_in_search_suggestions') ?  cacheable_app_file_url($row->image_id) : base_url()."assets/img/item.png" ,
 					'category' => $row->category,
