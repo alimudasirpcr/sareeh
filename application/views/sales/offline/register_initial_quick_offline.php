@@ -1622,7 +1622,9 @@ $this->load->view("partial/offline_header"); ?>
 
                     <?php echo form_open("sales/cancel_sale", array('id' => 'cancel_sale_form', 'autocomplete' => 'off', 'class' => 'd-flex    h-42px')); ?>
 
-                    <?php if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
+                    <?php
+                    echo $mode;
+                     if ($mode != 'store_account_payment' && $mode != 'purchase_points') { ?>
 
                     <?php if ($this->Employee->has_module_action_permission('sales', 'suspend_sale', $this->Employee->get_logged_in_employee_info()->person_id) && $customer_required_check && $suspended_sale_customer_required_check && !$this->config->item('test_mode')) { ?>
                     <div class="d-flex bg-primary p-3 flex-center w-100px h-42px me-1 "
