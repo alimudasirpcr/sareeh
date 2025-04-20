@@ -1877,7 +1877,7 @@ function salesBeforeSubmit() {
     $('.cart-number').html(<?php echo $cart_count; ?>);
     <?php } ?>
     $("#ajax-loader").show();
-    $("#add_payment_button").hide();
+    // $("#add_payment_button").hide();
     $("#finish_sale_button").hide();
 }
 
