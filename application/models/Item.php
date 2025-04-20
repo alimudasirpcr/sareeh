@@ -605,7 +605,7 @@ return $result;
 			SELECT 
 				phppos_item_kits.item_kit_id, 
 				tax_included, 
-				phppos_items.override_default_tax, 
+				phppos_item_kits.override_default_tax, 
 				unit_price, 
 				name, 
 				'', 
