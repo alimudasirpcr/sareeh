@@ -225,7 +225,7 @@ abstract class Report extends MY_Model
 		}
 		else
 		{
-			return [];
+			return array($CI->Employee->get_logged_in_employee_current_location_id());
 		}
 	}
 	public static function get_selected_company()
