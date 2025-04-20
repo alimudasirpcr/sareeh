@@ -2315,9 +2315,9 @@ class Employee extends Person
 		$this->lang->load('items');
 		$columns = array(
 			'person_id' => 											array('sort_column' => 'pid', 'label' => lang('person_id')),
-			'full_name' => 											array('sort_column' => 'full_name','label' => lang('name'),'data_function' => 'customer_name_data_function','format_function' => 'customer_name_formatter','html' => TRUE),
-			'first_name' => 										array('sort_column' => 'first_name','label' => lang('first_name'),'data_function' => 'customer_name_data_function','format_function' => 'customer_name_formatter','html' => TRUE),
-			'last_name' => 											array('sort_column' => 'last_name','label' => lang('last_name'),'data_function' => 'customer_name_data_function','format_function' => 'customer_name_formatter','html' => TRUE),
+			'full_name' => 											array('sort_column' => 'full_name','label' => lang('name'),'data_function' => 'employee_name_data_function','format_function' => 'customer_name_formatter','html' => TRUE),
+			'first_name' => 										array('sort_column' => 'first_name','label' => lang('first_name'),'data_function' => 'employee_name_data_function','format_function' => 'customer_name_formatter','html' => TRUE),
+			'last_name' => 											array('sort_column' => 'last_name','label' => lang('last_name'),'data_function' => 'employee_name_data_function','format_function' => 'customer_name_formatter','html' => TRUE),
 			'email' => 													array('sort_column' => 'email','label' => lang('email'),'format_function' => 'email_formatter','html' => TRUE),
 			'username' => 											array('sort_column' => 'username','label' => lang('username')),
 			'location' => 											array('sort_column' => 'location','label' => lang('location').' ('.lang('can_have_multiple').')'),

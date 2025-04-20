@@ -12,7 +12,19 @@ function customer_name_data_function($person)
 
 	return $data;
 }
+function employee_name_data_function($person)
+{
+	$CI =& get_instance();
+	$data = array();
+	
+	$avatar_url=$person->image_id ?  cacheable_app_file_url($person->image_id) : base_url('assets/assets/images/avatar-default.jpg');
+	$twelve_months_ago = date('Y-m-d', strtotime('-12 months'));
+	$today = date('Y-m-d').'%2023:59:59';
+	
+	$data['link']= site_url('reports/generate/specific_employee?report_type=complex&report_date_range_simple=CUSTOM&start_date='.$twelve_months_ago.'&start_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime($twelve_months_ago)).'&end_date='.$today.'&end_date_formatted='.date(get_date_format().' '.get_time_format(), strtotime(date('Y-m-d'))).'&employee_id='.$person->person_id.'&sale_type=all&export_excel=0');
 
+	return $data;
+}
 function customer_name_formatter($person,$data)
 {
 	$CI =& get_instance();
