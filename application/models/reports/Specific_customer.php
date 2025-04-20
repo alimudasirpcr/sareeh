@@ -299,13 +299,13 @@ class Specific_customer extends Report
 		
 		$ret = $this->db->get();
     
-		if (!$ret || $ret->num_rows() ==0 ) {
+		if (!$ret  ) {
 			error_log("DB Error: " . $this->db->error()['message']); 
 			return 0;
 		}
 	
 		$row = $ret->row_array();
-		return $ret['sale_count'];
+		return $row['sale_count'];
 	}
 	
 	
