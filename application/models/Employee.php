@@ -1224,6 +1224,7 @@ class Employee extends Person
 	*/
 	function get_logged_in_employee_current_location_id()
 	{
+		return 0;
 		if($this->is_logged_in())
 		{
 			//If we have a location in the session
@@ -1233,7 +1234,7 @@ class Employee extends Person
 			}
 			
 			//Return the first location user is authenticated for
-			// return current($this->get_authenticated_location_ids($this->session->userdata('person_id')));
+			return current($this->get_authenticated_location_ids($this->session->userdata('person_id')));
 		}else{
 			return 1;
 		}
