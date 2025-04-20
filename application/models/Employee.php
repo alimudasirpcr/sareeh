@@ -1233,7 +1233,7 @@ class Employee extends Person
 			}
 			
 			//Return the first location user is authenticated for
-			return current($this->get_authenticated_location_ids($this->session->userdata('person_id')));
+			// return current($this->get_authenticated_location_ids($this->session->userdata('person_id')));
 		}else{
 			return 1;
 		}
