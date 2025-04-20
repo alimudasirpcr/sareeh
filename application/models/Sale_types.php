@@ -37,7 +37,7 @@ class Sale_types extends MY_Model
 	{
 
 	
-		$location =1;
+		$location =$this->Employee->get_logged_in_employee_current_location_id();
 		$this->db->from('sale_types');
 		// $this->db->where('system_sale_type',0);
 	
