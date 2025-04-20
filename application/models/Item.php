@@ -628,6 +628,8 @@ return $result;
 	LIMIT 0, 20;");
 	}
 
+	echo $this->db->last_query();
+
 		return $result;
 	}
 	
