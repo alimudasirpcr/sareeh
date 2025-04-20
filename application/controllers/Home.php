@@ -138,36 +138,40 @@ class Home extends Secure_area
 		$sales_type_tbl= $this->db->dbprefix('sale_types');
 		
 		 $sale_status = get_query_data("
-				SELECT 
-					st.id AS sale_type_id,
-					st.name AS sale_type_name,
-					COALESCE(COUNT(s.sale_id), 0) AS sale_count,
-					ROUND(CASE 
-						WHEN total_sales.total_count > 0 
-						THEN COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 
-						ELSE 0 
-					END ,2) AS percentage,
-					CASE 
-						WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 0 AND 15 THEN 'danger'
-						WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 15 AND 30 THEN 'warning'
-						WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 30 AND 45 THEN 'dark'
-						WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 45 AND 60 THEN 'primary'
-						WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 60 AND 75 THEN 'secondary'
-						WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 75 AND 90 THEN 'info'
-						ELSE 'success'
-					END AS color
-				FROM 
-				".$sales_type_tbl." st
-				LEFT JOIN ".$sales_tbl." s ON st.id = s.suspended AND s.location_id = ".$current_location_id." -- Adjust this condition as needed
-				CROSS JOIN (SELECT COUNT(*) AS total_count FROM ".$sales_tbl." WHERE location_id = ".$current_location_id.") AS total_sales -- This assumes location is a relevant filter
-				GROUP BY 
-					st.id, st.name
-				ORDER BY 
-					CASE 
-						WHEN total_sales.total_count > 0 
-						THEN COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 
-						ELSE 0 
-					END desc
+		 SELECT 
+    st.id AS sale_type_id,
+    st.name AS sale_type_name,
+    COALESCE(COUNT(s.sale_id), 0) AS sale_count,
+    ROUND(CASE 
+        WHEN total_sales.total_count > 0 
+        THEN COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 
+        ELSE 0 
+    END ,2) AS percentage,
+    CASE 
+        WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 0 AND 15 THEN 'danger'
+        WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 15 AND 30 THEN 'warning'
+        WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 30 AND 45 THEN 'dark'
+        WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 45 AND 60 THEN 'primary'
+        WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 60 AND 75 THEN 'secondary'
+        WHEN total_sales.total_count > 0 AND COALESCE(COUNT(s.sale_id), 0) / total_sales.total_count * 100 BETWEEN 75 AND 90 THEN 'info'
+        ELSE 'success'
+    END AS color
+FROM 
+".$sales_type_tbl." st
+LEFT JOIN ".$sales_tbl." s 
+    ON st.id = s.suspended AND s.location_id = ".$current_location_id."
+CROSS JOIN 
+    (SELECT COUNT(*) AS total_count FROM ".$sales_tbl." WHERE location_id = ".$current_location_id.") AS total_sales
+WHERE 
+    st.location = ".$current_location_id."
+GROUP BY 
+    st.id, st.name, total_sales.total_count
+ORDER BY 
+    percentage DESC;
+
+
+
+				
 		 ");
 	
 		$data['sale_status'] = $sale_status;
