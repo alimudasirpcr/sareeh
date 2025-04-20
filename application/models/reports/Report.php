@@ -134,7 +134,7 @@ abstract class Report extends MY_Model
 				}
 				elseif (!$location_ids)
 				{
-					$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : [];
+					$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
 					$location_ids = implode(',',$location_ids);
 				}
 		}else{
