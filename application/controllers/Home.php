@@ -158,8 +158,8 @@ class Home extends Secure_area
 					END AS color
 				FROM 
 				".$sales_type_tbl." st
-				LEFT JOIN ".$sales_tbl." s ON st.id = s.suspended AND s.location_id = 1 -- Adjust this condition as needed
-				CROSS JOIN (SELECT COUNT(*) AS total_count FROM ".$sales_tbl." WHERE location_id = 1) AS total_sales -- This assumes location is a relevant filter
+				LEFT JOIN ".$sales_tbl." s ON st.id = s.suspended AND s.location_id = ".$current_location_id." -- Adjust this condition as needed
+				CROSS JOIN (SELECT COUNT(*) AS total_count FROM ".$sales_tbl." WHERE location_id = ".$current_location_id.") AS total_sales -- This assumes location is a relevant filter
 				GROUP BY 
 					st.id, st.name
 				ORDER BY 
