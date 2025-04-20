@@ -299,9 +299,9 @@ class Specific_employee extends Report
 		
 		$this->db->where('sales.deleted', 0);
 		
-		$ret = $this->db->get()->row_array();
+		$ret = $this->db->get();
 		
-		
+		echo $this->db->last_query(); exit();
 		return $ret['sale_count'];
 
 	}
