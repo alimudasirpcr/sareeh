@@ -506,7 +506,7 @@ return $result;
 			GROUP BY item_id ORDER BY name) 
 			
 			UNION ALL (
-			SELECT CONCAT('KIT ',item_kit_id), unit_price, name, main_image_id as image_id,'' as SIZE
+			SELECT CONCAT('KIT ',item_kit_id), unit_price, name, main_image_id as image_id,'' as SIZE , $items_table.tax_included , $items_table.override_default_tax
 			FROM $item_kits_table 
 			WHERE deleted = 0 
 			and $item_kits_table.is_favorite = 1
