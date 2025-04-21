@@ -1612,16 +1612,17 @@ $this->load->view("partial/offline_header"); ?>
                                                 id="by_category">Categories</a>
                                         </div>
                                         <div class="menu-item px-3">
-                                            <a href="javascript:void(0);" class=" menu-link px-3" id="by_tag">Tags</a>
-                                        </div>
-                                        <div class="menu-item px-3">
                                             <a href="javascript:void(0);" class=" menu-link px-3"
                                                 id="by_supplier">Suppliers</a>
                                         </div>
                                         <div class="menu-item px-3">
+                                            <a href="javascript:void(0);" class=" menu-link px-3" id="by_tag">Tags</a>
+                                        </div>
+                                      
+                                        <!-- <div class="menu-item px-3">
                                             <a href="javascript:void(0);" class=" menu-link px-3"
                                                 id="by_favorite">Favorite</a>
-                                        </div>
+                                        </div> -->
                                         <!--end::Menu item-->
 
                                     </div>
