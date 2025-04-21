@@ -23,3 +23,11 @@ function get_config_key_shared($key)
 	
 	return NULL;
 }
+
+
+function is_advance($key) {
+    $advanced_keys = ['taxjar_api_key'];
+    if (in_array($key, $advanced_keys)) {
+        echo 'd-none';
+    }
+}

@@ -618,9 +618,9 @@ label.form-check-label {
             <!--begin::Content-->
             <div id="config_taxes_info" class="collapse show">
                 <!--begin::Card body-->
-                <div class="card-body border-top p-9">
+                <div class="card-body border-top p-9 ">
 
-                    <div class="form-group">
+                    <div class="form-group <?= is_advance('taxjar_api_key'); ?>">
                         <?php echo form_label(lang('config_taxjar_api_key').':', 'taxjar_api_key',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
