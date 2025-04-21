@@ -4926,7 +4926,7 @@ $(document).ready(function() {
         current_supplier_id = supplier_id;
         //Get sub categories then items
         $.get('<?php echo site_url("sales/supplier_items"); ?>/' + supplier_id + '/' + offset, function(json) {
-            processSupplierItemsResult(json);
+            processCategoriesAndItemsResult(json , false  ,  categories_stack);
         }, "json");
     }
 
