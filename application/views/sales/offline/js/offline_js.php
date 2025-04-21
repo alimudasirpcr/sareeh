@@ -356,7 +356,7 @@ for (var k = 0; k < json.suppliers.length; k++) {
     $("#category_item_selection").append(supplier_item);
 
     $('.register-holder.categories-holder').click(function() {
-        if ( parseInt((this).data('supplier_id')) > 0) {
+        if ( parseInt($(this).data('supplier_id')) > 0) {
             // Remove selected-holder class from siblings
             $(this).siblings().removeClass('selected-holder');
 
