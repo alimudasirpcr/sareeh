@@ -717,16 +717,16 @@ return $result;
 		
 		if (!$hide_out_of_stock_grid)
 		{
-			$result = $this->db->query("(SELECT item_id, unit_price,name, image_id FROM $items_table LEFT JOIN $items_images_table USING (item_id) INNER JOIN $items_tags_table USING (item_id)
-			WHERE deleted = 0 and system_item = 0 and $items_tags_table.tag_id = $tag_id and $items_table.item_id NOT IN (SELECT item_id FROM phppos_grid_hidden_items WHERE location_id=$location_id) GROUP BY item_id ORDER BY name) UNION ALL (SELECT CONCAT('KIT ',item_kit_id), unit_price, name, main_image_id as image_id FROM $item_kits_table INNER JOIN $item_kits_tags_table USING (item_kit_id)
+			$result = $this->db->query("(SELECT item_id, unit_price,name, image_id , $items_table.tax_included , $items_table.override_default_tax FROM $items_table LEFT JOIN $items_images_table USING (item_id) INNER JOIN $items_tags_table USING (item_id)
+			WHERE deleted = 0 and system_item = 0 and $items_tags_table.tag_id = $tag_id and $items_table.item_id NOT IN (SELECT item_id FROM phppos_grid_hidden_items WHERE location_id=$location_id) GROUP BY item_id ORDER BY name) UNION ALL (SELECT CONCAT('KIT ',item_kit_id), unit_price, name, main_image_id as image_id , $item_kits_table.tax_included , $item_kits_table.override_default_tax FROM $item_kits_table INNER JOIN $item_kits_tags_table USING (item_kit_id)
 			WHERE deleted = 0 and $item_kits_tags_table.tag_id = $tag_id and $item_kits_table.item_kit_id NOT IN (SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id=$location_id) ORDER BY name) ORDER BY name LIMIT $offset, $limit");
 		}
 		else
 		{
 			$location_items_table = $this->db->dbprefix('location_items ');
 			$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
-			$result = $this->db->query("(SELECT i.item_id, i.unit_price, name,size, image_id FROM $items_table as i LEFT JOIN $items_images_table USING (item_id) INNER JOIN $items_tags_table USING (item_id) LEFT JOIN $location_items_table as li ON i.item_id = li.item_id and li.location_id = $current_location
-			WHERE (quantity > 0 or quantity IS NULL or is_service = 1) and deleted = 0 and system_item = 0 and $items_tags_table.tag_id = $tag_id and i.item_id NOT IN (SELECT item_id FROM phppos_grid_hidden_items WHERE location_id=$location_id) GROUP BY i.item_id ORDER BY name) UNION ALL (SELECT CONCAT('KIT ',item_kit_id), unit_price, name, '', main_image_id as image_id FROM $item_kits_table INNER JOIN $item_kits_tags_table USING (item_kit_id)
+			$result = $this->db->query("(SELECT i.item_id, i.unit_price, name,size, image_id , i.tax_included , i.override_default_tax FROM $items_table as i LEFT JOIN $items_images_table USING (item_id) INNER JOIN $items_tags_table USING (item_id) LEFT JOIN $location_items_table as li ON i.item_id = li.item_id and li.location_id = $current_location
+			WHERE (quantity > 0 or quantity IS NULL or is_service = 1) and deleted = 0 and system_item = 0 and $items_tags_table.tag_id = $tag_id and i.item_id NOT IN (SELECT item_id FROM phppos_grid_hidden_items WHERE location_id=$location_id) GROUP BY i.item_id ORDER BY name) UNION ALL (SELECT CONCAT('KIT ',item_kit_id), unit_price, name, '', main_image_id as image_id , $item_kits_table.tax_included , $item_kits_table.override_default_tax FROM $item_kits_table INNER JOIN $item_kits_tags_table USING (item_kit_id)
 			WHERE deleted = 0 and $item_kits_tags_table.tag_id = $tag_id and $item_kits_table.item_kit_id NOT IN (SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id=$location_id) ORDER BY name) ORDER BY name LIMIT $offset, $limit");
 		}
 		
