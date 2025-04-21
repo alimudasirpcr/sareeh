@@ -8468,6 +8468,7 @@ class Sales extends Secure_area
 		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
 		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
 		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
+		$categories_and_items_response = [];
 		if(isset($items_result)){
 
 	
