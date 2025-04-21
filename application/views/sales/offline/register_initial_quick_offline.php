@@ -2806,7 +2806,7 @@ $this->load->view("partial/offline_header"); ?>
                         top: 50%;
                     }
                     </style>
-                    <div class="spinner" id="grid-loader2tes" style="display: none;">
+                    <div class="spinner" id="grid-loader2" style="display: none;">
                         <div class="rect1"></div>
                         <div class="rect2"></div>
                         <div class="rect3"></div>
