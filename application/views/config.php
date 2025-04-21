@@ -633,7 +633,7 @@ label.form-check-label {
 
 
                     <div class="row ">
-                        <div class="col-md-6  mt-0 mb-0">
+                        <div class="col-md-6  mt-0 mb-0 <?= is_advance('taxjar_api_key'); ?>">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
                                     <div class="mb-1">
