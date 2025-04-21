@@ -8464,7 +8464,15 @@ class Sales extends Secure_area
 		$items = array();
 		
 		$items_result = $this->Item->get_all_item_by_supplier($supplier_id, $this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid') : 40)->result();
-		
+		$tax = 0;
+		$store_config_tax_class = $this->config->item('tax_class_id');
+		if ($store_config_tax_class)
+		{
+			$return_tax =  $this->Tax_class->get_taxes($store_config_tax_class);
+			if(!empty($return_tax)){
+				$tax = $return_tax[0]['percent'];
+			}
+		}
 		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
 		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
 		$max_discount_config = $this->config->item('max_discount_percent') !== '' ? $this->config->item('max_discount_percent') : NULL;
