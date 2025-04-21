@@ -8240,7 +8240,7 @@ class Sales extends Secure_area
 			$categories_response[] = array(
 				'items_count' => 0,
 				'categories_count'=>0,
-				'id' => 'top', 
+				'id' => 'favorite', 
 				'name' => lang('favorite'), 
 				'color' => '', 
 				'image_id' => 0, 
