@@ -4893,7 +4893,7 @@ $(document).ready(function() {
         current_tag_id = tag_id;
         //Get sub categories then items
         $.get('<?php echo site_url("sales/tag_items"); ?>/' + tag_id + '/' + offset, function(json) {
-            processTagItemsResult(json);
+            processCategoriesAndItemsResult(json , false  ,  categories_stack);
         }, "json");
     }
 
