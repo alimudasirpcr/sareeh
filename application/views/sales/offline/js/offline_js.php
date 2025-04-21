@@ -345,7 +345,7 @@ for (var k = 0; k < json.suppliers.length; k++) {
     // }
 
     supplier_item = '<li data-supplier_id="' + json.suppliers[k].id +
-        '" class=" col-2 category_item supplier register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol " data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+        '" class=" col-2 category_item supplier  categories-holder register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol " data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
         SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json
         .suppliers[k].image_timestamp +
         '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.suppliers[
