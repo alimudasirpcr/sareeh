@@ -758,7 +758,7 @@ return $result;
 			$location_items_table = $this->db->dbprefix('location_items ');
 			$current_location=$this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 			$result = $this->db->query("
-			SELECT i.item_id, i.unit_price, name,size, image_id ,tax_included, $items_table.override_default_tax
+			SELECT i.item_id, i.unit_price, name,size, image_id ,i.tax_included, i.override_default_tax
 			FROM $items_table as i 
 			LEFT JOIN $items_images_table USING (item_id) 
 			LEFT JOIN $location_items_table as li ON i.item_id = li.item_id and li.location_id = $current_location
