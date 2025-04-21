@@ -354,6 +354,18 @@ for (var k = 0; k < json.suppliers.length; k++) {
 
 
     $("#category_item_selection").append(supplier_item);
+
+    $('.register-holder.categories-holder').click(function() {
+        if ($(this).data('category_count') == 0) {
+            // Remove selected-holder class from siblings
+            $(this).siblings().removeClass('selected-holder');
+
+            // Add selected-holder class to the clicked element
+            $(this).addClass('selected-holder');
+        }
+    })
+
+    
 }
 $('#grid-loader2').hide();
 }
