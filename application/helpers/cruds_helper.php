@@ -989,5 +989,10 @@ function get_all_customers(){
 	$customers = $ci->Customer->get_all('', 0, -1, 0);
 	return $customers->unbuffered_row('array')['total'];
 }
-
+function is_advance($key) {
+    $advanced_keys = ['taxjar_api_key'];
+    if (in_array($key, $advanced_keys)) {
+        echo 'd-none';
+    }
+}
 ?>
