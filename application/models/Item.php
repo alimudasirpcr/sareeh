@@ -681,7 +681,7 @@ return $result;
 
 		}
 		
-	// echo $this->db->last_query();
+	echo $this->db->last_query();
 		return $result;
 	}
 	
