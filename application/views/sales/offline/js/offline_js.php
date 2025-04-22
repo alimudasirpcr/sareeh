@@ -4617,11 +4617,11 @@ function addItem(newItem) {
             newItem.discount_percent = cart['extra']['discount_all_percent'];
         }
 
-console.log('config.do_not_group_same_items' , config.do_not_group_same_items);
 
 
-        if (!config.do_not_group_same_items || config.do_not_group_same_items === '0' || newItem.name =='discount') {
 
+        if (!config.do_not_group_same_items || config.do_not_group_same_items == '0' || newItem.name =='discount') {
+            console.log('config.do_not_group_same_items sss' , config.do_not_group_same_items);
             if (edit_variation_index == 'none') {
                 if (parseInt(newItem.item_id) != 0) {
                     for (let item of cart.items) {
