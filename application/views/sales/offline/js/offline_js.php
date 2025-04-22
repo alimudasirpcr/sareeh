@@ -2724,6 +2724,7 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                         });
 
                     //  console.log('quantity_units' , cart_item);
+                    customArray = [];
 
                     if (typeof cart_item['quantity_units'] !== 'undefined') {
 
