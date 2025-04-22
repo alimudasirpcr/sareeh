@@ -4618,10 +4618,14 @@ function addItem(newItem) {
         }
 
 
+        if(newItem.name =='discount'){
+            // Remove any item with name === 'discount' before pushing newItem
+            cart['items'] = cart['items'].filter(item => item.name !== 'discount');
+        }
 
 
-        if (!config.do_not_group_same_items || config.do_not_group_same_items == '0' || newItem.name =='discount') {
-            console.log('config.do_not_group_same_items sss' , config.do_not_group_same_items);
+        if (!config.do_not_group_same_items || config.do_not_group_same_items == '0') {
+          
             if (edit_variation_index == 'none') {
                 if (parseInt(newItem.item_id) != 0) {
                     for (let item of cart.items) {
@@ -4634,7 +4638,7 @@ function addItem(newItem) {
                                     // }else{
                                     //     item.quantity = parseInt(item.quantity) - 1;
                                     // }
-                                    console.log('config.do_not_group_same_items' , config.do_not_group_same_items);
+
                             item.quantity = parseInt(item.quantity) + 1; // example: updating quantity
 
                             if (typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item !=
