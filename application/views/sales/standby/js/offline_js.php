@@ -1,5 +1,7 @@
 <script>
-
+const config = {
+    do_not_group_same_items: '<?= $this->config->item('do_not_group_same_items') ?>'
+};
 function isNumeric(str) {
   return /^[0-9]+$/.test(str);
 }
@@ -986,6 +988,9 @@ if (condition1 && condition2) {
 });
 Handlebars.registerHelper('equal', function(v1, v2, options) {
 return (v1 === v2) ? options.fn(this) : options.inverse(this);
+});
+Handlebars.registerHelper('notequal', function(v1, v2, options) {
+    return (v1 != v2) ? options.fn(this) : options.inverse(this);
 });
 Handlebars.registerHelper('or', function(v1, v2, options) {
 return (v1 == 1 || v2 == 1) ? options.fn(this) : options.inverse(this);
@@ -4302,7 +4307,7 @@ function addItem(newItem) {
         }
 
 
-    <?php if(!$this->config->item('do_not_group_same_items')): ?>
+        if (!config.do_not_group_same_items || config.do_not_group_same_items == '0') {
     if (edit_variation_index == 'none') {
         if (parseInt(newItem.item_id) != 0) {
             for (let item of cart.items) {
@@ -4332,7 +4337,7 @@ function addItem(newItem) {
         }
     }
 
-    <?php endif; ?>
+}
     if (!found) {
         if (cart['extra']['redeem'] == true  &&  newItem.name !='discount') {
             newItem.discount_percent = cart['extra']['discount_all_percent'];

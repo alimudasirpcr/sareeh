@@ -1931,6 +1931,7 @@ $this->load->view("partial/offline_header"); ?>
 
 								</td>
 								<td class="text-center fs-6">
+                                {{#notequal name 'discount'}}
 								<button type="button"  onclick="inc_de_qty('{{@index}}', -1)" class="btn w-25px h-25px  btn-icon rounded-circle btn-light"><i class="bi bi-dash fs-1"></i></button> 
 									<a href="#" id="quantity_{{@index}}" class="xeditable edit-quantity editable editable-click"
 										data-type="text" data-validate-number="true" data-pk="{{@index}}" data-name="quantity"
@@ -1940,6 +1941,11 @@ $this->load->view("partial/offline_header"); ?>
 										 {{qty}}
 		
 										</a><button type="button" onclick="inc_de_qty('{{@index}}', 1)" class="btn w-25px h-25px  btn-icon rounded-circle btn-light"> <i class="bi bi-plus fs-1"></i></button>
+
+                                        {{else}}
+                     {{qty}}
+
+                {{/notequal}}
 								</td>
 
 								<td class="text-center fs-6" style="padding-right:10px">
@@ -3022,6 +3028,10 @@ $this->load->view("partial/offline_header"); ?>
 
             </td>
             <td class="text-center fs-7">
+
+            {{#notequal name 'discount'}}
+
+
                 <i onclick="inc_de_qty('{{index}}', -1)"
                         class="icon ti-minus text-black cursor-pointer"></i>
             
@@ -3030,6 +3040,11 @@ $this->load->view("partial/offline_header"); ?>
                 
                <i
                         class="icon ti-plus text-black cursor-pointer" onclick="inc_de_qty('{{index}}', 1)"></i>
+
+                        {{else}}
+                     {{to_quantity quantity}}
+
+                {{/notequal}}
             </td>
 
             <td class="text-center fs-7" style="padding-right:10px">
