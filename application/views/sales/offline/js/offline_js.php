@@ -4617,6 +4617,8 @@ function addItem(newItem) {
             newItem.discount_percent = cart['extra']['discount_all_percent'];
         }
 
+console.log('config.do_not_group_same_items' , config.do_not_group_same_items);
+
 
         if (!config.do_not_group_same_items || config.do_not_group_same_items === '0' || newItem.name =='discount') {
 
@@ -4632,7 +4634,7 @@ function addItem(newItem) {
                                     // }else{
                                     //     item.quantity = parseInt(item.quantity) - 1;
                                     // }
-
+                                    console.log('config.do_not_group_same_items' , config.do_not_group_same_items);
                             item.quantity = parseInt(item.quantity) + 1; // example: updating quantity
 
                             if (typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item !=
