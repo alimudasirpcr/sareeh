@@ -1,5 +1,9 @@
 <script>
 
+const config = {
+    do_not_group_same_items: '<?= $this->config->item('do_not_group_same_items') ?>'
+};
+
     function sound(type = 'success'){
         if (ENABLE_SOUNDS) {
                 $.playSound(BASE_URL + 'assets/sounds/'+type);
@@ -4614,37 +4618,39 @@ function addItem(newItem) {
         }
 
 
-    <?php if(!$this->config->item('do_not_group_same_items')): ?>
-    if (edit_variation_index == 'none') {
-        if (parseInt(newItem.item_id) != 0) {
-            for (let item of cart.items) {
+        if (!config.do_not_group_same_items || config.do_not_group_same_items === '0' || newItem.name =='discount') {
 
-                if (item.item_id === newItem.item_id && (typeof item.free_item == 'undefined' || (typeof item
-                        .free_item != 'undefined' && item.free_item == false)) && typeof  item.is_returned =='undefined' ) {
+            if (edit_variation_index == 'none') {
+                if (parseInt(newItem.item_id) != 0) {
+                    for (let item of cart.items) {
 
-                            // if (cart['extra']['mode'] == 'sale') {
-                            //     item.quantity = parseInt(item.quantity) + 1;
-                            // }else{
-                            //     item.quantity = parseInt(item.quantity) - 1;
-                            // }
+                        if (item.item_id === newItem.item_id && (typeof item.free_item == 'undefined' || (typeof item
+                                .free_item != 'undefined' && item.free_item == false)) && typeof  item.is_returned =='undefined' ) {
 
-                     item.quantity = parseInt(item.quantity) + 1; // example: updating quantity
+                                    // if (cart['extra']['mode'] == 'sale') {
+                                    //     item.quantity = parseInt(item.quantity) + 1;
+                                    // }else{
+                                    //     item.quantity = parseInt(item.quantity) - 1;
+                                    // }
 
-                    if (typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item !=
-                        'undefined' && item.all_data.rules.rule_item == true) {
+                            item.quantity = parseInt(item.quantity) + 1; // example: updating quantity
 
-                        get_price_rule_for_item();
+                            if (typeof item.all_data.rules !== 'undefined' && typeof item.all_data.rules.rule_item !=
+                                'undefined' && item.all_data.rules.rule_item == true) {
+
+                                get_price_rule_for_item();
+                            }
+
+
+                            found = true;
+                            sound();
+                            break;
+                        }
                     }
-
-
-                    found = true;
-                    break;
                 }
             }
-        }
-    }
 
-    <?php endif; ?>
+        }
     if (!found) {
         if (cart['extra']['redeem'] == true  &&  newItem.name !='discount') {
             newItem.discount_percent = cart['extra']['discount_all_percent'];
