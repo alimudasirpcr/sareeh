@@ -1331,6 +1331,9 @@ Handlebars.registerHelper('conditionCheck', function(condition1, condition2, opt
 Handlebars.registerHelper('equal', function(v1, v2, options) {
     return (v1 === v2) ? options.fn(this) : options.inverse(this);
 });
+Handlebars.registerHelper('notequal', function(v1, v2, options) {
+    return (v1 != v2) ? options.fn(this) : options.inverse(this);
+});
 Handlebars.registerHelper('or', function(v1, v2, options) {
     return (v1 == 1 || v2 == 1) ? options.fn(this) : options.inverse(this);
 });
@@ -5127,6 +5130,7 @@ $(document).ready(function() {
 
                 cart = JSON.parse(localStorage.getItem('cart'));
             j = 0;
+
             if(  parseInt(item_obj.all_data.item_location_quantity) <= 0   &&  item_obj.all_data.permissions.do_not_allow_out_of_stock_items_to_be_sold =='1' ){
                 show_feedback('error', "<?= lang('sales_unable_to_add_item_out_of_stock');  ?>",
                     "<?php echo  lang('error') ?>");
