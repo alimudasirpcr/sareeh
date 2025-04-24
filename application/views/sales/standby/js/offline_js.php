@@ -1,7 +1,34 @@
 <script>
+
 const config = {
-    do_not_group_same_items: '<?= $this->config->item('do_not_group_same_items') ?>'
+    do_not_group_same_items: '<?= $this->config->item('do_not_group_same_items') ?>',
+    point_value: '<?php echo $this->config->item('point_value'); ?>',
+    minimum_points_to_redeem: '<?php echo $this->config->item('minimum_points_to_redeem'); ?>',
+    selectSalesPersonRequired: '<?php echo $this->config->item('select_sales_person_during_sale'); ?>',
+    markup_markdown_config : '<?php echo json_encode(unserialize($this->config->item('markup_markdown'))); ?>',
+    markupMarkdownDisabledAtLocation : '<?php echo $this->Location->get_info_for_key('disable_markup_markdown'); ?>',
+    scale_format: '<?= $this->config->item('scale_format') ?>',
+    scale_divide_by: parseInt('<?= $this->config->item('scale_divide_by') ?>'),
+    enable_scale: parseInt('<?= $this->config->item('enable_scale') ?>'),
+    item_lookup_order : '<?= json_encode(unserialize($this->config->item('item_lookup_order'))) ?>',
 };
+
+const giftCardLang = "<?php echo lang('giftcard'); ?>";
+const cannotAddZeroLang = "<?php echo lang('cannot_add_zero_payment'); ?>";
+const mustEnterNumericLang = "<?php echo lang('must_enter_numeric'); ?>";
+const errorTitle = "<?php echo lang('error'); ?>";
+const warningTitle = "<?php echo lang('warning'); ?>";
+const customerRequiredLang = "<?php echo lang('sales_customer_required_store_account'); ?>";
+const customerRequiredLangPoints = "<?php echo lang('sales_customer_required_for_points'); ?>";
+const storeAccountLang = "<?php echo lang('store_account'); ?>";
+const storeAccountZeroError = "<?php echo lang('store_account_payment_item_must_not_be_0'); ?>";
+const mustSelectSalesPersonLang = "<?php echo lang('sales_must_select_sales_person'); ?>";
+const pointsLang = "<?php echo lang('points'); ?>";
+const pointsTooMuchLang = "<?php echo lang('sales_points_to_much'); ?>";
+const pointsTooLittleLang = "<?php echo lang('sales_points_to_little'); ?>";
+const giftCardNotExistLang = "<?php echo lang('sales_giftcard_does_not_exist'); ?>";
+const giftCardBalanceIsLang = "<?php echo lang('sales_giftcard_balance_is'); ?>";
+const payment_options = <?php echo json_encode(array_values($payment_options)); ?>;
 function isNumeric(str) {
   return /^[0-9]+$/.test(str);
 }
@@ -1165,38 +1192,59 @@ $(document).on("click", '#clear_sale_button', function(event) {
         }
     });
 });
+async function handleFinishSaleBasic(e = null) {
+    if (e && typeof e.preventDefault === 'function') {
+        e.preventDefault();
+    }
 
-
-
-$(document).on("click", '#finish_sale_button', function(e) {
-    e.preventDefault();
-    bootbox.confirm(<?php echo json_encode(lang('sales_confirm_finish_sale')); ?>, function(result) {
-        if (result) {
-            //Reset cart
-            cart = {};
-            cart['items'] = [];
-            cart['payments'] = [];
-            cart['customer'] = {};
-            cart['extra'] = {};
-            cart['taxes'] = [];
-            var sale = localStorage.getItem('cart');
-            displayReceipt(JSON.parse(sale));
-            //Save sales
-            var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-
-            if (current_edit_index !== null) {
-                allSales[current_edit_index] = JSON.parse(sale);
-            } else {
-                allSales.push(JSON.parse(sale));
-            }
-            localStorage.setItem("sales", JSON.stringify(allSales));
-
-            current_edit_index = null;
-            renderUi();
+    const proceed = () => {
+        //adding the last payment
+        result = await addPayment({ preventDefault: () => {} });
+        if(!result){
+            return false;
         }
-    });
 
-});
+        // Reset cart structure
+        cart = {
+            items: [],
+            payments: [],
+            customer: {},
+            extra: {},
+            taxes: []
+        };
+
+        // Get last sale and show receipt
+        const sale = localStorage.getItem('cart');
+        displayReceipt(JSON.parse(sale));
+
+        // Save to "sales" array in localStorage
+        const allSales = JSON.parse(localStorage.getItem("sales")) || [];
+
+        if (current_edit_index !== null) {
+            allSales[current_edit_index] = JSON.parse(sale);
+        } else {
+            allSales.push(JSON.parse(sale));
+        }
+
+        localStorage.setItem("sales", JSON.stringify(allSales));
+        current_edit_index = null;
+
+        renderUi();
+    };
+
+    // Show confirm only if triggered via user event
+    if (e) {
+        const confirmMsg = <?php echo json_encode(lang('sales_confirm_finish_sale')); ?>;
+        bootbox.confirm(confirmMsg, function(result) {
+            if (result) proceed();
+        });
+    } else {
+        proceed();
+    }
+}
+
+
+$(document).on("click", "#finish_sale_button", handleFinishSaleBasic);
 
 $(document).on("click", '.modifier', function(event) {
     var index = $(this).data('index');
@@ -1726,39 +1774,50 @@ function removeElementsAfterId(array, id) {
     return array.slice(0, index + 1);
 }
 
-async function getAllTaxes() {
-
-    TaxesMap = {};
+async function fetchAndStoreTaxes() {
     const allDocs = await db_taxes.allDocs({
         include_docs: true,
         attachments: true
     });
-    results = allDocs.rows;
-    var taxesItems = results.filter(function(item) {
-      return item.id.includes('_taxes');
-  });
 
+    const results = allDocs.rows;
 
-    // Populate the global map
-    taxesItems.forEach(result => {
-        TaxesMap[result.doc._id.replace('_taxes', '')] = result.doc;
+    // Filter only tax documents and extract their actual data
+    const taxesItems = results
+        .filter(item => item.id.includes('_taxes'))
+        .map(item => item.doc); // <-- extract the `doc` part
+
+    // Save the cleaned data to localStorage
+    localStorage.setItem('TaxesMap', JSON.stringify(taxesItems));
+}
+function getTaxesFromLocalStorage() {
+    const taxes = localStorage.getItem('TaxesMap');
+    return taxes ? JSON.parse(taxes) : [];
+}
+function populateTaxSelect() {
+    const taxes = getTaxesFromLocalStorage();
+    const select = $('#tax_class');
+
+    select.empty();
+    select.append($('<option></option>').val('').html('None'));
+
+    taxes.forEach(item => {
+        const option = $('<option></option>')
+            .val(item.id)
+            .html(item.name)
+            .attr('data-is-default', item.is_default ? '1' : '0');
+
+        if (item.is_default) {
+            option.prop('selected', true);
+        }
+
+        select.append(option);
     });
-
-    TaxesMap = Object.entries(TaxesMap).map(([key, value]) => {
-                return {
-                    key: key,
-                    value: value
-                };
-            });
-
-    
-    var select = $('#tax_class');
-      select.empty();  // Ensure it's empty before loading new options
-      select.append($('<option></option>').html('None'));
-      // Assuming response is an array of tax classes
-      TaxesMap.forEach(function(item) {
-        select.append($('<option></option>').val(item.value.id).html(item.value.name));
-      });
+}
+async function getAllTaxes() {
+    console.log("callled all tax");
+    fetchAndStoreTaxes();
+    populateTaxSelect();
 
 
 }
@@ -2006,14 +2065,7 @@ function updateBreadcrumbs(breadcrumbTrail) {
 getAllCategories();
 
 
-const config = {
-    scale_format: '<?= $this->config->item('scale_format') ?>',
-    scale_divide_by: parseInt('<?= $this->config->item('scale_divide_by') ?>'),
-    enable_scale: parseInt('<?= $this->config->item('enable_scale') ?>'),
-    item_lookup_order : '<?= json_encode(unserialize($this->config->item('item_lookup_order'))) ?>',
-    // item_lookup_order : '["item_id","item_number","product_id","additional_item_numbers","serial_numbers","item_variation_item_number"]'
-}
-console.log(config);
+
 
 async function lookupItemId(item_number) {
     const default_image = '<?php echo base_url(); ?>' + 'assets/img/item.png';
@@ -2489,6 +2541,11 @@ $("#item").autocomplete({
 function selectPayment(e) {
     e.preventDefault();
     $('#payment_types').val($(this).data('payment'));
+    ret =  checkPaymentTypes();
+   
+   if(!ret){
+      return false;
+   }
     $('.select-payment').removeClass('active');
     $(this).addClass('active');
     $("#amount_tendered").focus();
@@ -2745,9 +2802,39 @@ function calculateCartValues(cart) {
     };
 }
 
+
+function getDefaultTaxFromLocalStorage() {
+    const storedTaxes = localStorage.getItem('TaxesMap');
+  
+    if (!storedTaxes) return null; // No taxes found
+
+    const taxesArray = JSON.parse(storedTaxes);
+
+    // Find the tax with is_default = true
+    const defaultTax = taxesArray.find(tax => tax.is_default);
+
+    return defaultTax ? defaultTax : null;
+}
+
+function add_default_tax_to_item() {
+    const taxobj = getDefaultTaxFromLocalStorage();
+
+    if (!taxobj || !taxobj.group) return;
+
+    console.log("add_default_tax_to_item" , cart);
+    cart.items.forEach((item, index) => {
+        if (!item.taxes || Object.keys(item.taxes).length === 0) {
+            cart.items[index].taxes = taxobj.group;
+        }
+    });
+}
+
+
+
         function renderUi() {
 
 $("#saved_sales_list").empty();
+add_default_tax_to_item();
 // console.log("UiRefreshed");
 var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
 
@@ -3462,7 +3549,7 @@ if (cart['customer'] && cart['customer']['person_id']) {
     $("#customer-panel").addClass('hidden');
     $("#select_customer_form").removeClass('hidden');
 }
-amount_tendered_input_changed();
+// amount_tendered_input_changed();
 
 
 $(".edit_taxes_item").click(function(e) {
@@ -3560,17 +3647,425 @@ $('.slider_button').click(function() {
 }
 
 
-function addPayment(e) {
-    e.preventDefault();
-    var amount = $("#amount_tendered").val();
-    var type = $("#payment_types").val();
+function hasSeriesPackages(cart) {
+    return cart.items?.some(item => item.all_data.is_series_package === true);
+}
+function getPreviousPayments(payment_type) {
+    const cart_obj = JSON.parse(localStorage.getItem('cart'));
+    if (!cart_obj.payments || !Array.isArray(cart_obj.payments)) {
+        return 0;
+    }
+
+    let total = 0;
+
+    cart_obj.payments.forEach(payment => {
+        if (payment.type === payment_type) {
+            total += parseFloat(payment.amount || 0);
+        }
+    });
+
+    return total;
+}
+
+function round(value, precision) {
+    const multiplier = Math.pow(10, precision || 2);
+    return Math.round(value * multiplier) / multiplier;
+}
+
+function amount_tendered_input_changed(cartValues) {
+    console.log("callled amount_tendered_input_changed");
+    amount_tendered  =  parseFloat($('#amount_tendered').val());
+		if ($("#payment_types").val() == giftCardLang) {
+            $('#finish_sale_button').removeClass('hidden').show();
+            $('#add_payment_button').addClass('hidden').hide();
+		} else if ($("#payment_types").val() == pointsLang) {
+   
+            $('#finish_sale_button').addClass('hidden').hide();
+            $('#add_payment_button').removeClass('hidden').show();
+		} else {
+			if ((cartValues.amount_due >= 0 && amount_tendered >= cartValues.amount_due) || (cartValues.amount_due < 0 && amount_tendered <= cartValues.amount_due)) {
+               
+				$('#finish_sale_button').removeClass('hidden').show();
+				$('#add_payment_button').addClass('hidden').hide();
+			} else {
+				$('#finish_sale_button').addClass('hidden').hide();
+				$('#add_payment_button').removeClass('hidden').show();
+			}
+		}
+
+	}
+
+    function generateMarkupPredictions(cartTotal, payment_options, markup_markdown_config, markupMarkdownDisabledAtLocation) {
+    const markup_predictions = {};
+
+    const isMarkupEnabled = markup_markdown_config && cartTotal > 0 && !markupMarkdownDisabledAtLocation;
+
+    if (isMarkupEnabled) {
+        payment_options.forEach(payment_type => {
+            const fee_percent = parseFloat(markup_markdown_config[payment_type] || 0);
+            const fee_amount = cartTotal * (fee_percent / 100);
+            markup_predictions[payment_type] = {
+                amount: parseFloat(fee_amount.toFixed(3)),
+                id: md5(payment_type)
+            };
+        });
+    }
+
+    return markup_predictions;
+}
+
+
+    function showMarkupIfNeeded(payment_type , cartValues) {
+        const cartTotal = parseFloat(cartValues.total);
+        const cart_obj = JSON.parse(localStorage.getItem('cart')); 
+		var payments_added = cart_obj.payments;
+        const markup_markdown_config = JSON.parse(config.markup_markdown_config);
+        const markupMarkdownDisabledAtLocation = config.markupMarkdownDisabledAtLocation === '1';
+		if (!payment_type || payments_added) {
+			return;
+		}
+
+		$('.markup_predictions').hide();
+
+		var markup_predictions = generateMarkupPredictions(cartTotal, payment_options, markup_markdown_config, markupMarkdownDisabledAtLocation);;
+
+		if (markup_predictions.length == 0) {
+			return;
+		}
+
+		var amount = markup_predictions[payment_type]['amount'];
+		var id = markup_predictions[payment_type]['id'];
+
+		if (amount) {
+			$('#' + id).show();
+		}
+	}
+function checkPaymentTypes() {
+    console.log("checkPaymentTypes");
+    const cart_obj = JSON.parse(localStorage.getItem('cart'));
+    const customerExists = cart_obj.customer && Object.keys(cart_obj.customer).length > 0;
+		var paymentType = $("#payment_types").val();
+        const cartValues = calculateCartValues(cart);
+        const amountDue = cartValues.amount_due;
+		switch (paymentType) {
+			<?php if (!$this->config->item('prompt_amount_for_cash_sale')) { ?>
+			   case <?php echo json_encode(lang('cash')); ?>:
+                   
+					$("#amount_tendered").val(amountDue);
+					$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('cash') . ' ' . lang('amount')); ?>);
+					break;
+				<?php } else { ?>
+				case <?php echo json_encode(lang('cash')); ?>:
+					$("#amount_tendered").val("");
+					$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('cash') . ' ' . lang('amount')); ?>);
+					break;
+				<?php } ?>
+
+			case <?php echo json_encode(lang('check')); ?>:
+				$("#amount_tendered").val(amountDue);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('check') . ' ' . lang('amount')); ?>);
+				break;
+			case <?php echo json_encode(lang('giftcard')); ?>:
+                console.log("checkPaymentTypes cart", amountDue);
+				$("#amount_tendered").val('');
+				$("#amount_tendered").prop('placeholder', '<?php echo lang('sales_swipe_type_giftcard'); ?>');
+				<?php if (!$this->config->item('disable_giftcard_detection')) { ?>
+					giftcard_swipe_field($("#amount_tendered"));
+				<?php } ?>
+				break;
+			case <?php echo json_encode(lang('debit')); ?>:
+				$("#amount_tendered").val(amountDue);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('debit') . ' ' . lang('amount')); ?>);
+				break;
+			case <?php echo json_encode(lang('credit')); ?>:
+				$("#amount_tendered").val(amountDue);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('credit') . ' ' . lang('amount')); ?>);
+				break;
+			case <?php echo json_encode(lang('store_account')); ?>:
+				$("#amount_tendered").val(amountDue);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('store_account') . ' ' . lang('amount')); ?>);
+				break;
+			case <?php echo json_encode(lang('points')); ?>:
+                if (
+                (!customerExists)
+            ) {
+                show_feedback('error', customerRequiredLangPoints, errorTitle);
+                return false;
+            }
+
+            
+                $number_of_points_to_use = 0;
+                const customer_info = cart_obj.customer;
+                    let  customer_points = parseFloat(customer_info.points ?? 0);
+
+                    let previousPayments = getPreviousPayments(paymentType);
+                    customer_points = customer_points - previousPayments;
+                    const payment_amount = parseFloat($('#amount_tendered').val());
+
+                    if (
+                        payment_amount > customer_points ||
+                        payment_amount <= 0 ||
+                        cartValues.amount_due <= 0
+                    ) {
+                        $number_of_points_to_use = 0;
+                    }
+
+                    if (
+                        config.minimum_points_to_redeem &&
+                        customer_points < config.minimum_points_to_redeem
+                    ) {
+                        $number_of_points_to_use = 0;
+                    }
+
+                  
+
+                    const max_points = Math.ceil(cartValues.amount_due / config.point_value);
+                    $number_of_points_to_use = Math.min(
+                        max_points * config.point_value,
+                        payment_amount * config.point_value,
+                        cartValues.amount_due
+                    );
+
+				$("#amount_tendered").val($number_of_points_to_use);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('points') . ' ' . lang('amount')); ?>);
+				break;
+			case <?php echo json_encode(lang('ebt')); ?>:
+				<?php
+				if (count($payments) == 0) {
+				?>
+					$("#amount_tendered").val();
+				<?php
+				}
+				?>
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('ebt') . ' ' . lang('amount')); ?>);
+				break;
+			case <?php echo json_encode(lang('wic')); ?>:
+				
+					$("#amount_tendered").val();
+			
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('wic') . ' ' . lang('amount')); ?>);
+				break;
+			case <?php echo json_encode(lang('ebt_cash')); ?>:
+				$("#amount_tendered").val(amountDue);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('ebt_cash') . ' ' . lang('amount')); ?>);
+				break;
+			default:
+				$("#amount_tendered").val(amountDue);
+				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter')); ?> + ' ' + paymentType + ' ' + <?php echo json_encode(lang('amount')); ?>);
+		}
+
+		showMarkupIfNeeded(paymentType , cartValues);
+		<?php if (!$this->config->item('disable_quick_complete_sale')) { ?>
+			amount_tendered_input_changed(cartValues);
+		<?php } ?>
+        return true;
+	}
+    function reset_payment_type(){
+        const cartValues = calculateCartValues(cart);
+        $('.select-payment').removeClass('active');
+        $('.payment_dropdown .select-payment').first().addClass('active');
+        const firstPaymentType = $('.payment_dropdown .select-payment').first().data('payment');
+        $('#payment_types').val(firstPaymentType);
+        $('.payment_option_selected').html('<i class="fa fa-money-bill"></i> ' + firstPaymentType);
+        amount_tendered_input_changed(cartValues);
+    
+ }
+
+async  function addPayment(e) {
+
+        const cart_obj = JSON.parse(localStorage.getItem('cart')); // Make sure it's defined
+        e.preventDefault();
+
+        const amountTenderedRaw = $('#amount_tendered').val();
+        let amount = amountTenderedRaw;
+        let type = $('#payment_types').val();
+        console.log("payment_type", type);
+
+        const cartValues = calculateCartValues(cart);
+        const amountDue = cartValues.amount_due;
+        const total = cartValues.total;
+        const cartMode = cart_obj.extra?.mode;
+        const customerExists = cart_obj.customer && Object.keys(cart_obj.customer).length > 0;
+        let typeUpdated= false;
+        // Handle percentage input
+        if (amountTenderedRaw.includes('%')) {
+            const percentage = parseFloat(amountTenderedRaw.replace('%', ''));
+            if (!isNaN(percentage)) {
+                amount = (amountDue * (percentage / 100)).toFixed(2);
+                // $('#amount_tendered').val(amount);
+            }
+        }
+
+        // Validate non-giftcard payment
+        if (type == giftCardLang) {
+           
+                show_feedback('error', '<?php echo lang('sales_giftcard_offline_not_work'); ?>', errorTitle);
+                return false;
+            
+        }
+
+
+         // === Series packages without customer ===
+            if (hasSeriesPackages(cart_obj) && !customerExists) {
+                show_feedback('error', customerRequiredLang, errorTitle);
+                return false;
+            }
+
+            // === Purchase points mode without customer ===
+            if (cartMode === 'purchase_points' && !customerExists) {
+                show_feedback('error', customerRequiredLang, errorTitle);
+                return false;
+            }
+
+            // === Condition 1: Store account payment requires customer ===
+            if (
+                (type === storeAccountLang && !customerExists) ||
+                (cartMode === 'store_account_payment' && !customerExists)
+            ) {
+                show_feedback('error', customerRequiredLang, errorTitle);
+                return false;
+            }
+
+
+             // === Condition 1: Store account payment requires customer ===
+             if (
+                (type === pointsLang && !customerExists)
+            ) {
+                show_feedback('error', customerRequiredLangPoints, errorTitle);
+                return false;
+            }
+
+            // === Condition 2: Store account payment must have total > 0 ===
+            if (cartMode === 'store_account_payment' && parseFloat(total) === 0) {
+                show_feedback('error', storeAccountZeroError, errorTitle);
+                return false;
+            }
+
+            // Check if salesperson must be selected
+            if (config.selectSalesPersonRequired && !cart_obj.extra.sold_by_employee_id) {
+                show_feedback('error', mustSelectSalesPersonLang, errorTitle);
+                return false;
+            }
+
+
+            let payment_amount = parseFloat(amount);
+
+                // === POINTS PAYMENT ===
+                if (type === pointsLang) {
+                    const customer_info = cart_obj.customer;
+                    let  customer_points = parseFloat(customer_info.points ?? 0);
+
+                    let previousPayments = getPreviousPayments(type);
+                    customer_points = customer_points - previousPayments;
+
+
+                    if (
+                        payment_amount > customer_points ||
+                        payment_amount <= 0 ||
+                        cartValues.amount_due <= 0
+                    ) {
+                        show_feedback('error', pointsTooMuchLang, errorTitle);
+                        return false;
+                    }
+
+                    if (
+                        config.minimum_points_to_redeem &&
+                        customer_points < config.minimum_points_to_redeem
+                    ) {
+                        show_feedback('error', pointsTooLittleLang, errorTitle);
+                        return false;
+                    }
+
+                  
+
+                    const max_points = Math.ceil(cartValues.amount_due / config.point_value);
+                    payment_amount = Math.min(
+                        max_points * config.point_value,
+                        payment_amount * config.point_value,
+                        cartValues.amount_due
+                    );
+                }
+
+                
+
+                // === STANDARD PAYMENT ===
+                else {
+                    payment_amount = parseFloat(amount);
+                }
+
+
+
+
+                // Assume this data is injected from PHP or available globally
+                const markup_markdown_config = JSON.parse(config.markup_markdown_config);
+                const markupMarkdownEnabled = markup_markdown_config && Object.keys(markup_markdown_config).length > 0;
+                const markupMarkdownDisabledAtLocation = config.markupMarkdownDisabledAtLocation === '1';
+
+            if (markupMarkdownEnabled && parseFloat(cartValues.total) > 0 && !markupMarkdownDisabledAtLocation) {
+                console.log(" markupMarkdownEnabled");
+                if (markup_markdown_config.hasOwnProperty(type) && markup_markdown_config[type]) {
+                    const feePercent = parseFloat(markup_markdown_config[type]);
+                    console.log(" markup_markdown_config");
+                    const paymentsOfThisType = cart_obj.payments?.filter(p => p.type === type) || [];
+                    const totalPaymentAmount = paymentsOfThisType.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0) + parseFloat(payment_amount);
+
+                    // total before applying the fee (same logic as in PHP)
+                    const totalBeforeFee = cartValues.total - (cartValues.total - totalPaymentAmount);
+
+                    // Simulate finding an existing fee item in the cart
+                    const feeItemKey = `${type}_fee`;
+                    const existingFeeItem = cart_obj.items?.find(i => i.fee_key === feeItemKey);
+                    const feeAlreadyAdded = existingFeeItem ? parseFloat(existingFeeItem.unit_price || 0) : 0;
+
+                    const feeAmount = ((cartValues.total - (cartValues.total - totalPaymentAmount) - feeAlreadyAdded) * (feePercent / 100)).toFixed(3);
+
+                    // Remove old fee item if it exists
+                    if (existingFeeItem) {
+                        cart_obj.items = cart_obj.items.filter(i => i.fee_key !== feeItemKey);
+                    }
+
+
+                    addItem({
+                            all_data: {},
+                            fee_key: feeItemKey,
+                            name: `${type} Fee`,
+                            description: `${type} <?php echo lang('fee'); ?>`,
+                            item_id: `fee_item_${type}`,
+                            quantity: 1,
+                            price: 0,
+                            orig_price: feeAmount,
+                            discount_percent: 0,
+                            variations: {},
+                            modifiers: {},
+                            taxes: {},
+                            tax_included: 0,
+                            is_fee: true
+                        });
+
+
+                    
+                    // Only increase payment amount if it's covering the full total
+                    if (round(parseFloat(payment_amount), 2) >= round(parseFloat(totalBeforeFee), 2)) {
+                        payment_amount = (parseFloat(payment_amount) + parseFloat(feeAmount)).toFixed(2);
+                    }
+                }
+            }
+
+
+
+            if(typeUpdated){
+                type  =typeUpdated;
+            }
+
+
+    
 
     cart['payments'].push({
-        amount: amount,
+        amount: payment_amount,
         type: type
     });
     renderUi();
-
+    reset_payment_type();
 }
 $('#discount_details_reload').on('click', function() {
     $('#discountbox_modal_reload').html($('#discountbox_modal_reload_data').html());
@@ -3623,8 +4118,13 @@ $('#discount_details_reload').on('click', function() {
 });
 $('.select-payment').on('click mousedown', selectPayment);
 
-$("#add_payment_form").submit(addPayment);
-$("#add_payment_button").click(addPayment);
+$("#add_payment_form").submit(async function(e) {
+    await addPayment(e);
+});
+
+$("#add_payment_button").click(async function(e) {
+    await addPayment(e);
+});
 
 $(document).on("click", 'a.delete-item', function(event) {
     event.preventDefault();
@@ -4925,7 +5425,8 @@ updateOnlineStatus();
 
 <script type="text/javascript">
    
-
+   const cartValues = calculateCartValues(cart);
+        amount_tendered_input_changed(cartValues);
 
     //Keyboard events...only want to load once
     $(document).keyup(function(event) {

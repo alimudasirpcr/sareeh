@@ -612,29 +612,7 @@ $this->load->view("partial/offline_header"); ?>
                                 <?php } ?>
 
                               
-                                <div id="finish_sale_form"
-                                    class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
-                                    <?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
-                                    <?php
-									if (isset($payments_cover_total) && isset($customer_required_check)) {
-										echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
-									}
-
-
-									echo form_checkbox(array(
-										'name' => 'prompt_for_card',
-										'id' => 'prompt_for_card',
-										'class' => 'form-check-input mt-1',
-										'value' => '1',
-										'checked' => (bool) (isset($prompt_for_card))?$prompt_for_card:false
-									));
-									echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('prompt_for_card') . '</label>';
-
-
-								
-									echo form_close();
-									?>
-                                </div>
+                          
 
                               
 
@@ -2180,38 +2158,6 @@ $this->load->view("partial/offline_header"); ?>
                 
 </script>
 
-        <script>
-        function amount_tendered_input_changed() {
-
-            if ($("#payment_types").val() == "Giftcard") {
-                $('#finish_sale').removeClass('hidden');
-                $('#add_payment_button').addClass('hidden');
-            } else if ($("#payment_types").val() == "Points") {
-                $('#finish_sale').addClass('hidden');
-                $('#add_payment_button').removeClass('hidden');
-            } else {
-
-                if ($('#amount_tendered').val() > 0 ) {
-                    // console.log("yes amojnt", $("#payment_types").val(), $('#amount_tendered').val());
-                    $('#finish_sale').addClass('hidden');
-                    $('#add_payment_button').removeClass('hidden');
-
-
-                } else {
-
-                    console.log("herer");
-                    $('#finish_sale').removeClass('hidden');
-                    $('#add_payment_button').addClass('hidden');
-
-
-
-
-
-                }
-            }
-
-        }
-        </script>
 
 
 
@@ -2584,7 +2530,16 @@ $this->load->view("partial/offline_header"); ?>
                                 0 </div>
                     </div>
                     <!-- ./amount block -->
-
+                    <div id="create_invoice_holder" class="  min-w-125px h-80px py-3 px-4 bg-unset create_invoice_holder  hidden"">
+                        <div class="total amount">
+                        <div class="text-right">
+                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
+                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
+                                    <label for="create_invoice"
+                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
+                                </div>
+                        </div>
+                    </div>
                     <!-- Payment Applied -->
                     </div>
 
@@ -2618,7 +2573,7 @@ $this->load->view("partial/offline_header"); ?>
 										$active_payment =  ($default_payment_type == $value) ? "selected" : "";
 									?>
                                         <li> <a tabindex="-1" href="#"
-                                                class="btn btn-pay select-payment <?php echo $active_payment; ?>"
+                                                class="btn btn-pay select-payment <?php echo $active_payment; ?> text-left pt-2"
                                                 data-payment="<?php echo H($value); ?>"> <i
                                                     class="fa fa-money-bill"></i>
                                                 <?php echo H($value); ?>
@@ -2657,16 +2612,7 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of pos footer -->
             </div>
 
-            <div class="row">
-                            <div id="create_invoice_holder" class="create_invoice_holder col-md-6 hidden">
-                                <div class="text-left">
-                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
-                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
-                                    <label for="create_invoice"
-                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
-                                </div>
-                            </div>
-                        </div>
+         
 
 
 

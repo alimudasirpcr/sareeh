@@ -1853,6 +1853,30 @@ class Sales extends Secure_area
 		$this->cart->save();
 		$this->sales_reload($data);
 	}
+
+
+	public function check_gift_Card_offline()
+{
+    $data['success'] = true;
+    $data['error'] = '';
+
+    $giftcard_number = $this->input->post('amount_tendered');
+    $giftcard_id = $this->Giftcard->get_giftcard_id($giftcard_number);
+	$data['balance'] = 0;
+
+    if (
+        !$this->Giftcard->exists($giftcard_id) ||
+        $this->Giftcard->is_integrated($giftcard_id) ||
+        $this->Giftcard->is_inactive($giftcard_id)
+    ) {
+        $data['success'] = false;
+        $data['error'] = lang('sales_giftcard_does_not_exist');
+    }else {
+        $data['balance'] = $this->Giftcard->get_giftcard_value($giftcard_number);
+    }
+
+    echo json_encode($data);
+}
 	
 	//Alain Multiple Payments
 	function add_payment()
@@ -4435,6 +4459,8 @@ class Sales extends Secure_area
 	function receipt($sale_id, $options = null)
 	{		
 		$receipt_cart = PHPPOSCartSale::get_instance_from_sale_id($sale_id);
+
+		
 	
 		
 		$isWorkOrder = $this->work_order->get_info_by_sale_id($sale_id)->row();
@@ -4453,10 +4479,11 @@ class Sales extends Secure_area
 		}
 		
 		$data = $this->_get_shared_data();
-	
+		
 		$data = array_merge($data,$receipt_cart->to_array());
 		// dd($receipt_cart->to_array()['general_taxes_list']);
 		$data['general_total_tax']  = $data['cart']->general_total_tax;
+		
 		$data['is_sale'] = FALSE;
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$data['is_sale_cash_payment'] = $this->cart->has_cash_payment();
@@ -9919,6 +9946,7 @@ class Sales extends Secure_area
 			
 			
 			$formatted_category = array(
+				'is_default' =>$this->config->item('tax_class_id') == $category_id ? 1 : 0,
 				'name' => $category['name'],
 				'id' => $category_id,
 				'group' => $this->Tax_class->get_taxes($category_id)

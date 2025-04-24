@@ -716,151 +716,9 @@ $this->load->view("partial/offline_header"); ?>
                                 </div>
                                 <?php } ?>
 
-                                <?php
 
 
-
-							// Only show this part if there is at least one payment entered.
-							//if ((is_all_sale_credit_card_payments_confirmed($cart) && count($payments) > 0) || (count($payments) > 0 && !is_sale_integrated_cc_processing($cart) && !is_sale_integrated_ebt_sale($cart) )) { 
-								if (1==1) { ?>
-                                <div id="finish_sale_form"
-                                    class="finish-sale col-6  border border-dashed rounded min-w-125px py-1  px-4 d-flex">
-                                    <?php echo form_open("sales/complete", array('id' => 'finish_sale_form',  'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
-                                    <?php
-									if ($payments_cover_total && $customer_required_check) {
-										echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_complete_sale') . "' />";
-									}
-
-
-									echo form_checkbox(array(
-										'name' => 'prompt_for_card',
-										'id' => 'prompt_for_card',
-										'class' => 'form-check-input mt-1',
-										'value' => '1',
-										'checked' => (bool) $prompt_for_card
-									));
-									echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('prompt_for_card') . '</label>';
-
-
-									if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
-										echo '<br />';
-										echo form_checkbox(array(
-											'name' => 'show_terms_and_conditions',
-											'id' => 'show_terms_and_conditions',
-											'value' => '1',
-											'class' => 'form-check-input',
-											'checked' => (bool) $show_terms_and_conditions
-										));
-										echo '<label  class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('show_terms_and_conditions') . '</label>';
-									}
-									echo form_close();
-									?>
-                                </div>
-
-                                <?php } else { ?>
-                                <div id="finish_sale_form"
-                                    class="finish-sale col-6  border border-dashed rounded min-w-125px py-4 px-4 d-flex">
-                                    <?php echo form_open("sales/start_cc_processing?provider=" . rawurlencode($this->Location->get_info_for_key('credit_card_processor') ? $this->Location->get_info_for_key('credit_card_processor') : ''), array('id' => 'finish_sale_form', 'class' => 'form-check form-check-custom form-check-solid', 'autocomplete' => 'off')); ?>
-                                    <?php
-									if ($this->Location->get_info_for_key('enable_credit_card_processing')) {
-										echo '<div id="credit_card_options" style="display: none;">';
-										if (isset($customer) && $customer_cc_token && $customer_cc_preview) {
-											echo form_checkbox(array(
-												'name' => 'use_saved_cc_info',
-												'id' => 'use_saved_cc_info',
-												'class' => 'form-check-input',
-												'value' => '1',
-												'checked' => (bool) $use_saved_cc_info
-											));
-											echo '<label class="form-check-label" for="use_saved_cc_info"><span></span>' . lang('sales_use_saved_cc_info') . ' ' . $customer_cc_preview . '</label>';
-										} elseif (isset($customer)) {
-											echo form_checkbox(array(
-												'name' => 'save_credit_card_info',
-												'id' => 'save_credit_card_info',
-												'class' => 'form-check-input',
-												'value' => '1',
-												'checked' => (bool) $save_credit_card_info
-											));
-											echo '<label class="form-check-label" for="save_credit_card_info"><span></span>' . lang('sales_save_credit_card_info') . '</label>';
-										}
-
-										//If we are an EMV processor OR transcloud we need a way to prompt for card
-										if ($cc_processor_parent_class_name == 'DATACAPUSBPROCESSOR' || $cc_processor_parent_class_name == 'DATACAPTRANSCLOUDPROCESSOR' || $cc_processor_class_name == 'CARDCONNECTPROCESSOR' || $cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR') {
-											echo '<div style="text-align: center;">';
-
-											if (is_system_integrated_ebt($cart)) {
-									?>
-                                    <div class="btn-group btn-group-lg .btn-group-justified" role="group"
-                                        aria-label="..." id="ebt-balance-buttons" style="display: none;">
-                                        <a role="button"
-                                            href="<?php echo site_url('sales/get_emv_ebt_balance/Foodstamp'); ?>"
-                                            class="btn btn-default"><span class="icon ti-wallet"></span>
-                                            <?php echo lang('sales_ebt_balance'); ?></a>
-                                        <a role="button"
-                                            href="<?php echo site_url('sales/get_emv_ebt_balance/Cash'); ?>"
-                                            class="btn btn-default"><span class="icon ti-money"></span>
-                                            <?php echo lang('sales_ebt_cash_balance'); ?></a>
-                                    </div>
-                                    <?php
-											}
-											echo '</div>';
-
-											echo form_checkbox(array(
-												'name' => 'prompt_for_card',
-												'id' => 'prompt_for_card',
-												'value' => '1',
-												'class' => 'form-check-input',
-												'checked' => (bool) $prompt_for_card
-											));
-											echo '<label class="form-check-label" for="prompt_for_card"><span></span>' . lang('prompt_for_card') . '</label>';
-
-
-											if ($cc_processor_class_name == 'CORECLEARBLOCKCHYPPROCESSOR' && $this->Location->get_info_for_key('blockchyp_terms_and_conditions')) {
-												echo '<br />';
-
-												echo form_checkbox(array(
-													'name' => 'show_terms_and_conditions',
-													'id' => 'show_terms_and_conditions',
-													'value' => '1',
-													'class' => 'form-check-input',
-													'checked' => (bool) $show_terms_and_conditions
-												));
-												echo '<label class="form-check-label" for="show_terms_and_conditions"><span></span>' . lang('show_terms_and_conditions') . '</label>';
-											}
-
-
-											if (is_system_integrated_ebt($cart)) {
-												echo '<div id="ebt_voucher_toggle_holder">';
-												echo form_checkbox(array(
-													'name' => 'ebt_voucher_toggle',
-													'id' => 'ebt_voucher_toggle',
-													'value' => '1',
-													'class' => 'form-check-input',
-													'checked' => (bool) $ebt_voucher
-												));
-												echo '<label class="form-check-label" for="ebt_voucher_toggle"><span></span>' . lang('sales_enter_voucher') . '</label>';
-												echo '</div>';
-											}
-										}
-
-										echo '<div id="ebt_voucher" style="display:none;">';
-										echo '<input value="' . H($ebt_voucher_no) . '" type="text" class="form-control text-center" name="ebt_voucher_no" id="ebt_voucher_no" placeholder="' . lang('sales_ebt_voucher_no') . '">';
-										echo '<input value="' . H($ebt_auth_code) . '" type="text" class="form-control text-center" name="ebt_auth_code" id="ebt_auth_code" placeholder="' . lang('sales_ebt_auth_code') . '">';
-										echo '</div>';
-										echo '</div>';
-									}
-
-
-								
-												echo "<input type='button' class='btn btn-success d-none btn-large btn-block' id='finish_sale_button' value='" . lang('sales_process_credit_card') . "' />";
-											
-									echo form_close();
-									?>
-                                </div>
-                            </div>
-                            <?php }
-
-							?>
+						
 
 
                         </div>
@@ -2560,39 +2418,7 @@ $this->load->view("partial/offline_header"); ?>
                 
 </script>
 
-        <script>
-        function amount_tendered_input_changed() {
-            console.log("callled" , $("#payment_types").val());
-
-            if ($("#payment_types").val() == "Giftcard") {
-                $('#finish_sale').removeClass('hidden');
-                $('#add_payment_button').addClass('hidden');
-            } else if ($("#payment_types").val() == "Points") {
-                $('#finish_sale').addClass('hidden');
-                $('#add_payment_button').removeClass('hidden');
-            } else {
-
-                if ($('#amount_tendered').val() > 0 ) {
-                    // console.log("yes amojnt", $("#payment_types").val(), $('#amount_tendered').val());
-                    $('#finish_sale').addClass('hidden');
-                    $('#add_payment_button').removeClass('hidden');
-
-
-                } else {
-
-                    console.log("herer");
-                    $('#finish_sale').removeClass('hidden');
-                    $('#add_payment_button').addClass('hidden');
-
-
-
-
-
-                }
-            }
-
-        }
-        </script>
+        
 
 
 
@@ -2967,14 +2793,28 @@ $this->load->view("partial/offline_header"); ?>
                     <!-- ./amount block -->
 
                     <!-- Payment Applied -->
+
+                    <div id="create_invoice_holder" class="  min-w-125px h-80px py-3 px-4 bg-unset create_invoice_holder  hidden"">
+                        <div class="total amount">
+                        <div class="text-right">
+                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
+                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
+                                    <label for="create_invoice"
+                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
+                                </div>
+                        </div>
+                    </div>
+
+
+
                     </div>
 
                     <!-- Add Payment -->
                     <div class=" add-payment border border-light border-dashed rounded w-25 py-3 px-4 vertical-center">
                         <!-- Check Work Order Permission -->
                       
-                        <form action="#" id="add_payment_form" autocomplete="off" method="post" accept-charset="utf-8">
-
+                        <form action="#" id="add_payment_form" autocomplete="off" method="post" accept-charset="utf-8" >
+                       
                             <div class="input-group add-payment-form">
 
 
@@ -2999,7 +2839,7 @@ $this->load->view("partial/offline_header"); ?>
 										$active_payment =  ($default_payment_type == $value) ? "selected" : "";
 									?>
                                         <li> <a tabindex="-1" href="#"
-                                                class="btn btn-pay select-payment <?php echo $active_payment; ?>"
+                                                class="btn btn-pay select-payment text-left pt-2 <?php echo $active_payment; ?>"
                                                 data-payment="<?php echo H($value); ?>"> <i
                                                     class="fa fa-money-bill"></i>
                                                 <?php echo H($value); ?>
@@ -3030,6 +2870,9 @@ $this->load->view("partial/offline_header"); ?>
                             </div>
 
                         </form>
+                      
+                          
+                      
                     </div>
 
                 </div>
@@ -3038,16 +2881,7 @@ $this->load->view("partial/offline_header"); ?>
                 <!-- End of pos footer -->
             </div>
 
-            <div class="row">
-                            <div id="create_invoice_holder" class="create_invoice_holder col-md-6 hidden">
-                                <div class="text-left">
-                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
-                                        type="checkbox" name="create_invoice" value="1" id="create_invoice">
-                                    <label for="create_invoice"
-                                        style="padding-left: 10px; margin-top:0px;"><span></span></label>
-                                </div>
-                            </div>
-                        </div>
+           
 
 
 

@@ -685,10 +685,13 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		$data['default_payment_type'] = $this->config->item('default_payment_type') ? $this->config->item('default_payment_type') : lang('cash');
 		
 		$payment_options=array(
-			lang('cash') => lang('cash'),
-			lang('check') => lang('check'),
-			lang('debit') => lang('debit'),
-			lang('credit') => lang('credit')
+			lang('cash') => 'cash',
+			lang('check') => 'check',
+			// lang('giftcard') => 'common_giftcard',
+			lang('debit') => 'debit',
+			lang('credit') => 'credit',
+			lang('store_account') => 'store_account',
+			lang('points') => 'points',
 			);
 			
 		foreach($this->Appconfig->get_additional_payment_types() as $additional_payment_type)
@@ -698,6 +701,7 @@ $date[] = site_url().'reports/generate/detailed_sales?tier_id=&report_type=compl
 		$data['remove_topbar'] = true;
 		$data['is_pos'] = true;
 		$data['payment_options'] = $payment_options;
+		// dd($data['payment_options'] );
 		if($this->agent->is_mobile()){
 			$this->load->view('sales/standby/mobile',$data);
 		}else{
