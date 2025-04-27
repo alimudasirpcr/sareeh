@@ -3206,7 +3206,7 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                         $("#select_customer_form").removeClass('hidden');
                     }
                     console.log("callled here from renderui");
-                    // amount_tendered_input_changed(cartValues);
+                    amount_tendered_input_changed(cartValues);
 
 
                     $(".edit_taxes_item").click(function(e) {
