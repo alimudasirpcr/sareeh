@@ -2368,7 +2368,20 @@ class Sale extends MY_Model
 				
 				$this->load->helper('item_kits');
 				
-				$line_item_commission = get_commission_for_item_kit($cart,$item->item_kit_id,$item->unit_price+$item->get_modifier_unit_total(),$cost_price === NULL ? 0.00 : to_currency_no_money($cost_price+$item->get_modifier_cost_total(),10), $item->quantity, $item->discount);
+				$unit_price = (float)($item->unit_price) + (float)($item->get_modifier_unit_total());
+				$modifier_cost_total = (float)($item->get_modifier_cost_total());
+				$cost_price = $cost_price === NULL ? 0.00 : (float)($cost_price);
+
+				$final_cost = to_currency_no_money($cost_price + $modifier_cost_total, 10);
+
+				$line_item_commission = get_commission_for_item_kit(
+					$cart,
+					$item->item_kit_id,
+					$unit_price,
+					$final_cost,
+					$item->quantity,
+					$item->discount
+				);
 				$sale_commission+=$line_item_commission;
 				
 				$sales_item_kits_override_taxes = $item->get_override_taxes();
