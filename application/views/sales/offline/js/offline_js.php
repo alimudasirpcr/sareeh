@@ -2280,6 +2280,7 @@ function getDefaultTaxFromLocalStorage() {
 }
 
 function add_default_tax_to_item() {
+    console.log("add_default_tax_to_item sssss" , cart);
     const taxobj = getDefaultTaxFromLocalStorage();
 
     if (!taxobj || !taxobj.group) return;
