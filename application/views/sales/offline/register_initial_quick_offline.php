@@ -2209,7 +2209,6 @@ $this->load->view("partial/offline_header"); ?>
 
 									<div class="row">
 
-                                    {{#notequal name 'discount'}}
                                    
 										<div class="col-md-3 mt-3">
 											<div class="text-gray-800 fs-7">Discount Percentage</div>
@@ -2222,7 +2221,6 @@ $this->load->view("partial/offline_header"); ?>
 
 											</div>
 										</div>
-                                {{/notequal}}
 
 										<div class="col-md-3 mt-3">
 											<div class="text-gray-800 fs-7">Supplier</div>
@@ -3340,7 +3338,8 @@ $this->load->view("partial/offline_header"); ?>
 
                 <div class="row">
 
-
+                {{#notequal name 'discount'}}
+                                    {{else}}
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('discount_percent'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
@@ -3352,6 +3351,7 @@ $this->load->view("partial/offline_header"); ?>
 
                         </div>
                     </div>
+                {{/notequal}}
 
                     {{#if all_data.has_variations}}
                         <?php if ($this->Employee->has_module_action_permission('sales', 'edit_variation', $this->Employee->get_logged_in_employee_info()->person_id)) : ?>
