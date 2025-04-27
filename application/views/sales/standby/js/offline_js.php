@@ -1815,11 +1815,11 @@ function populateTaxSelect() {
     });
 }
 async function getAllTaxes() {
-    console.log("callled all tax");
+    // console.log("callled all tax");
     fetchAndStoreTaxes();
     populateTaxSelect();
 
-
+    renderUi();
 }
 
 

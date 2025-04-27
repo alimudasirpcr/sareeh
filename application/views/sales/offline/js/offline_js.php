@@ -3217,16 +3217,7 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
 
                     });
 
-                    $("#edit_taxes_gen").click(function(e) {
-                        // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
-
-                        item_id = $(this).data('id');
-
-                        onclick_edit_taxes_item(item_id);
-
-                        renderUi();
-
-                    });
+                   
 
 
                     $('.xeditable').editable({
@@ -3833,6 +3824,16 @@ async  function addPayment(e) {
     return true;
             
 }
+$("#edit_taxes_gen").click(function(e) {
+                        // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
+
+                        item_id = $(this).data('id');
+
+                        onclick_edit_taxes_item(item_id);
+
+                        renderUi();
+
+                    });
 $('#discount_details_reload').on('click', function() {
     $('#discountbox_modal_reload').html($('#discountbox_modal_reload_data').html());
     var discountbox_modal_reload = document.querySelector("#discountbox_modal_reload");
