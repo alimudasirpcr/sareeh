@@ -2367,7 +2367,8 @@ class Sale extends MY_Model
 				
 				
 				$this->load->helper('item_kits');
-				
+				echo $item->unit_price;
+				 echo $item->get_modifier_unit_total();
 				$unit_price = (float)($item->unit_price) + (float)($item->get_modifier_unit_total());
 				$modifier_cost_total = (float)($item->get_modifier_cost_total());
 				$cost_price = $cost_price === NULL ? 0.00 : (float)($cost_price);
