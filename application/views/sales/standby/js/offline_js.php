@@ -3830,13 +3830,7 @@ function checkPaymentTypes() {
 				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('points') . ' ' . lang('amount')); ?>);
 				break;
 			case <?php echo json_encode(lang('ebt')); ?>:
-				<?php
-				if (count($payments) == 0) {
-				?>
-					$("#amount_tendered").val();
-				<?php
-				}
-				?>
+				
 				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('ebt') . ' ' . lang('amount')); ?>);
 				break;
 			case <?php echo json_encode(lang('wic')); ?>:
