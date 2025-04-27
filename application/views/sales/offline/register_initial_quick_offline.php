@@ -3339,7 +3339,7 @@ $this->load->view("partial/offline_header"); ?>
                 <div class="row">
 
                 {{#notequal name 'discount'}}
-                                    {{else}}
+                                 
                     <div class="col-md-3 mt-3">
                         <div class="text-gray-800 fs-7"><?php echo lang('discount_percent'); ?></div>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
