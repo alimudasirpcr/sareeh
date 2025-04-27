@@ -2504,7 +2504,7 @@ function renderUi() {
 
                     $("#saved_sales_list").empty();
                     add_default_tax_to_item();
-                    // console.log("UiRefreshed");
+                    console.log("UiRefreshed");
 // console.log("UiRefreshed");
 var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
 
