@@ -2280,12 +2280,12 @@ function getDefaultTaxFromLocalStorage() {
 }
 
 function add_default_tax_to_item() {
-    console.log("add_default_tax_to_item sssss" , cart);
+
+
     const taxobj = getDefaultTaxFromLocalStorage();
 
     if (!taxobj || !taxobj.group) return;
 
-    console.log("add_default_tax_to_item" , cart);
     cart.items.forEach((item, index) => {
         // console.log("item.taxes" , Object.keys(item.taxes).length ,  parseInt(item.id));
             if ( parseInt(item.item_id) > 0  &&  (!item.taxes || Object.keys(item.taxes).length === 0)) {
@@ -2320,7 +2320,7 @@ function onclick_edit_taxes_item(item_id) {
     removeAllExceptFirstRepeater();
 
     var clonetop = lastRepeaterItem.clone(true);
-    if (taxes.length > 0) {
+    if ( taxes!=null &&  taxes.length > 0) {
         taxes.forEach(function(tax, index) {
             if (tax.hasOwnProperty('item_id')) {
                 clone = clonetop;
