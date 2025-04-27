@@ -1873,7 +1873,7 @@ function populateTaxSelect() {
     const select = $('#tax_class');
 
     select.empty();
-    select.append($('<option></option>').val('').html('None'));
+    select.append($('<option></option>').val('None').html('None'));
 
     taxes.forEach(item => {
         const option = $('<option></option>')
