@@ -1871,6 +1871,7 @@ function getTaxesFromLocalStorage() {
 function populateTaxSelect() {
     const taxes = getTaxesFromLocalStorage();
     const select = $('#tax_class');
+    console.log("populate select tax" , taxes);
 
     select.empty();
     select.append($('<option></option>').val('None').html('None'));
