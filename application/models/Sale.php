@@ -2367,8 +2367,7 @@ class Sale extends MY_Model
 				
 				
 				$this->load->helper('item_kits');
-				echo $item->unit_price;
-				 echo $item->get_modifier_unit_total();
+			
 				$unit_price = (float)($item->unit_price) + (float)($item->get_modifier_unit_total());
 				$modifier_cost_total = (float)($item->get_modifier_cost_total());
 				$cost_price = $cost_price === NULL ? 0.00 : (float)($cost_price);
@@ -2391,7 +2390,7 @@ class Sale extends MY_Model
 				{
 					$is_item_repair = 1;
 				} else {
-					$is_item_repair = $item->is_repair_item ? $item->is_repair_item : 0;
+					$is_item_repair = isset($item->is_repair_item) ? $item->is_repair_item : 0;
 				}
 
 				$sales_item_kits_data = array
