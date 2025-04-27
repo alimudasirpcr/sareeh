@@ -2287,8 +2287,8 @@ function add_default_tax_to_item() {
 
     console.log("add_default_tax_to_item" , cart);
     cart.items.forEach((item, index) => {
-        console.log("item.taxes" , Object.keys(item.taxes).length);
-            if ( parseInt(item.id) > 0  &&  (!item.taxes || Object.keys(item.taxes).length === 0)) {
+        console.log("item.taxes" , Object.keys(item.taxes).length ,  parseInt(item.id));
+        if (parseInt(item.id) > 0 && (!item.taxes || item.taxes.length === 0)) {
                 console.log("item.taxes added" , taxobj.group);
                 cart.items[index].taxes = taxobj.group;
             }
