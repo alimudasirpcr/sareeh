@@ -578,10 +578,11 @@ if ($this->config->item('offline_mode'))
     : `/home/offline/${buildTimestamp}`;
 
   
+	console.log("navigator" , navigator);
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register(`<?= site_url(); ?>service-worker.js?ts=${buildTimestamp}&offline_url=${encodeURIComponent(offlineURL)}`)
-      .then(reg => console.log('[SW] Registered'))
+      .then(reg => console.log('[SW] Registered offline'))
       .catch(err => console.error('[SW] Error:', err));
   }
 </script>

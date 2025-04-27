@@ -86,6 +86,7 @@ try
 		one_day_in_minutes = settings.offline_mode_sync_period * 60;
 
 		if(settings.msg=='force'){
+			loadTaxesOffline();
 			loadCustomersOffline();
 			loadCategoryOffline();
 			loadItemsOffline();
