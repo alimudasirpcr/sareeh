@@ -1197,7 +1197,7 @@ async function handleFinishSaleBasic(e = null) {
         e.preventDefault();
     }
 
-    const proceed = () => {
+    const proceed = async () => {
         //adding the last payment
         result = await addPayment({ preventDefault: () => {} });
         if(!result){
