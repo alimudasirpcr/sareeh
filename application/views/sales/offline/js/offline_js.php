@@ -4127,10 +4127,11 @@ function get_general_tax(subtotal, cart) {
     // console.log("get_general_tax" , subtotal);
     let cumulativeTotal = subtotal; // Start with the initial subtotal
     let totalGeneralTax = 0; // Initialize total general tax
-
+    let totalTaxPercent =0;
     if (cart.items !== undefined && cart.taxes !== null && cart.taxes.length > 0) {
         let taxes = cart.taxes;
         taxes.forEach(tax => {
+            totalTaxPercent += parseFloat(tax['percent'] || 0);
             // Calculate tax based on whether it is cumulative or not
             let baseAmount = tax['cumulative'] === "1" ? cumulativeTotal : subtotal;
             let taxAmount = baseAmount * (parseFloat(tax['percent']) / 100);
@@ -4149,7 +4150,7 @@ function get_general_tax(subtotal, cart) {
         $html =
             '<div class="separator separator-dashed my-4"></div><div class="d-flex flex-column content-justify-center w-100"> ';
         $html +=
-            "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total General Tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end'> " +
+            "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total General Tax "+ totalTaxPercent+"% : </div> <div class='fw-bolder text-gray-700 text-xxl-end'> " +
             totalGeneralTax.toFixed(2) + currency_symbol + " </div> </div>  </div>";
         $('#kt_drawer_general_body_lg_tax_list').append($html);
         // console.log(`Cumulative total after all taxes: $${cumulativeTotal.toFixed(2)}`);
