@@ -634,7 +634,7 @@ try
 		{
 		
 			var Taxes = taxes[k];
-			var new_taxes = {'_id': Taxes.id+'_taxes',name: Taxes.name , id: Taxes.id , group : Taxes.group };
+			var new_taxes = {'_id': Taxes.id+'_taxes',name: Taxes.name , id: Taxes.id , is_default: Taxes.is_default , group : Taxes.group };
 			
 			try
 			{
