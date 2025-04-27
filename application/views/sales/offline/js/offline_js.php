@@ -4159,7 +4159,17 @@ function get_general_tax(subtotal, cart) {
         return 0; // Return zero if no items or no taxes
     }
 }
+function calculateItemTotalTaxPercent(cart_item) {
+    let totalTaxPercent = 0;
 
+    if (cart_item.taxes && Array.isArray(cart_item.taxes)) {
+        cart_item.taxes.forEach(tax => {
+            totalTaxPercent += parseFloat(tax.percent || 0);
+        });
+    }
+
+    return totalTaxPercent;
+}
 function get_taxes(cart, is_current_cart = false) {
 
     if (is_current_cart) {
@@ -4235,12 +4245,12 @@ function get_taxes(cart, is_current_cart = false) {
                     }
                 }
                 if (is_current_cart) {
-
+                    totalPercent        =  calculateItemTotalTaxPercent(cart_item);
 
 
                     $html +=
                         "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-info me-3'></div><div class='text-gray-500 flex-grow-1 me-4'>" +
-                        cart_item.name + "  " + $tax_include +
+                        cart_item.name + "  " + $tax_include + " " + totalPercent + "% " +  
                         ": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>" + $current_item_total_tax.toFixed(2) +
                         currency_symbol + "</div> </div> ";
                 }
