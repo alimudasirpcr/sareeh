@@ -1894,7 +1894,7 @@ async function getAllTaxes() {
 
     fetchAndStoreTaxes();
     populateTaxSelect();
-
+    renderUi();
 
 }
 
