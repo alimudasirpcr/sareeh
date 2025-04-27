@@ -1577,7 +1577,7 @@ class Employee extends Person
 	function is_employee_authenticated($employee_id, $location_id)
 	{
 		static $authed_employees;
-		save_query();
+		
 		if (!$authed_employees)
 		{
 			$this->db->select('employee_id');
@@ -1591,7 +1591,6 @@ class Employee extends Person
 				$authed_employees[$employee['employee_id']] = TRUE;
 			}	
 		}
-		echo $this->db->last_query();
 		return isset($authed_employees[$employee_id]) && $authed_employees[$employee_id]; 
 	}
 	
