@@ -1066,7 +1066,7 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="separator separator-dashed my-1"></div>
 
 
-                            <?php } ?> 
+                            <?php } } ?> 
 
 
                             <div class="d-flex flex-stack">
