@@ -88,9 +88,7 @@ function doItemSubmit(form, args)
 					$('.commission-container').addClass('hidden');
 					$('.item_kit_item_row').remove();
 				
-					<!-- var selectize = $("#tags")[0].selectize;
-					selectize.clear();
-					selectize.clearOptions(); -->
+					
 			<?php } ?>
 			
 			if(response.quick_edit==null && response.redirect=='' && response.success && response.item_id!=0)
