@@ -10670,8 +10670,8 @@ class Sales extends Secure_area
 						
 						
 						$cart_item_to_add['tier_name'] = (isset($item['tier_name']))?$item['tier_id'] : '';
-						$cart_item_to_add['discount'] = $item['discount_percent'];
-						$cart_item_to_add['description'] = $item['description'];
+						$cart_item_to_add['discount'] = (isset($item['discount_percent']))?$item['discount_percent'] : 0; 
+						$cart_item_to_add['description'] = (isset($item['description']))?$item['description'] : '';
 						$cart_item_to_add['quantity'] = $item['quantity'];
 						$cart_item_to_add['modifier_items'] =  array();
 						$cart_item_to_add['damaged_qty'] = (isset($item['damaged_qty']))?$item['damaged_qty'] : 0;
