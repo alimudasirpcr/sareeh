@@ -4408,8 +4408,8 @@ function displayReceipt(sale) {
     // $("#print_receipt_holder").append(sale_receipt_template(sale));
     // $("#print_receipt_holder").append();
     let link = '<?= base_url() ?>sales/preview_receipt/'+sale+'';
-
-    $('#last_sale_id').attr('href' , link);
+    let link_last = '<?= base_url() ?>sales/receipt/'+sale+'';
+    $('#last_sale_id').attr('href' , link_last);
     $("#print_receipt_holder").load(link);
     $("#print_receipt_holder").show();
     $('#print_modal').modal('show');
