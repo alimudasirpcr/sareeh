@@ -4749,7 +4749,7 @@ class Sales extends Secure_area
 
 			$this->load->view("sales/preview_receipt",$data);
 		}else{
-			echo "Template not found";
+			$this->load->view("sales/receipt",$data ,true);
 		}
 	}
 	function kitchen_receipt()
