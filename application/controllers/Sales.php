@@ -4749,7 +4749,7 @@ class Sales extends Secure_area
 
 			$this->load->view("sales/preview_receipt",$data);
 		}else{
-			echo $this->load->view("sales/preview_receipt",$data ,true);
+			echo $this->load->view("sales/receipt_view",$data ,true);
 		}
 	}
 	function kitchen_receipt()
