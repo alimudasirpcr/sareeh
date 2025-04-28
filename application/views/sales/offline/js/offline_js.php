@@ -1610,7 +1610,10 @@ async function handleFinishSale(e = null) {
             offline_sales: JSON.stringify([sale]),
         }, function(response) {
             if (response.success) {
-                displayReceipt(sale);
+
+                let firstSaleId = response.sale_ids[0];
+
+                displayReceipt(firstSaleId);
                 cart = {
                     items: [],
                     payments: [],
@@ -4367,42 +4370,45 @@ function get_modifiers_subtotal(cart_item) {
 function displayReceipt(sale) {
     $("#print_receipt_holder").empty();
 
-    sale.total_items_sold = get_total_items_sold(sale);
-    sale.subtotal = get_subtotal(sale);
+    // sale.total_items_sold = get_total_items_sold(sale);
+    // sale.subtotal = get_subtotal(sale);
 
 
 
-    var total_discount = get_discount(sale);
-    var item_discount = get_item_discount(sale);
-    var subtotal = get_subtotal(sale);
-    var taxes = get_taxes(sale, true);
-    // console.log('subtotal--' , subtotal);
-    // console.log('taxes--' , taxes);
-    subtotal = parseFloat(subtotal) - parseFloat(item_discount);
-    var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
-    // console.log('itemPriceIncludingTax--' , itemPriceIncludingTax);
-    var gen_tax = get_general_tax(itemPriceIncludingTax, sale);
-    taxes = parseFloat(taxes) + parseFloat(gen_tax);
-    // var total = get_total(cart);
+    // var total_discount = get_discount(sale);
+    // var item_discount = get_item_discount(sale);
+    // var subtotal = get_subtotal(sale);
+    // var taxes = get_taxes(sale, true);
+    // // console.log('subtotal--' , subtotal);
+    // // console.log('taxes--' , taxes);
+    // subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+    // var itemPriceIncludingTax = parseFloat(subtotal) + parseFloat(taxes);
+    // // console.log('itemPriceIncludingTax--' , itemPriceIncludingTax);
+    // var gen_tax = get_general_tax(itemPriceIncludingTax, sale);
+    // taxes = parseFloat(taxes) + parseFloat(gen_tax);
+    // // var total = get_total(cart);
 
-    var flat_discount = get_flat_discount(sale);
-    // console.log('taxes' , taxes);
-    total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
-    var amount_due = get_amount_due(sale, total);
+    // var flat_discount = get_flat_discount(sale);
+    // // console.log('taxes' , taxes);
+    // total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
+    // var amount_due = get_amount_due(sale, total);
 
 
 
-    sale.total_tax = taxes;
-    sale.gen_tax = gen_tax;
-    sale.subtotal = subtotal;
-    sale.total = total;
+    // sale.total_tax = taxes;
+    // sale.gen_tax = gen_tax;
+    // sale.subtotal = subtotal;
+    // sale.total = total;
 
-    for (var k = 0; k < sale.items.length; k++) {
-        sale.items[k].price = parseFloat(sale.items[k].price) + get_modifier_unit_total(sale.items[k]);
-        sale.items[k].line_total = parseFloat(sale.items[k].line_total) + get_modifiers_subtotal(sale.items[k]);
-    }
+    // for (var k = 0; k < sale.items.length; k++) {
+    //     sale.items[k].price = parseFloat(sale.items[k].price) + get_modifier_unit_total(sale.items[k]);
+    //     sale.items[k].line_total = parseFloat(sale.items[k].line_total) + get_modifiers_subtotal(sale.items[k]);
+    // }
 
-    $("#print_receipt_holder").append(sale_receipt_template(sale));
+    // $("#print_receipt_holder").append(sale_receipt_template(sale));
+    // $("#print_receipt_holder").append();
+    let link = '<?= base_url() ?>sales/receipt'+sale+'';
+    $("#print_receipt_holder").load(link);
     $("#print_receipt_holder").show();
     $('#print_modal').modal('show');
     $("#sales_page_holder").hide();
