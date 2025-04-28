@@ -1032,6 +1032,11 @@ $this->load->view("partial/offline_header"); ?>
                                 </div>
                             </div>
                             <div class="separator separator-dashed my-1"></div>
+
+                            <?php
+					
+					if ($this->Employee->has_module_action_permission('sales', 'can_lookup_last_receipt', $this->Employee->get_logged_in_employee_info()->person_id)) {
+						if ($last_sale_id = $this->Sale->get_last_sale_id()) { ?>
                             <div class="d-flex flex-stack">
                                 <div class="symbol symbol-30px me-4">
                                     <div class="symbol-label fs-2 fw-semibold bg-warning text-inverse-bg-warning">
@@ -1040,7 +1045,7 @@ $this->load->view("partial/offline_header"); ?>
                                 </div>
                                 <div class="d-flex align-items-center flex-row-fluid flex-wrap">
                                     <div class="flex-grow-1 me-2">
-                                        <a href="<?= base_url(); ?>sales/receipt/83" target="_blank" id=""
+                                        <a href="<?= base_url(); ?>sales/receipt/<?= $last_sale_id; ?>" target="_blank" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold look-up-receipt"
                                             title="Show Last Sale Receipt">Show Last Sale Receipt</a>
                                     </div>
@@ -1059,6 +1064,11 @@ $this->load->view("partial/offline_header"); ?>
                                 </div>
                             </div>
                             <div class="separator separator-dashed my-1"></div>
+
+
+                            <?php } ?> 
+
+
                             <div class="d-flex flex-stack">
                                 <div class="symbol symbol-30px me-4">
                                     <div class="symbol-label fs-2 fw-semibold bg-dark text-inverse-bg-dark">
