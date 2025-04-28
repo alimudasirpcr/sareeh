@@ -3882,9 +3882,9 @@ $('#discount_details_reload').on('click', function() {
                 if (cart['items'][k]['name'] !='discount' ) {
 
 
-                   $max_discount = cart['items'][k]['all_data']['max_discount'] ;
+                   $max_discount = parseFloat(cart['items'][k]['all_data']['max_discount']) ;
                     
-                    if($max_discount <=  $discount_all_percent ){
+                    if(  $max_discount !=0 &&  $max_discount <=  $discount_all_percent ){
                         cart['items'][k]['discount_percent'] = $max_discount;
                     }else{
                         cart['items'][k]['discount_percent'] = $discount_all_percent;
