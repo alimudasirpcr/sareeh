@@ -4103,7 +4103,16 @@ $('#discount_details_reload').on('click', function() {
             cart['extra']['discount_all_percent'] = $discount_all_percent;
             for (var k = 0; k < cart['items'].length; k++) {
                 if (cart['items'][k]['item_id'] > 0) {
-                    cart['items'][k]['discount_percent'] = $discount_all_percent;
+                    if (cart['items'][k]['name'] !='discount' ) {
+                                $max_discount = parseFloat(cart['items'][k]['all_data']['max_discount']) ;
+                                
+                                if(  $max_discount !=0 &&  $max_discount <=  $discount_all_percent ){
+                                    cart['items'][k]['discount_percent'] = $max_discount;
+                                }else{
+                                    cart['items'][k]['discount_percent'] = $discount_all_percent;
+                                }
+
+                        }
                 }
 
             }
