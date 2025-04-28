@@ -455,7 +455,15 @@ class Item_kits extends Secure_area implements Idata_controller
 		}
 		
 		$data['item_kit_images']=$this->Item_kit->get_item_kit_images($item_kit_id);
-		
+		if ($item_kit_id == -1) {
+			$suppliers = array('' => lang('not_set'), '-1' => lang('none'));
+		} else {
+			$suppliers = array('-1' => lang('none'));
+		}
+		foreach ($this->Supplier->get_all()->result_array() as $row) {
+			$suppliers[$row['person_id']] = $row['company_name'] . ' (' . $row['first_name'] . ' ' . $row['last_name'] . ')';
+		}
+		$data['suppliers'] = $suppliers;
 		return $data;
 	}
 	

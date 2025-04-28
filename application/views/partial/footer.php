@@ -402,9 +402,8 @@ if ($this->config->item('offline_mode'))
 ?>
 <script>
 	<?php
-	
 	$offline_assets = array();
-	$total_items = count($this->Item->get_all_offline_count()->result());
+	$total_items = get_all_count_items();
 	$total_categories = get_all_categories(); 
 	$total_customers =get_all_customers();
 

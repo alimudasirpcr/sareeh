@@ -235,4 +235,10 @@ function get_js_files()
 
 }
 
+function get_all_count_items(){
+	$CI =& get_instance();  
+	$CI->load->model('Item');
+	return count($CI->Item->get_all_offline_count()->result());
+}
+
 ?>
