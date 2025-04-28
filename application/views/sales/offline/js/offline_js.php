@@ -3880,9 +3880,16 @@ $('#discount_details_reload').on('click', function() {
             cart['extra']['discount_all_percent'] = $discount_all_percent;
             for (var k = 0; k < cart['items'].length; k++) {
                 if (cart['items'][k]['name'] !='discount' ) {
-               
+
+
+                   $max_discount = cart['items'][k]['all_data']['max_discount'] ;
                     
-                    cart['items'][k]['discount_percent'] = $discount_all_percent;
+                    if($max_discount <=  $discount_all_percent ){
+                        cart['items'][k]['discount_percent'] = $max_discount;
+                    }else{
+                        cart['items'][k]['discount_percent'] = $discount_all_percent;
+                    }
+                   
                 }
 
             }
