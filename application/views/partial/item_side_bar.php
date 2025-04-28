@@ -49,7 +49,7 @@
                 <!--begin::Label-->
                 <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow">
                     <i class="fa fa-pencil fs-7 myimg " style="margin-left: 3px;" data-link="<?php  if(isset($item_info)) { ?>
-                    <?php echo site_url("item_kits/images/".($item_info->item_id ? $item_info->item_id : -1).($query ? '?'.$query : '')); ?><?php }else{ ?><?php echo site_url("items/images/".($item_info->item_id ? $item_info->item_id : -1).($query ? '?'.$query : '')); } ?>" ></i>
+                    <?php echo site_url("item/images/".($item_info->item_id ? $item_info->item_id : -1).($query ? '?'.$query : '')); ?><?php }else{ ?><?php echo site_url("items/images/".($item_info->item_id ? $item_info->item_id : -1).($query ? '?'.$query : '')); } ?>" ></i>
                    
                 </label>
                 <!--end::Label-->

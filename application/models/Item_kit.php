@@ -59,7 +59,8 @@ class Item_kit extends MY_Model
 		$this->db->select('item_kits.*, categories.name as category,
 		location_item_kits.unit_price as location_unit_price,
 		location_item_kits.cost_price as location_cost_price,
-		tax_classes.name as tax_group
+		tax_classes.name as tax_group,
+		item_kits.main_image_id as image_id
 		');
 		$this->db->from('item_kits');
 		$this->db->join('tax_classes', 'tax_classes.id = item_kits.tax_class_id', 'left');
@@ -153,7 +154,7 @@ class Item_kit extends MY_Model
 			$item_obj=new stdClass();
 
 			//Get all the fields from items table
-			$fields = array('barcode_name','info_popup','item_kit_id','item_kit_number','product_id','name','category_id','manufacturer_id','description','tax_included','unit_price','cost_price','override_default_tax','is_ebt_item','commission_percent','commission_percent_type','commission_fixed','change_cost_price','disable_loyalty','deleted','tax_class_id','max_discount_percent','max_edit_price','min_edit_price','custom_field_1_value','custom_field_2_value','custom_field_3_value','custom_field_4_value','custom_field_5_value','custom_field_6_value','custom_field_7_value','custom_field_8_value','custom_field_9_value','custom_field_10_value','required_age','verify_age','allow_price_override_regardless_of_permissions','only_integer','is_barcoded','item_kit_inactive','default_quantity','dynamic_pricing','is_favorite','loyalty_multiplier' , 'assigned_repair_item' , 'assigned_to' , 'approved_by');
+			$fields = array('barcode_name','info_popup','item_kit_id','item_kit_number','product_id','name','category_id','manufacturer_id','description','tax_included','unit_price','cost_price','override_default_tax','is_ebt_item','commission_percent','commission_percent_type','commission_fixed','change_cost_price','disable_loyalty','deleted','tax_class_id','max_discount_percent','max_edit_price','min_edit_price','custom_field_1_value','custom_field_2_value','custom_field_3_value','custom_field_4_value','custom_field_5_value','custom_field_6_value','custom_field_7_value','custom_field_8_value','custom_field_9_value','custom_field_10_value','required_age','verify_age','allow_price_override_regardless_of_permissions','main_image_id','only_integer','is_barcoded','item_kit_inactive','default_quantity','dynamic_pricing','is_favorite','loyalty_multiplier' , 'assigned_repair_item' , 'assigned_to' , 'approved_by');
 
 
 			foreach ($fields as $field)
@@ -180,6 +181,7 @@ class Item_kit extends MY_Model
 		if($query->num_rows()==1)
 		{
 			$cache[$item_kit_id] = $query->row();
+			$cache[$item_kit_id]->image_id = $cache[$item_kit_id]->main_image_id;
 			return $cache[$item_kit_id];
 		}
 		else
@@ -188,7 +190,7 @@ class Item_kit extends MY_Model
 			$item_obj=new stdClass();
 
 			//Get all the fields from items table
-			$fields = array('barcode_name','info_popup','item_kit_id','item_kit_number','product_id','name','category_id','manufacturer_id','description','tax_included','unit_price','cost_price','override_default_tax','is_ebt_item','commission_percent','commission_percent_type','commission_fixed','change_cost_price','disable_loyalty','deleted','tax_class_id','max_discount_percent','max_edit_price','min_edit_price','custom_field_1_value','custom_field_2_value','custom_field_3_value','custom_field_4_value','custom_field_5_value','custom_field_6_value','custom_field_7_value','custom_field_8_value','custom_field_9_value','custom_field_10_value','required_age','verify_age','allow_price_override_regardless_of_permissions','only_integer','is_barcoded','item_kit_inactive','default_quantity','dynamic_pricing','is_favorite','loyalty_multiplier', 'assigned_repair_item', 'assigned_to' , 'approved_by');
+			$fields = array('barcode_name','info_popup','item_kit_id','item_kit_number','product_id','name','category_id','manufacturer_id','description','tax_included','unit_price','cost_price','override_default_tax','is_ebt_item','commission_percent','commission_percent_type','commission_fixed','change_cost_price','disable_loyalty','deleted','tax_class_id','max_discount_percent','max_edit_price','min_edit_price','custom_field_1_value','custom_field_2_value','custom_field_3_value','custom_field_4_value','custom_field_5_value','custom_field_6_value','custom_field_7_value','custom_field_8_value','custom_field_9_value','custom_field_10_value','required_age','verify_age','allow_price_override_regardless_of_permissions','main_image_id','only_integer','is_barcoded','item_kit_inactive','default_quantity','dynamic_pricing','is_favorite','loyalty_multiplier', 'assigned_repair_item', 'assigned_to' , 'approved_by');
 				
 			foreach ($fields as $field)
 			{
@@ -198,7 +200,12 @@ class Item_kit extends MY_Model
 			return $item_obj;
 		}
 	}
-	
+	function set_last_edited($item_id)
+	{
+		$now = date('Y-m-d H:i:s');
+		$this->db->where('item_kit_id',$item_id);
+		return $this->db->update('item_kits',array('last_edited' => $now));
+	}
 	function check_duplicate($term)
 	{
 			$this->db->from('item_kits');

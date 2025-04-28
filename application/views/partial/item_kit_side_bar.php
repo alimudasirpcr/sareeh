@@ -17,32 +17,7 @@
             <!--begin::Image input-->
             <!--begin::Image input placeholder-->
 
-            <?php
-if (!empty($item_kit_info->item_kit_id)) { 
-    $this->db->select('image_id');  // Select only the image_id column
-    $this->db->from('item_kit_images');  // Table name
-    $this->db->where('item_kit_id', $item_kit_info->item_kit_id);  // Condition
-    $this->db->order_by('image_id', 'ASC');  // Get the first image by ordering
-    $this->db->limit(1);  // Limit to 1 row
-
-    $query = $this->db->get();
-    
-    // Check if an image exists
-    if ($query->num_rows() > 0) {
-        $first_image_id = $query->row()->image_id;
-        $image_url = cacheable_app_file_url($first_image_id); // Get the actual image
-        
-        // Ensure the image exists before displaying
-        if (!empty($image_url)) {
-            echo img(array('src' => $image_url, 'class' => 'custom-img'));
-        } else {
-            echo img(array('src' => site_url('assets/img/blank-image.svg'), 'class' => 'custom-img'));
-        }
-    } else {
-    }
-}
-    
-?>
+           
 
 <style>
     .custom-img {
@@ -57,7 +32,7 @@ if (!empty($item_kit_info->item_kit_id)) {
 <?php
            
            //    $img =   $this->item->get_item_main_image($item_info->item_id , $item_info->main_image_id); 
-           //    dd($img);
+            //   dd($item_kit_info);
            $url = site_url('assets/img/blank-image.svg');
            if($item_kit_info->main_image_id){
                $url =  cacheable_app_file_url($item_kit_info->main_image_id);

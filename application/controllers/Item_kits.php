@@ -1460,7 +1460,7 @@ class Item_kits extends Secure_area implements Idata_controller
 		}
 		
 		// Ensure $item_id is defined
-$item_id = isset($item_kit_data['item_kit_id']) ? $item_kit_data['item_kit_id'] : null;
+$item_id = isset($item_kit_id) ? $item_kit_id : null;
 
 $titles = $this->input->post('titles');
 $alt_texts = $this->input->post('alt_texts');
@@ -1475,20 +1475,20 @@ if (!empty($titles) && $item_id) { // Check if $titles exists and $item_id is va
         $main_image = isset($main_images[$image_id]);
 
         // Save image metadata
-        $this->Item->save_image_metadata($image_id, $title, $alt_text, $variation);
+        $this->Item_kit->save_image_metadata($image_id, $title, $alt_text, $variation);
 
         // If main image is set, update the item
         if ($main_image) {
             $item_image_data = ['main_image_id' => $image_id];
-            $this->Item->set_last_edited($item_id);
-            $this->Item->save($item_image_data, $item_id);
+            $this->Item_kit->set_last_edited($item_id);
+            $this->Item_kit->save($item_image_data, $item_id);
         }
     }
 } elseif (!empty($last_image_id) && $item_id) { 
     // If no titles but last_image_id exists, set main image
     $item_image_data = ['main_image_id' => $last_image_id];
-    $this->Item->set_last_edited($item_id);
-    $this->Item->save($item_image_data, $item_id);
+    $this->Item_kit->set_last_edited($item_id);
+    $this->Item_kit->save($item_image_data, $item_id);
 }
 
 // Ecommerce Integration
