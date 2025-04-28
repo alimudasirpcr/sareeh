@@ -1566,7 +1566,7 @@ function save_for_location(){
 				$this->Appconfig->save('tax_class_id',$default_tax_class_id);
 			}
 			
-			if (isset($ecom_model))
+			if (isset($ecom_model) &&  isset($tax_class_ids_to_save) &&  !empty($tax_class_ids_to_save))
 			{
 				foreach($tax_class_ids_to_save as $tax_class_save_id)
 				{
