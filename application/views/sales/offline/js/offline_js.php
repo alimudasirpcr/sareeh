@@ -2843,8 +2843,9 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                             var field = $(this).data('name');
                             var index = $(this).data('index');
                             if (typeof index !== 'undefined') {
+                                    max_discount =     parseFloat(cart['items'][index]['all_data']['max_discount']);
 
-                                if (parseFloat(cart['items'][index]['all_data']['max_discount']) < parseFloat(newValue)) {
+                                if (    max_discount > 0  &&   max_discount   < parseFloat(newValue)) {
                                     show_feedback('error', cart['items'][index]['all_data']['permissions'][
                                             'sales_could_not_discount_item_above_max'
                                         ] + " " + parseFloat(cart['items'][index]['all_data']['max_discount']),

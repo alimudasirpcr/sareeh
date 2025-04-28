@@ -4097,7 +4097,9 @@ $('#discount_details_reload').on('click', function() {
 
             cart['extra']['discount_all_flat'] = $discount_all_flat;
         }
-        if ($discount_all_percent > 0) {
+
+        $discount_all_percent = $discount_all_percent ? $discount_all_percent : 0;
+      
             cart['extra']['discount_all_percent'] = $discount_all_percent;
             for (var k = 0; k < cart['items'].length; k++) {
                 if (cart['items'][k]['item_id'] > 0) {
@@ -4105,7 +4107,7 @@ $('#discount_details_reload').on('click', function() {
                 }
 
             }
-        }
+        
         renderUi();
     });
 
