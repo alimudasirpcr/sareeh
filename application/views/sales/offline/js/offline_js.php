@@ -3874,8 +3874,8 @@ $('#discount_details_reload').on('click', function() {
             cart.items = cart.items.filter(item => item.name !== "discount");
             cart['extra']['discount_all_flat'] = $discount_all_flat;
         }
-
-        if ($discount_all_percent > 0) {
+        $discount_all_percent = $discount_all_percent ? $discount_all_percent : 0;
+      
             cart['extra']['discount_all_percent'] = $discount_all_percent;
             for (var k = 0; k < cart['items'].length; k++) {
                 if (cart['items'][k]['name'] !='discount' ) {
@@ -3885,7 +3885,7 @@ $('#discount_details_reload').on('click', function() {
                 }
 
             }
-        }
+        
         cart['extra']['discount_all_percent'] = $discount_all_percent;
 
         show_feedback('success', "<?php echo  lang('Discount_Updated_Successfully') ?>", "<?php echo  lang('success') ?>");

@@ -82,15 +82,15 @@ function doItemSubmit(form, args)
 			<?php } ?>
 			
 			<?php if(isset($item_kit_info) && !$item_kit_info->item_kit_id) { ?>
-			//If we have a new item, make sure we hide the tax containers to "reset"
-			$(".tax-container").addClass('hidden');
-			$(".item-kit-location-price-container").addClass('hidden');
-			$('.commission-container').addClass('hidden');
-			$('.item_kit_item_row').remove();
-		
-			var selectize = $("#tags")[0].selectize;
-			selectize.clear();
-			selectize.clearOptions();
+					//If we have a new item, make sure we hide the tax containers to "reset"
+					$(".tax-container").addClass('hidden');
+					$(".item-kit-location-price-container").addClass('hidden');
+					$('.commission-container').addClass('hidden');
+					$('.item_kit_item_row').remove();
+				
+					var selectize = $("#tags")[0].selectize;
+					selectize.clear();
+					selectize.clearOptions();
 			<?php } ?>
 			
 			if(response.quick_edit==null && response.redirect=='' && response.success && response.item_id!=0)
