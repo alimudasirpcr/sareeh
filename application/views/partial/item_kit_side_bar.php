@@ -54,7 +54,18 @@ if (!empty($item_kit_info->item_kit_id)) {
         margin: 10px auto; /* Centers the image */
     }
 </style>
-
+<?php
+           
+           //    $img =   $this->item->get_item_main_image($item_info->item_id , $item_info->main_image_id); 
+           //    dd($img);
+           $url = site_url('assets/img/blank-image.svg');
+           if($item_kit_info->main_image_id){
+               $url =  cacheable_app_file_url($item_kit_info->main_image_id);
+           }
+         
+           //  
+              
+              ?>
 
 
             <style>
