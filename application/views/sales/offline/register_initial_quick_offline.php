@@ -1045,7 +1045,7 @@ $this->load->view("partial/offline_header"); ?>
                                 </div>
                                 <div class="d-flex align-items-center flex-row-fluid flex-wrap">
                                     <div class="flex-grow-1 me-2">
-                                        <a href="<?= base_url(); ?>sales/receipt/<?= $last_sale_id; ?>" target="_blank" id=""
+                                        <a href="<?= base_url(); ?>sales/receipt/<?= $last_sale_id; ?>" target="_blank" id="last_sale_id"
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold look-up-receipt"
                                             title="Show Last Sale Receipt">Show Last Sale Receipt</a>
                                     </div>
