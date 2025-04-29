@@ -2473,7 +2473,7 @@ function calculateCartValues(cart) {
     var flat_discount = get_flat_discount(cart);
 
     // Calculating total amount
-    var total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(3);
+    var total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
 
     // Calculating amount due
     var amount_due = get_amount_due(cart, total);
@@ -2482,8 +2482,8 @@ function calculateCartValues(cart) {
     return {
         total_discount: total_discount,
         item_discount: item_discount,
-        subtotal: subtotal.toFixed(3), // To ensure consistent formatting
-        taxes: taxes.toFixed(3),
+        subtotal: subtotal.toFixed(2), // To ensure consistent formatting
+        taxes: taxes.toFixed(2),
         gen_tax: gen_tax,
         flat_discount: flat_discount,
         total: total,
@@ -3181,8 +3181,8 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                     $("#total").html(total);
                     localStorage.setItem('cart_total' ,total );
                     // check_for_payment_options();
-                    $('#total_discount').html(total_discount.toFixed(3));
-                    $('#total_discount_detail').html(total_discount.toFixed(3) + ' ' + currency_symbol);
+                    $('#total_discount').html(total_discount.toFixed(2));
+                    $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
                     $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
                     $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
                         currency_symbol);
@@ -3573,7 +3573,7 @@ async  function addPayment(e) {
         if (amountTenderedRaw.includes('%')) {
             const percentage = parseFloat(amountTenderedRaw.replace('%', ''));
             if (!isNaN(percentage)) {
-                amount = (amountDue * (percentage / 100)).toFixed(3);
+                amount = (amountDue * (percentage / 100)).toFixed(2);
                 // $('#amount_tendered').val(amount);
             }
         }
@@ -3801,7 +3801,7 @@ async  function addPayment(e) {
                     
                     // Only increase payment amount if it's covering the full total
                     if (round(parseFloat(payment_amount), 2) >= round(parseFloat(totalBeforeFee), 2)) {
-                        payment_amount = (parseFloat(payment_amount) + parseFloat(feeAmount)).toFixed(3);
+                        payment_amount = (parseFloat(payment_amount) + parseFloat(feeAmount)).toFixed(2);
                     }
                 }
             }
@@ -4044,7 +4044,7 @@ function get_subtotal(cart) {
             
         }
 
-        return to_currency_no_money(subtotal.toFixed(3));
+        return to_currency_no_money(subtotal.toFixed(2));
     }
     return 0;
 }
@@ -4092,7 +4092,7 @@ function get_item_discount(cart) {
             }
         }
 
-        return to_currency_no_money(total_discount.toFixed(3));
+        return to_currency_no_money(total_discount.toFixed(2));
     }
     return 0;
 }
@@ -4103,7 +4103,7 @@ function get_flat_discount(cart) {
     if (cart['extra'] && cart['extra']['discount_all_flat']) {
         discount_all_flat = parseFloat(cart['extra']['discount_all_flat']);
     }
-    return discount_all_flat.toFixed(3);;
+    return discount_all_flat.toFixed(2);;
 }
 
 function get_tire_discount(cart) {
@@ -4121,7 +4121,7 @@ function get_tire_discount(cart) {
 
     //     }
 
-    //     return to_currency_no_money(total_discount.toFixed(3));
+    //     return to_currency_no_money(total_discount.toFixed(2));
     // }
     return 0;
 }
@@ -4158,16 +4158,16 @@ function get_general_tax(subtotal, cart) {
             totalGeneralTax += taxAmount;
 
             // Log the calculation (optional)
-            // console.log(`Tax "${tax['name']}" calculated on $${baseAmount.toFixed(3)} at ${tax['percent']}% is $${taxAmount.toFixed(3)}`);
+            // console.log(`Tax "${tax['name']}" calculated on $${baseAmount.toFixed(2)} at ${tax['percent']}% is $${taxAmount.toFixed(2)}`);
         });
         $html =
             '<div class="separator separator-dashed my-4"></div><div class="d-flex flex-column content-justify-center w-100"> ';
         $html +=
             "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total General Tax "+ totalTaxPercent+"% : </div> <div class='fw-bolder text-gray-700 text-xxl-end'> " +
-            totalGeneralTax.toFixed(3) + currency_symbol + " </div> </div>  </div>";
+            totalGeneralTax.toFixed(2) + currency_symbol + " </div> </div>  </div>";
         $('#kt_drawer_general_body_lg_tax_list').append($html);
-        // console.log(`Cumulative total after all taxes: $${cumulativeTotal.toFixed(3)}`);
-        return totalGeneralTax.toFixed(3);
+        // console.log(`Cumulative total after all taxes: $${cumulativeTotal.toFixed(2)}`);
+        return totalGeneralTax.toFixed(2);
 
     } else {
         return 0; // Return zero if no items or no taxes
@@ -4265,7 +4265,7 @@ function get_taxes(cart, is_current_cart = false) {
                     $html +=
                         "<div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-info me-3'></div><div class='text-gray-500 flex-grow-1 me-4'>" +
                         cart_item.name + "  " + $tax_include + " " + totalPercent + "% " +  
-                        ": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>" + $current_item_total_tax.toFixed(3) +
+                        ": </div> <div class='fw-bolder text-gray-700 text-xxl-end'>" + $current_item_total_tax.toFixed(2) +
                         currency_symbol + "</div> </div> ";
                 }
             }
@@ -4276,11 +4276,11 @@ function get_taxes(cart, is_current_cart = false) {
 
             $html +=
                 "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total item tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end '>" +
-                total_tax.toFixed(3) + currency_symbol + " </div> </div>";
+                total_tax.toFixed(2) + currency_symbol + " </div> </div>";
             $html += '</div>';
             $('#kt_drawer_general_body_lg_tax_list').append($html);
         }
-        return to_currency_no_money(total_tax.toFixed(3));
+        return to_currency_no_money(total_tax.toFixed(2));
     } else {
         return 0;
     }
@@ -4297,7 +4297,7 @@ function get_total(cart) {
     var taxes = parseFloat(get_taxes(cart));
     var total = subtotal - discount + taxes;
 
-    return to_currency_no_money(total.toFixed(3));
+    return to_currency_no_money(total.toFixed(2));
 }
 
 function get_payments_total(cart) {
@@ -4306,7 +4306,7 @@ function get_payments_total(cart) {
         total += parseFloat(cart['payments'][k]['amount']);
     }
 
-    return to_currency_no_money(total.toFixed(3));
+    return to_currency_no_money(total.toFixed(2));
 }
 
 function get_amount_due(cart, total) {
@@ -4314,7 +4314,7 @@ function get_amount_due(cart, total) {
     var payments_total = parseFloat(get_payments_total(cart));
     var amount_due = total - payments_total;
 
-    return to_currency_no_money(amount_due.toFixed(3));
+    return to_currency_no_money(amount_due.toFixed(2));
 }
 
 function get_total_items_sold(cart) {
@@ -4390,7 +4390,7 @@ function displayReceipt(sale) {
 
     // var flat_discount = get_flat_discount(sale);
     // // console.log('taxes' , taxes);
-    // total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(3);
+    // total = (parseFloat(subtotal) + parseFloat(taxes)).toFixed(2);
     // var amount_due = get_amount_due(sale, total);
 
 
