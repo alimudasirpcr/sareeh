@@ -4417,7 +4417,7 @@ function displayReceipt(sale) {
 
 }
 
-displayReceipt(666);
+// displayReceipt(666);
  
 $("#item").focus();
 
