@@ -1865,36 +1865,45 @@ function addItem(newItem) {
 
 $(document).ready(function() {
     var $scrollContainer = $('.horizontal-scroll');
-    var scrollSpeed = 10; // Adjust this value for different scroll speeds
+    var scrollSpeed = 10; // Adjust this value for mousemove auto-scroll
+    var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
     $scrollContainer.on('mousemove', function(e) {
+        if (isTouchDevice) return; // Ignore mousemove if touch device
+        
         var $this = $(this);
-        var mouseX = e.pageX - $this.offset()
-        .left; // Get the mouse X position relative to the scroll container
-        var scrollWidth = $this.get(0).scrollWidth; // Width of the scroll container
-        var outerWidth = $this.outerWidth(); // Visible width of the scroll container
-        var scrollLeft = $this.scrollLeft(); // Current scroll position
+        var mouseX = e.pageX - $this.offset().left;
+        var scrollWidth = $this.get(0).scrollWidth;
+        var outerWidth = $this.outerWidth();
+        var scrollLeft = $this.scrollLeft();
 
-        // If the mouse is on the right side of the container, scroll right
-        if (mouseX > outerWidth *
-            0.8) { // The 0.8 here means "start scrolling when the mouse is at 80% of the container width"
+        if (mouseX > outerWidth * 0.8) {
             $this.scrollLeft(scrollLeft + scrollSpeed);
-        }
-        // If the mouse is on the left side of the container, scroll left
-        else if (mouseX < outerWidth *
-            0.2) { // The 0.2 means "start scrolling when the mouse is at 20% of the container width"
+        } else if (mouseX < outerWidth * 0.2) {
             $this.scrollLeft(scrollLeft - scrollSpeed);
         }
     });
 
     $scrollContainer.on('wheel', function(e) {
-        // Prevents the default vertical scroll
         e.preventDefault();
-
-        // Cross-browser wheel delta
         var delta = e.originalEvent.deltaX * -1 || e.originalEvent.deltaY;
         var scrollLeft = $scrollContainer.scrollLeft();
         $scrollContainer.scrollLeft(scrollLeft + delta);
+    });
+
+    // ✅ Add touch move support
+    let touchStartX = 0;
+    let touchScrollStart = 0;
+
+    $scrollContainer.on('touchstart', function(e) {
+        touchStartX = e.originalEvent.touches[0].pageX;
+        touchScrollStart = $(this).scrollLeft();
+    });
+
+    $scrollContainer.on('touchmove', function(e) {
+        var touchX = e.originalEvent.touches[0].pageX;
+        var deltaX = touchStartX - touchX;
+        $(this).scrollLeft(touchScrollStart + deltaX);
     });
 });
 
