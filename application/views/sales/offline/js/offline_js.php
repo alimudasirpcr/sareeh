@@ -32,7 +32,9 @@ const payment_options = <?php echo json_encode(array_values($payment_options)); 
             }
     }
 
-
+function roundToNearest05(amount) {
+    return Math.round(amount * 2) / 2;
+}
 function getSalePrice(params) {
 
     let itemInfo = params.all_data;

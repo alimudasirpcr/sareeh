@@ -7762,6 +7762,8 @@ class Sales extends Secure_area
 		}
 		$tax = 0;
 			$store_config_tax_class = $this->config->item('tax_class_id');
+			
+			echo $store_config_tax_class; exit();
 			if ($store_config_tax_class)
 			{
 				$return_tax =  $this->Tax_class->get_taxes($store_config_tax_class);
@@ -7769,6 +7771,7 @@ class Sales extends Secure_area
 					$tax = $return_tax[0]['percent'];
 				}
 			}
+			echo $tax; exit();
 	
 		$can_override_price_adjustments = $this->Employee->get_logged_in_employee_info()->override_price_adjustments;
 		$max_discount_employee = $this->Employee->get_logged_in_employee_info()->max_discount_percent;
