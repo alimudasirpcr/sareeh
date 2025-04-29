@@ -2272,6 +2272,15 @@ function print_receipt() {
 <?php } ?>
 
 <script>
+
+$(document).ready(function() {
+    $(document).on('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'p') {
+            e.preventDefault(); // stop default ctrl+p
+            print_receipt();    // call your function instead
+        }
+    });
+});
 	html2canvas(document.querySelector("#receipt_wrapper"), {
 		height: $("#receipt_wrapper").height(),
 		windowWidth: 280,
