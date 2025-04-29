@@ -9638,7 +9638,7 @@ button.toast-close-button {
 .register .register-items-form .item-form .input-group .selectize-input input:focus,
 .register .register-items-form .item-form .input-group #item:focus,
 .register .register-items-form .item-form .input-group #coupons:focus {
-  border-color: #D7DCE5 !important;
+  border-color: var(--kt-primary) !important;
 }
 .register .register-items-form .item-form .input-group .add-item-input.items-count,
 .register .register-items-form .item-form .input-group .selectize-input input.items-count,

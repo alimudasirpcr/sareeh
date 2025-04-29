@@ -9623,10 +9623,12 @@ button.toast-close-button {
   -webkit-appearance: none;
 }
 .register .register-items-form .item-form .input-group .add-item-input:focus,
+
 .register .register-items-form .item-form .input-group .selectize-input input:focus,
 .register .register-items-form .item-form .input-group #item:focus,
 .register .register-items-form .item-form .input-group #coupons:focus {
-  border-color: #D7DCE5 !important;
+  border-color: var(--kt-primary) !important;
+  border: 2px solid ;
 }
 .register .register-items-form .item-form .input-group .add-item-input.items-count,
 .register .register-items-form .item-form .input-group .selectize-input input.items-count,
@@ -10192,7 +10194,8 @@ button.toast-close-button {
 .register .register-right .customer-form .input-group #supplier:focus,
 .register .register-right .customer-form .input-group #location:focus,
 .register .register-right .customer-form .input-group #location_from:focus {
-  border-color: #D7DCE5 !important;
+    border-color: var(--kt-primary) !important;
+    border: 2px solid ;
 }
 .register .register-right .customer-form .input-group .input-group-addon {
   width: 38px !important;
@@ -18337,10 +18340,12 @@ input.add-customer-input {
   width: 20%;
 	font-weight: 600;
   font-size: 20px;
-  border: 2px solid #4f55dc !important;
+  border: 2px solid #D7DCE5 !important;
 	background: white !important;
 }
-
+#amount_tendered:focus {
+  border-color: var(--kt-primary) !important;
+}
 
 
 .ml-0{

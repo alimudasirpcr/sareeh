@@ -4416,6 +4416,9 @@ function displayReceipt(sale) {
     $("#sales_page_holder").hide();
 
 }
+
+displayReceipt(666);
+ 
 $("#item").focus();
 
 //Select all text in the input when input is clicked

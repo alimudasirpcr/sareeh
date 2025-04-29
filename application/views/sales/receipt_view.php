@@ -2064,20 +2064,32 @@ if ($this->config->item('allow_reorder_sales_receipt')) {
 	}
 	?>
 
-	<?php
-	if ($this->config->item('redirect_to_sale_or_recv_screen_after_printing_receipt')) {
-	?>
-		window.onafterprint = function() {
-			window.location = '<?php echo site_url('sales'); ?>';
-		}
-	<?php
-	}
-	?>
+	
 
-	function print_receipt() {
-		window.print();
-	}
+function print_receipt() {
+    var contents = document.getElementById('print_receipt_holder').innerHTML;
+    var frame = document.createElement('iframe');
 
+    frame.name = "print_frame";
+    frame.style.position = "absolute";
+    frame.style.top = "-1000000px"; // Hide it
+    document.body.appendChild(frame);
+
+    var frameDoc = frame.contentWindow ? frame.contentWindow : frame.contentDocument.document ? frame.contentDocument.document : frame.contentDocument;
+    frameDoc.document.open();
+    frameDoc.document.write('<html><head><title>Receipt</title>');
+    frameDoc.document.write('<link rel="stylesheet" href="<?= base_url() ?>assets/css_good/css/custom.css">'); // Optional: your print styles
+    frameDoc.document.write('</head><body>');
+    frameDoc.document.write(contents);
+    frameDoc.document.write('</body></html>');
+    frameDoc.document.close();
+
+    setTimeout(function () {
+        window.frames["print_frame"].focus();
+        window.frames["print_frame"].print();
+        document.body.removeChild(frame); // Clean iframe
+    }, 500);
+}
 	function toggle_gift_receipt() {
 		var gift_receipt_text = <?php echo json_encode(lang('sales_gift_receipt', '', array(), TRUE)); ?>;
 		var regular_receipt_text = <?php echo json_encode(lang('sales_regular_receipt', '', array(), TRUE)); ?>;

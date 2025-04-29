@@ -4738,19 +4738,23 @@ class Sales extends Secure_area
 		$data['exchange_name']= 'exchange name';
 		$data['register_receipt'] = $this->Register->get_register_receipt_type($sale_info['register_id']);
 		
-
-		$query = $this->db->query("select * from phppos_receipts_template where id=".$id." ");
-		if(isset($query->result_array()[0])){
-			$data['receipt'] =	$query->result_array()[0];
-			$query = $this->db->query("select * from phppos_receipts_template  ");
-			$data['all_templates'] =	$query->result_array();
-			$query = $this->db->query("select * from phppos_receipts_template_label where receipts_template_id=".$data['register_receipt']." or is_general=1 ");
-			$data['labels'] = $query->result_array();
-
-			$this->load->view("sales/preview_receipt",$data);
+		if($this->config->item('customized_receipt')){
+			$query = $this->db->query("select * from phppos_receipts_template where id=".$id." ");
+			if(isset($query->result_array()[0])){
+				$data['receipt'] =	$query->result_array()[0];
+				$query = $this->db->query("select * from phppos_receipts_template  ");
+				$data['all_templates'] =	$query->result_array();
+				$query = $this->db->query("select * from phppos_receipts_template_label where receipts_template_id=".$data['register_receipt']." or is_general=1 ");
+				$data['labels'] = $query->result_array();
+	
+				$this->load->view("sales/preview_receipt",$data);
+			}else{
+				echo $this->load->view("sales/receipt_view",$data ,true);
+			}
 		}else{
 			echo $this->load->view("sales/receipt_view",$data ,true);
 		}
+		
 	}
 	function kitchen_receipt()
 	{		
