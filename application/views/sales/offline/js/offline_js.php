@@ -3078,6 +3078,7 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
 
                         if (sold_by_employee_idElement.length > 0) {
                             cart['extra']['sold_by_employee_id'] = default_sales_person_id;
+                            localStorage.setItem("cart", JSON.stringify(cart));
                             var employeeName = sold_by_employee_idElement.text()
                                 .trim(); // Get the text content and trim any extra spaces
                             $('.selected-sales-person').html(employeeName);
