@@ -3413,7 +3413,11 @@ function amount_tendered_input_changed(cartValues) {
    
             $('#finish_sale_button').addClass('hidden').hide();
             $('#add_payment_button').removeClass('hidden').show();
-		} else {
+		}else if ($("#payment_types").val() == couponLang) {
+   
+            $('#finish_sale_button').addClass('hidden').hide();
+            $('#add_payment_button').removeClass('hidden').show();
+            } else {
 			if ((cartValues.amount_due >= 0 && amount_tendered >= cartValues.amount_due) || (cartValues.amount_due < 0 && amount_tendered <= cartValues.amount_due)) {
                
 				$('#finish_sale_button').removeClass('hidden').show();
