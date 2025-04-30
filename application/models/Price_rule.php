@@ -22,7 +22,23 @@ class Price_rule extends MY_Model
 				
 		return $result->num_rows();
 	}	
+	public function get_price_rule_by_coupon_code($coupon_code)
+		{
+			$this->db->from('price_rules');
+			$this->db->where('coupon_code', $coupon_code);
+			$this->db->where('deleted', 0);
 
+			$query = $this->db->get();
+
+			if ($query->num_rows() > 0)
+			{
+				return $query->row(); // Found, return the row
+			}
+			else
+			{
+				return false; //  Not found
+			}
+		}
 	/*
 	Perform a search on price_rules
 	*/
@@ -165,11 +181,18 @@ class Price_rule extends MY_Model
 		} 
 	}
 	
-	function coupons_to_rule_id($coupon)
-	{
-		return $coupon['value'];
-	}
-	
+	public function coupons_to_rule_id($coupon)
+		{
+			if (is_array($coupon)) {
+				return $coupon['value'];
+			} elseif (is_object($coupon)) {
+				return $coupon->value;
+			} elseif (is_numeric($coupon)) {
+				return (int)$coupon; // treat as raw rule ID
+			} else {
+				return null; // or throw exception if this is unexpected
+			}
+		}
 	/*function to get item & item_kit rules*/
 	function get_price_rule_for_item($params = array())
 	{
@@ -178,11 +201,13 @@ class Price_rule extends MY_Model
 				$params['coupons'] = array();
 			}
 			
+	
 			$coupon_rule_ids = array_map(array($this, 'coupons_to_rule_id'), $params['coupons']);
-			
+		
 			if(isset($params['item_kit']->item_kit_id) and $params['item_kit']->item_kit_id > 0)
 			{
 				$rule=$this->get_rule_mix_and_match($params, $coupon_rule_ids);
+				
 				if($rule && !$this->is_rule_excluded_by_tier($rule))
 				{
 					return $rule;
@@ -229,25 +254,24 @@ class Price_rule extends MY_Model
 				
 				
 				$rule=$this->get_rule_mix_and_match($params, $coupon_rule_ids);
+			
 				if($rule && !$this->is_rule_excluded_by_tier($rule))
 				{
+					
 					return $rule;
 				}
-					
-				
+			
 				$rule=$this->get_rule_for_item($params['item']->item_id, $params['quantity'], $coupon_rule_ids);
-				// if($params['item']->item_id==6){
-					
-				// 	dd($rule);
-				// }
+				
 				if($rule['rule_item'] === true && !$this->is_rule_excluded_by_tier($rule))
 				{
 					$rule['mix_and_match'] = 0;
 					
 					return $rule;
 				}
-
+			
 				$rule=$this->get_rule_for_category($params['item']->item_id, $params['quantity'], $coupon_rule_ids);
+			
 				if($rule['rule_item_cat'] === true && !$this->is_rule_excluded_by_tier($rule))
 				{
 					$rule['mix_and_match'] = 0;
@@ -323,6 +347,7 @@ class Price_rule extends MY_Model
 	
 	function get_rule_mix_and_match($params, $coupon_rule_ids)
 	{
+		
 		$cart = PHPPOSCartSale::get_instance('sale');
 		
 		$item_just_added = NULL;
@@ -334,7 +359,7 @@ class Price_rule extends MY_Model
 		{
 			$item_just_added = $params['item_kit'];						
 		}
-		
+		save_query();
 		//Below query finds price rule ids that COULD apply via mix and match
 		$this->db->select('price_rules.*,price_rules.id as rule_id');//rule_id needed to conform to data needed to save rule correcty
 		$this->db->from('price_rules');
@@ -376,19 +401,23 @@ class Price_rule extends MY_Model
 		$this->db->group_end();
 		
 		$query = $this->db->get();
+	
 		if($query!=false ){
 			$all_active_price_rules_mix_and_match = $query->result_array();
+	
 
 			$return = array();
-			
+		
 			foreach($all_active_price_rules_mix_and_match as $price_rule)
 			{
+		
 				$items_in_cart_that_apply_to_rule = $this->get_items_in_cart_that_apply_to_price_rule($price_rule,$cart);
+			
 				if (!empty($items_in_cart_that_apply_to_rule))
 				{
 					$items_to_buy = (int)$price_rule['items_to_buy'];
 					$cart_sum = (int)$this->sum_cart_items_quantity($items_in_cart_that_apply_to_rule);
-					
+				
 					if ($cart_sum > $price_rule['items_to_buy'])
 					{
 						$return[] = $price_rule;
@@ -1119,7 +1148,7 @@ class Price_rule extends MY_Model
 		
 		
 		$this->db->order_by('price_rules_items.rule_id, price_rules_price_breaks.item_qty_to_buy', 'DESC');
-		$this->db->limit(1);
+		// $this->db->limit(1);
 		
 		$query=$this->db->get();
 		// echo $this->db->last_query();
@@ -1142,12 +1171,13 @@ class Price_rule extends MY_Model
 	}
 	function get_rule_for_category($item_id=-1, $quantity=-1, $coupon_rule_ids=array())
 	{
+	
 		$item_info = $this->Item->get_info($item_id);
 		
 		$item_category_id = $item_info->category_id;
 		$item_category_ids_to_parent = explode('|',$this->Category->get_full_path_ids($item_category_id));
 		$rule=array();
-		
+		$rule['rule_item_cat']=false;
 		$this->db->select('price_rules_categories.rule_id, price_rules_categories.category_id, categories.name, price_rules_price_breaks.item_qty_to_buy, price_rules_price_breaks.discount_per_unit_fixed, price_rules_price_breaks.discount_per_unit_percent, price_rules.*');
 		$this->db->from('price_rules_categories');
 		$this->db->join('price_rules', 'price_rules_categories.rule_id = price_rules.id', 'left');
@@ -1205,6 +1235,7 @@ class Price_rule extends MY_Model
 		
 		$query=$this->db->get();
 		
+
 		if($query != false)
 		{
 			if($query->num_rows() == 1)
@@ -1224,6 +1255,7 @@ class Price_rule extends MY_Model
 	function get_rule_for_manufacturer($item_id=-1, $quantity=-1, $coupon_rule_ids=array())
 	{	//done needs testing
 		$rule=array();
+		$rule['rule_item_manu']=false;
 		$this->db->select('price_rules_manufacturers.rule_id, price_rules_manufacturers.manufacturer_id, manufacturers.name, price_rules_price_breaks.item_qty_to_buy, price_rules_price_breaks.discount_per_unit_fixed, price_rules_price_breaks.discount_per_unit_percent, price_rules.*');
 		$this->db->from('price_rules');
 		$this->db->join('price_rules_price_breaks', 'price_rules_price_breaks.rule_id = price_rules.id', 'left');
@@ -1298,7 +1330,7 @@ class Price_rule extends MY_Model
 	function get_rule_for_tags($item_id=-1, $quantity=-1, $coupon_rule_ids=array())
 	{
 		$rule=array();
-				
+		$rule['rule_item_tags']=false;
 		$items_tags = $this->db->dbprefix('items_tags');
 			
 		$this->db->select('price_rules_tags.rule_id, price_rules_tags.tag_id, tags.name, price_rules_price_breaks.item_qty_to_buy, price_rules_price_breaks.discount_per_unit_fixed, price_rules_price_breaks.discount_per_unit_percent, price_rules.*');

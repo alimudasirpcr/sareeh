@@ -1637,6 +1637,7 @@ class Sales extends Secure_area
 			$CI =& get_instance();
 			$this->cart->destroy();
 			// $this->cart->save();
+		
 			
 			$j = 0;
 			// dd($items );
@@ -1647,21 +1648,21 @@ class Sales extends Secure_area
 				}else{
 					$items_duplicate[$j] = $item;
 					$fee_item = new PHPPOSCartItemSale(array('cart' => $this->cart,'scan' => $item['item_id'].'|FORCE_ITEM_ID|','cost_price' => 0 ,'unit_price' =>$item['orig_price'] ,'description' =>  $item['description'].' '.lang('fee'),'quantity' => $item['quantity']));
-					$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => TRUE, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
+					$this->cart->process_barcode_scan($fee_item->scan,array('quantity' => $fee_item->quantity,'run_price_rules' => true, 'secondary_supplier_id' => $fee_item->secondary_supplier_id, 'default_supplier_id'=> $fee_item->supplier_id));
 					$this->cart->save();
 					$j++;
 				}
 				
 			}
-			// dd($coupons['coupons'][0]);
+			// echo "coup";
+			// dd(  $coupons['coupons'][0]);
 			// dd($items_duplicate);
+			
 			if((isset($coupons['coupons']))){
 				// echo "coupons";
-				$this->cart->set_coupons($coupons['coupons'][0]);
+				$this->cart->set_coupons($coupons['coupons']);
 				$this->cart->save();
 			}
-			
-		
 			$items_all = $this->cart->get_items();
 			
 			// dd($items_all);
@@ -1669,10 +1670,14 @@ class Sales extends Secure_area
 			$scan=[];
 			foreach($items_all as $item_all){
 			
+				// print_r($item_all->rule);
+				
+
 			// echo $item_all->scan;
 				$index = array_search($item_all->scan, $scan);
-				// echo "i =".$i. "<br>";
+				
 				if( $index !== false){
+				
 					// echo $index;
 					// items this is buy x quantity
 
@@ -1682,22 +1687,28 @@ class Sales extends Secure_area
 					$items_duplicate[$i]['price'] = 0.00;
 					$items_duplicate[$i]['orig_price'] = 0.00;
 					$items_duplicate[$i]['free_item'] = true;
+
+					
 					// dd($items_duplicate[$i]);;
 				}
 
-				if($item_all->rule && $item_all->rule['discount_per_unit_percent']){
+				if($item_all->rule && isset($item_all->rule['discount_per_unit_percent'])){
 					$items_duplicate[$i]['discount_percent'] = $item_all->rule['discount_per_unit_percent'];
 				}else{
 					$items_duplicate[$i]['discount_percent'] = 0;
 				}
 	
-				if($item_all->rule && $item_all->rule['discount_per_unit_fixed']){
+				if($item_all->rule && isset($item_all->rule['discount_per_unit_fixed'])){
 					$items_duplicate[$i]['discount_per_unit_fixed'] = $item_all->rule['discount_per_unit_fixed'];
 				}else{
 					$items_duplicate[$i]['discount_per_unit_fixed'] = 0;
 				}
-	
-				$items_duplicate[$i]['selected_rule'] = $item_all->rule;
+				if($item_all->rule){
+					$items_duplicate[$i]['selected_rule'] = $item_all->rule;
+					// dd($item_all);
+					// $item_all->all_data->rules = $item_all->rule;
+				}
+				
 				if($item_all->change_cost_price){
 					$items_duplicate[$i]['price'] = $item_all->unit_price;
 				}
@@ -1728,13 +1739,13 @@ class Sales extends Secure_area
 			$this->cart->set_coupons((isset($coupons['coupons']))?$coupons['coupons'][0]:[]);
 			$items = $this->cart->get_items();
 			// dd($items[0]);
-			if($items[0]->rule && $items[0]->rule['discount_per_unit_percent']){
+			if($items[0]->rule && isset($items[0]->rule['discount_per_unit_percent'])){
 				$item['discount_percent'] = $items[0]->rule['discount_per_unit_percent'];
 			}else{
 				$item['discount_percent'] = 0;
 			}
 
-			if($items[0]->rule && $items[0]->rule['discount_per_unit_fixed']){
+			if($items[0]->rule && isset($items[0]->rule['discount_per_unit_fixed'])){
 				$item['discount_per_unit_fixed'] = $items[0]->rule['discount_per_unit_fixed'];
 			}else{
 				$item['discount_per_unit_fixed'] = 0;
@@ -1827,6 +1838,26 @@ class Sales extends Secure_area
 		return ($amount != '0' || $this->cart->get_total() == 0) && is_numeric($amount);
 	}
 	
+
+	function check_coupon_offline(){
+		$data['success'] = true;
+		$data['error'] = '';
+		$rule = $this->Price_rule->get_price_rule_by_coupon_code($this->input->post('term'));
+
+		if ($rule)
+		{
+			$data['success'] = true;
+			$data['data'] = array('value' => $rule->id, 'label'=> $rule->name . ' - ' . $rule->coupon_code); 
+		}
+		else
+		{
+			$data['error'] = lang('coupon_not_found');
+			$data['success'] = false;
+		}
+		echo json_encode($data);
+
+	}
+
 	function search_coupons()
 	{
 		//allow parallel searchs to improve performance.

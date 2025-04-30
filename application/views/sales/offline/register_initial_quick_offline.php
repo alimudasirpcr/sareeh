@@ -700,21 +700,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                 <!-- Finish Sale Button Handler -->
 
-                                <?php
-							$this->load->helper('sale');
-
-
-							if ($has_coupons_for_today) { ?>
-                                <div class="add-coupon col-6  border border-dashed rounded min-w-125px py-4 px-4">
-                                    <div class="side-heading"><?php echo lang('add_coupon'); ?></div>
-
-                                    <div id="coupons" class="input-group" data-title="coupons">
-                                        <span class="input-group-text xl icon ion-ios-pricetags-outline"></span>
-                                        <?php echo form_input(array('name' => 'coupons', 'id' => 'coupons', 'class' => 'coupon_codes input-lg add-input form-control', 'placeholder' => '', 'data-title' => lang('enter_a_coupon'))); ?>
-                                    </div>
-
-                                </div>
-                                <?php } ?>
+                            
 
 
 
@@ -2686,8 +2672,9 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                        <i class="fonticon-content-marketing fs-6" id="discount_details_reload"></i>
+                       
                         <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
+                            <i class="fonticon-content-marketing fs-6" id="discount_details_reload"></i>
                             Discount (OMR) 
                         </div>
 
@@ -2726,11 +2713,12 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                            <a href="#" class="" id="edit_taxes_gen" data-id="-1"
+                           
+                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
+                        <a href="#" class="" id="edit_taxes_gen" data-id="-1"
                                     data-target="#kt_drawer_general" data-target-title="Edit Taxes"
                                     data-target-width="lg"><i class="fonticon-content-marketing fs-6"></i>
                             </a>
-                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
                             Tax (OMR)
                         </div>
 
@@ -2787,10 +2775,10 @@ $this->load->view("partial/offline_header"); ?>
                         <!--end::Svg Icon-->
                     </span>
                     <div class="d-flex flex-direction-column align-items-center rounded amount-block  min-w-125px h-80px py-3 px-4 bg-primary  me-3">
-                    <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>
+                    
                         
                             <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
-                                Amount Due (OMR)
+                            <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>    Amount Due (OMR)
 
 
                                
@@ -2857,10 +2845,23 @@ $this->load->view("partial/offline_header"); ?>
                                             </a> </li>
                                         <?php } ?>
 
+                                       <?php  if ($has_coupons_for_today) { ?>
+                                        <li> <a tabindex="-1" href="#"
+                                                class="btn btn-pay select-payment text-left pt-2 "
+                                                data-payment="Coupon"> <i
+                                                    class="fa fa-money-bill"></i>
+                                                    <?php echo lang('add_coupon'); ?>
+                                            </a> </li>
 
-
+                                            <?php } ?>
                                     </ul>
                                 </div>
+
+                                <?php
+							$this->load->helper('sale');
+ ?>
+
+
 
                                 <input type="hidden" name="payment_types" id="payment_types" value="Cash">
                                 <input type="input" name="amount_tendered" value="2" id="amount_tendered"
@@ -3175,6 +3176,17 @@ $this->load->view("partial/offline_header"); ?>
 				{{type}}
 			</span>
 			<span class="value">{{amount}}</span>
+            
+		</li>
+</script>
+<script id="cart-coupon-template" type="text/x-handlebars-template">
+
+    <li class="list-group-item">
+			<span class="key">
+				<a href="#" class="delete-coupon remove" id="delete_coupon_{{index}}" data-coupon-index="{{index}}"><i class="fa fa-trash text-danger"></i></a>
+				Coupon: 
+			</span>
+			<span class="value">{{label}}</span>
             
 		</li>
 </script>
@@ -3500,9 +3512,9 @@ $this->load->view("partial/offline_header"); ?>
                     
                     {{#if selected_rule}}
                     <div class="col-md-3 mt-3">
-                        <div class="text-gray-800 fs-7">{{selected_rule.name}}</div>
+                        <div class="text-gray-800 fs-7"><?php echo lang('Coupon'); ?></div>
                         <div class="text-muted fs-7 fw-bold text-black" data-kt-table-widget-4="template_cost">
-                                {{to_currency_no_money selected_rule.rule_discount}}
+                                {{selected_rule.name}}
                                                         
 
                         </div>

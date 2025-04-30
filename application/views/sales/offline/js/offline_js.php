@@ -10,6 +10,7 @@ const config = {
 };
 
 const giftCardLang = "<?php echo lang('giftcard'); ?>";
+const couponLang = "<?php echo lang('coupon'); ?>";
 const cannotAddZeroLang = "<?php echo lang('cannot_add_zero_payment'); ?>";
 const mustEnterNumericLang = "<?php echo lang('must_enter_numeric'); ?>";
 const errorTitle = "<?php echo lang('error'); ?>";
@@ -26,6 +27,7 @@ const giftCardNotExistLang = "<?php echo lang('sales_giftcard_does_not_exist'); 
 const giftCardBalanceIsLang = "<?php echo lang('sales_giftcard_balance_is'); ?>";
 const payment_options = <?php echo json_encode(array_values($payment_options)); ?>;
 
+const current_logged_in_employee  = parseInt(<?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>);
     function sound(type = 'success'){
         if (ENABLE_SOUNDS) {
                 $.playSound(BASE_URL + 'assets/sounds/'+type);
@@ -1026,6 +1028,23 @@ function get_price_rule_for_item($item_id = false) {
         function(response) {
             $('#ajax-loader').hide();
             cart.items = JSON.parse(JSON.stringify(response));
+            // Loop through all free items
+            cart.items.forEach(freeItem => {
+                if (freeItem.free_item) {
+                    const rule = freeItem.selected_rule;
+                    const itemId = freeItem.item_id;
+
+                    // Find a matching item with same item_id that is NOT free
+                    const matchingPaidItem = cart.items.find(item => 
+                        item.item_id === itemId && !item.free_item
+                    );
+
+                    if (matchingPaidItem) {
+                        matchingPaidItem.selected_rule = rule;
+                    }
+                }
+            });
+
             // console.log(response);
             renderUi();
         }, 'json');
@@ -1409,6 +1428,7 @@ Handlebars.registerHelper('count', function(v1, options) {
 var currency_symbol = '<?php echo $this->config->item('currency_symbol'); ?>';
 var cart_item_template = Handlebars.compile(document.getElementById("cart-item-template").innerHTML);
 var cart_payment_template = Handlebars.compile(document.getElementById("cart-payment-template").innerHTML);
+var cart_coupon_template = Handlebars.compile(document.getElementById("cart-coupon-template").innerHTML);
 var saved_sale_template = Handlebars.compile(document.getElementById("saved-sale-template").innerHTML);
 var sale_receipt_template = Handlebars.compile(document.getElementById("sale-receipt-template").innerHTML);
 var list_item_template = Handlebars.compile(document.getElementById("list-item-template").innerHTML);
@@ -3040,9 +3060,7 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
 
 
                     if (cart['extra']['sold_by_employee_id']) {
-                        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra'][
-                            'sold_by_employee_id'
-                        ] + '"]');
+                        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra']['sold_by_employee_id'] + '"]');
 
                         if (sold_by_employee_idElement.length > 0) {
                             var employeeName = sold_by_employee_idElement.text()
@@ -3054,7 +3072,19 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                         }
 
                     } else {
-                        $('.selected-sales-person').html('Not Set');
+
+                        default_sales_person_id =    localStorage.getItem('default_sales_person_id');
+                        var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + default_sales_person_id + '"]');
+
+                        if (sold_by_employee_idElement.length > 0) {
+                            cart['extra']['sold_by_employee_id'] = default_sales_person_id;
+                            var employeeName = sold_by_employee_idElement.text()
+                                .trim(); // Get the text content and trim any extra spaces
+                            $('.selected-sales-person').html(employeeName);
+                        } else {
+
+                            $('.selected-sales-person').html('Not Set');
+                        }
                     }
 
 
@@ -3150,14 +3180,24 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                         cart['payments'][k]['index'] = k;
                         $("#payments").append(cart_payment_template(cart['payments'][k]));
                     }
-
+                    if( typeof cart.extra.coupons !='undefined' && cart.extra.coupons.length){
+                        for (var k = 0; k < cart['extra']['coupons'].length; k++) {
+                            $("#payments").append(cart_coupon_template(cart['extra']['coupons'][k]));
+                        }
+                    }
                     if (cart.payments.length) {
                         // $("#finish_sale").show();
                         $("#kt_drawer_payments_list").show();
 
                     } else {
                         // $("#finish_sale").hide();
-                        $("#kt_drawer_payments_list").hide();
+
+                        if( typeof cart.extra.coupons !='undefined' && cart.extra.coupons.length){
+                            $("#kt_drawer_payments_list").show();
+                        }else{
+                            $("#kt_drawer_payments_list").hide();
+                        }
+                        
                     }
 
                     var cartValues = calculateCartValues(cart);
@@ -3186,12 +3226,16 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                     $('#total_discount').html(total_discount.toFixed(2));
                     $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
                     $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
-                    $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
+                    $discount_all_flat_show = 0;
+                    if(typeof cart['extra']['discount_all_flat'] !='undefined'){
+                        $discount_all_flat_show = cart['extra']['discount_all_flat'];
+                    }
+                    $('#Flat_discount').html($discount_all_flat_show + ' ' +
                         currency_symbol);
                     $('#Discount_from_items').html(item_discount + ' ' +
                         currency_symbol);
 
-                    $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
+                    $('.discount_all_flat').val($discount_all_flat_show);
                     $("#amount_due").html(amount_due);
                     $("#amount_tendered").val(amount_due);
                     localStorage.setItem('cart_amount_due' ,amount_due );
@@ -3451,13 +3495,14 @@ function checkPaymentTypes() {
 				$("#amount_tendered").val(amountDue);
 				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('check') . ' ' . lang('amount')); ?>);
 				break;
+            case "Coupon":
+                $("#amount_tendered").val('');
+                $("#amount_tendered").prop('placeholder', '<?php echo lang('add_coupon'); ?>');
+                break;
 			case <?php echo json_encode(lang('giftcard')); ?>:
-                console.log("checkPaymentTypes cart", amountDue);
 				$("#amount_tendered").val('');
 				$("#amount_tendered").prop('placeholder', '<?php echo lang('sales_swipe_type_giftcard'); ?>');
-				<?php if (!$this->config->item('disable_giftcard_detection')) { ?>
-					giftcard_swipe_field($("#amount_tendered"));
-				<?php } ?>
+				
 				break;
 			case <?php echo json_encode(lang('debit')); ?>:
 				$("#amount_tendered").val(amountDue);
@@ -3564,7 +3609,7 @@ async  function addPayment(e) {
         let amount = amountTenderedRaw;
         let type = $('#payment_types').val();
         console.log("payment_type", type);
-
+        console.log("couponLang", couponLang);
         const cartValues = calculateCartValues(cart);
         const amountDue = cartValues.amount_due;
         const total = cartValues.total;
@@ -3581,7 +3626,7 @@ async  function addPayment(e) {
         }
 
         // Validate non-giftcard payment
-        if (type !== giftCardLang) {
+        if (type !== giftCardLang &&  type !== couponLang) {
             if (isNaN(parseFloat(amount)) || !isFinite(amount)) {
                 let error = '';
                 if (amount === '0' && total != 0 && amountDue != 0) {
@@ -3745,6 +3790,43 @@ async  function addPayment(e) {
                         typeUpdated = fullPaymentType;
                     }
 
+                    else if (type === couponLang) {
+                        const coupon_number = $('#amount_tendered').val();
+                        const checkCouponUrl = <?php echo json_encode(site_url('sales/check_coupon_offline')); ?>;
+                       
+
+                        const response = await $.post(checkCouponUrl, {
+                            term: coupon_number
+                        });
+                        const data = typeof response === 'string' ? JSON.parse(response) : response;
+                        if (!data.success) {
+                            show_feedback('error', data.error, "<?php echo lang('error'); ?>");
+                        } else {
+                            if (!cart.extra) {
+                                cart.extra = {};
+                            }
+
+                            if (!Array.isArray(cart.extra.coupons)) {
+                                cart.extra.coupons = [];
+                            }
+
+                            // ✅ Prevent duplicate coupon by ID (optional)
+                            const existing = cart.extra.coupons.some(c => c.value === data.data.value);
+                            if (!existing) {
+                                cart.extra.coupons.push(data.data);
+                            } else {
+                                show_feedback('info', 'Coupon already added.', "<?php echo lang('notice'); ?>");
+                            }
+
+                            // ✅ Save back to localStorage
+                            localStorage.setItem("cart", JSON.stringify(cart));
+                            get_price_rule_for_item();
+                        }
+
+
+                    }
+
+                
                 // === STANDARD PAYMENT ===
                 else {
                     payment_amount = parseFloat(amount);
@@ -3934,7 +4016,12 @@ $(document).on("click", 'a.delete-payment', function(event) {
     cart.payments.remove($(this).data('payment-index'));
     renderUi();
 });
-
+$(document).on("click", 'a.delete-coupon', function(event) {
+    event.preventDefault();
+    cart.extra.coupons.remove($(this).data('coupon-index'));
+    get_price_rule_for_item();
+    renderUi();
+});
 $(document).on("click", '#remove_customer', function(event) {
     event.preventDefault();
     cart.customer = {};
@@ -4621,6 +4708,15 @@ $(document).ready(function() {
         $('.item-tiers').slideToggle("fast");
     });
 
+
+    let defaultEmployeeId = localStorage.getItem('default_sales_person_id');
+    if (!defaultEmployeeId) {
+        defaultEmployeeId = current_logged_in_employee;
+        localStorage.setItem('default_sales_person_id', defaultEmployeeId);
+        $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').trigger('click');
+    }
+    cart['extra']['sold_by_employee_id'] = defaultEmployeeId;
+
     //Set Item tier after selection
     $('.select-sales-persons a').on('click', function(e) {
         e.preventDefault();
@@ -4629,6 +4725,8 @@ $(document).ready(function() {
         $('.select-sales-persons').slideToggle("fast");
         cart['extra']['sold_by_employee_id'] = $(this).data('value');
         cart['extra']['permission_edit_sale_price'] = $(this).data('permission_edit_sale_price');
+
+        localStorage.setItem('default_sales_person_id',  $(this).data('value'));
         renderUi();
     });
 
@@ -6388,6 +6486,10 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
         const cartValues = calculateCartValues(cart);
         amount_tendered_input_changed(cartValues);
 
+
+        $('#amount_tendered').on( 'keyup' ,  function() {
+            amount_tendered_input_changed(cartValues);
+        });
         $('.slider_button').click(function() {
            
             close_all_drawers();

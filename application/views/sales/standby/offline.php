@@ -2414,9 +2414,9 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                        <i class="fonticon-content-marketing fs-6" id="discount_details_reload"></i>
+                        
                         <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
-                            Discount (OMR) 
+                        <i class="fonticon-content-marketing fs-6" id="discount_details_reload"></i>   Discount (OMR) 
                         </div>
 
                         <div class="fs-2 fw-bold counted text-center" id="total_discount">0 </div>
@@ -2454,12 +2454,12 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                            <a href="#" class="" id="edit_taxes_gen" data-id="-1"
+                           
+                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
+                        <a href="#" class="" id="edit_taxes_gen" data-id="-1"
                                     data-target="#kt_drawer_general" data-target-title="Edit Taxes"
                                     data-target-width="lg"><i class="fonticon-content-marketing fs-6"></i>
-                            </a>
-                        <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
-                            Tax (OMR)
+                            </a>   Tax (OMR)
                         </div>
 
                         <div class="amount total-tax fs-2 fw-bold counted" data-speed="1000" data-currency="OMR"
@@ -2515,10 +2515,10 @@ $this->load->view("partial/offline_header"); ?>
                         <!--end::Svg Icon-->
                     </span>
                     <div class="d-flex flex-direction-column align-items-center rounded amount-block  min-w-125px h-80px py-3 px-4 bg-primary  me-3">
-                    <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>
+                    
                         
                             <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
-                                Amount Due (OMR)
+                            <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>  Amount Due (OMR)
 
 
                                
