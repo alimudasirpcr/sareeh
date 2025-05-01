@@ -1262,10 +1262,12 @@ class Sale extends MY_Model
 		}
 		else
 		{
-			$this->db->insert('sales',$sales_data);
-			
-			$sale_id = $this->db->insert_id();
-			echo $sale_id;
+			if ($this->db->insert('sales', $sales_data)) {
+				$sale_id = $this->db->insert_id();
+				echo $sale_id;
+			} else {
+				echo "Insert failed: " . $this->db->_error_message();
+			}
 			exit();
 		}
 		
