@@ -2896,5 +2896,20 @@
     "enter_a_coupon": "Enter a coupon",
     "sales_quantity_less_than_zero": "Sales quantity less than zero",
     "coupon": "Coupon",
-    "coupon_not_found": "Coupon not found"
+    "coupon_not_found": "Coupon not found",
+    "sales_closing_amount_desc": "Sales closing amount desc",
+    "count": "Count",
+    "det": "Det",
+    "open_amount": "Open amount",
+    "sales": "Sales",
+    "total_additions": "Total additions",
+    "total_subtractions": "Total subtractions",
+    "sales_closing_amount_approx": "Sales closing amount approx",
+    "total_over_short": "Total over short",
+    "closing_amount": "Closing amount",
+    "sales_notes": "Sales notes",
+    "sales_logout_without_closing_register": "Sales logout without closing register",
+    "sales_amount_required": "Sales amount required",
+    "sales_confirm_closing": "Sales confirm closing",
+    "login_login": "Login login"
 }

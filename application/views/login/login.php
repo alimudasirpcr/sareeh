@@ -135,8 +135,6 @@ if (is_on_demo_host()) { ?>
 									<h1 class="text-dark mb-3">Sign In to Sareeh</h1>
 									<!--end::Title-->
 									<!--begin::Link-->
-									<div class="text-gray-400 fw-semibold fs-4">New Here?
-									<a href="../dist/authentication/sign-up/basic.html" class="link-primary fw-bold">Create an Account</a></div>
 									<!--end::Link-->
 								</div>
 								<?php
