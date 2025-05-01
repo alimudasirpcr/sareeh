@@ -936,7 +936,7 @@ class Sale extends MY_Model
 			
 	function save($cart , $async = TRUE , $is_order=0  , $delivery_type='Pickup' , $allow_empty_items = false)
 	{	
-		
+		$this->db->db_debug = TRUE;
 		$this->db->save_queries = TRUE;
 		$this->load->model('Sale_types');
 		$series_to_add = array();
@@ -1253,7 +1253,6 @@ class Sale extends MY_Model
 		 
 		if ($sale_id)
 		{
-			echo "called"; exit();
 			//Delete previoulsy sale so we can overwrite data
 			$this->delete($sale_id, true);
 			
@@ -1262,17 +1261,9 @@ class Sale extends MY_Model
 		}
 		else
 		{
-			$this->db->db_debug = FALSE; // prevent automatic error display
-
-			if ($this->db->insert('sales', $sales_data)) {
-				echo "Query: " . $this->db->last_query() . "<br>";
-				$sale_id = $this->db->insert_id();
-				echo "Inserted ID: " . $sale_id;
-			} else {
-				$error = $this->db->error(); // CI 3+
-				echo "Insert failed! Error Code: " . $error['code'] . " - " . $error['message'];
-			}
-			exit();
+			$this->db->insert('sales',$sales_data);
+			
+			$sale_id = $this->db->insert_id();
 		}
 		
 		//store_accounts_paid_sales
