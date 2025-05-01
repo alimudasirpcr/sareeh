@@ -939,6 +939,7 @@ class Sale extends MY_Model
 		ini_set('display_errors', '1');
 		ini_set('display_startup_errors', '1');
 		error_reporting(E_ALL);
+		echo "yes";
 		$this->db->save_queries = TRUE;
 		$this->load->model('Sale_types');
 		$series_to_add = array();
