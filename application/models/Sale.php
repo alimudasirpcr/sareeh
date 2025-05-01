@@ -1253,6 +1253,7 @@ class Sale extends MY_Model
 		 
 		if ($sale_id)
 		{
+			echo "called"; exit();
 			//Delete previoulsy sale so we can overwrite data
 			$this->delete($sale_id, true);
 			
