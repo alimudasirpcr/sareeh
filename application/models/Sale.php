@@ -1262,11 +1262,15 @@ class Sale extends MY_Model
 		}
 		else
 		{
+			$this->db->db_debug = FALSE; // prevent automatic error display
+
 			if ($this->db->insert('sales', $sales_data)) {
+				echo "Query: " . $this->db->last_query() . "<br>";
 				$sale_id = $this->db->insert_id();
-				echo $sale_id;
+				echo "Inserted ID: " . $sale_id;
 			} else {
-				echo "Insert failed: " . $this->db->_error_message();
+				$error = $this->db->error(); // CI 3+
+				echo "Insert failed! Error Code: " . $error['code'] . " - " . $error['message'];
 			}
 			exit();
 		}
