@@ -2413,6 +2413,7 @@ function onclick_edit_taxes_item(item_id) {
             } else {
                 cart.taxes = taxobj;
             }
+            show_feedback('success', "done", "<?php echo  lang('success') ?>");
             renderUi();
         }
     });
@@ -6179,7 +6180,7 @@ $(document).ready(function() {
             cart['custom_fields'] = {};
 
             <?php if ($this->config->item('show_receipt_after_suspending_sale')) { ?>
-                displayReceipt(JSON.parse(sale));
+                displayReceipt(response.sale_id);
             <?php } ?>
 
             localStorage.removeItem("sales");

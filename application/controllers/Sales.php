@@ -6850,7 +6850,7 @@ class Sales extends Secure_area
 					}
 
 					
-						echo json_encode(array('success' => lang('sales_successfully_suspended_sale'), 'async_inventory_updates' => TRUE));
+						echo json_encode(array('success' => lang('sales_successfully_suspended_sale'), 'async_inventory_updates' => TRUE , 'sale_id' => $sale_id));
 					
 				
 		
