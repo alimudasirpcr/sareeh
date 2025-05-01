@@ -10463,7 +10463,9 @@ class Sales extends Secure_area
 		function sync_offline_sales()
 		{
 
-			
+			ini_set('display_errors', '1');
+			ini_set('display_startup_errors', '1');
+			error_reporting(E_ALL);
 			$sales = json_decode($this->input->post('offline_sales'), TRUE);
 
 			foreach($sales as $offline_sale)
