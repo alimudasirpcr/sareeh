@@ -1632,24 +1632,7 @@ class Sale extends MY_Model
 		}
 
 		
-		foreach($this->Item_taxes_finder->get_info_whole_cart($cart , 'sale' ) as $row)
-					{
-						
-						$tax_name = $row['percent'].'% ' . $row['name'];
-						
-						//Only save sale if the tax has NOT been deleted
-						if (!in_array($tax_name, $cart->get_excluded_taxes()))
-						{	
-							 $this->db->insert('sales_items_taxes', array(
-								'sale_id' 	=>$sale_id,
-								'item_id' 	=>0,
-								'line'      =>0,
-								'name'		=>$row['name'],
-								'percent' 	=>$row['percent'],
-								'cumulative'=>$row['cumulative']
-							));
-						}
-					}
+		
 
 
 
@@ -2851,6 +2834,27 @@ class Sale extends MY_Model
 			$this->load->model('Item');
 		}
 		
+
+		foreach($this->Item_taxes_finder->get_info_whole_cart($cart , 'sale' ) as $row)
+					{
+						
+						$tax_name = $row['percent'].'% ' . $row['name'];
+						
+						//Only save sale if the tax has NOT been deleted
+						if (!in_array($tax_name, $cart->get_excluded_taxes()))
+						{	
+							 $this->db->insert('sales_items_taxes', array(
+								'sale_id' 	=>$sale_id,
+								'item_id' 	=>0,
+								'line'      =>0,
+								'name'		=>$row['name'],
+								'percent' 	=>$row['percent'],
+								'cumulative'=>$row['cumulative']
+							));
+						}
+					}
+
+					
 		if ($this->config->item('remove_commission_from_profit_in_reports'))
 		{
 			$sale_profit-=$sale_commission;
