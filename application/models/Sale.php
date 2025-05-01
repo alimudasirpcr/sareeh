@@ -936,7 +936,9 @@ class Sale extends MY_Model
 			
 	function save($cart , $async = TRUE , $is_order=0  , $delivery_type='Pickup' , $allow_empty_items = false)
 	{	
-	
+		ini_set('display_errors', '1');
+		ini_set('display_startup_errors', '1');
+		error_reporting(E_ALL);
 		$this->db->save_queries = TRUE;
 		$this->load->model('Sale_types');
 		$series_to_add = array();
