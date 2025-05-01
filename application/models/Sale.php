@@ -1262,7 +1262,7 @@ class Sale extends MY_Model
 		else
 		{
 			$this->db->insert('sales',$sales_data);
-			echo $this->db->last_query();
+			exit();
 			$sale_id = $this->db->insert_id();
 		}
 		
