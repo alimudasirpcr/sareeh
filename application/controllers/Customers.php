@@ -129,6 +129,7 @@ class Customers extends Person_controller
 		$params = $this->session->userdata('customers_search_data');
 		
 		$search=$this->input->post('search');
+		$search = preg_replace('/\s*\([^\)]+\)/', '', $search);
 		$offset = $this->input->post('offset') ? $this->input->post('offset') : 0;
 		$location_id = $this->input->post('location_id') ? $this->input->post('location_id') : FALSE;
 		if ($this->config->item('only_allow_current_location_customers'))
@@ -141,7 +142,7 @@ class Customers extends Person_controller
 		
 		$customers_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,'deleted' => $deleted,'location_id' => $location_id);
 		$this->session->set_userdata("customers_search_data",$customers_search_data);
-		save_query();
+		
 		$per_page=$this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
 
 		$search_data=$this->Customer->search($search,$location_id,$deleted,$per_page,$offset, $order_col ,$order_dir);
