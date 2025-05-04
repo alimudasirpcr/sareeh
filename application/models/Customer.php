@@ -880,7 +880,7 @@ class Customer extends Person
 		{
 			$deleted = 0;
 		}
-		
+
 	  //The queries are done as 2 unions to speed up searches to use indexes.
 	 	//When doing OR WHERE across 2 tables; performance is not good
 		$this->db->select('*,people.person_id as pid');

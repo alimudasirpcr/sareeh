@@ -223,4 +223,5 @@ div#kt_app_layout_builder_header {
 .pos-sidebar{
     height: 60vh !important;
 }
+
 </style>
