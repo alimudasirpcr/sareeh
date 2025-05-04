@@ -2911,5 +2911,14 @@
     "sales_logout_without_closing_register": "Sales logout without closing register",
     "sales_amount_required": "Sales amount required",
     "sales_confirm_closing": "Sales confirm closing",
-    "login_login": "Login login"
+    "login_login": "Login login",
+    "home_setup_wizard": "Home setup wizard",
+    "dismiss": "Dismiss",
+    "home_wizard_configure_company": "Home wizard configure company",
+    "home_wizard_configure_locations": "Home wizard configure locations",
+    "home_wizard_add_inventory": "Home wizard add inventory",
+    "home_wizard_edit_employees": "Home wizard edit employees",
+    "home_wizard_add_customer": "Home wizard add customer",
+    "home_wizard_create_sale": "Home wizard create sale",
+    "test_mode_desc": "Test mode desc"
 }

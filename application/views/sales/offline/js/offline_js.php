@@ -4502,10 +4502,21 @@ function displayReceipt(sale) {
 
     // $("#print_receipt_holder").append(sale_receipt_template(sale));
     // $("#print_receipt_holder").append();
-    let link = '<?= base_url() ?>sales/preview_receipt/'+sale+'';
-    let link_last = '<?= base_url() ?>sales/receipt/'+sale+'';
-    $('#last_sale_id').attr('href' , link_last);
-    $("#print_receipt_holder").load(link);
+    const sales_test_mode_transaction = '<?= lang('sales_test_mode_transaction') ?>';
+    if(sales_test_mode_transaction == sale){
+        $("#print_receipt_holder").append(sales_test_mode_transaction);
+        $("#print_receipt_holder").append();
+
+    }else{
+        let link = '<?= base_url() ?>sales/preview_receipt/'+sale+'';
+        let link_last = '<?= base_url() ?>sales/receipt/'+sale+'';
+            $('#last_sale_id').attr('href' , link_last);
+            $("#print_receipt_holder").load(link);
+            
+    }
+
+    
+   
     $("#print_receipt_holder").show();
     $('#print_modal').modal('show');
     $("#sales_page_holder").hide();
