@@ -14,6 +14,7 @@ const config = {
 };
 
 const giftCardLang = "<?php echo lang('giftcard'); ?>";
+const couponLang = "<?php echo lang('coupon'); ?>";
 const cannotAddZeroLang = "<?php echo lang('cannot_add_zero_payment'); ?>";
 const mustEnterNumericLang = "<?php echo lang('must_enter_numeric'); ?>";
 const errorTitle = "<?php echo lang('error'); ?>";
@@ -1799,7 +1800,7 @@ function populateTaxSelect() {
     const select = $('#tax_class');
 
     select.empty();
-    select.append($('<option></option>').val('').html('None'));
+    select.append($('<option></option>').val('None').html('None'));
 
     taxes.forEach(item => {
         const option = $('<option></option>')
@@ -2606,13 +2607,14 @@ function removeAllExceptFirstRepeater() {
 
 function onclick_edit_taxes_item(item_id){
 
-           
+         
             if(item_id >= 0){
-                taxes  = cart.items[item_id].all_data.item_taxes;
+                taxes  = cart.items[item_id].taxes;
             }else{
                 taxes  = cart.taxes;
             }
-
+            console.log("item_id" , item_id);
+            console.log("taxex" , taxes);
             
            
             $('.current_cart_item').val(item_id);
@@ -2833,816 +2835,811 @@ function add_default_tax_to_item() {
 
         function renderUi() {
 
-$("#saved_sales_list").empty();
-add_default_tax_to_item();
-// console.log("UiRefreshed");
-var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
+                $("#saved_sales_list").empty();
+                add_default_tax_to_item();
+                // console.log("UiRefreshed");
+                var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
 
-    for (var k = saved_sales.length - 1; k >= 0; k--) {
-        var saved_sale = saved_sales[k];
-        var total = get_total(saved_sale);
-        var items_sold = get_total_items_sold(saved_sale);
-
-
-
-        let topItems = saved_sales[k].items
-            .map(item => item.name) // Extract names
-            .slice(0, 2) // Limit to first 5 items
-            .join(', '); // Join names with commas
-        // Compile the template with cart data
+                for (var k = saved_sales.length - 1; k >= 0; k--) {
+                    var saved_sale = saved_sales[k];
+                    var total = get_total(saved_sale);
+                    var items_sold = get_total_items_sold(saved_sale);
 
 
 
-        var customer = <?php echo json_encode(lang('none')) ?>;
-
-        if (saved_sale['customer'] && saved_sale['customer']['person_id']) {
-            customer = saved_sale['customer']['customer_name'];
-        }
-
-
-
-
-        var sale = {
-            index: k,
-            total: total,
-            customer: customer,
-            items_sold: items_sold,
-            topItems: topItems,
-        };
-        $("#saved_sales_list").append(saved_sale_template(sale));
-    }
-
-
-if( typeof cart['extra']['mode'] =='undefined') {
-
-    cart['extra']['mode'] = 'sale';
-}
-
-localStorage.setItem("cart", JSON.stringify(cart));
-
-
-refresh_cart_var();
+                    let topItems = saved_sales[k].items
+                        .map(item => item.name) // Extract names
+                        .slice(0, 2) // Limit to first 5 items
+                        .join(', '); // Join names with commas
+                    // Compile the template with cart data
 
 
 
-$("#register").find('tbody').remove();
-var total_qty = 0;
+                    var customer = <?php echo json_encode(lang('none')) ?>;
+
+                    if (saved_sale['customer'] && saved_sale['customer']['person_id']) {
+                        customer = saved_sale['customer']['customer_name'];
+                    }
 
 
-for (var k = 0; k < cart['items'].length; k++) {
-
-    var cart_item = cart['items'][k];
-    if (cart_item['quantity'] > 0) {
-        total_qty = total_qty + parseInt(cart_item['quantity']);
-    }
 
 
-    cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
-        'quantity'] * cart_item['discount_percent'] / 100;
-
-
-    cart['items'][k]['index'] = k;
-
-
-    // console.log("length " , cart_item['selected_rule'].length);
-    if (typeof cart_item['selected_rule'] != 'undefined' && typeof cart_item['selected_rule'].length ==
-        'undefined') {
-
-        cart['extra']['permission_edit_sale_price'] = 0;
-        if (typeof cart['items'][k]['permissions'] !== 'undefined' &&
-            typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined'
-            ) {
-
-            // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
-            cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
-        }
-
-        cart['items'][k]['tier_id'] = 0;
-    }
-
-    // console.log( cart['extra']['permission_edit_sale_price']);
-
-    cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price']) ? cart['extra'][
-        'permission_edit_sale_price'
-    ] : 0;
-
-
-    $("#register").prepend(cart_item_template(cart['items'][k]));
-
-
-    customArray_source_serial_no = [];
-    if (typeof cart_item['all_data']['serial_numbers'] !== 'undefined' ) {
-        customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key,
-        value]) => {
-            return {
-                text: value.serial_number,
-                value: value.id,
-                all_val: value
-            };
-        });
-    }
-    var serialnumber = '<?= lang('empty') ?>';
-    if (typeof cart_item['serialnumber'] !== 'undefined') {
-        serialnumber = cart_item['serialnumber'];
-    }
-
-    $('#serialnumber_' + k).editable({
-        value: serialnumber,
-        source: customArray_source_serial_no,
-        success: function(response, newValue) {
-
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-
-            if (typeof index !== 'undefined') {
-
-                cart['items'][index][field] = newValue;
-
-                all_sns = cart['items'][index]['all_data']['serial_numbers'];
-                var selectedsn = all_sns.find(function(item) {
-                    return item.id ==
-                    newValue; // Match the newValue with the value in the array
-                });
-                if (selectedsn) {
-                    cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
-                    cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn
-                        .cost_price : cart['items'][index]['cost_price'];
-                    cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn
-                        .unit_price : cart['items'][index]['orig_price'];
-                    cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price :
-                        cart['items'][index]['price'];
-                } else {
-                    cart['items'][index]['serialnumberText'] = newValue;
+                    var sale = {
+                        index: k,
+                        total: total,
+                        customer: customer,
+                        items_sold: items_sold,
+                        topItems: topItems,
+                    };
+                    $("#saved_sales_list").append(saved_sale_template(sale));
                 }
 
 
+            if( typeof cart['extra']['mode'] =='undefined') {
+
+                cart['extra']['mode'] = 'sale';
             }
+
             localStorage.setItem("cart", JSON.stringify(cart));
-            renderUi();
-        }
-
-    });
-
-    if(typeof cart['items'][k]['all_data']['permissions'] != 'undefined' ){
-        if ((typeof cart['items'][k]['serialnumber'] == 'undefined' || cart['items'][k]['serialnumber'] == '') && cart[
-            'items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos']) {
-            $('#add_sn_modal_' + k).show();
-        }
-    }
 
 
-    $('#sserialnumber_' + k).editable({
-        value: serialnumber,
-        source: customArray_source_serial_no,
-        success: function(response, newValue) {
+            refresh_cart_var();
 
-            var field = $(this).data('name');
-            var index = $(this).data('index');
 
-            if (typeof index !== 'undefined') {
 
-                cart['items'][index][field] = newValue;
-                all_sns = cart['items'][index]['all_data']['serial_numbers'];
-                var selectedsn = all_sns.find(function(item) {
-                    return item.id ==
-                    newValue; // Match the newValue with the value in the array
-                });
-                if (selectedsn) {
-                    cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
-                    cart['items'][index]['cost_price'] = (selectedsn.cost_price && !selectedsn.cost_price) ? selectedsn
-                        .cost_price : (cart['items'][index]['cost_price'])?cart['items'][index]['cost_price']:0;
-                    cart['items'][index]['orig_price'] = (selectedsn.unit_price && !selectedsn.unit_price) ? selectedsn
-                        .unit_price : (cart['items'][index]['orig_price'])?cart['items'][index]['orig_price']:0;
-                    cart['items'][index]['price'] = (selectedsn.unit_price && !selectedsn.unit_price) ? selectedsn.unit_price :
-                    (cart['items'][index]['price'])?cart['items'][index]['price']:0;
+            $("#register").find('tbody').remove();
+            var total_qty = 0;
 
-                } else {
-                    cart['items'][index]['serialnumberText'] = newValue;
+
+                for (var k = 0; k < cart['items'].length; k++) {
+
+                                var cart_item = cart['items'][k];
+                                if (cart_item['quantity'] > 0) {
+                                    total_qty = total_qty + parseInt(cart_item['quantity']);
+                                }
+
+
+                                cart['items'][k]['line_total'] = cart_item['price'] * cart_item['quantity'] - cart_item['price'] * cart_item[
+                                    'quantity'] * cart_item['discount_percent'] / 100;
+
+
+                                cart['items'][k]['index'] = k;
+
+
+                                // console.log("length " , cart_item['selected_rule'].length);
+                                if (typeof cart_item['selected_rule'] != 'undefined' && typeof cart_item['selected_rule'].length ==
+                                    'undefined') {
+
+                                    cart['extra']['permission_edit_sale_price'] = 0;
+                                    if (typeof cart['items'][k]['permissions'] !== 'undefined' &&
+                                        typeof cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] !== 'undefined'
+                                        ) {
+
+                                        // Set 'allow_price_override_regardless_of_permissions' to 0 if it exists
+                                        cart['items'][k]['permissions']['allow_price_override_regardless_of_permissions'] = 0;
+                                    }
+
+                                    cart['items'][k]['tier_id'] = 0;
+                                }
+
+                                // console.log( cart['extra']['permission_edit_sale_price']);
+
+                                cart['items'][k]['permission_edit_sale_price'] = (cart['extra']['permission_edit_sale_price']) ? cart['extra'][
+                                    'permission_edit_sale_price'
+                                ] : 0;
+
+
+                                $("#register").prepend(cart_item_template(cart['items'][k]));
+
+
+                                customArray_source_serial_no = [];
+                                if (typeof cart_item['all_data']['serial_numbers'] !== 'undefined' ) {
+                                    customArray_source_serial_no = Object.entries(cart_item['all_data']['serial_numbers']).map(([key,
+                                    value]) => {
+                                        return {
+                                            text: value.serial_number,
+                                            value: value.id,
+                                            all_val: value
+                                        };
+                                    });
+                                }
+                                var serialnumber = '<?= lang('empty') ?>';
+                                if (typeof cart_item['serialnumber'] !== 'undefined') {
+                                    serialnumber = cart_item['serialnumber'];
+                                }
+
+                                $('#serialnumber_' + k).editable({
+                                    value: serialnumber,
+                                    source: customArray_source_serial_no,
+                                    success: function(response, newValue) {
+
+                                        var field = $(this).data('name');
+                                        var index = $(this).data('index');
+
+                                        if (typeof index !== 'undefined') {
+
+                                            cart['items'][index][field] = newValue;
+
+                                            all_sns = cart['items'][index]['all_data']['serial_numbers'];
+                                            var selectedsn = all_sns.find(function(item) {
+                                                return item.id ==
+                                                newValue; // Match the newValue with the value in the array
+                                            });
+                                            if (selectedsn) {
+                                                cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                                                cart['items'][index]['cost_price'] = (selectedsn.cost_price) ? selectedsn
+                                                    .cost_price : cart['items'][index]['cost_price'];
+                                                cart['items'][index]['orig_price'] = (selectedsn.unit_price) ? selectedsn
+                                                    .unit_price : cart['items'][index]['orig_price'];
+                                                cart['items'][index]['price'] = (selectedsn.unit_price) ? selectedsn.unit_price :
+                                                    cart['items'][index]['price'];
+                                            } else {
+                                                cart['items'][index]['serialnumberText'] = newValue;
+                                            }
+
+
+                                        }
+                                        localStorage.setItem("cart", JSON.stringify(cart));
+                                        renderUi();
+                                    }
+
+                                });
+
+                                if(typeof cart['items'][k]['all_data']['permissions'] != 'undefined' ){
+                                    if ((typeof cart['items'][k]['serialnumber'] == 'undefined' || cart['items'][k]['serialnumber'] == '') && cart[
+                                        'items'][k]['all_data']['permissions']['require_to_add_serial_number_in_pos']) {
+                                        $('#add_sn_modal_' + k).show();
+                                    }
+                                }
+
+
+                                $('#sserialnumber_' + k).editable({
+                                    value: serialnumber,
+                                    source: customArray_source_serial_no,
+                                    success: function(response, newValue) {
+
+                                        var field = $(this).data('name');
+                                        var index = $(this).data('index');
+
+                                        if (typeof index !== 'undefined') {
+
+                                            cart['items'][index][field] = newValue;
+                                            all_sns = cart['items'][index]['all_data']['serial_numbers'];
+                                            var selectedsn = all_sns.find(function(item) {
+                                                return item.id ==
+                                                newValue; // Match the newValue with the value in the array
+                                            });
+                                            if (selectedsn) {
+                                                cart['items'][index]['serialnumberText'] = selectedsn.serial_number;
+                                                cart['items'][index]['cost_price'] = (selectedsn.cost_price && !selectedsn.cost_price) ? selectedsn
+                                                    .cost_price : (cart['items'][index]['cost_price'])?cart['items'][index]['cost_price']:0;
+                                                cart['items'][index]['orig_price'] = (selectedsn.unit_price && !selectedsn.unit_price) ? selectedsn
+                                                    .unit_price : (cart['items'][index]['orig_price'])?cart['items'][index]['orig_price']:0;
+                                                cart['items'][index]['price'] = (selectedsn.unit_price && !selectedsn.unit_price) ? selectedsn.unit_price :
+                                                (cart['items'][index]['price'])?cart['items'][index]['price']:0;
+
+                                            } else {
+                                                cart['items'][index]['serialnumberText'] = newValue;
+                                            }
+
+
+                                        }
+                                        localStorage.setItem("cart", JSON.stringify(cart));
+                                        renderUi();
+                                    }
+
+                                });
+
+                
+
+
+                                $('#damaged_qty_' + k).editable({
+                                    success: function(response, newValue) {
+                                        //persist data
+                                        var field = $(this).data('name');
+                                        var index = $(this).data('index');
+                                        // console.log(index, field);
+                                        if (typeof index !== 'undefined') {
+
+                                            cart['items'][index][field] = newValue;
+                                        }
+                                        renderUi();
+                                    }
+                                });
+
+
+
+
+                            customArray_source_supplier_data = [];
+                                if (typeof cart_item['all_data']['source_supplier_data'] !== 'undefined') {
+                                    customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key,
+                                        value
+                                    ]) => {
+                                        return {
+                                            text: value.text,
+                                            value: value.value
+                                        };
+                                    });
+                                }
+
+                            $('#supplier_' + k).editable({
+                                value: cart_item['supplier_id'],
+                                source: customArray_source_supplier_data,
+                                success: function(response, newValue) {
+
+                                    var field = $(this).data('name');
+                                    var index = $(this).data('index');
+
+                                    if (typeof index !== 'undefined') {
+                                        // console.log(newValue);
+                                        cart['items'][index][field] = newValue;
+                                        console.log(newValue);
+                                        console.log(index);
+                                    
+
+                                        cart['items'][index].supplier_name = cart['items'][index]['all_data']['source_supplier_data'][newValue].text;
+                                    }
+
+
+                                    localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                                    refresh_cart_var();
+
+                                    set_supplier_id(newValue, index);
+
+                                }
+
+                            });
+
+                            //  console.log('quantity_units' , cart_item);
+                            customArray = [];
+                            if (typeof cart_item['quantity_units'] !== 'undefined') {
+
+                                customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
+                                    return {
+                                        text: value.text,
+                                        value: value.value
+                                    };
+                                });
+
+                            }
+
+                            // customArray.push(['text' : 'none' , 'value' :  '0'])
+                            // console.log(customArray);
+                            $('#quantity_unit_' + k).editable({
+                                value: cart_item['quantity_unit_id'],
+                                source: customArray,
+                                success: function(response, newValue) {
+
+                                    var field = $(this).data('name');
+                                    var index = $(this).data('index');
+
+                                    if (typeof index !== 'undefined') {
+
+                                        cart['items'][index][field] = newValue;
+                                        cart['items'][index].quantity_units_name = cart['items'][index]['all_data']['quantity_units'][newValue].text;
+                                    }
+
+
+                                    localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                                    refresh_cart_var();
+
+
+                                    set_quantity_unit_id(newValue, index);
+
+                                }
+
+                            });
+                            customArrayTire = [];
+
+                            if (typeof cart_item['quantity_units'] !== 'undefined') {
+
+                                customArrayTire = Object.entries(cart_item.all_data.all_tier_info).map(([key, value]) => {
+                                    return {
+                                        text: value.name,
+                                        value: value.id
+                                    };
+                                });
+
+                                }
+
+
+
+                            $('#tier_' + k).editable({
+                                value: cart_item['tier_id'],
+                                source: customArrayTire,
+                                success: function(response, newValue) {
+
+                                    var field = $(this).data('name');
+                                    var index = $(this).data('index');
+
+                                    if (typeof index !== 'undefined') {
+
+                                        cart['items'][index].previous_tier_id = (cart['items'][index][field]) ? cart['items'][index][field] : 0;
+                                        cart['items'][index][field] = newValue;
+                                        cart['items'][index].tier_name = cart['items'][index].all_data.all_tier_info[newValue].name;
+                                    }
+
+
+                                    localStorage.setItem("cart", JSON.stringify(cart));
+
+
+                                    refresh_cart_var();
+
+
+                                    set_tier_id(newValue, true);
+
+                                }
+
+                            });
+
+
+
+
+
                 }
 
 
-            }
-            localStorage.setItem("cart", JSON.stringify(cart));
-            renderUi();
-        }
-
-    });
-
-  
-
-
-    $('#damaged_qty_' + k).editable({
-        success: function(response, newValue) {
-            //persist data
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            // console.log(index, field);
-            if (typeof index !== 'undefined') {
-
-                cart['items'][index][field] = newValue;
-            }
-            renderUi();
-        }
-    });
-
-
-
-
-    customArray_source_supplier_data = [];
-        if (typeof cart_item['all_data']['source_supplier_data'] !== 'undefined') {
-            customArray_source_supplier_data = Object.entries(cart_item['all_data']['source_supplier_data']).map(([key,
-                value
-            ]) => {
-                return {
-                    text: value.text,
-                    value: value.value
-                };
+            $('.xeditable-item-percentage').editable({
+                success: function(response, newValue) {
+                    //persist data
+                    var field = $(this).data('name');
+                    var index = $(this).data('index');
+                    if (typeof index !== 'undefined') {
+                        max_discount =     parseFloat(cart['items'][index]['all_data']['max_discount']);
+                        if (max_discount > 0  &&   max_discount  < parseFloat(newValue)) {
+                            show_feedback('error', cart['items'][index]['all_data']['permissions'][
+                                    'sales_could_not_discount_item_above_max'
+                                ] + " " + parseFloat(cart['items'][index]['all_data']['max_discount']),
+                                "<?php echo  lang('error') ?>");
+                            return false;
+                        }
+                        cart['items'][index][field] = newValue;
+                    }
+                    renderUi();
+                }
             });
-        }
 
-    $('#supplier_' + k).editable({
-        value: cart_item['supplier_id'],
-        source: customArray_source_supplier_data,
-        success: function(response, newValue) {
+                $('.xeditable-cost_price').editable({
+                    success: function(response, newValue) {
+                        //persist data
+                        var field = $(this).data('name');
+                        var index = $(this).data('index');
+                        if (typeof index !== 'undefined') {
+                            cart['items'][index][field] = newValue;
+                        }
+                        renderUi();
+                    }
+                });
 
-            var field = $(this).data('name');
-            var index = $(this).data('index');
+                $('.xeditable-description').editable({
+                    success: function(response, newValue) {
+                        //persist data
+                        var field = $(this).data('name');
+                        var index = $(this).data('index');
+                        if (typeof index !== 'undefined') {
+                            cart['items'][index][field] = newValue;
+                        }
+                        renderUi();
+                    }
+                });
 
-            if (typeof index !== 'undefined') {
-                // console.log(newValue);
-                cart['items'][index][field] = newValue;
-                console.log(newValue);
-                console.log(index);
-            
+            function item_subtotal($item) {
+                                    var modifier_subtotal = get_modifiers_subtotal($item);
+                                    var item_price_total = $item['price'] * $item['quantity'];
 
-                cart['items'][index].supplier_name = cart['items'][index]['all_data']['source_supplier_data'][newValue].text;
-            }
+                                    var discount = $item['discount_percent'] || 0;
 
+                                    var discounted_modifiers = modifier_subtotal - (modifier_subtotal * discount / 100);
+                                    var discounted_items = item_price_total - (item_price_total * discount / 100);
 
-            localStorage.setItem("cart", JSON.stringify(cart));
-
-
-            refresh_cart_var();
-
-            set_supplier_id(newValue, index);
-
-        }
-
-    });
-
-//  console.log('quantity_units' , cart_item);
-customArray = [];
-if (typeof cart_item['quantity_units'] !== 'undefined') {
-
-    customArray = Object.entries(cart_item['quantity_units']).map(([key, value]) => {
-        return {
-            text: value.text,
-            value: value.value
-        };
-    });
-
-}
-
-    // customArray.push(['text' : 'none' , 'value' :  '0'])
-    // console.log(customArray);
-    $('#quantity_unit_' + k).editable({
-        value: cart_item['quantity_unit_id'],
-        source: customArray,
-        success: function(response, newValue) {
-
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-
-            if (typeof index !== 'undefined') {
-
-                cart['items'][index][field] = newValue;
-                cart['items'][index].quantity_units_name = cart['items'][index]['all_data']['quantity_units'][newValue].text;
-            }
+                                    var subtotal = discounted_modifiers + discounted_items;
 
 
-            localStorage.setItem("cart", JSON.stringify(cart));
+                                    return subtotal;
+                                }
+
+            function edit_subtotal(new_subtotal) {
+                                    var modifier_total = 0;
+                                    var base_subtotal = 0;
+
+                                    // 1. Calculate totals
+                                    for (var i = 0; i < cart.items.length; i++) {
+                                        var item = cart.items[i];
+                                        var base_total = item_subtotal(item); // base only
+                                        var mod_total = get_modifiers_subtotal(item); // modifier only
+
+                                        base_subtotal += base_total;
+                                        modifier_total += mod_total;
+                                    }
+
+                                    // 2. New subtotal for base items only
+                                    var target_base_subtotal = new_subtotal - modifier_total;
+                                    var delta = target_base_subtotal - base_subtotal;
+
+                                    for (var i = 0; i < cart.items.length; i++) {
+                                        var item = cart.items[i];
+                                        var quantity = item.quantity || 1;
+                                        var discount_percent = item.discount_percent || 0;
+
+                                        var item_base_total = item_subtotal(item);
+                                        var proportion = base_subtotal === 0 ? 1 : item_base_total / base_subtotal;
+
+                                        // Adjust base total
+                                        var adjusted_base_total = item_base_total + (delta * proportion);
+                                        var unit_base_price = adjusted_base_total / quantity;
+
+                                        // Adjust for discount if needed
+                                        var new_price = unit_base_price / (1 - (discount_percent / 100));
+
+                                        // Set only the base price (excluding modifiers)
+                                        item.price = parseFloat(new_price.toFixed(3));
+                                    }
+                                }
 
 
-            refresh_cart_var();
+                    $('.xeditable-subtotal').editable({
+                        success: function(response, newValue) {
+
+                            edit_subtotal(newValue);
+                            var item_discount = get_item_discount(cart);
+                            var subtotal = get_subtotal(cart);
+
+                            // Adjusting subtotal by subtracting item discount
+                            subtotal = parseFloat(subtotal) - parseFloat(item_discount);
+
+                            renderUi();
+
+                        
+
+                        }
+                    });
+
+                    $('.xeditable-item-quantity-received').editable({
+                        success: function(response, newValue) {
+                            qty = $(this).data('total-qty');
+                            if (newValue > qty) {
+                                show_feedback('error',
+                                    "<?php echo  lang('quantity_received_should_not_be_greater_than_item_qty') ?>",
+                                    "<?php echo  lang('error') ?>");
+                                return false;
+                            } else {
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+                                if (typeof index !== 'undefined') {
+                                    cart['items'][index][field] = newValue;
+                                }
+                                renderUi();
+                            }
 
 
-            set_quantity_unit_id(newValue, index);
-
-        }
-
-    });
-    customArrayTire = [];
-
-    if (typeof cart_item['quantity_units'] !== 'undefined') {
-
-customArrayTire = Object.entries(cart_item.all_data.all_tier_info).map(([key, value]) => {
-    return {
-        text: value.name,
-        value: value.id
-    };
-});
-
-}
-
-
-
-    $('#tier_' + k).editable({
-        value: cart_item['tier_id'],
-        source: customArrayTire,
-        success: function(response, newValue) {
-
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-
-            if (typeof index !== 'undefined') {
-
-                cart['items'][index].previous_tier_id = (cart['items'][index][field]) ? cart['items'][index][field] : 0;
-                cart['items'][index][field] = newValue;
-                cart['items'][index].tier_name = cart['items'][index].all_data.all_tier_info[newValue].name;
-            }
-
-
-            localStorage.setItem("cart", JSON.stringify(cart));
-
-
-            refresh_cart_var();
-
-
-            set_tier_id(newValue, true);
-
-        }
-
-    });
+                        }
+                    });
 
 
 
 
+                    $('#total_items').html(cart['items'].length);
+                    $('#total_items_qty').html(total_qty);
 
-}
+                    $('.toggle_rows').click(function() {
 
+                        $(this).parent().parent().next().toggleClass('collapse');
 
-$('.xeditable-item-percentage').editable({
-    success: function(response, newValue) {
-        //persist data
-        var field = $(this).data('name');
-        var index = $(this).data('index');
-        if (typeof index !== 'undefined') {
-            max_discount =     parseFloat(cart['items'][index]['all_data']['max_discount']);
-            if (max_discount > 0  &&   max_discount  < parseFloat(newValue)) {
-                show_feedback('error', cart['items'][index]['all_data']['permissions'][
-                        'sales_could_not_discount_item_above_max'
-                    ] + " " + parseFloat(cart['items'][index]['all_data']['max_discount']),
-                    "<?php echo  lang('error') ?>");
-                return false;
-            }
-            cart['items'][index][field] = newValue;
-        }
-        renderUi();
-    }
-});
+                        if ($(this).parent().parent().next().hasClass("collapse")) {
+                            $(this).html('<i class="icon ti-angle-down"></i>');
+                            $(this).parent().parent().next().addClass("d-none")
+                        } else {
+                            $(this).html('<i class="icon ti-angle-up"></i>');
+                            $(this).parent().parent().next().removeClass("d-none")
+                        }
+                    });
 
-$('.xeditable-cost_price').editable({
-    success: function(response, newValue) {
-        //persist data
-        var field = $(this).data('name');
-        var index = $(this).data('index');
-        if (typeof index !== 'undefined') {
-            cart['items'][index][field] = newValue;
-        }
-        renderUi();
-    }
-});
+                    $("#sale_details_expand_collapse").click(function() {
+                        $('.register-item-bottom').toggleClass('collapse');
 
-$('.xeditable-description').editable({
-    success: function(response, newValue) {
-        //persist data
-        var field = $(this).data('name');
-        var index = $(this).data('index');
-        if (typeof index !== 'undefined') {
-            cart['items'][index][field] = newValue;
-        }
-        renderUi();
-    }
-});
+                        if ($('.register-item-bottom').hasClass('collapse')) {
+                            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
+                                value: '1'
+                            });
+                            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-down"></i>');
+                            $(".show-collpased").show();
 
-function item_subtotal($item) {
-                        var modifier_subtotal = get_modifiers_subtotal($item);
-                        var item_price_total = $item['price'] * $item['quantity'];
+                        } else {
+                            $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
+                                value: '0'
+                            });
+                            $("#sale_details_expand_collapse").html('<i class="icon ti-angle-up"></i>');
+                            $(".show-collpased").hide();
 
-                        var discount = $item['discount_percent'] || 0;
-
-                        var discounted_modifiers = modifier_subtotal - (modifier_subtotal * discount / 100);
-                        var discounted_items = item_price_total - (item_price_total * discount / 100);
-
-                        var subtotal = discounted_modifiers + discounted_items;
+                        }
+                    });
 
 
-                        return subtotal;
+
+                if (cart['items'].length || cart['payments'].length || (cart['customer'] && cart['customer']['person_id'])) {
+                    $("#edit-sale-buttons").show();
+                } else {
+                    $("#edit-sale-buttons").hide();
+                }
+
+                if (cart['extra']['tier_id']) {
+                    var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tier_id'] + '"]');
+
+                    if (tierElement.length > 0) {
+                        var tierName = tierElement.text().trim(); // Get the text content and trim any extra spaces
+                        $('.selected-tier').html(tierName);
                     }
 
-function edit_subtotal(new_subtotal) {
-                        var modifier_total = 0;
-                        var base_subtotal = 0;
+                } else {
+                    $('.selected-tier').html('None');
+                }
 
-                        // 1. Calculate totals
-                        for (var i = 0; i < cart.items.length; i++) {
-                            var item = cart.items[i];
-                            var base_total = item_subtotal(item); // base only
-                            var mod_total = get_modifiers_subtotal(item); // modifier only
 
-                            base_subtotal += base_total;
-                            modifier_total += mod_total;
+                if (cart['extra']['sold_by_employee_id']) {
+                    var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra'][
+                        'sold_by_employee_id'
+                    ] + '"]');
+
+                    if (sold_by_employee_idElement.length > 0) {
+                        var employeeName = sold_by_employee_idElement.text()
+                            .trim(); // Get the text content and trim any extra spaces
+                        $('.selected-sales-person').html(employeeName);
+                    } else {
+
+                        $('.selected-sales-person').html('Not Set');
+                    }
+
+                } else {
+                    $('.selected-sales-person').html('Not Set');
+                }
+
+
+                $('#customer-panel').html(selected_customer_template(cart));
+                $('#redeem_discount').on('click', function(e) {
+                redeem_discount();
+                });
+                $('#unredeem_discount').on('click', function(e) {
+                unredeem_discount();
+                });
+                $('.xeditable-comment').editable({
+                        success: function(response, newValue) {
+                            cart['customer']['internal_notes'] = newValue;
+                            renderUi();
+                        }
+                    });
+
+                $(".btn[data-kt-menu-trigger='custom']").on("click", function (e) {
+                    e.stopPropagation(); // Prevent event from bubbling up
+
+                    let button = $(this); // Get the clicked button
+                    let menu = button.next(".menu-sub-dropdown"); // Get the associated menu
+
+                    if (menu.is(":visible")) {
+                        menu.hide(); // Hide menu if already visible
+                    } else {
+                        $(".menu-sub-dropdown").hide(); // Hide all other open menus first
+
+                        // Calculate position
+                        let buttonOffset = button.offset();
+                        let buttonHeight = button.outerHeight();
+                        let buttonWidth = button.outerWidth();
+                        let menuWidth = menu.outerWidth();
+                        let right = $(window).width() - (buttonOffset.left + buttonWidth);
+                        menu.css({
+                            display: "block",
+                            position: "absolute",
+                            top: buttonOffset.top + buttonHeight + 5 + "px", // Below the button with 5px gap
+                            right: right  + "px", // Centered horizontally
+                            display: "block", // Show menu
+                            zIndex: 100, // Ensure it's above other elements
+                        });
+                    }
+                });
+
+                // Hide menu when clicking outside
+                $(document).on("click", function (e) {
+                    if (!$(e.target).closest(".menu, .btn[data-kt-menu-trigger='custom']").length) {
+                        $(".menu-sub-dropdown").hide();
+                    }
+                });
+
+                // Handle window resize to reposition the menu
+                $(window).on("resize", function () {
+                    $(".menu:visible").each(function () {
+                        let menu = $(this);
+                        let button = menu.prev(".btn[data-kt-menu-trigger='custom']");
+                                // Check if button exists
+                        if (button.length === 0) {
+                            return; // Skip iteration if no button found
                         }
 
-                        // 2. New subtotal for base items only
-                        var target_base_subtotal = new_subtotal - modifier_total;
-                        var delta = target_base_subtotal - base_subtotal;
-
-                        for (var i = 0; i < cart.items.length; i++) {
-                            var item = cart.items[i];
-                            var quantity = item.quantity || 1;
-                            var discount_percent = item.discount_percent || 0;
-
-                            var item_base_total = item_subtotal(item);
-                            var proportion = base_subtotal === 0 ? 1 : item_base_total / base_subtotal;
-
-                            // Adjust base total
-                            var adjusted_base_total = item_base_total + (delta * proportion);
-                            var unit_base_price = adjusted_base_total / quantity;
-
-                            // Adjust for discount if needed
-                            var new_price = unit_base_price / (1 - (discount_percent / 100));
-
-                            // Set only the base price (excluding modifiers)
-                            item.price = parseFloat(new_price.toFixed(3));
-                        }
-                    }
-
-
-$('.xeditable-subtotal').editable({
-    success: function(response, newValue) {
-
-        edit_subtotal(newValue);
-        var item_discount = get_item_discount(cart);
-        var subtotal = get_subtotal(cart);
-
-        // Adjusting subtotal by subtracting item discount
-        subtotal = parseFloat(subtotal) - parseFloat(item_discount);
-
-        renderUi();
-
-    
-
-    }
-});
-
-$('.xeditable-item-quantity-received').editable({
-    success: function(response, newValue) {
-        qty = $(this).data('total-qty');
-        if (newValue > qty) {
-            show_feedback('error',
-                "<?php echo  lang('quantity_received_should_not_be_greater_than_item_qty') ?>",
-                "<?php echo  lang('error') ?>");
-            return false;
-        } else {
-            var field = $(this).data('name');
-            var index = $(this).data('index');
-            if (typeof index !== 'undefined') {
-                cart['items'][index][field] = newValue;
-            }
-            renderUi();
-        }
-
-
-    }
-});
-
-
-
-
-$('#total_items').html(cart['items'].length);
-$('#total_items_qty').html(total_qty);
-
-$('.toggle_rows').click(function() {
-
-    $(this).parent().parent().next().toggleClass('collapse');
-
-    if ($(this).parent().parent().next().hasClass("collapse")) {
-        $(this).html('<i class="icon ti-angle-down"></i>');
-        $(this).parent().parent().next().addClass("d-none")
-    } else {
-        $(this).html('<i class="icon ti-angle-up"></i>');
-        $(this).parent().parent().next().removeClass("d-none")
-    }
-});
-
-$("#sale_details_expand_collapse").click(function() {
-    $('.register-item-bottom').toggleClass('collapse');
-
-    if ($('.register-item-bottom').hasClass('collapse')) {
-        $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
-            value: '1'
-        });
-        $("#sale_details_expand_collapse").html('<i class="icon ti-angle-down"></i>');
-        $(".show-collpased").show();
-
-    } else {
-        $.post('<?php echo site_url("sales/set_details_collapsed"); ?>', {
-            value: '0'
-        });
-        $("#sale_details_expand_collapse").html('<i class="icon ti-angle-up"></i>');
-        $(".show-collpased").hide();
-
-    }
-});
-
-
-
-if (cart['items'].length || cart['payments'].length || (cart['customer'] && cart['customer']['person_id'])) {
-    $("#edit-sale-buttons").show();
-} else {
-    $("#edit-sale-buttons").hide();
-}
-
-if (cart['extra']['tier_id']) {
-    var tierElement = $('.item-tiers a[data-value="' + cart['extra']['tier_id'] + '"]');
-
-    if (tierElement.length > 0) {
-        var tierName = tierElement.text().trim(); // Get the text content and trim any extra spaces
-        $('.selected-tier').html(tierName);
-    }
-
-} else {
-    $('.selected-tier').html('None');
-}
-
-
-if (cart['extra']['sold_by_employee_id']) {
-    var sold_by_employee_idElement = $('.select-sales-persons a[data-value="' + cart['extra'][
-        'sold_by_employee_id'
-    ] + '"]');
-
-    if (sold_by_employee_idElement.length > 0) {
-        var employeeName = sold_by_employee_idElement.text()
-            .trim(); // Get the text content and trim any extra spaces
-        $('.selected-sales-person').html(employeeName);
-    } else {
-
-        $('.selected-sales-person').html('Not Set');
-    }
-
-} else {
-    $('.selected-sales-person').html('Not Set');
-}
-
-
-$('#customer-panel').html(selected_customer_template(cart));
-$('#redeem_discount').on('click', function(e) {
-redeem_discount();
-});
-$('#unredeem_discount').on('click', function(e) {
-unredeem_discount();
-});
-$('.xeditable-comment').editable({
-        success: function(response, newValue) {
-            cart['customer']['internal_notes'] = newValue;
-            renderUi();
-        }
-    });
-
-$(".btn[data-kt-menu-trigger='custom']").on("click", function (e) {
-    e.stopPropagation(); // Prevent event from bubbling up
-
-    let button = $(this); // Get the clicked button
-    let menu = button.next(".menu-sub-dropdown"); // Get the associated menu
-
-    if (menu.is(":visible")) {
-        menu.hide(); // Hide menu if already visible
-    } else {
-        $(".menu-sub-dropdown").hide(); // Hide all other open menus first
-
-        // Calculate position
-        let buttonOffset = button.offset();
-        let buttonHeight = button.outerHeight();
-        let buttonWidth = button.outerWidth();
-        let menuWidth = menu.outerWidth();
-        let right = $(window).width() - (buttonOffset.left + buttonWidth);
-        menu.css({
-            display: "block",
-            position: "absolute",
-            top: buttonOffset.top + buttonHeight + 5 + "px", // Below the button with 5px gap
-            right: right  + "px", // Centered horizontally
-            display: "block", // Show menu
-            zIndex: 100, // Ensure it's above other elements
-        });
-    }
-});
-
-// Hide menu when clicking outside
-$(document).on("click", function (e) {
-    if (!$(e.target).closest(".menu, .btn[data-kt-menu-trigger='custom']").length) {
-        $(".menu-sub-dropdown").hide();
-    }
-});
-
-// Handle window resize to reposition the menu
-$(window).on("resize", function () {
-    $(".menu:visible").each(function () {
-        let menu = $(this);
-        let button = menu.prev(".btn[data-kt-menu-trigger='custom']");
-                // Check if button exists
-        if (button.length === 0) {
-            return; // Skip iteration if no button found
-        }
-
-        let buttonOffset = button.offset();
-        let buttonHeight = button.outerHeight();
-        let buttonWidth = button.outerWidth();
-        let menuWidth = menu.outerWidth();
-
-        menu.css({
-            top: buttonOffset.top + buttonHeight + 5 + "px",
-            left: buttonOffset.left + buttonWidth / 2 - menuWidth / 2 + "px",
-        });
-    });
-});
-
-
-
-// if (cart['extra']['coupons']) {
-
-//     var tokens = [{ value: "blue", label: "Blau" }, { value: "red", label: "Rot" }];
-
-//         // Convert the tokens array into a string of values
-//         var tokenValues = tokens.map(function(token) {
-//             return token.value;
-//         }).join(',');
-//         console.log( 'ssssss' , tokenValues);
-//         // Set the tokens
-//         $('.coupon_codes').tokenfield('setTokens', tokenValues);
-// }
-$("#payments").empty();
-
-for (var k = 0; k < cart['payments'].length; k++) {
-    var payment = cart['payments'][k];
-    cart['payments'][k]['index'] = k;
-    $("#payments").append(cart_payment_template(cart['payments'][k]));
-}
-
-if (cart.payments.length) {
-    $("#finish_sale").show();
-    $("#kt_drawer_payments_list").show();
-
-} else {
-    $("#finish_sale").hide();
-    $("#kt_drawer_payments_list").hide();
-}
-
-var cartValues = calculateCartValues(cart);
-
-
-var total_discount = cartValues.total_discount;
-var item_discount = cartValues.item_discount;
-var subtotal = cartValues.subtotal;
-var taxes = cartValues.taxes;
-subtotal = cartValues.subtotal;
-var gen_tax = cartValues.gen_tax;
-
-var flat_discount = cartValues.flat_discount;
-total = cartValues.total;
-var amount_due = cartValues.amount_due;
-
-
-$("#sub_total").attr('data-value', subtotal).html(subtotal);
-localStorage.setItem('cart_sub_total' ,subtotal );
-
-$("#taxes").html(taxes);
-localStorage.setItem('cart_taxes' ,taxes );
-$("#total").html(total);
-localStorage.setItem('cart_total' ,total );
-check_for_payment_options();
-$('#total_discount').html(total_discount.toFixed(2));
-$('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
-$('.discount_all_percent').val(cart['extra']['discount_all_percent']);
-$('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
-    currency_symbol);
-$('#Discount_from_items').html(item_discount + ' ' +
-    currency_symbol);
-
-$('.discount_all_flat').val(cart['extra']['discount_all_flat']);
-$("#amount_due").html(amount_due);
-$("#amount_tendered").val(amount_due);
-localStorage.setItem('cart_amount_due' ,amount_due );
-// console.log(cart['customer']);
-$('.balance').removeClass(' text-success text-danger');
-if (cart['customer'] && cart['customer']['person_id']) {
-
-
-
-
-
-
-    $("#customer-panel").removeClass('hidden');
-    $("#select_customer_form").addClass('hidden');
-} else {
-    $("#customer").val('');
-    $("#customer-panel").addClass('hidden');
-    $("#select_customer_form").removeClass('hidden');
-}
-// amount_tendered_input_changed();
-
-
-$(".edit_taxes_item").click(function(e) {
-    item_id = $(this).data('id');
-
-    onclick_edit_taxes_item(item_id);
-
-
-});
-
-$("#edit_taxes_gen").click(function(e) {
-    // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
-
-    item_id = $(this).data('id');
-
-    onclick_edit_taxes_item(item_id);
-
-    renderUi();
-
-});
-
-
-$('.xeditable').editable({
-    success: function(response, newValue) {
-        //persist data
-        var field = $(this).data('name');
-        var index = $(this).data('index');
-        // console.log(index);
-        if (typeof index !== 'undefined') {
-
-            if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
-                    'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
-                    newValue) < 0) {
-
-                    
-
-
-                show_feedback('error', cart.items[parseInt(index)].all_data.permissions
-                    .process_returns_error, "<?php echo  lang('error') ?>");
-                return false;
-            }
-
-            if(field=='price'){
-                    if (!check_allow_added(cart, index, 'price', newValue)) {
-                        return false;
-                    }
-
-                }
-                if(field=='price-line-total'){
-                    if (!check_allow_added(cart, index, 'price-line-total', newValue)) {
-                        return false;
-                    }
-
+                        let buttonOffset = button.offset();
+                        let buttonHeight = button.outerHeight();
+                        let buttonWidth = button.outerWidth();
+                        let menuWidth = menu.outerWidth();
+
+                        menu.css({
+                            top: buttonOffset.top + buttonHeight + 5 + "px",
+                            left: buttonOffset.left + buttonWidth / 2 - menuWidth / 2 + "px",
+                        });
+                    });
+                });
+
+
+
+                // if (cart['extra']['coupons']) {
+
+                //     var tokens = [{ value: "blue", label: "Blau" }, { value: "red", label: "Rot" }];
+
+                //         // Convert the tokens array into a string of values
+                //         var tokenValues = tokens.map(function(token) {
+                //             return token.value;
+                //         }).join(',');
+                //         console.log( 'ssssss' , tokenValues);
+                //         // Set the tokens
+                //         $('.coupon_codes').tokenfield('setTokens', tokenValues);
+                // }
+                $("#payments").empty();
+
+                for (var k = 0; k < cart['payments'].length; k++) {
+                    var payment = cart['payments'][k];
+                    cart['payments'][k]['index'] = k;
+                    $("#payments").append(cart_payment_template(cart['payments'][k]));
                 }
 
-            if (field == 'modifier_price') {
-                cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
-                    'modifier-item-id'))].unit_price = newValue;
-                cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
-                    'modifier-item-id'))].unit_price_currency = currency_symbol + newValue;
+                if (cart.payments.length) {
+                    // $("#finish_sale").show();
+                    $("#kt_drawer_payments_list").show();
 
-            } else {
-
-                if(field=='quantity'){
-                    if (!check_allow_added(cart, index, 'quantity_bulk', newValue)) {
-                        return false;
-                    }
-
+                } else {
+                    // $("#finish_sale").hide();
+                    $("#kt_drawer_payments_list").hide();
                 }
-            
-                cart['items'][index][field] = newValue;
-            }
+
+                var cartValues = calculateCartValues(cart);
 
 
-        }
-        renderUi();
-    }
-});
+                var total_discount = cartValues.total_discount;
+                var item_discount = cartValues.item_discount;
+                var subtotal = cartValues.subtotal;
+                var taxes = cartValues.taxes;
+                subtotal = cartValues.subtotal;
+                var gen_tax = cartValues.gen_tax;
 
-$('.xeditable').on('shown', function(e, editable) {
+                var flat_discount = cartValues.flat_discount;
+                total = cartValues.total;
+                var amount_due = cartValues.amount_due;
 
-    editable.input.postrender = function() {
-        //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
-        setTimeout(function() {
-            editable.input.$input.select();
-        }, 200);
-    };
-})
 
-$('.slider_button').click(function() { 
+                $("#sub_total").attr('data-value', subtotal).html(subtotal);
+                localStorage.setItem('cart_sub_total' ,subtotal );
 
-        close_all_drawers();
-});
+                $("#taxes").html(taxes);
+                localStorage.setItem('cart_taxes' ,taxes );
+                $("#total").html(total);
+                localStorage.setItem('cart_total' ,total );
+                check_for_payment_options();
+                $('#total_discount').html(total_discount.toFixed(2));
+                $('#total_discount_detail').html(total_discount.toFixed(2) + ' ' + currency_symbol);
+                $('.discount_all_percent').val(cart['extra']['discount_all_percent']);
+                $('#Flat_discount').html(cart['extra']['discount_all_flat'] + ' ' +
+                    currency_symbol);
+                $('#Discount_from_items').html(item_discount + ' ' +
+                    currency_symbol);
+
+                $('.discount_all_flat').val(cart['extra']['discount_all_flat']);
+                $("#amount_due").html(amount_due);
+                $("#amount_tendered").val(amount_due);
+                localStorage.setItem('cart_amount_due' ,amount_due );
+                // console.log(cart['customer']);
+                $('.balance').removeClass(' text-success text-danger');
+                if (cart['customer'] && cart['customer']['person_id']) {
+
+                    $("#customer-panel").removeClass('hidden');
+                    $("#select_customer_form").addClass('hidden');
+                } else {
+                    $("#customer").val('');
+                    $("#customer-panel").addClass('hidden');
+                    $("#select_customer_form").removeClass('hidden');
+                }
+
+                amount_tendered_input_changed(cartValues);
+
+                $(".edit_taxes_item").click(function(e) {
+                    item_id = $(this).data('id');
+
+                    onclick_edit_taxes_item(item_id);
+
+
+                });
+
+                $("#edit_taxes_gen").click(function(e) {
+                    // $('#kt_drawer_general_body_lg').html($('#kt_drawer_general_body_lg_container').html());
+
+                    item_id = $(this).data('id');
+
+                    onclick_edit_taxes_item(item_id);
+
+                    renderUi();
+
+                });
+
+
+                        $('.xeditable').editable({
+                            success: function(response, newValue) {
+                                //persist data
+                                var field = $(this).data('name');
+                                var index = $(this).data('index');
+                                // console.log(index);
+                                if (typeof index !== 'undefined') {
+
+                                    if (cart.items[parseInt(index)].all_data.permissions.process_returns && (field ==
+                                            'quantity' || field == 'price' || field == 'modifier_price') && parseInt(
+                                            newValue) < 0) {
+
+                                            
+
+
+                                        show_feedback('error', cart.items[parseInt(index)].all_data.permissions
+                                            .process_returns_error, "<?php echo  lang('error') ?>");
+                                        return false;
+                                    }
+
+                                    if(field=='price'){
+                                            if (!check_allow_added(cart, index, 'price', newValue)) {
+                                                return false;
+                                            }
+
+                                        }
+                                        if(field=='price-line-total'){
+                                            if (!check_allow_added(cart, index, 'price-line-total', newValue)) {
+                                                return false;
+                                            }
+
+                                        }
+
+                                    if (field == 'modifier_price') {
+                                        cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                                            'modifier-item-id'))].unit_price = newValue;
+                                        cart.items[parseInt(index)].selected_item_modifiers[parseInt($(this).data(
+                                            'modifier-item-id'))].unit_price_currency = currency_symbol + newValue;
+
+                                    } else {
+
+                                        if(field=='quantity'){
+                                            if (!check_allow_added(cart, index, 'quantity_bulk', newValue)) {
+                                                return false;
+                                            }
+
+                                        }
+                                    
+                                        cart['items'][index][field] = newValue;
+                                    }
+
+
+                                }
+                                renderUi();
+                            }
+                        });
+
+                    $('.xeditable').on('shown', function(e, editable) {
+
+                        editable.input.postrender = function() {
+                            //Set timeout needed when calling price_to_change.editable('show') (Not sure why)
+                            setTimeout(function() {
+                                editable.input.$input.select();
+                            }, 200);
+                        };
+                    })
+
+                    $('.slider_button').click(function() { 
+
+                            close_all_drawers();
+                    });
 
 }
 
@@ -3673,24 +3670,30 @@ function round(value, precision) {
 }
 
 function amount_tendered_input_changed(cartValues) {
-    console.log("callled amount_tendered_input_changed");
+    console.log("callled amount_tendered_input_changed" , cartValues);
     amount_tendered  =  parseFloat($('#amount_tendered').val());
 		if ($("#payment_types").val() == giftCardLang) {
-            $('#finish_sale_button').removeClass('hidden').show();
-            $('#add_payment_button').addClass('hidden').hide();
+            $('#finish_sale_button').addClass('hidden').hide();
+            $('#add_payment_button').removeClass('hidden').show();
 		} else if ($("#payment_types").val() == pointsLang) {
    
             $('#finish_sale_button').addClass('hidden').hide();
             $('#add_payment_button').removeClass('hidden').show();
-		} else {
+		} else if ($("#payment_types").val() == couponLang) {
+   
+                $('#finish_sale_button').addClass('hidden').hide();
+                $('#add_payment_button').removeClass('hidden').show();
+        }else {
+            console.log("here");
 			if ((cartValues.amount_due >= 0 && amount_tendered >= cartValues.amount_due) || (cartValues.amount_due < 0 && amount_tendered <= cartValues.amount_due)) {
-               
-				$('#finish_sale_button').removeClass('hidden').show();
-				$('#add_payment_button').addClass('hidden').hide();
-			} else {
-				$('#finish_sale_button').addClass('hidden').hide();
-				$('#add_payment_button').removeClass('hidden').show();
-			}
+                console.log("here 1");
+               $('#finish_sale_button').removeClass('hidden').show();
+               $('#add_payment_button').addClass('hidden').hide();
+           } else {
+            console.log("here 2");
+               $('#finish_sale_button').addClass('hidden').hide();
+               $('#add_payment_button').removeClass('hidden').show();
+           }
 		}
 
 	}
@@ -3891,11 +3894,18 @@ async  function addPayment(e) {
         }
 
         // Validate non-giftcard payment
-        if (type == giftCardLang) {
-           
-                show_feedback('error', '<?php echo lang('sales_giftcard_offline_not_work'); ?>', errorTitle);
+        if (type !== giftCardLang &&  type !== couponLang) {
+            if (isNaN(parseFloat(amount)) || !isFinite(amount)) {
+                let error = '';
+                if (amount === '0' && total != 0 && amountDue != 0) {
+                    error = cannotAddZeroLang;
+                } else {
+                    error = mustEnterNumericLang;
+                }
+
+                show_feedback('error', error, errorTitle);
                 return false;
-            
+            }
         }
 
 
@@ -5141,18 +5151,7 @@ $(document).ready(function() {
 
             renderUi();
 
-            if ($('.tax_class_main').val() !== 'None') {
-                $('.all_taxes').hide();
-            }
-
-            // Handle the change event of the dropdown
-            $('.tax_class_main').change(function() {
-                if ($(this).val() === 'None') {
-                $('.all_taxes').show();  // Show the div if 'None' is selected
-                } else {
-                $('.all_taxes').hide();  // Hide the div otherwise
-                }
-            });
+           
 
 
         });
@@ -5452,7 +5451,9 @@ updateOnlineStatus();
    
    const cartValues = calculateCartValues(cart);
         amount_tendered_input_changed(cartValues);
-
+        $('#amount_tendered').on( 'keyup' ,  function() {
+            amount_tendered_input_changed(cartValues);
+        });
     //Keyboard events...only want to load once
     $(document).keyup(function(event) {
         var mycode = event.keyCode;

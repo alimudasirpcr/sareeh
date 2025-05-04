@@ -3245,10 +3245,6 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                     $('.balance').removeClass(' text-success text-danger');
                     if (cart['customer'] && cart['customer']['person_id']) {
 
-                    
-
-
-
 
                         $("#customer-panel").removeClass('hidden');
                         $("#select_customer_form").addClass('hidden');

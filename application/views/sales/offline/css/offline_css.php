@@ -220,4 +220,7 @@ div#kt_app_layout_builder_header {
 .p-0{
     padding: 0px !important;
 }
+.pos-sidebar{
+    height: 60vh !important;
+}
 </style>
