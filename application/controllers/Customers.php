@@ -145,9 +145,8 @@ class Customers extends Person_controller
 		$per_page=$this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 20;
 
 		$search_data=$this->Customer->search($search,$location_id,$deleted,$per_page,$offset, $order_col ,$order_dir);
-
-		echo $this->db->last_query(); exit();
-;		$config['base_url'] = site_url('customers/search');
+		
+		$config['base_url'] = site_url('customers/search');
 		$config['total_rows'] = $this->Customer->search_count_all($search,$location_id,$deleted);
 		$config['per_page'] = $per_page ;
 		
