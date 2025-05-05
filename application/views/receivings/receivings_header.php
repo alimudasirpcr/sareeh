@@ -79,7 +79,7 @@
             </button>
 
             <ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown ui-sortable" role="menu" style="">
-                <li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a>Column Configuration</li>
+                <li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?= lang('Reset'): ?> </a>Column Configuration</li>
             <?php $i=0; foreach($columns as $key => $col): ?>
                 <li class="sort">
                     <a class="d-flex justify-content-space-between ">

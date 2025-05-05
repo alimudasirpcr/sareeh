@@ -126,7 +126,7 @@ class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
             $ret .= $this->start('tr');
             $ret .= $this->start('td', array('colspan' => 2, 'class' => 'controls'));
             $ret .= $this->elementEmpty('input', array('type' => 'submit', 'value' => 'Submit'));
-            $ret .= '[<a href="?">Reset</a>]';
+            $ret .= '[<a href="?"><?= lang('Reset'): ?> </a>]';
             $ret .= $this->end('td');
             $ret .= $this->end('tr');
             $ret .= $this->end('tbody');

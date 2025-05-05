@@ -130,7 +130,7 @@ function get_person_data_row($person,$controller)
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
 						  <a href="'.$site_url.'" role="button" '.$data_true.' class="btn btn-more btn-light-primary edit_action">'.lang('edit').'</a>
 							<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								More
+							'.lang('More').'
 							</button>
 							<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 			
@@ -170,7 +170,7 @@ function get_person_data_row($person,$controller)
 							'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
 							  <a href="'.site_url($controller_name."/view/$person->person_id?redirect=items").'" role="button" class="btn btn-more btn-light-primary edit_action">'.lang('edit').'</a>
 								<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									More
+									'.lang('More').'
 								</button>
 								<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 							
@@ -368,7 +368,7 @@ function get_item_data_row($item,$controller)
 						   	$table_data_row.= '<a href="'.site_url($controller_name."/clone_item/$item->item_id?redirect=items").'" role="button" class="clone_manage_table btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('clone').'</a>';
 						   }
 						   $table_data_row.= '<button type="button" class="btn btn-sm btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-								More
+						   '.lang('More').'
 							</button>
 							<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 			
@@ -1255,7 +1255,7 @@ function get_item_kit_data_row($item_kit,$controller)
 						'<div class="piluku-dropdown dropdown btn-group table_buttons upordown">
 						 <a href="'.site_url($controller_name."/view/$item_kit->item_kit_id?redirect=item_kits").'" role="button" class="btn btn-sm btn-light btn-active-light-primary edit_action">'.lang('edit').'</a>
 						<button type="button" class="btn btn-sm btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-							More
+						'.lang('More').'
 						</button>
 						<ul class="dropdown-menu dropdown-menu-left " role="menu">';
 						

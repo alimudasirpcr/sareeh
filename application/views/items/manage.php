@@ -499,7 +499,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 					
 					<div class="piluku-dropdown btn-group">
 						<button type="button" class="btn btn-more btn-light btn-active-light-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						More
+						<?= lang('More') ?>
 						<i class="visible-xs ion-android-more-vertical"></i>
 					</button>
 					<ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -655,7 +655,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 								
 								<ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
 										<li class="dropdown-header">
-											<a id="reset_to_default" class="pull-right btn"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
+											<a id="reset_to_default" class="pull-right btn"><span class="ion-refresh"></span> <?= lang('Reset'); ?></a><?php echo lang('column_configuration'); ?></li>
 																			
 										<?php foreach($all_columns as $col_key => $col_value) { 
 											$checked = '';

@@ -58,7 +58,7 @@
                 <ul id="sortable" class="dropdown-menu dropdown-menu-right col-config-dropdown" role="menu">
                     <li class="dropdown-header">
                         <a id="reset_to_default" class="pull-right btn"><span class="ion-refresh"></span>
-                            Reset</a><?php echo lang('column_configuration'); ?>
+                            <?= lang('Reset'): ?> </a><?php echo lang('column_configuration'); ?>
                     </li>
 
                     <?php foreach($all_columns as $col_key => $col_value) { 

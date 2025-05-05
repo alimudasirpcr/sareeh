@@ -384,7 +384,7 @@
 							<ul id="filter_dropdown" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
 													
 									<li class="dropdown-header no-border filter-header-top">
-										<a id="reset_filters_to_default" class="pull-right filter_action"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_filters'); ?>
+										<a id="reset_filters_to_default" class="pull-right filter_action"><span class="ion-refresh"></span> <?= lang('Reset'): ?> </a><?php echo lang('column_filters'); ?>
 									</li>
 									
 									<span class="panel">

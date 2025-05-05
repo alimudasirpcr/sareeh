@@ -138,3 +138,6 @@ select#available_attributes {
 div {
 	letter-spacing: normal;
 }
+.piluku-dropdown .dropdown-menu li a {
+	text-align: right;
+}

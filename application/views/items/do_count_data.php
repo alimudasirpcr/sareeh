@@ -43,7 +43,7 @@
 									</button>
 									
 									<ul id="sortable" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-											<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
+											<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?= lang('Reset'); ?></a><?php echo lang('column_configuration'); ?></li>
 																				
 											<?php foreach($all_columns as $col_key => $col_value) { 
 												$checked = '';

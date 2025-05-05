@@ -67,7 +67,7 @@ if($export_excel == 1)
 						<i class="ion-gear-a"></i>
 					</button>
 						<ul id="" class="dropdown-menu dropdown-menu-left col-config-dropdown" role="menu">
-							<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> Reset</a><?php echo lang('column_configuration'); ?></li>
+							<li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?= lang('Reset'): ?> </a><?php echo lang('column_configuration'); ?></li>
 																
 							<?php $i = 0; foreach($headersshow as $col_key) {
 								$checked = '';
