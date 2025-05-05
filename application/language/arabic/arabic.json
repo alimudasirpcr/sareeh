@@ -2948,5 +2948,9 @@
     "start_date": "تاريخ البدء",
     "end_date": "تاريخ الانتهاء",
     "view_tem": "عرض العنصر",
-    "search_sales": "بحث المبيعات"
+    "search_sales": "بحث المبيعات",
+    "work_order_all_status_current_location": "Work order all status current location",
+    "all_time_current_location": "All time current location",
+    "employee_wise_current_location": "Employee wise current location",
+    "status_wise": "Status wise"
 }
