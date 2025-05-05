@@ -743,7 +743,7 @@ if (!is_on_demo_host() && !$this->config->item('hide_test_mode_home') && !$this-
                     data-theme="light">
                     <!--begin::Title-->
                     <h3 class="card-title align-items-start flex-column text-white pt-15">
-                        <span class="fw-bold fs-2x mb-3">Hello, Admin</span>
+                        <span class="fw-bold fs-2x mb-3"><?= lang('Hello'); ?>, <?php echo H($user_info->first_name . " " . $user_info->last_name); ?></span>
                         <div class="fs-4 text-white">
                             <!-- <span class="opacity-75">You have</span>
 															<span class="position-relative d-inline-block">

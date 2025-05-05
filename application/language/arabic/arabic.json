@@ -2952,5 +2952,6 @@
     "work_order_all_status_current_location": "جميع حالات أوامر العمل - الموقع الحالي",
     "all_time_current_location": "جميع الأوقات - الموقع الحالي",
     "employee_wise_current_location": "حسب الموظف - الموقع الحالي",
-    "status_wise": "حسب الحالة"
+    "status_wise": "حسب الحالة",
+    "hello": "مرحبًا"
 }
