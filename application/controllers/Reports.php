@@ -189,14 +189,14 @@ class Reports extends Secure_area
 				$_GET['report_date_range_simple'] = 'LAST_MONTH';
 				$rec = $this->return_report_data($report);
 				$data['headers'][0] =  (isset($rec['headers']))?$rec['headers']:'';
-				$data['series'][0]['name'] = 'last month';
+				$data['series'][0]['name'] = lang('last_month');
 				 $rec_data = $rec['details_data'];
 				
 				$data['series'][0]['data'] = [ $this->formatNumber($rec_data['sales_total']) ,  $this->formatNumber($rec_data['returns_total']) , $this->formatNumber($rec_data['receivings_total'])  , $this->formatNumber($rec_data['discount_total']) , $this->formatNumber($rec_data['taxes_total']) , $this->formatNumber($rec_data['total']) , $this->formatNumber($rec_data['expense_amount']) , $this->formatNumber($rec_data['commission']) , $rec_data['profit']  ];
 
 				$_GET['report_date_range_simple'] = 'THIS_MONTH';
 				$rec = $this->return_report_data($report);
-				$data['series'][1]['name'] = 'this month';
+				$data['series'][1]['name'] = lang('this_month');
 				$rec_data = $rec['details_data'];
 				
 				$data['series'][1]['data'] =[ $this->formatNumber($rec_data['sales_total']) ,  $this->formatNumber($rec_data['returns_total']) , $this->formatNumber($rec_data['receivings_total'])  , $this->formatNumber($rec_data['discount_total']) , $this->formatNumber($rec_data['taxes_total']) , $this->formatNumber($rec_data['total']) , $this->formatNumber($rec_data['expense_amount']) , $this->formatNumber($rec_data['commission']) , $rec_data['profit']  ];
