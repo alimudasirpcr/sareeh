@@ -423,7 +423,7 @@ if ($this->config->item('offline_mode'))
             <div class="step-container d-flex align-items-center flex-column mt-3 w-100 border border-dashed border-gray-300 rounded px-4 py-3 mb-6 text-start" data-step="categories" >
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-                <label class="text-light w-200px text-center">Category</label>
+                <label class="text-light w-200px text-center"><?= lang('Category'); ?></label>
                 <div class="progress h-15px w-100 me-2 bg-light">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
@@ -431,7 +431,7 @@ if ($this->config->item('offline_mode'))
             <div class="step-container d-flex align-items-center flex-column mt-3 w-100 border border-dashed border-gray-300 rounded px-4 py-3 mb-6 text-start" data-step="customers" >
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-                <label class="text-light w-200px text-center">Customer </label>
+                <label class="text-light w-200px text-center"> <?= lang('Customer'); ?></label>
                 <div class="progress h-15px w-100 me-2 bg-light">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
@@ -440,7 +440,7 @@ if ($this->config->item('offline_mode'))
             <div class="step-container d-flex align-items-center flex-column mt-3 w-100 border border-dashed border-gray-300 rounded px-4 py-3 mb-6 text-start" data-step="items" >
                 <img src="<?= site_url('assets/css_good/normal.gif') ?>" class="w-25 normal">
                 <img src="<?= site_url('assets/css_good/success.gif') ?>" class="w-25 d-none success">
-                <label class="text-light w-200px text-center">Items </label>
+                <label class="text-light w-200px text-center"><?= lang('Items'); ?> </label>
                 <div class="progress h-15px w-100 me-2 bg-light">
                         <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
