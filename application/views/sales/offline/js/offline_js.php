@@ -660,7 +660,7 @@ for (var k = 0; k < json.categories_and_items.length; k++) {
         $info ='';
 
         $info = '<span class=" position-absolute badge  badge-circle badge-light-primary  fs-7 h-18px  w-18px  top-0 start-0 p-1 "><a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/' + json.categories_and_items[k].id +
-            '?redirect=sales" data-target="#kt_drawer_general" data-target-title="View Item" data-target-width="xl" class="register-item-name text-gray-800 text-hover-none " data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Info"><i class="fas fa-info-circle text-white"></i></a></span>';
+            '?redirect=sales" data-target="#kt_drawer_general" data-target-title="<?= lang('View_tem'); ?>" data-target-width="xl" class="register-item-name text-gray-800 text-hover-none " data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse" data-bs-placement="top" title="Info"><i class="fas fa-info-circle text-white"></i></a></span>';
 
         
         if(json.categories_and_items[k].id=='add_item'){
@@ -4279,7 +4279,7 @@ function get_taxes(cart, is_current_cart = false) {
 
     if (is_current_cart) {
         $('#kt_drawer_general_body_lg_tax_list').html('');
-        $('#kt_drawer_general_body_lg_tax_list').append('<h3>Tax Details</h3>');
+        $('#kt_drawer_general_body_lg_tax_list').append('<h3><?= lang('Tax_Details'); ?></h3>');
         $html = '<div class="d-flex flex-column content-justify-center w-100"> ';
     }
 
@@ -4366,7 +4366,7 @@ function get_taxes(cart, is_current_cart = false) {
         if (is_current_cart) {
 
             $html +=
-                "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> Total item tax : </div> <div class='fw-bolder text-gray-700 text-xxl-end '>" +
+                "<div class='separator separator-dashed my-4'></div><div class='d-flex fs-6 fw-semibold align-items-center'><div class='bullet w-8px h-6px rounded-2 bg-danger me-3'></div><div class='text-gray-500 flex-grow-1 me-4'> <?= lang("Total_item_tax"); ?> : </div> <div class='fw-bolder text-gray-700 text-xxl-end '>" +
                 total_tax.toFixed(2) + currency_symbol + " </div> </div>";
             $html += '</div>';
             $('#kt_drawer_general_body_lg_tax_list').append($html);

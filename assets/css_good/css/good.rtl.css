@@ -128,3 +128,13 @@ select#available_attributes {
 .input-group-btn {
 	width: auto;
 }
+#sub_total.xeditable-subtotal{
+	font-size: 16px;
+}
+
+#category_item_selection_wrapper_new {
+    margin-right: 5px;
+}
+div {
+	letter-spacing: normal;
+}

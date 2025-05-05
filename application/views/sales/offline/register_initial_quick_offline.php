@@ -4,14 +4,14 @@
 $this->load->view("partial/offline_header"); ?>
 
 <?php $this->load->view("sales/offline/css/offline_css"); ?>
-<div id="network-status">You are offline</div>
+<div id="network-status"><?= lang('You_are_offline'); ?></div>
 <div class="modal fade look-up-receipt" id="print_modal" role="dialog" aria-labelledby="lookUpReceipt"
     aria-hidden="true">
     <div class="modal-dialog customer-recent-sales">
         <div class="modal-content border-none" >
             <div class="modal-header hidden-print">
                 <button type="button" class="close" data-dismiss="modal"
-                    aria-label=<?php echo json_encode(lang('close')); ?>><span
+                    aria-label="<?php echo lang('close'); ?>"><span
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="lookUpReceipt"><?php echo lang('Receipt'); ?></h4>
             </div>
@@ -44,9 +44,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card title-->
                 <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
-                    Pos Builder
+                <?= lang('Pos_Builder'); ?>
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
-                        Get Ready To Customize Your Own Pos Interface </small>
+                    <?= lang('Get_Ready_To_Customize_Your_Own_Pos_Interface'); ?> </small>
                 </h3>
                 <!--end::Card title-->
 
@@ -81,9 +81,9 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="form-group d-flex flex-stack">
                                 <!--begin::Heading-->
                                 <div class="d-flex flex-column">
-                                    <h4 class="fw-bold text-gray-900">Hide Categories</h4>
+                                    <h4 class="fw-bold text-gray-900"><?= lang('Hide_Categories'); ?></h4>
                                     <div class="fs-7 fw-semibold text-muted">
-                                        Click On Toggle To Hide Show The Categories
+                                    <?= lang('Click_On_Toggle_To_Hide_Show_The_Categories'); ?>
 
                                     </div>
                                 </div>
@@ -111,9 +111,9 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="form-group d-flex flex-stack">
                                 <!--begin::Heading-->
                                 <div class="d-flex flex-column">
-                                    <h4 class="fw-bold text-gray-900">Hide Search Bar</h4>
+                                    <h4 class="fw-bold text-gray-900"><?= lang('Hide_Search_Bar'); ?></h4>
                                     <div class="fs-7 fw-semibold text-muted">
-                                        Click On Toggle To Hide Show Search Bar
+                                    <?= lang('Click_On_Toggle_To_Hide_Show_Search_Bar'); ?>
 
                                     </div>
                                 </div>
@@ -140,9 +140,9 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="form-group d-flex flex-stack">
                                 <!--begin::Heading-->
                                 <div class="d-flex flex-column">
-                                    <h4 class="fw-bold text-gray-900">Hide Top Buttons</h4>
+                                    <h4 class="fw-bold text-gray-900"><?= lang('Hide_Top_Buttons'); ?></h4>
                                     <div class="fs-7 fw-semibold text-muted">
-                                        Click On Toggle To Hide Show Top Buttons
+                                    <?= lang('Click_On_Toggle_To_Hide_Show_Top_Buttons'); ?>
 
                                     </div>
                                 </div>
@@ -156,9 +156,9 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="form-group d-flex flex-stack">
                                 <!--begin::Heading-->
                                 <div class="d-flex flex-column">
-                                    <h4 class="fw-bold text-gray-900">Hide Top Item Details</h4>
+                                    <h4 class="fw-bold text-gray-900"><?= lang('Hide_Top_Item_Details'); ?></h4>
                                     <div class="fs-7 fw-semibold text-muted">
-                                        Click On Toggle To Hide Show Item Details
+                                    <?= lang('Click_On_Toggle_To_Hide_Show_Item_Details'); ?>
 
                                     </div>
                                 </div>
@@ -185,9 +185,9 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="form-group d-flex flex-stack">
                                 <!--begin::Heading-->
                                 <div class="d-flex flex-column">
-                                    <h4 class="fw-bold text-gray-900">Hide Top Category Navigation</h4>
+                                    <h4 class="fw-bold text-gray-900"><?= lang('Hide_Top_Category_Navigation'); ?></h4>
                                     <div class="fs-7 fw-semibold text-muted">
-                                        Click On Toggle To Hide Show Category Navigation
+                                    <?= lang('Click_On_Toggle_To_Hide_Show_Category_Navigation'); ?>
 
                                     </div>
                                 </div>
@@ -295,9 +295,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card title-->
                 <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
-                    Pos Builder
+                <?= lang('Pos_Builder'); ?>
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
-                        Get Ready To Customize Your Own Pos Interface </small>
+                    <?= lang('Get_Ready_To_Customize_Your_Own_Pos_Interface'); ?></small>
                 </h3>
                 <!--end::Card title-->
 
@@ -346,9 +346,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card title-->
                 <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
-                    Saved Sales
+                <?= lang('Saved_Sales'); ?>
                     <small class="text-white opacity-50 fs-7 fw-semibold pt-1">
-                        Get Ready To Customize Your Own Pos Interface </small>
+                    <?= lang('Get_Ready_To_Customize_Your_Own_Pos_Interface'); ?> </small>
                 </h3>
                 <!--end::Card title-->
 
@@ -797,7 +797,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 <!--begin::Card title-->
                 <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
-                    Go To
+                <?= lang('Go_To'); ?>
                 </h3>
                 <!--end::Card title-->
 
@@ -838,11 +838,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/new_giftcard" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Sell GiftCard">Sell GiftCard</a>
+                                            title="<?= lang('Sell_GiftCard'); ?>"><?= lang('Sell_GiftCard'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/new_giftcard" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Sell GiftCard"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Sell_GiftCard'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -865,11 +865,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/suspended" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Suspended Sales">Suspended Sales</a>
+                                            title="<?= lang('Suspended_Sales'); ?>"><?= lang('Suspended_Sales'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/suspended" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Suspended Sales"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Suspended_Sales'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -892,11 +892,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/work_orders" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Work Orders">Work Orders</a>
+                                            title="<?= lang('Work_Orders'); ?>"><?= lang('Work_Orders'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/work_orders" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Work Orders"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Work_Orders'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -919,11 +919,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>deliveries" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Delivery Orders">Delivery Orders</a>
+                                            title="<?= lang('Delivery_Orders'); ?>"><?= lang('Delivery_Orders'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>deliveries" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Delivery Orders"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Delivery_Orders'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -946,11 +946,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>reports/sales_generator" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Search Sales">Search Sales</a>
+                                            title="<?= lang('Search_Sales'); ?>"><?= lang('Search_Sales'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>reports/sales_generator" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Search Sales"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Search_Sales'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -973,12 +973,12 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/change_mode/store_account_payment/1"
                                             target="_self" id="" class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Store Account Payment">Store Account Payment</a>
+                                            title="<?= lang('Store_Account_Payment'); ?>"><?= lang('Store_Account_Payment'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/change_mode/store_account_payment/1" target="_self"
                                         id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Store Account Payment"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Store_Account_Payment'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1001,11 +1001,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/batch_sale/" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold none suspended_sales_btn"
-                                            title="Batch Sale">Batch Sale</a>
+                                            title="<?= lang('Batch_Sale'); ?>"><?= lang('Batch_Sale'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/batch_sale/" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px none suspended_sales_btn"
-                                        title="Batch Sale"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Batch_Sale'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1033,11 +1033,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/receipt/<?= $last_sale_id; ?>" target="_blank" id="last_sale_id"
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold look-up-receipt"
-                                            title="Show Last Sale Receipt">Show Last Sale Receipt</a>
+                                            title="<?= lang('Show_Last_Sale_Receipt'); ?>"><?= lang('Show_Last_Sale_Receipt'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/receipt/83" target="_blank" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px look-up-receipt"
-                                        title="Show Last Sale Receipt"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Show_Last_Sale_Receipt'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1066,12 +1066,12 @@ $this->load->view("partial/offline_header"); ?>
                                         <a href="<?= base_url(); ?>sales/customer_display/1" target="_blank"
                                             id="customer_facing_display_link"
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Customer Facing Display">Customer Facing Display</a>
+                                            title="<?= lang('Customer_Facing_Display'); ?>"><?= lang('Customer_Facing_Display'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/customer_display/1" target="_blank"
                                         id="customer_facing_display_link"
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Customer Facing Display"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Customer_Facing_Display'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1094,11 +1094,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/open_drawer" target="_blank" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold pop_open_cash_drawer"
-                                            title="Pop Open Cash Drawer">Pop Open Cash Drawer</a>
+                                            title="<?= lang('Pop_Open_Cash_Drawer'); ?>"><?= lang('Pop_Open_Cash_Drawer'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/open_drawer" target="_blank" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px pop_open_cash_drawer"
-                                        title="Pop Open Cash Drawer"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Pop_Open_Cash_Drawer'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1121,12 +1121,12 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/register_add_subtract/add/common_cash"
                                             target="_self" id="" class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Add Cash To Register">Add Cash To Register</a>
+                                            title="<?= lang('Add_Cash_To_Register'); ?>"><?= lang('Add_Cash_To_Register'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/register_add_subtract/add/common_cash"
                                         target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Add Cash To Register"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Add_Cash_To_Register'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1149,12 +1149,12 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/register_add_subtract/subtract/common_cash"
                                             target="_self" id="" class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Remove Cash From Register">Remove Cash From Register</a>
+                                            title="<?= lang('Add_Cash_To_Register'); ?>"><?= lang('Add_Cash_To_Register'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/register_add_subtract/subtract/common_cash"
                                         target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Remove Cash From Register"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Add_Cash_To_Register'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1177,12 +1177,12 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/closeregister?continue=closeoutreceipt"
                                             target="_self" id="" class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Close Register">Close Register</a>
+                                            title="<?= lang('Close_Register'); ?>"><?= lang('Close_Register'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/closeregister?continue=closeoutreceipt"
                                         target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Close Register"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Close_Register'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1207,11 +1207,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/disable_test_mode" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Enable Test Mode">Disable Test Mode</a>
+                                            title="<?= lang('Disable_Test_Mode'); ?>"><?= lang('Disable_Test_Mode'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/disable_test_mode" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Enable Test Mode"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Disable_Test_Mode'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1228,11 +1228,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/enable_test_mode" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Enable Test Mode">Enable Test Mode</a>
+                                            title="<?= lang('Enable_Test_Mode'); ?>"><?= lang('Enable_Test_Mode'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/enable_test_mode" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Enable Test Mode"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Enable_Test_Mode'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1258,11 +1258,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="<?= base_url(); ?>sales/custom_fields" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold "
-                                            title="Custom Field Config">Custom Field Config</a>
+                                            title="<?= lang('Custom_Field_Config'); ?>"><?= lang('Custom_Field_Config'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/custom_fields" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px "
-                                        title="Custom Field Config"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Custom_Field_Config'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1285,11 +1285,11 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="flex-grow-1 me-2">
                                         <a href="#look-up-receipt" target="_self" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold look-up-receipt"
-                                            title="Lookup Receipt">Lookup Receipt</a>
+                                            title="<?= lang('Lookup_Receipt'); ?>"><?= lang('Lookup_Receipt'); ?></a>
                                     </div>
                                     <a href="#look-up-receipt" target="_self" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px look-up-receipt"
-                                        title="Lookup Receipt"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Lookup_Receipt'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1313,12 +1313,12 @@ $this->load->view("partial/offline_header"); ?>
                                         <a href="<?= base_url(); ?>sales/receipts?date=2024-07-09&amp;location_id=1"
                                             target="_blank" id=""
                                             class="text-gray-800 text-hover-primary fs-6 fw-bold look-up-receipt"
-                                            title="Show All Receipts For Today">Show All Receipts For Today</a>
+                                            title="<?= lang('Show_All_Receipts_For_Today'); ?>"><?= lang('Show_All_Receipts_For_Today'); ?></a>
                                     </div>
                                     <a href="<?= base_url(); ?>sales/receipts?date=2024-07-09&amp;location_id=1"
                                         target="_blank" id=""
                                         class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px look-up-receipt"
-                                        title="Show All Receipts For Today"><span class="svg-icon svg-icon-2">
+                                        title="<?= lang('Show_All_Receipts_For_Today'); ?>"><span class="svg-icon svg-icon-2">
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect opacity="0.5" x="18" y="13" width="13" height="2" rx="1"
@@ -1379,25 +1379,24 @@ $this->load->view("partial/offline_header"); ?>
                             <span class="input-group-text">
                                 <a href="<?= base_url(); ?>items/view/-1?redirect=sales/index/1&amp;progression=1"
                                     class="none add-new-item" title="New Item" id="new-item-mobile" tabindex="-1"><i
-                                        class="icon ti-pencil-alt"></i> <span class="register-btn-text">New
-                                        Item</span></a> </span>
+                                        class="icon ti-pencil-alt"></i> <span class="register-btn-text"><?= lang('New_Item'); ?></span></a> </span>
                             <div class="input-group-text register-mode sale-mode dropdown bg-primary border-radius-left">
                                 <a href="<?= base_url(); ?>#" class="none active" tabindex="-1" title="Sale"
                                     id="select-mode-1" data-target="#" data-toggle="dropdown" aria-haspopup="true"
-                                    role="button" aria-expanded="false"> Sale <i class="icon ti-shopping-cart m-2 text-light"></i>  <span
+                                    role="button" aria-expanded="false"> <?= lang('Sale'); ?> <i class="icon ti-shopping-cart m-2 text-light"></i>  <span
                                         class="register-btn-text mode_text"></span></a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                    <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" >Return</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode ">Sale</a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" ><?= lang('Return'); ?></a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode "><?= lang('Sale'); ?></a></li>
                                 </ul>
                             </div>
 
                             <span class="input-group-text grid-buttons ">
                                 <a href="<?= base_url(); ?>#" class="none show-grid hidden" tabindex="-1"
-                                    title="Show Grid"><i class="icon ti-layout"></i> <span
-                                        class="register-btn-text">Show Grid</span></a> <a href="<?= base_url(); ?>#"
-                                    class="none hide-grid" tabindex="-1" title="Hide Grid"><i
-                                        class="icon ti-layout"></i> <span class="register-btn-text">Hide Grid</span></a>
+                                    title="<?= lang('Show_Grid'); ?>"><i class="icon ti-layout"></i> <span
+                                        class="register-btn-text"><?= lang('Show_Grid'); ?></span></a> <a href="<?= base_url(); ?>#"
+                                    class="none hide-grid" tabindex="-1" title="<?= lang('Hide_Grid'); ?>"><i
+                                        class="icon ti-layout"></i> <span class="register-btn-text"><?= lang('Hide_Grid'); ?></span></a>
                             </span>
                         </div>
 
@@ -1417,8 +1416,8 @@ $this->load->view("partial/offline_header"); ?>
                                     aria-haspopup="true" role="button" aria-expanded="false">Sale<i
                                         class="icon ti-shopping-cart m-2 text-light"></i> </a>
                                 <ul class="dropdown-menu sales-dropdown">
-                                <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" >Return</a></li>
-                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode ">Sale</a></li>
+                                <li><a tabindex="-1" href="#" data-mode="Return" class="change-mode Return-mode" ><?= lang('Return'); ?></a></li>
+                                    <li><a tabindex="-1" href="#" data-mode="Sale" class="change-mode Sale-mode "><?= lang('Sale'); ?></a></li>
                                    
                                    
                                 </ul>
@@ -1428,8 +1427,8 @@ $this->load->view("partial/offline_header"); ?>
 
                             <input type="text" id="item" name="item"
                                 class="add-item-input   w-30  pull-left keyboardTop  ui-autocomplete-input"
-                                placeholder=<?php echo json_encode(lang('start_typing_item_name')); ?>
-                                data-title=<?php echo json_encode(lang('item_name')); ?>>
+                                placeholder="<?php echo lang('start_typing_item_name'); ?>"
+                                data-title="<?php echo lang('item_name'); ?>">
 
                             <input type="hidden" name="secondary_supplier_id" id="secondary_supplier_id">
                             <input type="hidden" name="default_supplier_id" id="default_supplier_id">
@@ -1437,9 +1436,9 @@ $this->load->view("partial/offline_header"); ?>
 
                             <span class="input-group-text d-none grid-buttons  ">
                                 <a href="<?= base_url(); ?>#" class="none show-grid hidden" tabindex="-1"
-                                    title="Show Grid"><i class="icon ti-layout"></i> Show Grid</a> <a
-                                    href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1" title="Hide Grid"><i
-                                        class="icon ti-layout"></i> Hide Grid</a> </span>
+                                    title="<?= lang('Show_Grid'); ?>"><i class="icon ti-layout"></i> <?= lang('Show_Grid'); ?></a> <a
+                                    href="<?= base_url(); ?>#" class="none hide-grid" tabindex="-1" title="<?= lang('Hide_Grid'); ?>"><i
+                                        class="icon ti-layout"></i> <?= lang('Hide_Grid'); ?></a> </span>
                             <span class="input-group-text  grid-buttons bg-primary border-radius-right  p-0">
                                 <div class="card-toolbar">
                                     <!--begin::Menu-->
@@ -1447,13 +1446,13 @@ $this->load->view("partial/offline_header"); ?>
                                         class="btn h-20px w-100px btn-icon btn-color-light-400 btn-active-color-primary justify-content-end  d-inline-flex"
                                         data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end"
                                         data-kt-menu-overflow="true">
-                                        Categories <i class="icon ti-angle-down m-2 text-light"></i> </button>
+                                        <?= lang('Categories'); ?> <i class="icon ti-angle-down m-2 text-light"></i> </button>
                                     <div id="grid_selection"
                                         class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px"
                                         data-kt-menu="true" style="">
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
-                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4">Select Option
+                                            <div class="menu-content fs-6 text-dark fw-bold px-3 py-4"><?= lang('Select_Option'); ?>
                                             </div>
                                         </div>
                                         <!--end::Menu item-->
@@ -1463,14 +1462,14 @@ $this->load->view("partial/offline_header"); ?>
                                         <!--begin::Menu item-->
                                         <div class="menu-item px-3">
                                             <a href="javascript:void(0);" class="btn active menu-link px-3"
-                                                id="by_category">Categories</a>
+                                                id="by_category"> <?= lang('Categories'); ?></a>
                                         </div>
                                         <div class="menu-item px-3">
                                             <a href="javascript:void(0);" class=" menu-link px-3"
-                                                id="by_supplier">Suppliers</a>
+                                                id="by_supplier"><?= lang('Suppliers'); ?></a>
                                         </div>
                                         <div class="menu-item px-3">
-                                            <a href="javascript:void(0);" class=" menu-link px-3" id="by_tag">Tags</a>
+                                            <a href="javascript:void(0);" class=" menu-link px-3" id="by_tag"><?= lang('Tags'); ?></a>
                                         </div>
                                       
                                         <!-- <div class="menu-item px-3">
@@ -1695,7 +1694,7 @@ $this->load->view("partial/offline_header"); ?>
                             <span class=" menu-link ">
 
                             <a tabindex="-1" class="menu-icon w-100 suspened_sale_button " href="<?= base_url(); ?>/sales/suspended_quick"
-                    data-target="#kt_drawer_general" data-target-title="Suspended Sales"
+                    data-target="#kt_drawer_general" data-target-title="<?= lang('Suspended_Sales'); ?>"
                     data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
                     data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                     data-bs-placement="top" title="hold cart"><span class="svg-icon svg-icon-muted svg-icon-2x  ">
@@ -1986,7 +1985,7 @@ $this->load->view("partial/offline_header"); ?>
                                             data-kt-menu="true" style="">
                                             <!--begin::Menu item-->
                                             <div class="menu-item px-3">
-                                                <div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4">Quick Actions
+                                                <div class="menu-content fs-6 text-gray-900 fw-bold px-3 py-4"><?= lang('Quick_Actions'); ?>
                                                 </div>
                                             </div>
                                             <!--end::Menu item-->
@@ -2009,7 +2008,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                                 <a href="<?= base_url(); ?>sales/view_delivery_modal/" class="menu-link px-3 "
                                                     id="open_delivery_modal" data-toggle="modal" data-target="#myModal"> <i
-                                                        class="ion-android-car"></i>Delivery</a>
+                                                        class="ion-android-car"></i><?= lang('Delivery'); ?></a>
 
                                             </div>
 
@@ -2020,12 +2019,12 @@ $this->load->view("partial/offline_header"); ?>
                                             <div class="menu-item px-3">
                                                 <a href="<?= base_url(); ?>customers/redeem_series/{{customer.person_id}}" id="redeem_series"
                                                     class="menu-link px-3" title="Redeem Series"><i
-                                                        class="ion-ios-compose-outline"></i> Redeem Series</a>
+                                                        class="ion-ios-compose-outline"></i><?= lang('Redeem_Series'); ?></a>
                                             </div>
                                             <div class="menu-item px-3">
                                                 <a href="<?= base_url(); ?>customers/pay_now/{{customer.person_id}}" id="pay_now"
                                                     class="menu-link px-3" title="Pay Now"><i
-                                                        class="ion-ios-compose-outline"></i> Pay Now</a>
+                                                        class="ion-ios-compose-outline"></i> <?= lang('Pay_Now'); ?></a>
                                             </div>
 
                                             <div class="menu-item px-3">
@@ -2034,8 +2033,8 @@ $this->load->view("partial/offline_header"); ?>
 
                                                 <a href="<?= base_url(); ?>customers/quick_modal/{{customer.person_id}}/1" id="edit_customer"
                                                     data-target="#kt_drawer_general" data-target-title="New Customer"
-                                                    data-target-width="xl" class="menu-link px-3" title="Update Customer"><i
-                                                        class="ion-ios-compose-outline"></i> Update Customer</a>
+                                                    data-target-width="xl" class="menu-link px-3" title="<?= lang('Update_Customer'); ?>"><i
+                                                        class="ion-ios-compose-outline"></i> <?= lang('Update_Customer'); ?></a>
                                             </div>
 
                                             <!--end::Menu item-->
@@ -2057,7 +2056,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                                     <a target="_blank"
                                                         href="<?= base_url(); ?>reports/generate/specific_customer?report_type=complex&amp;start_date=2023-07-11&amp;start_date_formatted=07/11/2023 12:00 am&amp;end_date=2024-07-11%2023:59:59&amp;end_date_formatted=07/11/2024 11:59 pm&amp;customer_id={{customer.person_id}}&amp;sale_type=all&amp;export_excel=0"
-                                                        class="btn btn-success btn-sm px-4">View Report
+                                                        class="btn btn-success btn-sm px-4"><?= lang('View_Report'); ?>
                                                     </a>
                                                 </div>
                                             </div>
@@ -2151,7 +2150,7 @@ $this->load->view("partial/offline_header"); ?>
 
 									<a tabindex="-1"
 										href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
-										data-target="#kt_drawer_general" data-target-title="View Item"
+										data-target="#kt_drawer_general" data-target-title="<?= lang('View_item'); ?>"
 										data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
 										data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
 										data-bs-placement="top" title="{{name}}">{{name}}</a>
@@ -2207,24 +2206,24 @@ $this->load->view("partial/offline_header"); ?>
 
                                    
 										<div class="col-md-3 mt-3">
-											<div class="text-gray-800 fs-7">Discount Percentage</div>
+											<div class="text-gray-800 fs-7"><?= lang('Discount_Percentage'); ?></div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"> <a
 													href="#" id="discount_0" class="xeditable editable editable-click"
 													data-type="text" data-validate-number="true" data-pk="1"
 													data-name="discount" data-value="0"
 													data-url="<?= base_url(); ?>/sales/edit_item/0"
-													data-title="Discount Percentage">0%</a>
+													data-title="<?= lang('Discount_Percentage'); ?>">0%</a>
 
 											</div>
 										</div>
 
 										<div class="col-md-3 mt-3">
-											<div class="text-gray-800 fs-7">Supplier</div>
+											<div class="text-gray-800 fs-7"><?= lang('Supplier'); ?></div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost"><a
 													href="#" id="supplier_0" data-name="supplier" data-type="select"
 													data-pk="1"
 													data-url="<?= base_url(); ?>/sales/edit_item_supplier/0"
-													data-title="Supplier" class="editable editable-click">Cafe Store inc</a>
+													data-title="<?= lang('Supplier'); ?>" class="editable editable-click">Cafe Store inc</a>
 											</div>
 										</div>
 
@@ -2232,13 +2231,13 @@ $this->load->view("partial/offline_header"); ?>
 
 
 										<div class="col-md-3 mt-3">
-											<div class="text-gray-800 fs-7">Description</div>
+											<div class="text-gray-800 fs-7"><?= lang('Description'); ?></div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
 												None </div>
 										</div>
 
 										<div class="col-md-3 mt-3">
-											<div class="text-gray-800 fs-7">Category</div>
+											<div class="text-gray-800 fs-7"><?= lang('Category'); ?></div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">FOR
 												ONE</div>
 										</div>
@@ -2252,7 +2251,7 @@ $this->load->view("partial/offline_header"); ?>
 												None </div>
 										</div>
 										<div class="col-md-3 mt-3">
-											<div class="text-gray-800 fs-7">Stock</div>
+											<div class="text-gray-800 fs-7"><?= lang('Stock'); ?></div>
 											<div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">0
 											</div>
 										</div>
@@ -2280,7 +2279,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
                     <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                        Discount ({{currency}}) <i class="fonticon-content-marketing" id="discount_details_reload"></i>
+                    <?= lang('Discount'); ?> ({{currency}}) <i class="fonticon-content-marketing" id="discount_details_reload"></i>
                     </div>
 
                     <div class="fs-1 fw-bold counted text-center">
@@ -2300,9 +2299,9 @@ $this->load->view("partial/offline_header"); ?>
 
                 <div
                     class="sub-total list-group-item bg-light  border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
-                    <div class="fw-semibold fs-6 text-dark-400">Sub Total ({{currency}}) <a
+                    <div class="fw-semibold fs-6 text-dark-400"><?= lang('sub_total'); ?> ({{currency}}) <a
                             href="<?= base_url(); ?>/sales/edit_taxes/" class="" id="edit_taxes"
-                            data-target="#kt_drawer_general" data-target-title="Edit Taxes" data-target-width="lg"><i
+                            data-target="#kt_drawer_general" data-target-title="<?= lang('Edit_Taxes'); ?>" data-target-width="lg"><i
                                 class="icon ti-pencil-alt"></i></a>
                         <i class="fonticon-content-marketing" data-dismiss="true" data-placement="top" data-html="true"
                             title="" id="tax-paid-popover" data-original-title="Tax"></i>
@@ -2349,7 +2348,7 @@ $this->load->view("partial/offline_header"); ?>
                 <div class="amount-block border border-light border-dashed rounded min-w-125px h-80px py-3 px-4 ">
                     <div class="tax amount">
                         <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                            Tax ({{currency}}) </div>
+                        <?= lang('tax'); ?> ({{currency}}) </div>
                         <div class="amount total-tax fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
                             data-decimals="0">
                             {{tax}}
@@ -2374,7 +2373,7 @@ $this->load->view("partial/offline_header"); ?>
                 <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-primary ">
                     <div class="total amount">
                         <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                            Total ({{currency}})
+                        <?= lang('total'); ?> ({{currency}})
                         </div>
                         <div class="amount total-amount fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
                             data-decimals="0">
@@ -2401,7 +2400,7 @@ $this->load->view("partial/offline_header"); ?>
                 <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-due  me-3">
                     <div class="total amount-due">
                         <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                            Amount Due ({{currency}})
+                        <?= lang('Amount_Due'); ?> ({{currency}})
                         </div>
                         <div class="amount fs-1 fw-bold counted">
                            {{amount_due}} </div>
@@ -2432,7 +2431,7 @@ $this->load->view("partial/offline_header"); ?>
 
                     <!--begin::Card title-->
                     <h3 class="card-title fs-3 fw-bold text-dark flex-column m-0">
-                        Discount Details </h3>
+                    <?= lang('Discount_Details'); ?> </h3>
                     <!--end::Card title-->
 
                     <!--begin::Card toolbar-->
@@ -2458,13 +2457,13 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="row p-5">
 
                                 <div class="mb-10">
-                                    <label for="exampleFormControlInput1" class=" form-label">Discount %: </label>
+                                    <label for="exampleFormControlInput1" class=" form-label"><?= lang('Discount'); ?> %: </label>
                                     <input type="number" id="discount_all_percent" value=""
                                         class="form-control form-control-solid discount_all_percent">
                                 </div>
 
                                 <div class="mb-10">
-                                    <label for="exampleFormControlInput1" class=" form-label">Discount Fixed: <span
+                                    <label for="exampleFormControlInput1" class=" form-label"><?= lang('Discount_Fixed'); ?>: <span
                                             id="TEST"></span></label>
                                     <input type="number" id="discount_all_flat" value=""
                                         class="form-control form-control-solid discount_all_flat">
@@ -2473,7 +2472,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
                                 <button type="button"
-                                    class="btn btn-primary w-100px update_discount_details">Update</button>
+                                    class="btn btn-primary w-100px update_discount_details"><?= lang('Update'); ?></button>
 
                                 <div class="separator separator-dashed my-4"></div>
 
@@ -2573,8 +2572,8 @@ $this->load->view("partial/offline_header"); ?>
 
                             <input type="text" id="customer" name="customer"
                                 class="add-customer-input  keyboardLeft ui-autocomplete-input border-radius-left w-92 "
-                                data-title=<?php echo json_encode(lang('customer_name')); ?>
-                                placeholder=<?php echo json_encode(lang('sales_start_typing_customer_name')); ?>>
+                                data-title="<?php echo lang('customer_name'); ?>"
+                                placeholder="<?php echo lang('sales_start_typing_customer_name'); ?>">
                                 <span class="input-group-text   bg-primary border-radius-right ">
                                 <a href="<?= base_url(); ?>customers/quick_modal/-1/1" class="none "
                                     title="New Customer" id="new-customer" data-target="#kt_drawer_general"
@@ -2597,14 +2596,14 @@ $this->load->view("partial/offline_header"); ?>
 
             <div class="py-1 pos-bg-dark h-42px p-5 rounded-1 d-flex align-items-center flex-flex justify-content-space-between mt-1 order_detail_margin" >
                 <div>
-                    <span class="text-light">Order Details</span>
-                    <span class="badge badge-light badge-md text-black p-2 mx-5" >Items:  <span id="total_items">0</span> </span>
+                    <span class="text-light"><?= lang('Order_Details'); ?></span>
+                    <span class="badge badge-light badge-md text-black p-2 mx-5" ><?= lang('Items'); ?>:  <span id="total_items">0</span> </span>
                     
-                    <span class="badge badge-light badge-md text-black p-2">QTY: <span id="total_items_qty"> 0 </span> </span>
+                    <span class="badge badge-light badge-md text-black p-2"><?= lang('QTY'); ?>: <span id="total_items_qty"> 0 </span> </span>
                 </div>
 
                 <div>
-                        <span class="badge badge-light badge-md text-danger p-2 bg-light-danger" id="clear_sale_button" <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?> style="display:none !important"   <?php  else: ?>   <?php endif; ?>>  Clear  <i class="icon ti-close m-2 text-danger"></i></span>
+                        <span class="badge badge-light badge-md text-danger p-2 bg-light-danger" id="clear_sale_button" <?php if($this->cart->get_previous_receipt_id() ||  $this->cart->suspended): ?> style="display:none !important"   <?php  else: ?>   <?php endif; ?>>  <?= lang('Clear'); ?>  <i class="icon ti-close m-2 text-danger"></i></span>
                   
                 </div>
                 
@@ -2645,13 +2644,13 @@ $this->load->view("partial/offline_header"); ?>
                         <thead>
                             <tr
                                 class="text-start text-gray-400 fw-bold fs-7  gs-0  pos_bg_dark">
-                                <th class=" py-1  text-center  text-black "><a href="javascript:void(0);"
+                                <th class=" py-1  text-center  text-black  min-w-50px"><a href="javascript:void(0);"
                                         id="sale_details_expand_collapse" class="expand"> <i class="icon ti-angle-down"></i>  </a></th>
-                                <th class=" py-1 item_sort_able  text-black item_name_heading vertical-align ">Item Name</th>
-                                <th class=" py-1 item_sort_able min-w-100px text-center text-black sales_price vertical-align ">Price
+                                <th class=" py-1 item_sort_able  text-black item_name_heading vertical-align "><?= lang('Item_Name'); ?></th>
+                                <th class=" py-1 item_sort_able min-w-100px text-center text-black sales_price vertical-align "><?= lang('Price'); ?>
                                 </th>
-                                <th class=" py-1 item_sort_able min-w-100px sales_quantity  text-black vertical-align text-center">Quantity</th>
-                                <th class=" py-1 item_sort_able min-w-100px text-center sales_total text-black vertical-align ">Total
+                                <th class=" py-1 item_sort_able min-w-100px sales_quantity  text-black vertical-align text-center"><?= lang('Quantity'); ?></th>
+                                <th class=" py-1 item_sort_able min-w-100px text-center sales_total text-black vertical-align "><?= lang('Total'); ?>
                                 </th>
                                 <th class="min-w-50px"></th>
                             </tr>
@@ -2661,7 +2660,7 @@ $this->load->view("partial/offline_header"); ?>
 
                 </div>
 
-                <!-- End of Store Account Payment Mode -->
+                <!-- End of <?= lang('Store_Account_Payment'); ?> Mode -->
 
                 <!-- /.Register Items first pan end here -->
                 <div class=" register-summary paper-cut  pos_footer d-flex flex-wrap bg-light-100 pos_bg_dark justify-content-space-between"
@@ -2675,7 +2674,7 @@ $this->load->view("partial/offline_header"); ?>
                        
                         <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
                             <i class="fonticon-content-marketing fs-6" id="discount_details_reload"></i>
-                            Discount (OMR) 
+                            <?= lang('Discount'); ?> (OMR) 
                         </div>
 
                         <div class="fs-2 fw-bold counted text-center" id="total_discount">0 </div>
@@ -2692,7 +2691,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
                     <div class="sub-total  min-w-125px h-80px py-3 px-4 d-flex align-item-center flex-direction-column  bg-unset">
-                        <div class="fw-semibold fs-8 text-dark-400 my-2">Sub Total (OMR)
+                        <div class="fw-semibold fs-8 text-dark-400 my-2"><?= lang('Sub_Total'); ?> (OMR)
                         </div>
                         <div class="fs-1 fw-bold counted">
                             <a href="#" id="sub_total" class=" xeditable-subtotal editable-click" data-validate-number="true" data-type="text" data-value="0" data-pk="1" data-title="Sub Total"> 0</a>
@@ -2716,10 +2715,10 @@ $this->load->view("partial/offline_header"); ?>
                            
                         <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
                         <a href="#" class="" id="edit_taxes_gen" data-id="-1"
-                                    data-target="#kt_drawer_general" data-target-title="Edit Taxes"
+                                    data-target="#kt_drawer_general" data-target-title="<?= lang('Edit_Taxes'); ?>"
                                     data-target-width="lg"><i class="fonticon-content-marketing fs-6"></i>
                             </a>
-                            Tax (OMR)
+                            <?= lang('tax'); ?> (OMR)
                         </div>
 
                         <div class="amount total-tax fs-2 fw-bold counted" data-speed="1000" data-currency="OMR"
@@ -2750,7 +2749,7 @@ $this->load->view("partial/offline_header"); ?>
                     <div class="amount-block  min-w-125px h-80px py-3 px-4 bg-unset ">
                         <div class="total amount">
                             <div class="side-heading text-center fw-semibold fs-6 text-dark-400">
-                                Total (OMR)
+                            <?= lang('Total'); ?> (OMR)
                             </div>
                             <div class="amount total-amount fs-1 fw-bold counted" data-speed="1000" data-currency="OMR"
                                 data-decimals="0" id="total">
@@ -2778,7 +2777,7 @@ $this->load->view("partial/offline_header"); ?>
                     
                         
                             <div class="side-heading text-center fw-semibold fs-8 text-dark-400">
-                            <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>    Amount Due (OMR)
+                            <i class="fonticon-content-marketing fs-6 text-light" title="" id="kt_drawer_payments_list"></i>    <?= lang('Amount_Due'); ?>   (OMR)
 
 
                                
@@ -2796,7 +2795,7 @@ $this->load->view("partial/offline_header"); ?>
                     <div id="create_invoice_holder" class="  min-w-125px h-80px py-3 px-4 bg-unset create_invoice_holder  hidden"">
                         <div class="total amount">
                         <div class="text-right">
-                                    <label for="create_invoice" class="control-label wide">Create Invoice</label> <input
+                                    <label for="create_invoice" class="control-label wide"><?= lang('Create_Invoice'); ?></label> <input
                                         type="checkbox" name="create_invoice" value="1" id="create_invoice">
                                     <label for="create_invoice"
                                         style="padding-left: 10px; margin-top:0px;"><span></span></label>
@@ -2868,11 +2867,11 @@ $this->load->view("partial/offline_header"); ?>
                                     class="form-control h-43px" data-title="Payment Amount" placeholder="Enter Cash Amount">
 
                                 <span class="input-group-text h-43px border-radius-right">
-                                    <a href="#" class="" id="add_payment_button">Add Payment</a>
+                                    <a href="#" class="" id="add_payment_button"> <?= lang('Add_Payment'); ?></a>
                                 </span>
                                 <span class="input-group-text h-43px border-radius-right" id="finish_sale">
 
-                                    <a href="#" class="text-white" id="finish_sale_button">Complete Sale</a>
+                                    <a href="#" class="text-white" id="finish_sale_button"><?= lang('Complete_Sale'); ?></a>
                                 </span>
 
                                 <!-- <div class="form-group">
@@ -3184,7 +3183,7 @@ $this->load->view("partial/offline_header"); ?>
     <li class="list-group-item">
 			<span class="key">
 				<a href="#" class="delete-coupon remove" id="delete_coupon_{{index}}" data-coupon-index="{{index}}"><i class="fa fa-trash text-danger"></i></a>
-				Coupon: 
+				 <?= lang('Coupon'); ?>: 
 			</span>
 			<span class="value">{{label}}</span>
             
@@ -3253,7 +3252,7 @@ $this->load->view("partial/offline_header"); ?>
             <td class="fs-7">
 
                 <a tabindex="-1" href="<?= base_url(); ?>/home/view_item_modal/{{item_id}}?redirect=sales"
-                    data-target="#kt_drawer_general" data-target-title="View Item"
+                    data-target="#kt_drawer_general" data-target-title="<?= lang('View_item'); ?>"
                     data-target-width="xl" class="register-item-name text-gray-800 text-hover-none "
                     data-bs-toggle="tooltip" data-bs-custom-class="tooltip-inverse"
                     data-bs-placement="top" title="{{name}}">{{name}}</a>
@@ -3303,7 +3302,7 @@ $this->load->view("partial/offline_header"); ?>
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label=<?php echo json_encode(lang('close')); ?>><span
+                                                    aria-label=<?php echo lang('close'); ?>><span
                                                         aria-hidden="true">&times;</span></button>
                                                 <h4 class="modal-title" id="lookUpReceipt">
                                                     <?php echo lang('add_serial_number') ?> <? lang('item') ?>: {{name}}</h4>
@@ -3369,7 +3368,7 @@ $this->load->view("partial/offline_header"); ?>
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
                                 data-name="discount_percent" data-value="{{discount_percent}}"
                                 
-                                data-title="Discount Percentage">{{discount_percent}}%</a>
+                                data-title="<?= lang('Discount_Percentage'); ?>">{{discount_percent}}%</a>
 
                         </div>
                     </div>
@@ -3421,7 +3420,7 @@ $this->load->view("partial/offline_header"); ?>
                                 data-type="text" data-validate-number="true" data-index="{{index}}"  data-total-qty="{{quantity}}" data-pk="1"
                                 data-name="quantity_received" data-value="{{quantity_received}}"
                                 
-                                data-title="Discount Percentage">{{quantity_received}}</a>
+                                data-title="<?= lang('Discount_Percentage'); ?>">{{quantity_received}}</a>
 
                         </div>
                     </div>
@@ -3481,7 +3480,7 @@ $this->load->view("partial/offline_header"); ?>
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
                                 data-name="cost_price" data-value="{{cost_price}}"
                                 
-                                data-title="Discount Percentage">{{cost_price}}</a>
+                                data-title="<?= lang('Discount_Percentage'); ?>">{{cost_price}}</a>
 
                         </div>
                     </div>
@@ -3526,7 +3525,7 @@ $this->load->view("partial/offline_header"); ?>
                         <div class="text-muted fs-7 fw-bold" data-kt-table-widget-4="template_cost">
                             <a href="#" class=" edit_taxes_item myeditable"
                                  data-target="#kt_drawer_general"
-                                data-target-title="Edit Taxes" id="" data-id="{{index}}" data-target-width="lg">Edit Taxes</a>
+                                data-target-title="<?= lang('Edit_Taxes'); ?>" id="" data-id="{{index}}" data-target-width="lg"><?= lang('Edit_Taxes'); ?></a>
                         </div>
                     </div>
                     {{#sn_check all_data.is_serialized name }}
@@ -3606,7 +3605,7 @@ $this->load->view("partial/offline_header"); ?>
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
                                 data-name="description" data-value="{{description}}"
                                 
-                                data-title="Discount Percentage">{{description}}</a>
+                                data-title="<?= lang('Discount_Percentage'); ?>">{{description}}</a>
 
                                 {{else}}
                                 <span>{{description}}</span>
@@ -3659,10 +3658,10 @@ $this->load->view("partial/offline_header"); ?>
                                 <div class="text-gray-500 fw-semibold fs-7">
                                  
                                     <!--begin::Name-->
-                                    <span class="badge badge-secondary">   Sub Total : {{subtotal}}</span>
-                                    <span class="badge badge-success">   Sub Tax : {{totaltax}}</span>
-                                    <span class="badge badge-primary">   Total Amount : {{totalAmount}}</span> 
-                                    <span class="badge badge-warning">   Total Due : {{totaldue}}</span> 
+                                    <span class="badge badge-secondary">  <?= lang('Sub_Total'); ?>  : {{subtotal}}</span>
+                                    <span class="badge badge-success">   <?= lang('Sub_Tax'); ?> : {{totaltax}}</span>
+                                    <span class="badge badge-primary">   <?= lang('Total_Amount'); ?> : {{totalAmount}}</span> 
+                                    <span class="badge badge-warning">   <?= lang('Total_Due'); ?>  : {{totaldue}}</span> 
                                     <!--end::Name-->  
                                 </div>
                                 <!--end::Link-->
@@ -3670,7 +3669,7 @@ $this->load->view("partial/offline_header"); ?>
                             <!--end::Info-->
 
                             <!--begin::Action-->                            
-                            <a href="#" data-suspend-index="{{index}}"  class="btn btn-sm btn-primary unsuspend_offline" >Unsuspend </a>                               
+                            <a href="#" data-suspend-index="{{index}}"  class="btn btn-sm btn-primary unsuspend_offline" > <?= lang('Unsuspend'); ?> </a>                               
                             <!--end::Action-->  
                         </div>
 
@@ -3737,13 +3736,13 @@ $this->load->view("partial/offline_header"); ?>
                                             <div class="repeater-item" data-repeater-item>
                                                 <div class=" row">
                                                     <div class="col-md-5">
-                                                        <label class="form-label">Tax:</label>
+                                                        <label class="form-label"><?= lang('Tax'); ?>:</label>
 
                                                         <input type="text" name="tax_names"
                                                             class="form-control mb-2 mb-md-0" placeholder="Name" />
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <label class="form-label">Percent:</label>
+                                                        <label class="form-label"> <?= lang('Percent'); ?>:</label>
                                                         <input type="hidden" name="tax_cumulatives" value="0">
                                                         <input type="text" name="tax_percents"
                                                             class="form-control mb-2 mb-md-0" placeholder="Percent" />
@@ -3766,7 +3765,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="form-group mt-5">
                                         <a href="javascript:;" data-repeater-create class="btn btn-light-primary">
                                             <i class="ki-duotone ki-plus fs-3"></i>
-                                            Add
+                                            <?= lang('Add'); ?>
                                         </a>
                                     </div>
                                     <!--end::Form group-->
@@ -3879,7 +3878,7 @@ $this->load->view("partial/offline_header"); ?>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h5 class="modal-title" id="attributeModalLabel">Select an Option</h5>
+                <h5 class="modal-title" id="attributeModalLabel"> <?= lang('Select_an_Option'); ?></h5>
 
             </div>
             <div class="modal-body">
@@ -3889,9 +3888,9 @@ $this->load->view("partial/offline_header"); ?>
                 <div id="attributeOptions"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="backAttribute">Back</button>
-                <button type="button" class="btn btn-primary" id="nextAttribute">Next</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('Cancel'); ?></button>
+                <button type="button" class="btn btn-primary" id="backAttribute"><?= lang('Back'); ?></button>
+                <button type="button" class="btn btn-primary" id="nextAttribute"><?= lang('Next'); ?></button>
             </div>
         </div>
     </div>
@@ -3903,7 +3902,7 @@ $this->load->view("partial/offline_header"); ?>
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"
-                    aria-label=<?php echo json_encode(lang('close')); ?>><span
+                    aria-label=<?php echo lang('close'); ?>><span
                         aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="lookUpReceipt"><?php echo lang('modifiers'); ?></h4>
             </div>
@@ -3911,8 +3910,8 @@ $this->load->view("partial/offline_header"); ?>
                 <div id="modifiersOptions"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="saveAttribute">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= lang('Cancel'); ?></button>
+                <button type="button" class="btn btn-primary" id="saveAttribute"><?= lang('Save'); ?></button>
             </div>
         </div>
     </div><!-- /.modal-content -->
@@ -3925,7 +3924,7 @@ $this->load->view("partial/offline_header"); ?>
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label=<?php echo json_encode(lang('close')); ?>><span
+                                                    aria-label=<?php echo lang('close'); ?>><span
                                                         aria-hidden="true">&times;</span></button>
                                                 <h4 class="modal-title" id="lookUpReceipt">
                                                     <?php echo lang('return') ?> </h4>

@@ -559,7 +559,10 @@ class Sale extends MY_Model
 						//Gift card
 						if (strpos($payment_row['payment_type'],':') !== FALSE && !isset($foreign_language_to_cur_language[$payment_row['payment_type']]))
 						{
+							
 			   	     list($giftcard_translation, $giftcard_number) = explode(":",$payment_row['payment_type']);
+
+						// dd($giftcard_translation); 
 							 $foreign_language_to_cur_language[$payment_row['payment_type']] = $foreign_language_to_cur_language[$giftcard_translation].':'.$giftcard_number;
 							
 							if (!isset($payment_data[$foreign_language_to_cur_language[$payment_row['payment_type']]]))
