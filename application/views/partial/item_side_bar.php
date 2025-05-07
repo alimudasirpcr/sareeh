@@ -6,7 +6,7 @@
         <div class="card-header">
             <!--begin::Card title-->
             <div class="card-title">
-                <h2>Thumbnail</h2>
+                <h2><?= lang('Thumbnail'); ?></h2>
             </div>
             <!--end::Card title-->
         </div>
@@ -85,7 +85,7 @@
         <div class="card-header">
             <!--begin::Card title-->
             <div class="card-title">
-                <h2>Status</h2>
+                <h2><?= lang('Status'); ?></h2>
             </div>
             <!--end::Card title-->
 
@@ -118,7 +118,7 @@
             <!--end::Select2-->
 
             <!--begin::Description-->
-            <div class="text-muted fs-7">Set the product status.</div>
+            <div class="text-muted fs-7"><?= lang('Set_the_product_status'); ?>..</div>
             <!--end::Description-->
 
         </div>
@@ -132,7 +132,7 @@
         <div class="card-header">
             <!--begin::Card title-->
             <div class="card-title">
-                <h2>Product Details</h2>
+                <h2><?= lang('Product_Details'); ?></h2>
             </div>
             <!--end::Card title-->
         </div>
@@ -208,7 +208,7 @@
             <!--end::Select2-->
 
             <!--begin::Description-->
-            <div class="text-muted fs-7 mb-7">Add product to a category.</div>
+            <div class="text-muted fs-7 mb-7"><?= lang('Add_product_to_a_category'); ?>.</div>
             <!--end::Description-->
             <!--end::Input group-->
 
@@ -225,7 +225,7 @@
         <div class="card-header">
             <!--begin::Card title-->
             <div class="card-title">
-                <h2>Monthly Sales</h2>
+            <h2>  <?= lang('Monthly_Sales'); ?></h2>
             </div>
             <!--end::Card title-->
         </div>

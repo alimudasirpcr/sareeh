@@ -234,12 +234,12 @@ function init_table_sorting()
 				<div class=" card-toolbar w-100 d-flex justify-content-between">
 					<div class="w-50 d-flex">
 				<button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-					<i class="fa fa-filter fs-2"></i>        Filter
+					<i class="fa fa-filter fs-2"></i>        <?= lang('Filter'); ?>
 				</button>
 				<div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" id="kt-toolbar-filter" style="">
 					<!--begin::Header-->
 					<div class="px-7 py-5">
-						<div class="fs-4 text-gray-900 fw-bold">Filter Options</div>
+						<div class="fs-4 text-gray-900 fw-bold"><?= lang('Filter_Options'); ?></div>
 					</div>
 					<!--end::Header-->
 

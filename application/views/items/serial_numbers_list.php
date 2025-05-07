@@ -97,7 +97,7 @@
                                 <a <?php if ($item_info->item_id == null) : ?> style="display: none;" <?php endif; ?> href="<?php echo base_url('items/serial_number_template_export/' . $item_info->item_id . ''); ?>" class="btn btn-primary show_upload_btns show_upload_link"><i class="fas fa-download fs-4 me-2"></i><?php echo lang('download_template'); ?></a>
 
                                 <input <?php if ($item_info->item_id == null) : ?> style="display: none;" <?php endif; ?> type="file" class="form-control show_upload_btns" name="sn_file_name" id="sn_excel">
-                                <button <?php if ($item_info->item_id == null) : ?> style="display: none;" <?php endif; ?> type="button" class="btn btn-primary show_upload_btns" id="uploadButton"> upload </button>
+                                <button <?php if ($item_info->item_id == null) : ?> style="display: none;" <?php endif; ?> type="button" class="btn btn-primary show_upload_btns" id="uploadButton"> <?= lang('upload'); ?> </button>
 
                             </div>
                             </div>

@@ -57,15 +57,14 @@
                     <!--begin:::Tab item-->
                     <li class="nav-item" role="presentation">
                         <a class="nav-link text-active-primary pb-4 " data-toggle="tab"
-                            href="#kt_ecommerce_customer_overview" aria-selected="true" role="tab">Overview</a>
+                            href="#kt_ecommerce_customer_overview" aria-selected="true" role="tab"><?= lang('Overview'); ?></a>
                     </li>
                     <!--end:::Tab item-->
 
                     <!--begin:::Tab item-->
                     <li class="nav-item" role="presentation">
                         <a class="nav-link text-active-primary pb-4 active" data-toggle="tab"
-                            href="#kt_ecommerce_customer_general" aria-selected="false" role="tab" tabindex="-1">General
-                            Settings</a>
+                            href="#kt_ecommerce_customer_general" aria-selected="false" role="tab" tabindex="-1"> <?= lang('General_Settings'); ?></a>
                     </li>
                     <!--end:::Tab item-->
 
@@ -73,15 +72,14 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link text-active-primary pb-4" data-toggle="tab"
                             href="#kt_ecommerce_customer_advanced" aria-selected="false" role="tab"
-                            tabindex="-1">Advanced Settings</a>
+                            tabindex="-1"><?= lang('Advanced_Settings'); ?></a>
                     </li>
                     <!--end:::Tab item-->
 
                     <!--begin:::Tab item-->
                     <li class="nav-item" role="presentation">
                         <a class="nav-link text-active-primary pb-4" data-toggle="tab"
-                            href="#kt_ecommerce_customer_files" aria-selected="false" role="tab" tabindex="-1">Files
-                            Upload</a>
+                            href="#kt_ecommerce_customer_files" aria-selected="false" role="tab" tabindex="-1"> <?= lang('Files_Upload'); ?></a>
                     </li>
                     <!--end:::Tab item-->
 
@@ -89,7 +87,7 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link text-active-primary pb-4" data-toggle="tab"
                             href="#kt_ecommerce_customer_login_info" aria-selected="false" role="tab"
-                            tabindex="-1">Login Info
+                            tabindex="-1">  <?= lang('Login_Info'); ?>
                         </a>
                     </li>
                     <!--end:::Tab item-->

@@ -793,13 +793,13 @@
                     </h3>
                     <div class="card-toolbar display-flex justify-content-between ">
                         <button type="button" class="btn btn-light-primary me-3" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                            <i class="fa fa-filter fs-2"></i> Filter
+                            <i class="fa fa-filter fs-2"></i> <?= lang('Filter'); ?>
                         </button>
 
                         <div class="menu menu-sub menu-sub-dropdown w-300px w-md-325px" data-kt-menu="true" style="">
                             <!--begin::Header-->
                             <div class="px-7 py-5">
-                                <div class="fs-5 text-gray-900 fw-bold">Filter Options</div>
+                                <div class="fs-5 text-gray-900 fw-bold"> <?= lang('Filter_Options'); ?></div>
                             </div>
                             <!--end::Header-->
 
@@ -863,7 +863,7 @@
 
                                 <!--begin::Actions-->
                                 <div class="d-flex justify-content-end">
-                                     <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter">Apply</button>
+                                     <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter"><?= lang('Apply'); ?></button>
                                 </div>
                                 <!--end::Actions-->
                                 </form>
@@ -929,7 +929,7 @@
                                                 fill="currentColor" />
                                         </svg>
                                     </span>
-                                    Toggle Stats
+                                     <?= lang('Toggle_Stats'); ?>
                                 </button>
                                 <?php if (!$deleted) { ?>
 
@@ -1007,13 +1007,13 @@
                                                     $checked = 'checked ="checked" ';
                                                 }
                                             ?>
-                                                <li class="sort form-check"><a><input <?php echo $checked; ?>
+                                                <li class="sort"><a class="form-check form-check-sm form-check-custom form-check-solid"><label
+                                                            class="form-check-label"
+                                                            for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><input <?php echo $checked; ?>
                                                             name="selected_columns[]" type="checkbox"
                                                             class="columns form-check-input" id="<?php echo $col_key; ?>"
-                                                            value="<?php echo $col_key; ?>"><label
-                                                            class="sortable_column_name"
-                                                            for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span
-                                                            class="handle ion-drag"></span></a></li>
+                                                            value="<?php echo $col_key; ?>"><span
+                                                            class="handle ion-drag pull-right"></span></a></li>
                                             <?php } ?>
                                         </ul>
                                     </div>
@@ -1042,10 +1042,10 @@
                 if ($("#hide_completed_work_orders").is(":checked")) {
 
                     $('#hide_completed_work_orders').prop('checked', false);
-                    $("label[for='hide_completed_work_orders']").text("Hide Completed");
+                    $("label[for='hide_completed_work_orders']").text("<?= lang('Hide_Completed'); ?>");
                 } else {
                     $('#hide_completed_work_orders').prop('checked', true);
-                    $("label[for='hide_completed_work_orders']").text("Show Completed");
+                    $("label[for='hide_completed_work_orders']").text("<?= lang('Show_Completed'); ?>");
                 }
             });
 
@@ -1053,18 +1053,18 @@
                 // Check if the checkbox is checked
                 if ($(this).is(":checked")) {
                     // Update the label to "Show Completed"
-                    $("label[for='hide_completed_work_orders']").text("Show Completed");
+                    $("label[for='hide_completed_work_orders']").text("<?= lang('Show_Completed'); ?>");
                 } else {
                     // Update the label to "Hide Completed"
-                    $("label[for='hide_completed_work_orders']").text("Hide Completed");
+                    $("label[for='hide_completed_work_orders']").text("<?= lang('Hide_Completed'); ?>");
                 }
             });
             if ($("#hide_completed_work_orders").is(":checked")) {
-                // Update the label to "Show Completed"
-                $("label[for='hide_completed_work_orders']").text("Show Completed");
+                // Update the label to 
+                $("label[for='hide_completed_work_orders']").text("<?= lang('Show_Completed'); ?>");
             } else {
-                // Update the label to "Hide Completed"
-                $("label[for='hide_completed_work_orders']").text("Hide Completed");
+                // Update the label to 
+                $("label[for='hide_completed_work_orders']").text("<?= lang('Hide_Completed'); ?>");
             }
 
             // Check localStorage on page load and apply the correct state

@@ -58,7 +58,7 @@
 				</div>	
 				<div class="card-body">
 					
-					<div class="form-group no-padding-right">	
+					<div class="form-group no-padding-right row">	
 					<?php echo form_label(lang('quantity_units').':', '',array('class'=>'col-sm-12  ')); ?>
 						<div class="col-md-12">
 							<div class="table-responsive">
@@ -140,7 +140,7 @@
 
 </div>
 	
-<div class="row <?php echo $redirect ? 'manage-table  ' :''; ?>">
+<div class="row <?php echo $redirect ? '  ' :''; ?>">
 	<div class="col-md-12">
 		<div class="card shadow-sm mt-3">
 			<div class="card-header rounded rounded-3 p-5">
@@ -160,10 +160,13 @@
 	  		</div>
 			</div>
 			<div class="card-body">
+				<div class="row">
+
+				
 		
-			<div class="mb-10 fv-row fv-plugins-icon-container">
+			<div class="col-md-12">
 				<label class="form-label"><?php echo lang('items_attributes').':' ?></label>
-				<div class=" ">
+			
 
 					<div class="input-group flex-direction-row-reverse">
 						<?php echo form_dropdown('', $attribute_select_options, '','class="form-control" id="available_attributes"');?>
@@ -216,9 +219,9 @@
 					<div class="p-top-5">
 						<?php echo anchor("items/manage_attributes".($manage_query ? '?'.$manage_query : ''),lang('manage_attributes'),array('class' => 'outbound_link btn btn-light-primary','title'=> lang('manage_attributes')));?>
 					</div>
-				</div>
+			
 			</div>
-
+			</div>
 			<?php if ($item_info->item_id && !isset($is_clone)) { ?>
 			<div class="form-group">
 				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('item_variations').':' ?></label>
@@ -289,7 +292,7 @@
 
 				<div class="card shadow-sm mt-3">
 					<div class="card-header rounded rounded-3 p-5">
-			      <h3 class="card-title"><i class="ion-android-list fs-2"></i> <?php echo lang("modifiers"); ?></h3>
+			      <h3 class="card-title"> <?php echo lang("modifiers"); ?></h3>
 					
 					</div>	
 					<div class="card-body">

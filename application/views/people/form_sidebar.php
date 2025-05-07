@@ -191,7 +191,7 @@
         <div class="d-flex flex-stack fs-4 py-3">
             <div class="fw-bold rotate collapsible active" data-toggle="collapse" href="#kt_customer_view_details_col"
                 role="button" aria-expanded="true" aria-controls="kt_customer_view_details_col">
-                Details
+                <?= lang('Details'); ?>
                 <span class="ms-2 rotate-180">
                     <i class="fa fa-chevron-up fs-3"></i>
                     </span>
@@ -207,24 +207,24 @@
             <div class="pb-5 fs-6 collapse " id="kt_customer_view_details" style="display:none;">
                 <!--begin::Details item-->
                 <?php if(isset($person_info->person_id)): ?>
-                <div class="fw-bold mt-5">Account ID</div>
+                <div class="fw-bold mt-5"><?= lang('Account_ID'); ?></div>
                 <div class="text-gray-600">ID-<?= $person_info->person_id; ?></div>
                 <?php endif ?>
                 <!--begin::Details item-->
                 <?php if(isset($person_info->company_name)): ?>
                 <!--begin::Details item-->
-                <div class="fw-bold mt-5">Company</div>
+                <div class="fw-bold mt-5"><?= lang('Company'); ?></div>
                 <div class="text-gray-600"><a href="#"
                         class="text-gray-600 text-hover-primary"><?= $person_info->company_name; ?></a>
                 </div>
                 <?php endif ?>
                 <!--begin::Details item-->
                 <!--begin::Details item-->
-                <div class="fw-bold mt-5">Address</div>
+                <div class="fw-bold mt-5"><?= lang('Address'); ?></div>
                 <div class="text-gray-600"><?= $person_info->address_1; ?></div>
                 <!--begin::Details item-->
                 <!--begin::Details item-->
-                <div class="fw-bold mt-5">Zip</div>
+                <div class="fw-bold mt-5"><?= lang('Zip'); ?></div>
                 <div class="text-gray-600"><?= $person_info->zip; ?></div>
                 <!--begin::Details item-->
 

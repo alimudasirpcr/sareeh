@@ -141,3 +141,12 @@ div {
 .piluku-dropdown .dropdown-menu li a {
 	text-align: right;
 }
+
+.actions .dropdown-menu
+{
+	margin: 2px -50px 0;
+}
+.piluku-dropdown .dropdown-menu {
+
+    min-width: 155px;
+}
