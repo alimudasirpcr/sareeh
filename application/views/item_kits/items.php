@@ -68,8 +68,10 @@
 					?>
         </div>
         <div class="card-body">
+			<div> 
 				<div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10">
 				<span class="help-block"><?php echo lang('item_kits_desc'); ?></span>
+				</div>
 				</div>
 				<div class="form-group">
 					<?php echo form_label(lang('item_kits_add_item').':', 'item',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  ')); ?>
