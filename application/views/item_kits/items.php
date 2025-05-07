@@ -67,6 +67,7 @@
 					}
 					?>
         </div>
+		</div>
         <div class="card-body">
 			<div> 
 				<div class="col-sm-offset-3 col-md-offset-3 col-lg-offset-2 col-sm-9 col-md-9 col-lg-10">
