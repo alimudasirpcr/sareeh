@@ -1201,6 +1201,8 @@ async function handleFinishSaleBasic(e = null) {
     const proceed = async () => {
         //adding the last payment
         result = await addPayment({ preventDefault: () => {} });
+
+        console.log('yes payment' , result);
         if(!result){
             return false;
         }
@@ -3857,6 +3859,8 @@ function checkPaymentTypes() {
 		<?php } ?>
         return true;
 	}
+
+
     function reset_payment_type(){
         const cartValues = calculateCartValues(cart);
         $('.select-payment').removeClass('active');
@@ -4062,14 +4066,19 @@ async  function addPayment(e) {
             }
 
 
-    
+            if(payment_amount > 0){
 
-    cart['payments'].push({
-        amount: payment_amount,
-        type: type
-    });
+                    cart['payments'].push({
+                        amount: payment_amount,
+                        type: type
+                    });
+
+                }
+
+                
     renderUi();
     reset_payment_type();
+    return true;
 }
 $('#discount_details_reload').on('click', function() {
     $('#discountbox_modal_reload').html($('#discountbox_modal_reload_data').html());
