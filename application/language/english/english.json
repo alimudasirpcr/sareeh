@@ -2973,5 +2973,10 @@
     "title": "Title",
     "is_required": "Is required",
     "customers_are_you_sure_cancel": "Customers are you sure cancel",
-    "search_sales": "Search sales"
+    "search_sales": "Search sales",
+    "details": "Details",
+    "account_id": "Account id",
+    "general_settings": "General settings",
+    "advanced_settings": "Advanced settings",
+    "files_upload": "Files upload"
 }

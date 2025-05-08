@@ -704,7 +704,7 @@
 							'name' => 'username',
 							'id' => 'username',
 							'class' => 'form-control',
-							'value' => $person_info->username . '_' . time()
+							'value' => $person_info->username
 
 						)); ?>
 
