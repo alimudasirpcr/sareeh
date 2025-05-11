@@ -300,7 +300,7 @@ function init_table_sorting()
 						<!--begin::Actions-->
 						<div class="d-flex justify-content-end">
 					
-							<button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter">Apply</button>
+							<button type="submit" class="btn btn-primary" data-kt-menu-dismiss="true" data-kt-customer-table-filter="filter"> <?= lang('Apply')?></button>
 						</div>
 						<!--end::Actions-->
 					</div>

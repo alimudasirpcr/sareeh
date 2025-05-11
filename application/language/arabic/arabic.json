@@ -3021,5 +3021,11 @@
     "items_category_successful_error": "تعذرت إضافة فئة العنصر بنجاح",
     "markup": "الهامش الربحي",
     "enter_markup_percent": "أدخل نسبة الهامش الربحي",
-    "config_keyword_store_accounts": "Config keyword store accounts"
+    "config_keyword_store_accounts": "تكوين كلمات المفتاح لحسابات المتجر",
+    "item_kits_items_added": "تمت إضافة عناصر حزمة العناصر",
+    "item_kits_desc": "وصف حزمة العناصر",
+    "item_kits_add_item": "إضافة عنصر إلى حزمة العناصر",
+    "item_kits_item": "عنصر في حزمة العناصر",
+    "item_kits_quantity": "كمية حزمة العناصر",
+    "items_kit_unable_to_add_item": "تعذر إضافة عنصر إلى حزمة العناصر"
 }
