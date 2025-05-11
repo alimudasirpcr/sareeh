@@ -21,7 +21,7 @@
                             data-bs-trigger="hover" data-bs-original-title="Specify invoice date"
                             data-kt-initialized="1">
                             <!--begin::Date-->
-                            <div class="fs-6 fw-bold text-gray-700 text-nowrap">Date:</div>
+                            <div class="fs-6 fw-bold text-gray-700 text-nowrap"><?php echo lang('Date');?>:</div>
                             <!--end::Date-->
 
                             <!--begin::Input-->
@@ -59,7 +59,7 @@
                             data-bs-toggle="tooltip" data-bs-trigger="hover"
                             data-bs-original-title="Specify invoice due date" data-kt-initialized="1">
                             <!--begin::Date-->
-                            <div class="fs-6 fw-bold text-gray-700 text-nowrap">Due Date:</div>
+                            <div class="fs-6 fw-bold text-gray-700 text-nowrap"> <?php echo lang('Due_Date');?>:</div>
                             <!--end::Date-->
 
                             <!--begin::Input-->
@@ -337,7 +337,7 @@
 			echo anchor("invoices/pay/$invoice_type/$invoice_id", lang('pay'),array('class' => 'btn btn-primary w-100'));
 		}
 		?>
-            <?php echo anchor("invoices/index/$invoice_type",'Back To Invoices', array('class'=>'hidden-print mt-3 btn btn-primary w-100')); ?>
+            <?php echo anchor("invoices/index/$invoice_type",lang('Back_To_Invoices'), array('class'=>'hidden-print mt-3 btn btn-primary w-100')); ?>
        
 
         </div>

@@ -304,7 +304,7 @@ function getStatusCardClass($days_past_due_option)
 						<path d="M21 20H20V16C20 15.4 19.6 15 19 15H17C16.4 15 16 15.4 16 16V20H3C2.4 20 2 20.4 2 21C2 21.6 2.4 22 3 22H21C21.6 22 22 21.6 22 21C22 20.4 21.6 20 21 20Z" fill="currentColor"/>
 						</svg>
 						</span>
-						Toggle Stats
+						<?= lang('Toggle_Stats'); ?>
 						</button>
 						<form id="config_columns"  >
 						<div class="piluku-dropdown btn-group table_buttons pull-right">

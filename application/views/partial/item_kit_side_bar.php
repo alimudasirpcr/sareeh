@@ -253,7 +253,7 @@ $image_query_param = isset($first_image_id) ? '?image_id=' . $first_image_id : '
 <script>
     $(document).ready(function () {
         var typed = new Typed("#kt_typedjs_example_1", {
-    strings: ["Please wait while we load your content.", "Hold on a moment, we're almost ready!"],
+    strings: ["<?php echo lang('Please_wait_while_we_load_your_content');?>.", "<?php echo lang('Hold_on_a_moment');?>"],
     typeSpeed: 30
 });
         <?php if( $this->uri->segment(2) !='view'): ?>

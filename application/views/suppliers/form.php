@@ -32,7 +32,9 @@
 				</div>
 			</div>
 		<?php } ?>
-	<?php echo form_open_multipart('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_form','class'=>'form-horizontal')); ?>
+
+
+	<?php echo form_open_multipart('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_form','class'=>'form-horizontal mt-5')); ?>
 
 			<div class=" card shadow-sm">
 				<div class=" card-header rounded rounded-3 p-5">
@@ -413,6 +415,7 @@
 			                    <?php echo lang("files"); ?>
 			                </h3>
 				        </div>
+						<div class="card-body">
 		
 						<?php if (count($files)) {?>
 									<ul class="list-group">

@@ -223,8 +223,8 @@
 			</div>
 			</div>
 			<?php if ($item_info->item_id && !isset($is_clone)) { ?>
-			<div class="form-group">
-				<label class="col-sm-3 col-md-3 col-lg-2"><?php echo lang('item_variations').':' ?></label>
+			<div class="form-group row">
+				<label class="col-12"><?php echo lang('item_variations').':' ?></label>
 				<div class="col-sm-12 table-responsive">
 					<table id="item_variations" class="table">
 						<thead>

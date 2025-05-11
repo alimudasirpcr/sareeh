@@ -31,7 +31,7 @@
                 <?php echo lang('email'); ?>
             </button>
             <?php } ?>
-            <?php echo anchor("invoices/index/$invoice_type",' Back To Invoices', array('class'=>'hidden-print btn btn-primary btn-sm')); ?>
+            <?php echo anchor("invoices/index/$invoice_type",lang('Back_To_Invoices'), array('class'=>'hidden-print btn btn-primary btn-sm')); ?>
         </span>
     </div>
 

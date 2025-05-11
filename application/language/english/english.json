@@ -2978,5 +2978,19 @@
     "account_id": "Account id",
     "general_settings": "General settings",
     "advanced_settings": "Advanced settings",
-    "files_upload": "Files upload"
+    "files_upload": "Files upload",
+    "suppliers_basic_information": "Suppliers basic information",
+    "suppliers_company_name": "Suppliers company name",
+    "update_avatar": "Update avatar",
+    "suppliers_company_name_required": "Suppliers company name required",
+    "suppliers_are_you_sure_cancel": "Suppliers are you sure cancel",
+    "invoices_invoice_details": "Invoices invoice details",
+    "invoices_charges": "Invoices charges",
+    "invoices_credits": "Invoices credits",
+    "order_id": "Order id",
+    "account": "Account",
+    "invoices_add_item": "Invoices add item",
+    "add_items": "Add items",
+    "requires_age_verification": "Requires age verification",
+    "items_category_successful_error": "Item category could not be added successfully"
 }

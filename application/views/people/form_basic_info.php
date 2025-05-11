@@ -3,7 +3,7 @@
         <div class="mb-7">
             <!--begin::Label-->
             <label class="fs-6 fw-semibold mb-2">
-                <span>Update Avatar</span>
+                <span> <?php echo lang('Update_Avatar'); ?></span>
 
                 <?php $avatar = base_url().'assets/img/avatar.png'; 
 

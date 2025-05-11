@@ -300,7 +300,7 @@
                     <div class="me-2">
                         <button type="button" class="btn btn-light btn-active-light-primary"
                             data-kt-stepper-action="previous">
-                            Back
+                             <?php echo lang('Back'); ?>
                         </button>
                     </div>
                     <!--end::Wrapper-->
@@ -309,15 +309,15 @@
                     <div>
                         <button type="submit" name="sale_item_notes_save_btn" id="sale_item_notes_save_btn" class="btn btn-primary sale_item_notes_save_btn" data-kt-stepper-action="submit">
                             <span class="indicator-label">
-                                Submit
-                            </span>
+                                 <?php echo lang('Submit'); ?>
+                            </span> 
                             <span class="indicator-progress">
-                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            <?php echo lang('Please_wait'); ?>... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                             </span>
                         </button>
 
                         <button type="button" class="btn btn-primary" data-kt-stepper-action="next">
-                            Continue
+                               <?php echo lang('Continue'); ?>
                         </button>
                         <?php
 

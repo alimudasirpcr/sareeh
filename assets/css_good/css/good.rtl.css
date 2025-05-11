@@ -73,12 +73,14 @@ span.toggle-links.btn.btn-info {
 	float: left !important;
 }
 .dl-horizontal dd {
-	width: 284px;
-	float: left;
+	width: 50%;
+    margin-left: 0px;
+    float: left;
 }
 .dl-horizontal dt {
-	width: 160px !important;
-	float: right;
+	width: 50%;
+    float: right;
+    text-align: right !important;
 }
 .item_repair_item {
 	clear: both;
@@ -149,4 +151,8 @@ div {
 .piluku-dropdown .dropdown-menu {
 
     min-width: 155px;
+}
+
+.piluku-dropdown .dropdown-menu.ui-sortable {
+    min-width: 250px;
 }

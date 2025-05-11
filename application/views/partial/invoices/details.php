@@ -90,11 +90,11 @@
             <!--begin::Table head-->
             <thead>
                 <tr class="border-bottom fs-7 fw-bold text-gray-700 text-uppercase">
-                    <th class="min-w-300px w-475px">Item</th>
-                    <th class="min-w-100px w-475px">Account</th>
-                    <th class="min-w-100px w-100px">QTY</th>
-                    <th class="min-w-100px w-100px">Price</th>
-                    <th class="min-w-150px w-150px">Total</th>
+                    <th class="min-w-300px w-475px"> <?php echo lang('Item')?></th>
+                    <th class="min-w-100px w-475px"> <?php echo lang('Account')?></th>
+                    <th class="min-w-100px w-100px"> <?php echo lang('QTY')?></th>
+                    <th class="min-w-100px w-100px"> <?php echo lang('Price')?></th>
+                    <th class="min-w-150px w-150px"> <?php echo lang('Total')?></th>
                     <?php   if ($can_edit)
 					{
 					?>
@@ -263,17 +263,17 @@
                 <tr class="border-bottom border-bottom-dashed" data-kt-element="item">
                     <td class="pe-7">
                         <input type="text" class="form-control form-control-solid mb-2" name="name[]"
-                            placeholder="Item name">
+                            placeholder="<?php echo lang('Item_name');?>">
                         <input type="hidden" class="form-control form-control-solid mb-2 " name="item_id[]"
-                            placeholder="Item name" value="0">
+                            placeholder="<?php echo lang('Item_name');?>" value="0">
                             <input type="hidden" class="form-control form-control-solid mb-2 " name="variation_id[]"
-                            placeholder="Item name" value="0">
+                            placeholder="<?php echo lang('Item_name');?>" value="0">
                             <input type="hidden" name="is_custom[]"  value="1" >
 
                     </td>
                     <td class="pe-7">
                         <input type="text" class="form-control form-control-solid mb-2" name="account[]"
-                            placeholder="Account">
+                            placeholder="<?php echo lang('Account');?>">
 
                     </td>
                     <td class="ps-0 ">
@@ -306,8 +306,7 @@
             <tfoot>
                 <tr class="border-top border-top-dashed align-top fs-6 fw-bold text-gray-700">
                     <th class="text-primary">
-                        <button type="button" class="btn btn-light-primary py-1" data-kt-element="add-item">Add
-                            item</button>
+                        <button type="button" class="btn btn-light-primary py-1" data-kt-element="add-item"><?php echo lang('add_item');?></button>
                     </th>
 
 

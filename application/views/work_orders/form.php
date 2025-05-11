@@ -482,7 +482,7 @@
 
 
 
-                            <dl class="dl-horizontal dl-horizontal-right">
+                            <dl class="dl-horizontal dl-horizontal-right min-h-200px" >
                                 <dt><?php echo lang('work_orders_quantity') ?></dt>
                                 <dd><a class="fs-7 text-gray-800 text-hover-primary fw-bold mb-1" href="#"
                                         id="quantity_<?php echo $item_being_repaired_info['line']; ?>" class="xeditable"
@@ -1060,7 +1060,7 @@
                                             <div class="col-md-4">
                                                 <a href="javascript:;" data-repeater-delete
                                                     class="btn btn-sm btn-light-danger mt-3 mt-md-8">
-                                                    <i class="la la-trash-o"></i>Delete
+                                                    <i class="la la-trash-o"></i><?php echo  lang('Delete') ?>
                                                 </a>
                                             </div>
                                         </div>
@@ -1072,7 +1072,7 @@
                             <!--begin::Form group-->
                             <div class="form-group mt-5">
                                 <a href="javascript:;" data-repeater-create class="btn btn-light-primary">
-                                    <i class="la la-plus"></i>Add
+                                    <i class="la la-plus"></i><?php echo  lang('Add') ?>
                                 </a>
                             </div>
                             <!--end::Form group-->
