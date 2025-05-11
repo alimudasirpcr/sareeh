@@ -10,7 +10,7 @@
                
                 <div class="d-flex">
                 <select id="country-dropdown" class="form-control mx-1">
-                    <option value="">Select Module</option>
+                    <option value=""><?php echo lang('Select_Module'); ?></option>
                     <?php
 					if ($this->Employee->has_module_action_permission('reports', 'view_appointments', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
@@ -252,7 +252,7 @@
                 </select>
 
                 <select id="city-dropdown" class="form-control">
-                    <option value="">Select Report</option>
+                    <option value=""> <?php echo lang('Select_Report'); ?></option>
                     <!-- Cities will be added here based on the selected country -->
                 </select>
                 <?php if (isset($output_data) && $output_data) { ?>
@@ -637,7 +637,7 @@
 
         var cityDropdown = $("#city-dropdown");
         cityDropdown.empty(); // Remove existing options
-        cityDropdown.append('<option value="">Select Report</option>');
+        cityDropdown.append('<option value=""><?php echo lang('Select_Report'); ?></option>');
         
         cities.forEach(function(city) {
             cityDropdown.append('<option value="' + city + '">' + city + '</option>');
@@ -665,7 +665,7 @@
     // Function to populate cities dropdown based on selected country
     function populateCitiesDropdown(country) {
     var citiesDropdown = document.getElementById('city-dropdown');
-    citiesDropdown.innerHTML = '<option value="">Select Report</option>'; // Clear existing options first
+    citiesDropdown.innerHTML = '<option value=""><?php echo lang('Select_Report'); ?></option>'; // Clear existing options first
     var cities = moduleToReports[country] || [];
     cities.forEach(function(city) {
         var option = new Option(city,city);

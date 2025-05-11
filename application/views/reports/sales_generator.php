@@ -218,7 +218,7 @@ function disableConditions(elm, q) {
 
 				<div class="d-flex">
                 <select id="country-dropdown"  class="form-control mx-1">
-                    <option value="">Select Module</option>
+                    <option value=""><?php echo lang('Select_Module'); ?></option>
                     <?php
 					if ($this->Employee->has_module_action_permission('reports', 'view_appointments', $this->Employee->get_logged_in_employee_info()->person_id))
 					{
@@ -460,7 +460,7 @@ function disableConditions(elm, q) {
                 </select>
 
                 <select id="city-dropdown"  class="form-contro">
-                    <option value="">Select Report</option>
+                    <option value=""><?php echo lang('Select_Report'); ?></option>
                     <!-- Cities will be added here based on the selected country -->
                 </select>
 
@@ -682,8 +682,8 @@ function disableConditions(elm, q) {
 										}
 									?> -->
 									</span>
-									<a class="AddCondition btn btn-light-primary" href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><i class="la la-plus"></i>Add</a>
-									<a class="DelCondition btn btn-sm btn-light-danger " href="#" title="<?php echo lang("reports_sales_generator_delCondition")?>"><i class="la la-trash-o fs-3"></i>Delete</a>
+									<a class="AddCondition btn btn-light-primary" href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><i class="la la-plus"></i><?= lang('Add'); ?></a>
+									<a class="DelCondition btn btn-sm btn-light-danger " href="#" title="<?php echo lang("reports_sales_generator_delCondition")?>"><i class="la la-trash-o fs-3"></i><?= lang('Delete'); ?></a>
 								</td>
 							</tr>
 							
@@ -1053,7 +1053,7 @@ function disableConditions(elm, q) {
 
         var cityDropdown = $("#city-dropdown");
         cityDropdown.empty(); // Remove existing options
-        cityDropdown.append('<option value="">Select Report</option>');
+        cityDropdown.append('<option value=""><?php echo lang('Select_Report'); ?></option>');
         
         cities.forEach(function(city) {
             cityDropdown.append('<option value="' + city + '">' + city + '</option>');
@@ -1081,7 +1081,7 @@ function disableConditions(elm, q) {
     // Function to populate cities dropdown based on selected country
     function populateCitiesDropdown(country) {
     var citiesDropdown = document.getElementById('city-dropdown');
-    citiesDropdown.innerHTML = '<option value="">Select Report</option>'; // Clear existing options first
+    citiesDropdown.innerHTML = '<option value=""><?php echo lang('Select_Report'); ?></option>'; // Clear existing options first
     var cities = moduleToReports[country] || [];
     cities.forEach(function(city) {
         var option = new Option(city,city);
@@ -1149,7 +1149,7 @@ $(document).ready(function()
 			$(event.target).text('-');
 			$(".tablesorter a.expand").text('-');
 			
-			ids='<?php echo $ids; ?>';
+			ids='<?php echo isset($ids)?$ids:''; ?>';
 				show_report_details(ids);
 			
 		}
@@ -1186,7 +1186,7 @@ function print_report()
 
 function show_report_details(ids){
         if(ids){
-            var report_model = '<?php echo $report_model; ?>';
+            var report_model = '<?php echo isset($report_model)?$report_model:''; ?>';
 			var url = '<?php echo site_url('reports/get_report_details'); ?>';
             var ids = ids.split(',');
 			$.ajax({

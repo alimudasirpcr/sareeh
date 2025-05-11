@@ -2996,5 +2996,18 @@
     "please_wait_while_we_load_your_content": "Please wait while we load your content",
     "hold_on_a_moment": "Hold on a moment",
     "markup": "Markup",
-    "enter_markup_percent": "Enter markup percent"
+    "enter_markup_percent": "Enter markup percent",
+    "reports_sales_report_generator_results_found": "Reports sales report generator results found",
+    "items_purchased": "Items purchased",
+    "discount_reason": "Discount reason",
+    "return_reason": "Return reason",
+    "cogs": "Cogs",
+    "reports_report": "Reports report",
+    "reports_customer": "Reports customer",
+    "reports_all_open_layaways_and_estimates": "Reports all open layaways and estimates",
+    "reports_detailed_customers_report": "Reports detailed customers report",
+    "select_module": "Select module",
+    "select_report": "Select report",
+    "last_month": "Last month",
+    "this_month": "This month"
 }

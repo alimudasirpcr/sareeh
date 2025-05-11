@@ -80,8 +80,11 @@ class Reports extends Secure_area
 				}
 				$headersnew = array();
 				$cols = $output_data['preferences'] ? unserialize($output_data['preferences']) : array();
+			
+			
 				if(!empty($cols)) {
 					foreach($output_data['headers']['summary'] as $head) {
+					
 						if(!in_array($head['column_id'],$cols)) {
 							$head['view'] = 0;
 							$headersnew[] = $head;
@@ -879,7 +882,7 @@ class Reports extends Secure_area
 				$data['results'] = $this->load->view("reports/sales_generator_tabular_details", $reportdata, true);	
 			}
 		}	
-		
+	
 		if (!$this->input->get('export_excel'))
 		{
 			$this->load->view("reports/sales_generator",$data);

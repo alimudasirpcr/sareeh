@@ -5,7 +5,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Edit Tag</h3>
+                <h3 class="modal-title"> <?= lang('Edit_Tag') ?></h3>
 				<button type="button" id="closemodal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 <!--begin::Close-->
@@ -102,7 +102,7 @@
 							'class'=>'submit_button pull-right btn btn-primary pt-2')
 						);
 					?>
-                <button type="button" id="closemodalbutton" class="btn btn-light pt-2" data-bs-dismiss="modal">Close</button>
+                <button type="button" id="closemodalbutton" class="btn btn-light pt-2" data-bs-dismiss="modal"><?= lang('Close') ?></button>
                 <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
 
             </div>
