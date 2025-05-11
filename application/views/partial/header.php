@@ -130,7 +130,7 @@
     COMMON_SUCCESS = <?php echo json_encode(lang('success')); ?>;
     COMMON_ERROR = <?php echo json_encode(lang('error')); ?>;
 
-    bootbox.addLocale('ar', {
+    bootbox.addLocale('ar-ly', {
         OK: 'حسنا',
         CANCEL: 'إلغاء',
         CONFIRM: 'تأكيد'
