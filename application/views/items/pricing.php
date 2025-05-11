@@ -560,7 +560,7 @@
 							'id'=>'disable_from_price_rules',
 							'class'=>'delete-checkbox form-check-input',
 							'value'=>1,
-							'checked'=>$item_info->disable_from_price_rules ? 1 : 0,
+							'checked'=>isset($item_info->disable_from_price_rules) ? $item_info->disable_from_price_rules : 0,
 						));?>
                                 <label class="form-check-label" for="disable_from_price_rules">
                                     <?= lang('disable_from_price_rules');  ?></label>

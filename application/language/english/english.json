@@ -2992,5 +2992,9 @@
     "invoices_add_item": "Invoices add item",
     "add_items": "Add items",
     "requires_age_verification": "Requires age verification",
-    "items_category_successful_error": "Item category could not be added successfully"
+    "items_category_successful_error": "Item category could not be added successfully",
+    "please_wait_while_we_load_your_content": "Please wait while we load your content",
+    "hold_on_a_moment": "Hold on a moment",
+    "markup": "Markup",
+    "enter_markup_percent": "Enter markup percent"
 }

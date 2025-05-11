@@ -3018,5 +3018,8 @@
     "please_wait_while_we_load_your_content": "يرجى الانتظار أثناء تحميل المحتوى الخاص بك",
     "hold_on_a_moment": "انتظر لحظة، نحن على وشك الانتهاء",
     "requires_age_verification": "يتطلب التحقق من العمر",
-    "items_category_successful_error": "تعذرت إضافة فئة العنصر بنجاح"
+    "items_category_successful_error": "تعذرت إضافة فئة العنصر بنجاح",
+    "markup": "الهامش الربحي",
+    "enter_markup_percent": "أدخل نسبة الهامش الربحي",
+    "config_keyword_store_accounts": "Config keyword store accounts"
 }
