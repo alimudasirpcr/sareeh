@@ -167,7 +167,7 @@ class Item_attribute extends MY_Model
 		// $this->db->group_end();
 		// $this->db->where('deleted', 0);
 
-
+save_query();
 
 		$this->db->select('attributes.id as id, attributes.name as name   , ecommerce_attribute_id, attributes.item_id  ', FALSE);
 		$this->db->from('item_variations');
@@ -186,6 +186,7 @@ class Item_attribute extends MY_Model
 		$this->load->model('Item_attribute_value');
 		foreach($attrs_for_item as $attr_item)
 		{
+			echo $this->db->last_query(); exit();
 			$attr_id = $attr_item['id'];
 			$return[$attr_id]['name'] = $attr_item['name'];
 			$return[$attr_id]['ecommerce_attribute_id'] = $attr_item['ecommerce_attribute_id'];
