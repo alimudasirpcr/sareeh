@@ -60,6 +60,10 @@ if($export_excel == 1)
 	<div class="col-md-12">
 		<div class="card p reports-printable">
 			<div class="card-header rounded rounded-3 p-5">
+				
+				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
+				<small class="reports-range"><?php echo $subtitle ?></small>
+				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
 				<form id="config_columns" class="report-config hidden-print">
 				<div class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
 					<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
@@ -80,9 +84,7 @@ if($export_excel == 1)
 						</ul>
 				</div>
 				</form>
-				<?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?>
-				<small class="reports-range"><?php echo $subtitle ?></small>
-				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
+			
 				<button class="btn btn-primary text-white hidden-print print_button pull-right"> <?php echo lang('print'); ?> </button>	
 				<?php if($key) { ?>
 					<a href="<?php echo site_url("reports/delete_saved_report/".$key);?>" class="btn btn-primary text-white hidden-print delete_saved_report pull-right"> <?php echo lang('reports_unsave_report'); ?></a>	

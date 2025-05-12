@@ -89,7 +89,7 @@ label.form-check-label {
         <div class="card-body">
             <div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span>
                 <?php echo lang('config_update_billing');?></div>
-            <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_billing')) ?>">
+            <div class="form-group row" data-keyword="<?php echo H(lang('config_keyword_billing')) ?>">
                 <?php if ($cloud_customer_info['payment_provider'] == 'paypal') { ?>
 
                 <div class="row">
@@ -527,7 +527,7 @@ label.form-check-label {
             <div id="config_company_info" class="collapse show">
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('company_logo').':', 'company_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
 
@@ -535,14 +535,14 @@ label.form-check-label {
                                 data-icon="false">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('delete_logo').':', 'delete_logo',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_checkbox('delete_logo', '1', null,'id="delete_logo" class="form-check-input""');?>
                             <label for="delete_logo"><span></span></label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('company').':', 'company',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -553,7 +553,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('tax_id').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -564,7 +564,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('website').':', 'website',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -575,7 +575,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('terms_conditions').':', 'tax_id',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_textarea(array(
@@ -1430,7 +1430,7 @@ label.form-check-label {
 
                     <div class="col-md-12 more_taxes_container "
                         style="display: <?php echo $this->config->item('default_tax_3_rate') ? 'block' : 'none';?>">
-                        <div class="form-group">
+                        <div class="form-group row">
                             <?php echo form_label(lang('default_tax_rate_3').':', 'default_tax_3_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -1457,7 +1457,7 @@ label.form-check-label {
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <?php echo form_label(lang('default_tax_rate_4').':', 'default_tax_4_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -1484,7 +1484,7 @@ label.form-check-label {
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <?php echo form_label(lang('default_tax_rate_5').':', 'default_tax_5_rate',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                             <div class="col-sm-4 col-md-4 col-lg-5">
                                 <?php echo form_input(array(
@@ -1539,7 +1539,7 @@ label.form-check-label {
                 <div class="card-body border-top p-9">
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_currency_symbol').':', 'currency_symbol',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -1550,7 +1550,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_currency_code').':', 'currency_code',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -1563,7 +1563,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_currency_exchange_rates').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="table-responsive col-sm-9 col-md-9 col-lg-10">
                             <table id="currency_exchange_rates" class="table">
@@ -1631,7 +1631,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_currency_symbol_location').':', 'currency_symbol_location',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('currency_symbol_location', array(
@@ -1644,7 +1644,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_number_of_decimals').':', 'number_of_decimals',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('number_of_decimals', array(
@@ -1661,7 +1661,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_thousands_separator').':', 'thousands_separator',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -1673,7 +1673,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_decimal_point').':', 'decimal_point',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 input-field">
                             <?php echo form_input(array(
@@ -1685,7 +1685,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_currency_denoms').':', '',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="table-responsive col-sm-12 col-md-12 col-lg-12">
                             <table id="currency_denoms" class="table">
@@ -1749,7 +1749,7 @@ label.form-check-label {
                 <div class="card-body border-top p-9">
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_payment_types').':', 'additional_payment_types',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <a href="#" class="btn btn-primary payment_types"><?php echo lang('cash'); ?></a>
@@ -1866,7 +1866,7 @@ label.form-check-label {
 
 
 
-                    <div class="row>">
+                    <div class="row">
                         <div class="col-md-12">
                         </div>
 
@@ -1988,7 +1988,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_delivery_color_based_on').':', 'delivery_color_based_on',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php
@@ -2213,7 +2213,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_default_employee_for_deliveries').':', 'default_employee_for_deliveries',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php 
@@ -2251,7 +2251,7 @@ label.form-check-label {
             <div id="common_return_info" class="collapse show">
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
-                    <div class="form-group" data-keyword="<?php echo H(lang('return_info')) ?>">
+                    <div class="form-group row" data-keyword="<?php echo H(lang('return_info')) ?>">
                         <?php echo form_label(lang('config_return_reasons').':', 'return_reasons',array('class'=>'col-sm-4 control-label')); ?>
                         <div class="col-sm-8">
                             <?php echo form_input(array(
@@ -2339,7 +2339,7 @@ label.form-check-label {
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_prefix').':', 'sale_prefix',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -2351,7 +2351,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group" d>
+                    <div class="form-group row" d>
                         <?php echo form_label(lang('config_import_all_past_orders_for_woo_commerce').':', 'import_all_past_orders_for_woo_commerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_checkbox(array(
@@ -2365,7 +2365,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_woo_enable_html_desc').':', 'woo_enable_html_desc',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_checkbox(array(
@@ -2378,7 +2378,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_do_not_treat_service_items_as_virtual').':', 'do_not_treat_service_items_as_virtual',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_checkbox(array(
@@ -2390,7 +2390,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_id_to_show_on_sale_interface').':', 'id_to_show_on_sale_interface',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label  required')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_dropdown('id_to_show_on_sale_interface', array(
@@ -2403,7 +2403,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -2599,7 +2599,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-2">
                         </div>
                         <div class="col-md-12">
@@ -2673,7 +2673,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_damaged_reasons').':', 'damaged_reasons',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -2686,7 +2686,7 @@ label.form-check-label {
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
                         <div class="col-md-12">
 
@@ -2836,7 +2836,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_number_of_recent_sales').':', 'number_of_recent_sales',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
 
@@ -2854,7 +2854,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -3069,7 +3069,7 @@ label.form-check-label {
 
                     <!-- /////////////			 -->
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -3493,7 +3493,7 @@ label.form-check-label {
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
@@ -3618,7 +3618,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
 
                         <div class="col-md-12">
@@ -3682,7 +3682,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
 
                         <div class="col-md-12">
@@ -3738,7 +3738,7 @@ label.form-check-label {
 
 
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5 ">
@@ -3885,7 +3885,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5 ">
@@ -3989,7 +3989,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-4">
@@ -4018,7 +4018,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -4105,7 +4105,7 @@ label.form-check-label {
 
                     <!-- ////// -->
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-4">
@@ -4141,7 +4141,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -4292,7 +4292,7 @@ label.form-check-label {
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-50">
@@ -4393,7 +4393,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-50">
@@ -4528,7 +4528,7 @@ label.form-check-label {
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -4687,7 +4687,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -4871,7 +4871,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5016,7 +5016,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5121,7 +5121,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5225,7 +5225,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5330,7 +5330,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5430,7 +5430,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5532,7 +5532,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5594,7 +5594,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5630,7 +5630,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5678,7 +5678,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5701,7 +5701,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5750,7 +5750,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -5810,7 +5810,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
 
                         <div class="col-md-12">
@@ -5872,7 +5872,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
 
                         <div class="col-md-12">
@@ -6117,7 +6117,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -6143,7 +6143,7 @@ label.form-check-label {
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -6259,7 +6259,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -6321,7 +6321,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -6426,7 +6426,7 @@ label.form-check-label {
 
                     <div id="loyalty_setup">
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -6468,7 +6468,7 @@ label.form-check-label {
 
 
                         <div id="loyalty_setup_simple" style="display: none;">
-                            <div class="form-group">
+                            <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="py-2 mb-1">
                                         <div class="rounded border p-5">
@@ -6537,7 +6537,7 @@ label.form-check-label {
 								}
 								?>
 
-                            <div class="form-group">
+                            <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="py-2 mb-1">
                                         <div class="rounded border p-5">
@@ -6597,7 +6597,7 @@ label.form-check-label {
 
 
 
-                            <div class="form-group">
+                            <div class="form-group row">
                                 <div class="col-md-12">
                                     <div class="py-2 mb-1">
                                         <div class="rounded border p-5">
@@ -6785,7 +6785,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -6832,7 +6832,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
@@ -6915,7 +6915,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7012,7 +7012,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-6">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7103,7 +7103,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7192,7 +7192,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7288,7 +7288,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7380,7 +7380,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7548,7 +7548,7 @@ label.form-check-label {
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7704,7 +7704,7 @@ label.form-check-label {
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7787,7 +7787,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7883,7 +7883,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -7973,7 +7973,7 @@ label.form-check-label {
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
                         <?php
                                 foreach ($all_modules->result() as $module) {
@@ -8026,7 +8026,7 @@ label.form-check-label {
 
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     <div class="col-md-6">
                         <div class="py-2 mb-1">
                             <div class="rounded border p-5">
@@ -8081,14 +8081,14 @@ label.form-check-label {
 
 
                     <?php if(is_on_demo_host()) { ?>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <span class="text-danger"><?php echo lang('config_cannot_change_language'); ?></span>
                         </div>
                     </div>
                     <?php } ?>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -8168,7 +8168,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -8242,7 +8242,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -8318,7 +8318,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -8461,7 +8461,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -8591,7 +8591,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -8736,7 +8736,7 @@ label.form-check-label {
 
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
@@ -8870,7 +8870,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -9033,7 +9033,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -9167,7 +9167,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -9198,7 +9198,7 @@ label.form-check-label {
                     <div class="email_gmail_api">
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -9228,7 +9228,7 @@ label.form-check-label {
                     <div class="email_basic">
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -9288,7 +9288,7 @@ label.form-check-label {
                 </div>
                 <div class="email_advanced">
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -9368,7 +9368,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -9493,7 +9493,7 @@ label.form-check-label {
 
 
                 </div> <!-- end advanced email -->
-                <div class="form-group" data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
+                <div class="form-group row" data-keyword="<?php echo H(lang('config_keyword_email')) ?>">
                     <div class="col-sm-12 col-md-12 col-lg-12">
                         <span class="pull-right">
                             <button id="test_email" type="button" class="btn btn-lg btn-primary"><span
@@ -9528,7 +9528,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -9561,7 +9561,7 @@ label.form-check-label {
 
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -9648,7 +9648,7 @@ label.form-check-label {
 
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -9731,7 +9731,7 @@ label.form-check-label {
                         </div>
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -9786,7 +9786,7 @@ label.form-check-label {
                     <div id="oidc_config" style="display: none;">
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -9871,7 +9871,7 @@ label.form-check-label {
 
 
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="py-2 mb-1">
                                     <div class="rounded border p-5">
@@ -10062,7 +10062,7 @@ label.form-check-label {
                         <br />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_qb_sync_operations').':', 'qb_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 qb_sync_operations">
                             <ul id="check-list-box" data-name="qb_sync_operations[]"
@@ -10075,7 +10075,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php
 												echo form_label(lang('config_qb_sync_logs').':', 'qb_sync_logs',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
@@ -10186,7 +10186,7 @@ label.form-check-label {
                 <div class="card-body border-top p-9">
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -10295,7 +10295,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -10388,7 +10388,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php						
 							foreach($store_locations as $r_location_id=>$r_location_name)
 							{
@@ -10432,7 +10432,7 @@ label.form-check-label {
 
 
                     <?php if(count($online_price_tiers) > 1) { ?>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php
 									echo form_label(lang('config_online_price_tier').':', 'online_price_tier',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
@@ -10444,7 +10444,7 @@ label.form-check-label {
                     <?php } ?>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_ecommerce_cron_sync_operations').':', 'ecommerce_cron_sync_operations',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10 ecommerce_cron_sync_operations">
                             <ul id="check-list-box" data-name="ecommerce_cron_sync_operations[]"
@@ -10496,7 +10496,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php
 									echo form_label(lang('config_ecom_sync_logs').':', 'ecom_sync_logs',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
@@ -10526,7 +10526,7 @@ label.form-check-label {
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-8">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -10572,7 +10572,7 @@ label.form-check-label {
 
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php
 									echo form_label(lang('config_reset_ecommerce').':', 'reset_ecommerce',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
@@ -10619,7 +10619,7 @@ label.form-check-label {
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
 
-                    <div class="form-group">
+                    <div class="form-group row">
 
 
                         <?php if (!is_on_phppos_host()) { ?>
@@ -10630,7 +10630,7 @@ label.form-check-label {
                         <h3 style="text-align: center;">
                             <?php echo 'E-mail <a href="mailto:support@phpsalesmanager.com">support@phpsalesmanager.com</a> to obtain these values'?>
                         </h3>
-                        <div class="form-group">
+                        <div class="form-group row">
                             <?php echo form_label(lang('shopify_public_key').':', 'shopify_public',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10">
                                 <?php echo form_input(array(
@@ -10641,7 +10641,7 @@ label.form-check-label {
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group row">
                             <?php echo form_label(lang('shopify_private_key').':', 'shopify_private',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                             <div class="col-sm-9 col-md-9 col-lg-10">
                                 <?php echo form_input(array(
@@ -10793,7 +10793,7 @@ label.form-check-label {
             <div id="config_woocommerce_settings_info" class="collapse show">
                 <!--begin::Card body-->
                 <div class="card-body border-top p-9">
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_woo_version').':', 'woo_version',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php
@@ -10802,7 +10802,7 @@ label.form-check-label {
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <?php echo form_label(lang('config_woo_api_url').':', 'woo_api_url',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
                         <div class="col-sm-9 col-md-9 col-lg-10">
                             <?php echo form_input(array(
@@ -10937,7 +10937,7 @@ label.form-check-label {
                 <div class="card-body border-top p-9">
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -11003,7 +11003,7 @@ label.form-check-label {
 
                                         </div>
 
-                                        <div class="form-group"
+                                        <div class="form-group row"
                                             data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
                                             <?php echo form_label(lang('config_new_item_web_hook').':', 'new_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
                                             <div class="col-sm-8">
@@ -11016,7 +11016,7 @@ label.form-check-label {
                                             </div>
                                         </div>
 
-                                        <div class="form-group"
+                                        <div class="form-group row"
                                             data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
                                             <?php echo form_label(lang('config_new_work_order_web_hook').':', 'new_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
                                             <div class="col-sm-8">
@@ -11056,7 +11056,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -11090,7 +11090,7 @@ label.form-check-label {
 
                                         </div>
 
-                                        <div class="form-group"
+                                        <div class="form-group row"
                                             data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
                                             <?php echo form_label(lang('config_edit_item_web_hook').':', 'edit_item_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
                                             <div class="col-sm-8 col-lg-10">
@@ -11103,7 +11103,7 @@ label.form-check-label {
                                             </div>
                                         </div>
 
-                                        <div class="form-group"
+                                        <div class="form-group row"
                                             data-keyword="<?php echo H(lang('config_keyword_store_accounts')) ?>">
                                             <?php echo form_label(lang('config_edit_work_order_web_hook').':', 'edit_work_order_web_hook',array('class'=>'col-sm-4 control-label ')); ?>
                                             <div class="col-sm-8">
@@ -11152,7 +11152,7 @@ label.form-check-label {
                 <div class="card-body border-top p-9">
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -11322,7 +11322,7 @@ label.form-check-label {
                     </div>
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -11509,7 +11509,7 @@ label.form-check-label {
                 <div class="card-body border-top p-9">
 
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
