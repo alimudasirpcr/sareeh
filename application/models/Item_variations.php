@@ -563,6 +563,8 @@ class Item_variations extends MY_Model
 		$sql_selects = rtrim($sql_selects,',');
 		
 		$query = "SELECT $sql_selects FROM $attribute_values as t0 $sql_joins $sql_wheres";
+
+		echo $query; exit();
 		
 		$variations = $this->db->query($query)->result_array();
 
