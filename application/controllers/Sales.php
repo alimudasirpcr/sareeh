@@ -8158,7 +8158,7 @@ class Sales extends Secure_area
 		save_query();
 
 		$variation_result = $this->Item_variations->get_variations($item_id);
-	
+		
 		$tax = 0;
 		$store_config_tax_class = $this->config->item('tax_class_id');
 		if ($store_config_tax_class)
@@ -8479,6 +8479,9 @@ class Sales extends Secure_area
 					}
 
 				$variatons = 	$this->item_variations($item->item_id , true);
+				if($item->item_id==1897){
+					dd($variatons);
+				}
 
 				$this->load->model('Item_attribute');
 				 $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item->item_id);
