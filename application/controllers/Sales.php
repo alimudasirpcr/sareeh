@@ -8158,7 +8158,7 @@ class Sales extends Secure_area
 		save_query();
 
 		$variation_result = $this->Item_variations->get_variations($item_id);
-		echo $this->db->last_query(); exit();
+	
 		$tax = 0;
 		$store_config_tax_class = $this->config->item('tax_class_id');
 		if ($store_config_tax_class)

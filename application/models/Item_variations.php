@@ -147,6 +147,7 @@ class Item_variations extends MY_Model
 		{
 			foreach($this->db->get()->result_array() as $result)
 			{
+				echo $this->db->last_query(); exit();
 				$return[$result['item_id']][$result['id']]['name'] = $result['name'];
 				$return[$result['item_id']][$result['id']]['item_number'] = $result['item_number'];
 				$return[$result['item_id']][$result['id']]['is_ecommerce'] = $result['is_ecommerce'];
