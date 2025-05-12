@@ -654,7 +654,7 @@ class Detailed_work_order extends Report
 				$this->db->offset($this->params['offset']);
 			}
 			$result = $this->db->get()->result_array(); 
-			
+			echo $this->db->last_query(); exit();
 			if($result){
 				$prefix = $this->db->dbprefix;
 				$total_items_having_nowarranty =0 ;
