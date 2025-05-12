@@ -7916,7 +7916,9 @@ class Sales extends Secure_area
 					}
 
 				$variatons = 	$this->item_variations($item->item_id , true);
-
+				if( (int) $item->item_id ==1897  ){
+					dd($variatons);
+				}
 				$this->load->model('Item_attribute');
 				 $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item->item_id);
 				//  dd($item_attributes_available);
@@ -8479,9 +8481,7 @@ class Sales extends Secure_area
 					}
 
 				$variatons = 	$this->item_variations($item->item_id , true);
-				if($item->item_id==1897){
-					dd($variatons);
-				}
+			
 
 				$this->load->model('Item_attribute');
 				 $item_attributes_available = $this->Item_attribute->get_attributes_for_item_with_attribute_values_updated($item->item_id);
