@@ -113,37 +113,34 @@ abstract class Report extends MY_Model
 	public function sale_time_where( $location_ids = array() ,   $skip_suspended = false)
 	{
 		$CI =& get_instance();
-		echo "yes"j;
-		dd($location_ids );
-		
-		if(empty( $location_ids)){
-			if (!$CI->input->get('location_ids'))
-				{
-					static $location_ids;
-				}
-				else
-				{
-					$location_ids  = NULL;
-				}
-				
-				
-				if (isset($this->params['override_location_id']))
-				{
-					$location_ids = array($this->params['override_location_id']);
-					$location_ids = implode(',',$location_ids);
-					
-				}
-				elseif (!$location_ids)
-				{
-					$location_ids = isset($this->params['override_location_id']) ? array($this->params['override_location_id']) : Report::get_selected_location_ids();
-					$location_ids = implode(',',$location_ids);
-				}
-		}else{
-			if(is_array($location_ids)){
-				$location_ids = implode(',',$location_ids);
-			}
-			
+
+	
+
+
+		$input_location_ids = $CI->input->get('location_ids');
+
+		if ($input_location_ids) {
+			$location_ids = $input_location_ids;
 		}
+	
+		// 2. Use override if set
+		if (isset($this->params['override_location_id'])) {
+			$location_ids = [$this->params['override_location_id']];
+		}
+	
+		// 3. Fallback to selected locations if still empty
+		if (empty($location_ids)) {
+			$location_ids = Report::get_selected_location_ids();
+		}
+	
+		// 4. Ensure it's a comma-separated string
+		if (is_array($location_ids)) {
+			$location_ids = implode(',', $location_ids);
+		}
+
+
+		
+	
 		
 		
 		
