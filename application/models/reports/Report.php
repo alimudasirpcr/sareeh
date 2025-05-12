@@ -113,7 +113,7 @@ abstract class Report extends MY_Model
 	public function sale_time_where( $location_ids = array() ,   $skip_suspended = false)
 	{
 		$CI =& get_instance();
-		
+		echo "yes";
 		dd($location_ids );
 		
 		if(empty( $location_ids)){
