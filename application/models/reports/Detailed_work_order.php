@@ -639,7 +639,7 @@ class Detailed_work_order extends Report
 			$this->db->where('sales.total_quantity_purchased < 0');
 		}
 		
-		$this->sale_time_where(true);
+		$this->sale_time_where();
 		$this->db->where('sales.deleted', 0);
 		$this->db->where('sales.is_work_order' , 1);
 		$this->db->order_by('sale_time', ($this->config->item('report_sort_order')) ? $this->config->item('report_sort_order') : 'asc');
@@ -654,7 +654,7 @@ class Detailed_work_order extends Report
 				$this->db->offset($this->params['offset']);
 			}
 			$result = $this->db->get()->result_array(); 
-			echo $this->db->last_query(); exit();
+			
 			if($result){
 				$prefix = $this->db->dbprefix;
 				$total_items_having_nowarranty =0 ;
