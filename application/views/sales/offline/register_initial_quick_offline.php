@@ -1822,7 +1822,93 @@ $this->load->view("partial/offline_header"); ?>
             /* Add more styling as needed */
         }
         </style>
+<script id="selected-customer-store-account-template" type="text/x-handlebars-template">
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr class="register-items-header">
+                    <th class="sp_sale_id"><?php echo lang('sale_id'); ?></th>
+                    <th class="sp_date"><?php echo lang('date'); ?></th>
+                    <th class="sp_charge"><?php echo lang('total_charge_to_account'); ?></th>
+                    <th class="sp_comment"><?php echo lang('comment'); ?></th>
+                    <th class="sp_pay"><?php echo lang('pay'); ?></th>
+                </tr>
+            </thead>
+            <tbody id="unpaid_sales_data">
+                {{#if customer.unpaid_store_account_sale_ids.length}}
+                    {{#each customer.unpaid_store_account_sale_ids}}
+                        <tr>
+                            <td><a href="sales/receipt/{{sale_id}}" target="_blank">
+      <?=  ($this->config->item('sale_prefix') ? $this->config->item('sale_prefix') : 'POS') ?> {{sale_id}}
+    </a></td>
+                            <td>{{sale_time}}</td>
+                            <td>{{payment_amount}}</td>
+                            <td>{{comment}}</td>
+                            <td>
+                            <button  data-id="{{sale_id}}"
+                                class="btn btn-primary pay_store_account_sale" onclick="toggleSalePaid(   '{{sale_id}}' , '{{payment_amount}}' )">
+                                {{#if paid}}
+                                    <?php echo lang('remove_payment'); ?>
+                                {{else}}
+                                    <?php echo lang('pay'); ?>
+                                {{/if}}
+                                </button>
+                            </td>
+                        </tr>
+                    {{/each}}
+                {{else}}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted"><?php echo lang('no_unpaid_sales_found'); ?></td>
+                    </tr>
+                {{/if}}
+            </tbody>
+        </table>
 
+        <div class="d-flex gap-1 right-bottom">
+       
+
+                        <div class="input-group-text register-mode sale-mode dropup h-43px border-radius-left">
+
+
+                                <a tabindex="-1" href="#"
+                                class="none active text-light  text-hover-primary payment_option_selected_store"
+                                title="Sales Sale" id="select-mode-3" data-target="#" data-toggle="dropdown"
+                                aria-haspopup="true" role="button" aria-expanded="false"><i
+                                    class="fa fa-money-bill"></i>
+                                <?= lang('Cash') ?> </a>
+
+
+
+                                <ul class="dropdown-menu sales-dropdown payment_dropdown">
+                                    <?php foreach ($payment_options as $key => $value) {
+                                    
+                                                $active_payment =  ($default_payment_type == $value) ? "selected" : "";
+                                            ?>
+                                                <li> <a tabindex="-1" href="#"
+                                                        class="btn btn-pay select-payment-store text-left pt-2 <?php echo $active_payment; ?>"
+                                                        data-payment="<?php echo H($value); ?>"> <i
+                                                            class="fa fa-money-bill"></i>
+                                                        <?php echo H($value); ?>
+                                                    </a> </li>
+                                                <?php } ?>
+
+                            
+                                </ul>
+                        </div>
+                        <input type="hidden" name="payment_types_store" id="payment_types_store" value="<?= lang('Cash') ?>">
+                            <span class="input-group-text h-43px border-radius-right" id="finish_sale_">
+                                <a href="#" class="text-white {{#unless customer.paid_store_account_sale_ids.length}}disabled pointer-events-none opacity-50{{/unless}}"  id="finish_sale_button_store"   >
+                                    <?= lang('Complete_Sale'); ?>
+                                </a>
+                            </span>
+            <button type="button" class="btn btn-danger"  onclick="cancelStoreAccountPayment()">Cancel</button>
+        </div>
+
+
+    </div>
+
+    
+</script>
 
 <script id="selected-customer-form-template" type="text/x-handlebars-template">
 
@@ -2021,9 +2107,13 @@ $this->load->view("partial/offline_header"); ?>
                                                     class="menu-link px-3" title="Redeem Series"><i
                                                         class="ion-ios-compose-outline"></i><?= lang('Redeem_Series'); ?></a>
                                             </div>
+
+                                          
+
                                             <div class="menu-item px-3">
-                                                <a href="<?= base_url(); ?>customers/pay_now/{{customer.person_id}}" id="pay_now"
-                                                    class="menu-link px-3" title="Pay Now"><i
+                                                <a href="#" id="pay_now"
+                                                data-target="#kt_drawer_general"  data-target-title="Pay Now"
+                                                    data-target-width="full" class="menu-link px-3" title="Pay Now"><i
                                                         class="ion-ios-compose-outline"></i> <?= lang('Pay_Now'); ?></a>
                                             </div>
 
@@ -2834,15 +2924,15 @@ $this->load->view("partial/offline_header"); ?>
                                     <ul class="dropdown-menu sales-dropdown payment_dropdown">
                                         <?php foreach ($payment_options as $key => $value) {
 										
-										$active_payment =  ($default_payment_type == $value) ? "selected" : "";
-									?>
-                                        <li> <a tabindex="-1" href="#"
-                                                class="btn btn-pay select-payment text-left pt-2 <?php echo $active_payment; ?>"
-                                                data-payment="<?php echo H($value); ?>"> <i
-                                                    class="fa fa-money-bill"></i>
-                                                <?php echo H($value); ?>
-                                            </a> </li>
-                                        <?php } ?>
+                                                    $active_payment =  ($default_payment_type == $value) ? "selected" : "";
+                                                ?>
+                                                    <li> <a tabindex="-1" href="#"
+                                                            class="btn btn-pay select-payment text-left pt-2 <?php echo $active_payment; ?>"
+                                                            data-payment="<?php echo H($value); ?>"> <i
+                                                                class="fa fa-money-bill"></i>
+                                                            <?php echo H($value); ?>
+                                                        </a> </li>
+                                                    <?php } ?>
 
                                        <?php  if ($has_coupons_for_today) { ?>
                                         <li> <a tabindex="-1" href="#"

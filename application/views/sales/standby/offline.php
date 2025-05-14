@@ -1757,18 +1757,18 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                            <div class="menu-item px-3">
+                                            <!-- <div class="menu-item px-3">
                                                 <a href="<?= base_url(); ?>customers/redeem_series/{{customer.person_id}}" id="redeem_series"
                                                     class="menu-link px-3" title="Redeem Series"><i
                                                         class="ion-ios-compose-outline"></i> <?= lang('Redeem_Series'); ?></a>
-                                            </div>
-                                            <div class="menu-item px-3">
+                                            </div> -->
+                                            <!-- <div class="menu-item px-3">
                                                 <a href="<?= base_url(); ?>customers/pay_now/{{customer.person_id}}" id="pay_now"
                                                     class="menu-link px-3" title="Pay Now"><i
                                                         class="ion-ios-compose-outline"></i> <?= lang('Pay_Now'); ?></a>
-                                            </div>
+                                            </div> -->
 
-                                            <div class="menu-item px-3">
+                                            <!-- <div class="menu-item px-3">
 
 
 
@@ -1776,7 +1776,7 @@ $this->load->view("partial/offline_header"); ?>
                                                     data-target="#kt_drawer_general" data-target-title="New Customer"
                                                     data-target-width="xl" class="menu-link px-3" title="<?= lang('Update_Customer'); ?>"><i
                                                         class="ion-ios-compose-outline"></i> <?= lang('Update_Customer'); ?></a>
-                                            </div>
+                                            </div> -->
 
                                             <!--end::Menu item-->
 

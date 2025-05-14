@@ -939,7 +939,7 @@ class Sale extends MY_Model
 			
 	function save($cart , $async = TRUE , $is_order=0  , $delivery_type='Pickup' , $allow_empty_items = false)
 	{	
-		// $this->db->db_debug = TRUE;
+		$this->db->db_debug = TRUE;
 		$this->db->save_queries = TRUE;
 		$this->load->model('Sale_types');
 		$series_to_add = array();
@@ -1264,9 +1264,12 @@ class Sale extends MY_Model
 		}
 		else
 		{
-			$this->db->insert('sales',$sales_data);
 			
+			$this->db->insert('sales',$sales_data);
+		
 			$sale_id = $this->db->insert_id();
+
+			
 		}
 		
 		//store_accounts_paid_sales
@@ -1434,7 +1437,6 @@ class Sale extends MY_Model
 		}
 	 	}//End loyalty
  
-		
 		//Only update store account payments if we are NOT an estimate (suspended = 2)
 		if (((!$cart->is_ecommerce && $suspended < 2) || ($this->config->item('import_ecommerce_orders_suspended') && $suspended < 2)))
 		{
@@ -1974,8 +1976,11 @@ class Sale extends MY_Model
 						//Update stock quantity IF not a service 
 						if (!$cur_item_info->is_service)
 						{
+								
 							$cur_item_variation_location_info->quantity = $cur_item_variation_location_info->quantity !== '' ? $cur_item_variation_location_info->quantity : 0;
 							$this->Item_variation_location->save_quantity($cur_item_variation_location_info->quantity - ($item->quantity*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1)) - $item->damaged_qty, $item->variation_id,$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
+						
+	
 						}
 				
 						//Re-init $cur_item_variation_location_info after updating quantity
@@ -2029,6 +2034,7 @@ class Sale extends MY_Model
 							$email=true;
 					
 						}	
+						
 						//checks if the quantity hits reorder level 
 						else if($stock_recorder_check && ($cur_item_variation_location_info->quantity <= $reorder_level))
 						{
@@ -2124,6 +2130,7 @@ class Sale extends MY_Model
 							{
 								$this->Inventory->insert($inv_data);
 							}
+							
 						}
 					}
 					else
@@ -2143,6 +2150,7 @@ class Sale extends MY_Model
 						//Update stock quantity IF not a service 
 						if (!$cur_item_info->is_service)
 						{
+						
 							$cur_item_location_info->quantity = $cur_item_location_info->quantity !== '' ? $cur_item_location_info->quantity : 0;
 							$this->Item_location->save_quantity($cur_item_location_info->quantity - ($item->quantity*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1)) - ($item->damaged_qty*($item->quantity_unit_quantity !== NULL ? $item->quantity_unit_quantity : 1)), $item->item_id,$cart->location_id ? $cart->location_id : $this->Employee->get_logged_in_employee_current_location_id());
 						}
@@ -2953,6 +2961,7 @@ class Sale extends MY_Model
 		
 		if ($this->db->trans_status() === FALSE)
 		{
+			dd($this->db->error());
 			$_SESSION['do_async_inventory_updates'] = FALSE; 
 			return -1;
 		}

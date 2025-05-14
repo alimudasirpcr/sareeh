@@ -66,6 +66,7 @@ class Item_location extends MY_Model
 		{
 			$location_id= $this->Employee->get_logged_in_employee_current_location_id();
 		}
+
 		
 		//Save to tick last modifed for sync
 		$this->load->model('Item');

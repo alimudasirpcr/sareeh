@@ -37,6 +37,235 @@ const current_logged_in_employee  = parseInt(<?php echo $this->Employee->get_log
 function roundToNearest05(amount) {
     return Math.round(amount * 2) / 2;
 }
+
+
+function cancelStoreAccountPayment(){
+    const confirmMsg = <?php echo json_encode(lang('You_want_cancel_the_payment')); ?>;
+    bootbox.confirm(confirmMsg, function(result) {
+            if (result) {
+                close_all_drawers();
+                cart.customer.paid_store_account_sale_ids = [];
+
+                let unpaidSales = cart.customer.unpaid_store_account_sale_ids || [];
+
+                // Update the sale's paid status
+                unpaidSales = unpaidSales.map(sale => {
+
+                    sale.paid = 0;
+                  
+                    return sale;
+
+                });
+
+                cart.customer.unpaid_store_account_sale_ids = unpaidSales;
+                cart.items = [];
+                cart['payments'] = [];
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderUi();
+            }
+    });
+
+}
+
+async function handleFinishSaleStore(e = null) {
+    if (e && typeof e.preventDefault === 'function') {
+        e.preventDefault();
+    }
+
+
+    
+
+
+    const proceed = async () => {
+    
+       
+        
+        if (checkForEmptyItems()) {
+            show_feedback('error', "<?= lang('cant_process_as_cart_is_empty'); ?>", "<?php echo lang('error') ?>");
+            return false;
+        }
+
+        // Reset cart
+        const sale = JSON.parse(localStorage.getItem('cart') || "{}");
+        const check_for_custom = sale.custom_fields || {};
+
+       
+
+        $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
+            offline_sales: JSON.stringify([sale]),
+        }, function(response) {
+            if (response.success) {
+             
+                let firstSaleId = response.sale_ids[0];
+
+                displayReceipt(firstSaleId);
+                cart = {
+                    items: [],
+                    payments: [],
+                    customer: {},
+                    extra: {},
+                    custom_fields: {},
+                    taxes: []
+                };
+
+                localStorage.removeItem("cart");
+
+                $('#delete_sale_button').removeClass('d-flex');
+                $('#delete_sale_button').attr('style', 'display: none !important');
+                $('.coupon_codes').tokenfield('setTokens', []);
+                renderUi();
+
+                
+            }
+            close_all_drawers();
+        }, 'json');
+
+        current_edit_index = null;
+        renderUi();
+    };
+
+    // Only show confirmation if called from user interaction
+    if (e) {
+        const confirmMsg = <?php echo json_encode(lang('sales_confirm_finish_sale')); ?>;
+        bootbox.confirm(confirmMsg, function(result) {
+            if (result) {
+                proceed();
+            }
+        });
+    } else {
+        // No confirm needed, proceed immediately
+        await proceed();
+    }
+}
+
+
+
+
+
+function selectPaymentStoreAccount(e) {
+    e.preventDefault();
+  $('#payment_types_store').val($(this).data('payment'));
+  cart.payments = cart.payments || [];
+
+  // Option 1: If only one payment exists and you want to update it
+  if (cart.payments.length === 1) {
+    cart.payments[0].type = $(this).data('payment');
+  }
+  $('.select-payment-store').removeClass('active');
+  $(this).addClass('active');
+  $('.payment_option_selected_store').html('<i class="fa fa-money-bill"></i> ' + $(this).data('payment'));
+  localStorage.setItem('cart', JSON.stringify(cart));
+    
+    renderUi();
+
+}
+function addOrUpdateItemByName(itemData) {
+ 
+
+  const existingItemIndex = cart.items.findIndex(item => item.name === itemData.name);
+
+  if (existingItemIndex !== -1) {
+    // ✅ Item exists — update price
+    cart.items[existingItemIndex].price = itemData.price;
+  } else {
+    // ➕ Item doesn't exist — add it
+    cart.items.push(itemData);
+  }
+
+}
+
+
+function processToggleSale(saleId , updatedAmount){
+
+
+    let customer = cart.customer || {};
+    let unpaidSales = customer.unpaid_store_account_sale_ids || [];
+
+    // Update the sale's paid status
+    unpaidSales = unpaidSales.map(sale => {
+        if (sale.sale_id == saleId) {
+        sale.paid = sale.paid && sale.paid == 1 ? 0 : 1;
+        } else if (typeof sale.paid === 'undefined') {
+        sale.paid = 0;
+        }
+        return sale;
+    });
+
+    // Filter paid sales and calculate total
+    const paidSales = unpaidSales.filter(sale => sale.paid == 1);
+
+
+    // Store only paid sale IDs
+    const paidSaleIds = paidSales.map(sale => ({
+        sale_id: sale.sale_id,
+        amount: parseFloat(sale.sale_id == saleId ? updatedAmount : sale.payment_amount || 0)
+    }));
+const totalPaidAmount = paidSaleIds.reduce((sum, sale) => sum + sale.amount, 0);
+    // Update customer and cart
+    customer.unpaid_store_account_sale_ids = unpaidSales;
+    customer.paid_store_account_sale_ids = paidSaleIds;
+    cart.customer = customer;
+    cart.items = [];
+    cart['payments'] = [];
+    // Update or add item in cart
+    if(totalPaidAmount > 0){
+            addOrUpdateItemByName({
+            all_data: {},
+            name: '<?= lang('store_account_payment') ?>',
+            description: '<?= lang('store_account_payment') ?>',
+            item_id:  customer.store_account_payment_item_id,
+            quantity: 1,
+            price: totalPaidAmount.toFixed(3),
+            orig_price: 0,
+            cost_price: 0,
+            discount_percent: 0,
+            variations: {},
+            modifiers: {},
+            taxes: [{id: 1, item_id: 1, name: "zero", percent: "0", cumulative: 0}],
+            tax_included: 0,
+            is_fee: false
+        });
+
+    }
+    cart['payments'].push({
+                    amount: totalPaidAmount.toFixed(3),
+                    type: $('#payment_types_store').val()
+                });
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    // Refresh UI
+    $('#kt_drawer_general_body_full').html(selected_customer_store_account_template(cart));
+    $('.select-payment-store').on('click', selectPaymentStoreAccount);
+    $('#finish_sale_button_store').on('click', handleFinishSaleStore);
+    renderUi();
+}
+
+function toggleSalePaid(  saleId , full_amount) {
+   
+                let customer = cart.customer || {};
+                let unpaidSales = customer.unpaid_store_account_sale_ids || [];
+                const sale = unpaidSales.find(s => s.sale_id == saleId);
+                const isCurrentlyPaid = sale && sale.paid == 1;
+                if (isCurrentlyPaid) {
+                    processToggleSale(saleId, sale.payment_amount);
+                } else {
+                            bootbox.prompt({
+                                title: <?php echo json_encode(lang('please_enter_payment_amount')); ?>,
+                                inputType: 'text',
+                                value: full_amount,
+                                callback: function(amount) {
+                                    if (amount) {
+                                        processToggleSale(saleId , amount);
+                                    }
+                                }
+                            });
+
+                        }
+
+  
+}
+
+
 function getSalePrice(params) {
 
     let itemInfo = params.all_data;
@@ -887,6 +1116,7 @@ function close_all_drawers(){
 		$('#kt_drawer_gen_md').removeClass('drawer-on');
 		$('#kt_drawer_gen_lg').removeClass('drawer-on');
 		$('#kt_drawer_gen_xl').removeClass('drawer-on');
+        $('#kt_drawer_gen_full').removeClass('drawer-on');
 		$('#operationsbox_modal').removeClass('drawer-on');
 		$('#discountbox_modal').removeClass('drawer-on');
         $('#kt_drawer_example_basic_save_as').removeClass('drawer-on');
@@ -1435,6 +1665,7 @@ var list_item_template = Handlebars.compile(document.getElementById("list-item-t
 var list_category_template = Handlebars.compile(document.getElementById("list-category-template").innerHTML);
 var list_hold_cart_template = Handlebars.compile(document.getElementById("list-hold-cart-template").innerHTML);
 var selected_customer_template = Handlebars.compile(document.getElementById("selected-customer-form-template").innerHTML);
+var selected_customer_store_account_template = Handlebars.compile(document.getElementById("selected-customer-store-account-template").innerHTML);
 //data structures for cart
 
 var items_list = [];
@@ -1817,6 +2048,9 @@ $("#customer").autocomplete({
         cart['customer']['disable_loyalty'] = (ui.item.disable_loyalty) ? ui.item.disable_loyalty : 0;
         cart['customer']['is_over_credit_limit'] = (ui.item.is_over_credit_limit) ? ui.item
             .is_over_credit_limit : 0;
+            cart['customer']['unpaid_store_account_sale_ids'] = (ui.item.unpaid_store_account_sale_ids) ? ui.item
+            .unpaid_store_account_sale_ids : [];
+            cart['customer']['store_account_payment_item_id'] = ui.item.store_account_payment_item_id;
         // localStorage.setItem("cart", cart);
       
 
@@ -2171,7 +2405,7 @@ $('#item').keydown(function(e) {
 
            $price=   getSalePrice( $get_price);
 
-           $get_price.sprice = $price;
+           $get_price.price = $price;
            $get_price.orig_price= $price;
             
             addItem($get_price);
@@ -3090,7 +3324,8 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                     }
 
 
-                $('#customer-panel').html(selected_customer_template(cart));
+                  $('#customer-panel').html(selected_customer_template(cart));
+                // $('#customer-panel').html(selected_customer_store_account_template(cart));
                 $('#redeem_discount').on('click', function(e) {
                     redeem_discount();
                 });
@@ -3253,15 +3488,19 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                         $("#customer-panel").addClass('hidden');
                         $("#select_customer_form").removeClass('hidden');
                     }
-                    console.log("callled here from renderui");
-                    amount_tendered_input_changed(cartValues);
-
-
+                      amount_tendered_input_changed(cartValues);
                     $(".edit_taxes_item").click(function(e) {
                         item_id = $(this).data('id');
 
                         onclick_edit_taxes_item(item_id);
 
+
+                    });
+
+                    $("#pay_now").click(function(e) {
+                        $('#kt_drawer_general_body_full').html(selected_customer_store_account_template(cart));
+                        $('.select-payment-store').on('click', selectPaymentStoreAccount);
+                        $('#finish_sale_button_store').on('click', handleFinishSaleStore);
 
                     });
 
@@ -3992,6 +4231,9 @@ $('#discount_details_reload').on('click', function() {
 });
 $('.select-payment').on('click', selectPayment);
 
+
+
+
 $("#add_payment_form").submit(async function(e) {
     await addPayment(e);
 });
@@ -4007,6 +4249,19 @@ $(document).on("click", 'a.delete-item', function(event) {
         // this is not actual item its discount
         cart['extra']['discount_all_flat'] = 0;
 
+    }
+
+    if ($(this).data('item_id') == '<?=  lang('store_account_payment') ?>') {
+        // Reset all paid flags in unpaid_store_account_sale_ids
+        if (Array.isArray(cart.customer.unpaid_store_account_sale_ids)) {
+            cart.customer.unpaid_store_account_sale_ids = cart.customer.unpaid_store_account_sale_ids.map(sale => {
+                sale.paid = 0;
+                return sale;
+            });
+        }
+            // Reset paid_store_account_sale_ids
+            cart.customer.paid_store_account_sale_ids = [];
+            cart.payments = [];
     }
     cart.items.remove($(this).data('cart-index'));
 
@@ -6402,6 +6657,7 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
 		$('#kt_drawer_gen_md').removeClass('drawer-on');
 		$('#kt_drawer_gen_lg').removeClass('drawer-on');
 		$('#kt_drawer_gen_xl').removeClass('drawer-on');
+        $('#kt_drawer_gen_full').removeClass('drawer-on');
 		$('#operationsbox_modal').removeClass('drawer-on');
 		$('#discountbox_modal').removeClass('drawer-on');
 		$('.drawer-overlay').remove();

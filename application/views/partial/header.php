@@ -545,7 +545,42 @@ Thank you for your prompt attention to this matter.
             </div>
         </div>
     </div>
+    <div id="kt_drawer_gen_full" class="bg-white hidden-print" data-kt-drawer-dismiss="true" data-kt-drawer="true"
+        data-kt-drawer-activate="true" data-kt-drawer-close="#kt_drawer_example_basic_close"
+        data-kt-drawer-width="90%">
+        <div class="card border-0 shadow-none rounded-0 w-100">
+            <!--begin::Card header-->
+            <div class="card-header bgi-position-y-bottom bgi-position-x-end bgi-size-cover bgi-no-repeat rounded-0 border-0 py-4"
+                id="kt_app_layout_builder_header"
+                >
 
+                <!--begin::Card title-->
+                <h3 class="card-title fs-3 fw-bold text-black flex-column m-0" id="kt_drawer_general_title_full">
+                </h3>
+                <!--end::Card title-->
+
+                <!--begin::Card toolbar-->
+                
+                <!--end::Card toolbar-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Card body-->
+            <div class="card-body position-relative" id="kt_app_layout_builder_body">
+                <!--begin::Content-->
+                <div id="kt_app_settings_content" class="position-relative gotodrawer scroll-y me-n5 pe-5"
+                    data-kt-scroll="true" data-kt-scroll-height="auto"
+                    data-kt-scroll-wrappers="#kt_app_layout_builder_body"
+                    data-kt-scroll-dependencies="#kt_app_layout_builder_header, #kt_app_layout_builder_footer"
+                    data-kt-scroll-offset="5px">
+
+
+                    <div class="card-body p-0" id="kt_drawer_general_body_full">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="discountbox_modal_reload" class="bg-white hidden-print" data-kt-drawer="true"
         data-kt-drawer-activate="true" data-kt-drawer-close="#kt_drawer_example_basic_close"
         data-kt-drawer-width="<?=($this->agent->is_mobile())?'80%':'700px'; ?>">

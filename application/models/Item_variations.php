@@ -528,6 +528,8 @@ class Item_variations extends MY_Model
 	
 	function auto_create($item_id)
 	{
+		$return = array();
+		$return = ['success' => true ];
 		$this->load->model('Item');
 		$this->load->model('Item_attribute');
 		$this->load->model('Item_attribute_value');
@@ -544,7 +546,8 @@ class Item_variations extends MY_Model
 		
 		if(count($attribute_ids) == 0)
 		{
-			return false;
+			$return = ['success' => false , 'msg' => lang('Attribute_ids_should_greater_than_zero') ];
+			return $return;
 		}
 		
 		for($k=0;$k<count($attribute_ids);$k++)
@@ -568,6 +571,14 @@ class Item_variations extends MY_Model
 		$variations = $this->db->query($query)->result_array();
 
 		$secondary_supplier_query = $this->item->get_secondary_suppliers($item_id);
+
+		
+		if(!empty($variations) ){
+			if(count($variations ) > 500){
+				$return = ['success' => false , 'msg' => lang('Variation_should_not_greater_than_500') ];
+				return $return;
+			}
+		}
 		foreach($variations as $variation)
 		{
 			$attribute_value_ids_for_variation = array();
@@ -609,6 +620,8 @@ class Item_variations extends MY_Model
 				$this->save($data, $variation_id, $attribute_value_ids_for_variation);
 			}
 		}
+
+		return $return;
 
 	}
 }

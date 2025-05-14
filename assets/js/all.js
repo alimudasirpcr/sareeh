@@ -3007,9 +3007,11 @@ $(document).ready(function()
 
 		
 		$width = 'md';
-		
+		$is_full=false;
 		if($(this).attr('data-target-width')!= undefined ){
-			$width =$(this).attr('data-target-width');
+			
+				$width =$(this).attr('data-target-width');
+			
 		}
 		$kt_drawer_general_body ='#kt_drawer_general_body_'+$width;
 		$kt_drawer_general_title ='#kt_drawer_general_title_'+$width;
@@ -3020,8 +3022,10 @@ $(document).ready(function()
 			$($kt_drawer_general_body).load($(this).attr('href'));
 			
 		}
+	
+			$($kt_drawer_general_body).attr('data-kt-drawer-width' , $width);
 		
-		$($kt_drawer_general_body).attr('data-kt-drawer-width' , $width);
+		
 		$($kt_drawer_gen).addClass('drawer-on');
 		$($kt_drawer_general_title).html('');
 		$($kt_drawer_general_title).html($(this).attr('data-target-title'));
@@ -3037,6 +3041,7 @@ $(document).ready(function()
 		$('#kt_drawer_gen_md').removeClass('drawer-on');
 		$('#kt_drawer_gen_lg').removeClass('drawer-on');
 		$('#kt_drawer_gen_xl').removeClass('drawer-on');
+		$('#kt_drawer_gen_full').removeClass('drawer-on');
 		$('#operationsbox_modal').removeClass('drawer-on');
 		$('#kt_drawer_example_basic_save_as').removeClass('drawer-on');
 		$('#discountbox_modal').removeClass('drawer-on');
@@ -3049,15 +3054,16 @@ $(document).ready(function()
 
 	$('body').click(function (event) {
         // Check if the clicked element is not within the #kt_drawer_gen div
-        if (!$(event.target).closest('#kt_drawer_gen_sm , #kt_drawer_gen_md , #kt_drawer_gen_lg , #kt_drawer_gen_xl ').length) {
+        if (!$(event.target).closest('#kt_drawer_gen_sm , #kt_drawer_gen_md , #kt_drawer_gen_lg , #kt_drawer_gen_xl , #kt_drawer_gen_full ').length) {
 
-			if($('#kt_drawer_gen_sm , #kt_drawer_gen_md , #kt_drawer_gen_lg , #kt_drawer_gen_xl ').hasClass('drawer-on')){
+			if($('#kt_drawer_gen_sm , #kt_drawer_gen_md , #kt_drawer_gen_lg  , #kt_drawer_gen_xl , #kt_drawer_gen_full ').hasClass('drawer-on')){
 				console.log("yess");
 				if($('body').attr("data-kt-drawer")=="on"){
 					$('#kt_drawer_gen_sm').removeClass('drawer-on');
 					$('#kt_drawer_gen_md').removeClass('drawer-on');
 					$('#kt_drawer_gen_lg').removeClass('drawer-on');
 					$('#kt_drawer_gen_xl').removeClass('drawer-on');
+					$('#kt_drawer_gen_full').removeClass('drawer-on');
 					$('#operationsbox_modal').removeClass('drawer-on');
 					$('#kt_drawer_example_basic_save_as').removeClass('drawer-on');
 					$('#discountbox_modal').removeClass('drawer-on');

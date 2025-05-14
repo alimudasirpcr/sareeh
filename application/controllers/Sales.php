@@ -1146,14 +1146,16 @@ class Sales extends Secure_area
 		//allow parallel searchs to improve performance.
 		session_write_close();
 		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->get('term'),0,100);
-
+		$store_account_payment_item_id = $this->Item->create_or_update_store_account_item();
 		foreach($suggestions as $k => $suggestion){
 			$cust_info =    $this->Customer->get_info($suggestion['value']);
+			$suggestions[$k]['unpaid_store_account_sale_ids']  =  $this->Sale->get_unpaid_store_account_sales($this->Sale->get_unpaid_store_account_sale_ids($suggestion['value']));
 			$suggestions[$k]['points'] = to_quantity($cust_info->points);
 			$suggestions[$k]['sales_until_discount'] = ($this->config->item('number_of_sales_for_discount') ? $this->config->item('number_of_sales_for_discount') : 0) - $cust_info->current_sales_for_discount;
 			$suggestions[$k]['customer_credit_limit'] = $cust_info->credit_limit;
 			$suggestions[$k]['disable_loyalty'] = $cust_info->disable_loyalty;
 			$suggestions[$k]['is_over_credit_limit'] = $this->Customer->is_over_credit_limit($suggestion['value'],$this->cart->get_payment_amount(lang('store_account')));
+			$suggestions[$k]['store_account_payment_item_id'] = $store_account_payment_item_id;
 		}
 		// dd($suggestions);
 		// 
@@ -10515,6 +10517,21 @@ class Sales extends Secure_area
 						$this->Customer->save_customer($person_data,$customer_data,$offline_sale['customer']['person_id']);
 						
 					}
+					
+
+					if (isset($offline_sale['customer']['paid_store_account_sale_ids']) && $offline_sale['customer']['paid_store_account_sale_ids'])
+					{
+						foreach($offline_sale['customer']['paid_store_account_sale_ids'] as $store_account_id){
+							$offline_sale_cart->add_paid_store_account_payment_id($store_account_id['sale_id'] , $store_account_id['amount']);
+						}
+
+				
+
+						$comment = lang('sales_pays_sales'). ' - '.implode(', ',array_keys($offline_sale_cart->get_paid_store_account_ids()));
+							
+						$offline_sale_cart->comment = $comment;
+
+					}
 
 					
 					
@@ -10838,7 +10855,7 @@ class Sales extends Secure_area
 				
 
 				
-					// dd($offline_sale_cart);
+					
 				
 				$sale_id = $this->Sale->save($offline_sale_cart, false);
 				update_data_by_where('phppos_sales' , array('sale_json' => json_encode( array($offline_sale) )) , 'sale_id = '.$sale_id.' ' );

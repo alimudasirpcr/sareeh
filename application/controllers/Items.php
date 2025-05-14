@@ -1577,16 +1577,25 @@ class Items extends Secure_area implements Idata_controller
 	function auto_create_variations($item_id)
 	{
 		$this->load->model('Item_variations');
-		$this->Item_variations->auto_create($item_id);
-		$item_info = $this->Item->get_info($item_id);
+		  $return = $this->Item_variations->auto_create($item_id);
+		  if($return['success']){
+			$item_info = $this->Item->get_info($item_id);
 
-		if (isset($this->ecom_model)) {
-			if ($item_info->is_ecommerce) {
-				$this->ecom_model->save_item_from_phppos_to_ecommerce($item_id);
+			if (isset($this->ecom_model)) {
+				if ($item_info->is_ecommerce) {
+					$this->ecom_model->save_item_from_phppos_to_ecommerce($item_id);
+				}
 			}
-		}
+	
+			echo json_encode(array('success' =>  true  , 'msg' =>  lang('Variation_successfully_created')));
+		  }else{
+			echo json_encode(array('success' =>  false , 'msg' =>  $return['msg']));
+		  }
+		
 
-		redirect("items/variations/$item_id");
+		
+
+		// redirect("items/variations/$item_id");
 	}
 
 	

@@ -223,5 +223,15 @@ div#kt_app_layout_builder_header {
 .pos-sidebar{
     height: 60vh !important;
 }
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
+.right-bottom{
+    bottom: 40px;
+    right: 40px;
+    position: fixed;
+}
 </style>

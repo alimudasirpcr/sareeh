@@ -750,11 +750,22 @@
 		{
 			if (response)
 			{
-				$('#item_form').ajaxSubmit({
-				success:function(response)
-				{
-					window.location = $("#auto_create_all_cariations").attr('href');
-				}});
+
+				$.get($("#auto_create_all_cariations").attr('href'),{},function(json)
+		{
+			if (json.success)
+			{
+				show_feedback('success', json.msg, "<?php echo lang('success'); ?>");
+
+				window.location.reload();
+
+			}else{
+				show_feedback('error', json.msg, "<?php echo lang('error'); ?>");
+			}
+		},'json');
+
+
+			
 			}
 		});
 	});

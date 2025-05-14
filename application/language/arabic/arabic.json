@@ -3240,10 +3240,13 @@
     "reports_appointments_detailed_report": "تقرير تفصيلي للمواعيد في التقارير",
     "appointments_start_date": "تاريخ بداية الموعد",
     "appointments_end_date": "تاريخ نهاية الموعد",
-    "reports_comissions_summary_report": "Reports comissions summary report",
-    "reports_show_pending_only": "Reports show pending only",
-    "reports_show_negative_inventory_only": "Reports show negative inventory only",
-    "reports_list_each_location_separately": "Reports list each location separately",
-    "reports_inventory_summary_report": "Reports inventory summary report",
-    "reports_weighted_cost": "Reports weighted cost"
+    "reports_comissions_summary_report": "تقرير ملخص العمولات في التقارير",
+    "reports_show_pending_only": "عرض العناصر المعلقة فقط في التقارير",
+    "reports_show_negative_inventory_only": "عرض المخزون السلبي فقط في التقارير",
+    "reports_list_each_location_separately": "عرض كل موقع بشكل منفصل في التقارير",
+    "reports_inventory_summary_report": "تقرير ملخص المخزون في التقارير",
+    "reports_weighted_cost": "التكلفة المرجحة في التقارير",
+    "items_add_attribute_to_item_successful": "تمت إضافة السمة إلى العنصر بنجاح",
+    "variation_should_not_greater_than_500": "يجب ألا يتجاوز عدد المتغيرات 500",
+    "variation_successfully_created": "تم إنشاء المتغير بنجاح"
 }
