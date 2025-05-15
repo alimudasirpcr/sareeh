@@ -615,14 +615,17 @@ class Invoice extends CI_Model
 	function get_invoice_for_order_id($type,$order_id)
 	{
 		$type_prefix = $type == 'customer' ? 'sale' : 'receiving';
+	
 		
 		$this->db->from($type.'_invoice_details');
 		$this->db->where($type_prefix.'_id',$order_id);
 		$query = $this->db->get();
 
+		
+
 		$row = $query->row();
 		
-		if ($row->invoice_id)
+		if (  isset($row) && $row !=false &&  $row->invoice_id)
 		{
 			return $row->invoice_id;
 		}

@@ -3053,5 +3053,20 @@
     "sales_recent_sales": "Sales recent sales",
     "sales_completed_sales": "Sales completed sales",
     "sales_delveried_to": "Sales delveried to",
-    "quantity_unit_name": "Quantity unit name"
+    "quantity_unit_name": "Quantity unit name",
+    "back_to_invoices": "Back to invoices",
+    "invoice": "Invoice",
+    "invoice_sent": "Invoice sent",
+    "sales_manual_entry": "Sales manual entry",
+    "sales_card_on_file": "Sales card on file",
+    "invoice_id": "Invoice id",
+    "invoices_invoice_to": "Invoices invoice to",
+    "sales_credit_card_no": "Sales credit card no",
+    "sales_exp_date": "Sales exp date",
+    "ccv": "Ccv",
+    "reports_payment_date": "Reports payment date",
+    "card_number": "Card number",
+    "sales_ebt_auth_code": "Sales ebt auth code",
+    "please_wait_sales_are_syncing": "Please wait while we synchronize your sales data",
+    "please_wait_loading_receipt": "Preparing your receipt. Just a moment"
 }

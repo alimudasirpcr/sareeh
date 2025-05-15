@@ -1823,15 +1823,15 @@ $this->load->view("partial/offline_header"); ?>
         }
         </style>
 <script id="selected-customer-store-account-template" type="text/x-handlebars-template">
-    <div class="table-responsive">
+    <div class="table-responsive" style="height:70vh">
         <table class="table table-hover table-striped">
             <thead>
                 <tr class="register-items-header">
-                    <th class="sp_sale_id"><?php echo lang('sale_id'); ?></th>
-                    <th class="sp_date"><?php echo lang('date'); ?></th>
-                    <th class="sp_charge"><?php echo lang('total_charge_to_account'); ?></th>
-                    <th class="sp_comment"><?php echo lang('comment'); ?></th>
-                    <th class="sp_pay"><?php echo lang('pay'); ?></th>
+                    <th class="sp_sale_id text-left fs-3"><?php echo lang('sale_id'); ?></th>
+                    <th class="sp_date text-left fs-3"><?php echo lang('date'); ?></th>
+                    <th class="sp_charge text-left fs-3"><?php echo lang('total_charge_to_account'); ?></th>
+                    <th class="sp_comment text-left fs-3"><?php echo lang('comment'); ?></th>
+                    <th class="sp_pay text-left fs-3"><?php echo lang('pay'); ?></th>
                 </tr>
             </thead>
             <tbody id="unpaid_sales_data">

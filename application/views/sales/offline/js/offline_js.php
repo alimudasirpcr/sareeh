@@ -1,5 +1,37 @@
 <script>
+const BootboxLoader = (function () {
+  let dialog = null;
 
+  return {
+    open: function (message = 'Loading...') {
+      if (dialog) return; // prevent multiple dialogs
+      dialog = bootbox.dialog({
+        message: `<div class="text-center"><i class="fas fa-spin fa-spinner me-2"></i><span class="bootbox-loader-message">${message}</span></div>`,
+        closeButton: false,
+        onEscape: false,
+        backdrop: true
+      });
+    },
+
+    update: function (message) {
+      if (dialog) {
+        dialog.find('.bootbox-loader-message').html(message);
+      }
+    },
+
+    close: function () {
+      if (dialog) {
+        dialog.modal('hide');
+        dialog = null;
+      }
+    }
+  };
+})();
+
+// Close after 5 seconds (5000 milliseconds)
+setTimeout(() => {
+  loadingDialog.modal('hide');
+}, 5000);
 const config = {
     do_not_group_same_items: '<?= $this->config->item('do_not_group_same_items') ?>',
     point_value: '<?php echo $this->config->item('point_value'); ?>',
@@ -73,8 +105,7 @@ async function handleFinishSaleStore(e = null) {
         e.preventDefault();
     }
 
-
-    
+   
 
 
     const proceed = async () => {
@@ -90,16 +121,21 @@ async function handleFinishSaleStore(e = null) {
         const sale = JSON.parse(localStorage.getItem('cart') || "{}");
         const check_for_custom = sale.custom_fields || {};
 
-       
+        BootboxLoader.open('<?= lang('please_wait_sales_are_syncing') ?>...');
+
+    
 
         $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
             offline_sales: JSON.stringify([sale]),
         }, function(response) {
+            BootboxLoader.close();
             if (response.success) {
              
                 let firstSaleId = response.sale_ids[0];
-
+             
+    
                 displayReceipt(firstSaleId);
+              
                 cart = {
                     items: [],
                     payments: [],
@@ -1861,14 +1897,15 @@ async function handleFinishSale(e = null) {
                 $('input[name="' + fieldName + '"]').val('');
             }
         }
-
+        BootboxLoader.open('<?= lang('please_wait_sales_are_syncing') ?>...');
         $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
             offline_sales: JSON.stringify([sale]),
         }, function(response) {
+            BootboxLoader.close();
             if (response.success) {
-
+              
                 let firstSaleId = response.sale_ids[0];
-
+              
                 displayReceipt(firstSaleId);
                 cart = {
                     items: [],
@@ -1924,11 +1961,12 @@ if (has_offline_sales()) {
         $('#sync_offline_sales_button').prop('disabled', true);
         $("#offline_sync_spining").show();
         var allSales = JSON.parse(localStorage.getItem("sales")) || [];
-
+        BootboxLoader.open('<?= lang('please_wait_sales_are_syncing') ?>...');
         $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
                 offline_sales: JSON.stringify(allSales),
             },
             function(response) {
+                BootboxLoader.close();
                 if (response.success) {
                     $('#sync_offline_sales_button').remove();
                     localStorage.removeItem("sales");
@@ -3656,12 +3694,16 @@ function amount_tendered_input_changed(cartValues) {
    
             $('#finish_sale_button').addClass('hidden').hide();
             $('#add_payment_button').removeClass('hidden').show();
-            } else {
+        } else {
 			if ((cartValues.amount_due >= 0 && amount_tendered >= cartValues.amount_due) || (cartValues.amount_due < 0 && amount_tendered <= cartValues.amount_due)) {
-               
+               //complete show 
+               console.log(" complete show ");
 				$('#finish_sale_button').removeClass('hidden').show();
 				$('#add_payment_button').addClass('hidden').hide();
 			} else {
+                //payment show
+
+                console.log(" payment show ");
 				$('#finish_sale_button').addClass('hidden').hide();
 				$('#add_payment_button').removeClass('hidden').show();
 			}
@@ -4717,6 +4759,7 @@ function get_modifiers_subtotal(cart_item) {
 }
 
 function displayReceipt(sale) {
+    BootboxLoader.open('<?= lang('please_wait_loading_receipt') ?>...');
     $("#print_receipt_holder").empty();
 
     // sale.total_items_sold = get_total_items_sold(sale);
@@ -4760,12 +4803,19 @@ function displayReceipt(sale) {
     if(sales_test_mode_transaction == sale){
         $("#print_receipt_holder").append(sales_test_mode_transaction);
         $("#print_receipt_holder").append();
-
+        BootboxLoader.close();
     }else{
         let link = '<?= base_url() ?>sales/preview_receipt/'+sale+'';
         let link_last = '<?= base_url() ?>sales/receipt/'+sale+'';
             $('#last_sale_id').attr('href' , link_last);
-            $("#print_receipt_holder").load(link);
+            $("#print_receipt_holder").load(link, function(response, status, xhr) {
+                        if (status === "success") {
+                            BootboxLoader.close();
+                        } else {
+                            BootboxLoader.update('Failed to load receipt.');
+                            setTimeout(() => BootboxLoader.close(), 2000); // optional: close after showing error
+                        }
+            });
             
     }
 
@@ -4774,6 +4824,7 @@ function displayReceipt(sale) {
     $("#print_receipt_holder").show();
     $('#print_modal').modal('show');
     $("#sales_page_holder").hide();
+   
 
 }
 
