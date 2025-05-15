@@ -3049,5 +3049,9 @@
     "sales_redeem_discount_for_next_sale": "Sales redeem discount for next sale",
     "no_unpaid_sales_found": "No unpaid sales found",
     "you_want_cancel_the_payment": "You want cancel the payment",
-    "transaction_history": "Transaction history"
+    "transaction_history": "Transaction history",
+    "sales_recent_sales": "Sales recent sales",
+    "sales_completed_sales": "Sales completed sales",
+    "sales_delveried_to": "Sales delveried to",
+    "quantity_unit_name": "Quantity unit name"
 }

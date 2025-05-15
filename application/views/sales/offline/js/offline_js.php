@@ -60,6 +60,7 @@ function cancelStoreAccountPayment(){
                 cart.customer.unpaid_store_account_sale_ids = unpaidSales;
                 cart.items = [];
                 cart['payments'] = [];
+                cart['extra']['mode'] = 'sale';
                 localStorage.setItem('cart', JSON.stringify(cart));
                 renderUi();
             }
@@ -231,6 +232,8 @@ const totalPaidAmount = paidSaleIds.reduce((sum, sale) => sum + sale.amount, 0);
                     amount: totalPaidAmount.toFixed(3),
                     type: $('#payment_types_store').val()
                 });
+    cart['extra']['mode'] = 'store_account_payment';
+                
 
     localStorage.setItem('cart', JSON.stringify(cart));
     // Refresh UI
