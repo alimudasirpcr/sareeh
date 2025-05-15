@@ -6,7 +6,7 @@ const BootboxLoader = (function () {
     open: function (message = 'Loading...') {
       if (dialog) return; // prevent multiple dialogs
       dialog = bootbox.dialog({
-        message: `<div class="text-center"><i class="fas fa-spin fa-spinner me-2"></i><span class="bootbox-loader-message">${message}</span></div>`,
+        message: `<div class="text-center"><img src="<?= base_url() ?>assets/css_good/combined_loop.gif" alt="Loading..." class="me-2" style="height: 20px;"><span class="bootbox-loader-message">${message}</span></div>`,
         closeButton: false,
         onEscape: false,
         backdrop: true
