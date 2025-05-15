@@ -752,6 +752,8 @@ function remove_dummy_cards(){
 
 
 function processCategoriesAndItemsResult(json , is_dummy_card = false , categories_stack_ = false) {
+
+
     if(categories_stack_){
         categories_stack = categories_stack_;
         console.log('before 2  updateBreadcrumbs' , categories_stack_);
@@ -1285,7 +1287,7 @@ function set_tier_id(tire, only_current = false) {
 
 function get_price_rule_for_item($item_id = false) {
 
-    $('#ajax-loader').show();
+    BootboxLoader.open('<?= lang('please_wait') ?>...');
     // cart = JSON.parse(localStorage.getItem("cart"));
     // console.log(" get_price_rule_for_item" , cart);
     $.post('<?php 
@@ -1295,7 +1297,7 @@ function get_price_rule_for_item($item_id = false) {
             coupons: cart.extra,
         },
         function(response) {
-            $('#ajax-loader').hide();
+            BootboxLoader.close();
             cart.items = JSON.parse(JSON.stringify(response));
             // Loop through all free items
             cart.items.forEach(freeItem => {
@@ -5859,13 +5861,15 @@ $(document).ready(function() {
         console.log('categories_stack' ,categories_stack );
         $('#grid-loader2').show();
         current_category_id = category_id;
-
+        BootboxLoader.open('<?= lang('please_wait') ?>...');
         $.get('<?php echo site_url("sales/categories_and_items"); ?>/' + current_category_id + '/' + offset,
             function(json) {
+                BootboxLoader.close();
                 processCategoriesAndItemsResult(json , false  ,  categories_stack);
                 $('#grid-loader2').hide(); // Hide loader when successful
             }, "json"
         ).fail(function() {
+            BootboxLoader.close();
             if (retryCount > 0) {
                 console.warn('Failed to load categories and items. Retrying in 3 seconds...');
                 setTimeout(function () {
@@ -6723,6 +6727,7 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
 
 
     $(document).ready(function() {
+        BootboxLoader.open('<?= lang('please_wait') ?>...');
 
         function updateHeight() {
         let baseHeight = 40; // Default height value in vh
