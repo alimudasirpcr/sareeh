@@ -1471,7 +1471,7 @@ if (isset($error_message)) {
 								<div class="invoice-footer-heading"><?php echo lang('sales_until_discount', '', array(), TRUE); ?></div>
 							</div>
 							<div class="col-md-2 col-sm-2 col-xs-4">
-								<div class="invoice-footer-value invoice-total"><?php echo $sales_until_discount <= 0 ? lang('sales_redeem_discount_for_next_sale', '', array(), TRUE) : to_quantity($sales_until_discount); ?></div>
+								<div class="invoice-footer-value invoice-total fs-8"><?php echo $sales_until_discount <= 0 ? lang('sales_redeem_discount_for_next_sale', '', array(), TRUE) : to_quantity($sales_until_discount); ?></div>
 							</div>
 						</div>
 					<?php

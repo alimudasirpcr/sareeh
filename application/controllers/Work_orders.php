@@ -327,7 +327,7 @@ class Work_orders extends Secure_area
 		$data = $this->_get_work_order_data($work_order_id);
 
 		$data['summary'] = $this->Work_order->get_single_work_order_summary($work_order_id);
-		// dd($data['items_being_repaired']);
+		// dd($data['summary']);
 
 		$data['redirect']= $redirect_code;
 		$data['work_order_id'] = $work_order_id;

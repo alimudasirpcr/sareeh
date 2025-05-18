@@ -1,3 +1,10 @@
+
+<?php 
+					$fee_item_id = $this->Item->create_or_update_fee_item();
+                 
+				
+					$fee_item_id_discount = $this->Item->create_or_update_flat_discount_item();
+				?>
 <script>
 const BootboxLoader = (function () {
   let dialog = null;
@@ -58,6 +65,8 @@ const pointsTooLittleLang = "<?php echo lang('sales_points_to_little'); ?>";
 const giftCardNotExistLang = "<?php echo lang('sales_giftcard_does_not_exist'); ?>";
 const giftCardBalanceIsLang = "<?php echo lang('sales_giftcard_balance_is'); ?>";
 const payment_options = <?php echo json_encode(array_values($payment_options)); ?>;
+const fee_item_id = <?php echo $fee_item_id; ?>;
+const fee_item_id_discount = <?php echo $fee_item_id_discount; ?>;
 
 const current_logged_in_employee  = parseInt(<?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>);
     function sound(type = 'success'){
@@ -3773,6 +3782,7 @@ function checkPaymentTypes() {
 		var paymentType = $("#payment_types").val();
         const cartValues = calculateCartValues(cart);
         const amountDue = cartValues.amount_due;
+        $('#amount_tendered').prop('disabled', false);
 		switch (paymentType) {
 			<?php if (!$this->config->item('prompt_amount_for_cash_sale')) { ?>
 			   case <?php echo json_encode(lang('cash')); ?>:
@@ -3809,6 +3819,7 @@ function checkPaymentTypes() {
 				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('credit') . ' ' . lang('amount')); ?>);
 				break;
 			case <?php echo json_encode(lang('store_account')); ?>:
+                $('#amount_tendered').prop('disabled', true);
 				$("#amount_tendered").val(amountDue);
 				$("#amount_tendered").attr('placeholder', <?php echo json_encode(lang('enter') . ' ' . lang('store_account') . ' ' . lang('amount')); ?>);
 				break;
@@ -4165,9 +4176,10 @@ async  function addPayment(e) {
                             fee_key: feeItemKey,
                             name: `${type} Fee`,
                             description: `${type} <?php echo lang('fee'); ?>`,
-                            item_id: `fee_item_${type}`,
+                            item_id: fee_item_id,
                             quantity: 1,
-                            price: 0,
+                            price: feeAmount,
+                            cost_price: 0,
                             orig_price: feeAmount,
                             discount_percent: 0,
                             variations: {},

@@ -3071,5 +3071,19 @@
     "please_wait_loading_receipt": "Preparing your receipt. Just a moment",
     "work_orders_successful_added_new_work_order": "Work orders successful added new work order",
     "added_to_work_order": "Added to work order",
-    "sales_deleted_voided": "Sales deleted voided"
+    "sales_deleted_voided": "Sales deleted voided",
+    "no_tier_or_tier": "No tier or tier",
+    "reports_items_having_no_warranty": "Reports items having no warranty",
+    "promo_price": "Promo price",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "removed_from_work_order": "Removed from work order",
+    "reports_group_by": "Reports group by",
+    "day": "Day",
+    "week": "Week",
+    "month": "Month",
+    "year": "Year",
+    "reports_list_each_location_separately": "Reports list each location separately",
+    "reports_ecommerce_only": "Reports ecommerce only",
+    "upload": "Upload"
 }

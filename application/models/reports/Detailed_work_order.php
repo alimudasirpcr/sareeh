@@ -676,7 +676,7 @@ class Detailed_work_order extends Report
 
 					  	$result[$key]['total_amount_for_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1')[0]->tot;
 						$result[$key]['total_amount_for_non_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0')[0]->tot;
-						$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and (
+						$items_having_warranty = get_query_data('SELECT si.* , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and (
 							(isn.replace_sale_date = 1 and	isn.warranty_end > STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d"))
 							or
 						(isn.replace_sale_date != 1 and isn.sold_warranty_end > STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") )
@@ -691,15 +691,15 @@ class Detailed_work_order extends Report
 							
 							foreach($items_having_warranty as $ihw){
 
-								$result[$key]['items_having_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+								$result[$key]['items_having_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
 								if($result[$key]['items_having_warranty_sub']){
 								if(count($result[$key]['items_having_warranty_sub']) > 0){
 									foreach($result[$key]['items_having_warranty_sub'] as $item){
 										if($item->is_service){
-											$result[$key]['sp_will_receive_for_his_services']=  $result[$key]['sp_will_receive_for_his_services'] + ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
-											$result[$key]['owner_have_to_pay_to_sp']=$result[$key]['owner_have_to_pay_to_sp']=($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+											$result[$key]['sp_will_receive_for_his_services']=  $result[$key]['sp_will_receive_for_his_services'] + ($item->unit_price)?$item->unit_price * $item->quantity_purchased:$item->total;
+											$result[$key]['owner_have_to_pay_to_sp']=$result[$key]['owner_have_to_pay_to_sp']=($item->unit_price)?$item->unit_price * $item->quantity_purchased:$item->total;
 										}else{
-											$result[$key]['owner_have_to_pay_for_parts'] =  $result[$key]['owner_have_to_pay_for_parts'] + ($item->cost_price)?$item->cost_price * $item->quantity_purchased :$item->total;
+											$result[$key]['owner_have_to_pay_for_parts'] =  $result[$key]['owner_have_to_pay_for_parts'] + ($item->unit_price)?$item->unit_price * $item->quantity_purchased :$item->total;
 										}
 									}
 								}
@@ -707,7 +707,7 @@ class Detailed_work_order extends Report
 							}
 							$total_items_having_warranty =  $total_items_having_warranty + 1; 
 						}
-						$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and and (
+						$items_having_nowarranty = get_query_data('SELECT si.* , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and and (
 							(isn.replace_sale_date = 1 and	isn.warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d"))
 							or
 						(isn.replace_sale_date != 1 and isn.sold_warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") )
@@ -717,17 +717,18 @@ class Detailed_work_order extends Report
 						if($items_having_nowarranty){
 							foreach($items_having_nowarranty as $ihw){
 								
-								$result[$key]['items_having_not_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+								$result[$key]['items_having_not_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
 								if($result[$key]['items_having_not_warranty_sub'] ){
 								if(count($result[$key]['items_having_not_warranty_sub']) > 0){
 									foreach($result[$key]['items_having_not_warranty_sub'] as $item){
+										$amount = ($item->unit_price)?$item->unit_price * $item->quantity_purchased:$item->total;
 										if($item->is_service){
-											$amount = ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+											
 											$result[$key]['sp_will_receive_for_his_services']=  $result[$key]['sp_will_receive_for_his_services'] + $amount;
 											$result[$key]['customer_will_pay_for_services']=$result[$key]['customer_will_pay_for_services'] + $amount;
 											$result[$key]['sp_will_receive_from_customer']=$result[$key]['sp_will_receive_from_customer'] + $amount;
 										}else{
-											$amount = ($item->cost_price)?$item->cost_price:$item->total;
+									
 											$result[$key]['customer_will_pay_for_parts']=  $result[$key]['customer_will_pay_for_parts'] +   $amount;
 											$result[$key]['sp_will_pay_to_owner']=  $result[$key]['sp_will_pay_to_owner']  + $amount;
 											$result[$key]['sp_will_receive_from_customer']=$result[$key]['sp_will_receive_from_customer'] + $amount;
@@ -738,11 +739,42 @@ class Detailed_work_order extends Report
 							}
 							$total_items_having_nowarranty =  $total_items_having_nowarranty + 1; 
 						}
+						$no_serial = false;
+
+						if(!$items_having_warranty && !$items_having_nowarranty){
+							$report_data['items_having_not_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service    FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id  where si.sale_id='.$res['sale_id'].'    ');
+
+								if($report_data['items_having_not_warranty_sub'] ){
+								if(count($report_data['items_having_not_warranty_sub']) > 0){
+									$no_serial = true;
+									foreach($report_data['items_having_not_warranty_sub'] as $item){
+										// dd($item);
+										$amount = ($item->item_unit_price)?$item->item_unit_price * $item->quantity_purchased:$item->total;
+										if($item->is_service){
+											$result[$key]['sp_will_receive_for_his_services']=  $result[$key]['sp_will_receive_for_his_services'] + $amount;
+											$result[$key]['customer_will_pay_for_services']=$result[$key]['customer_will_pay_for_services'] + $amount;
+											$result[$key]['sp_will_receive_from_customer']=$result[$key]['sp_will_receive_from_customer'] + $amount;
+										}else{
+											$result[$key]['customer_will_pay_for_parts']=  $result[$key]['customer_will_pay_for_parts'] +   $amount;
+											$result[$key]['sp_will_receive_from_customer']=$result[$key]['sp_will_receive_from_customer'] + $amount;
+										}
+									}
+								}
+								}
+
+						}
 
 
 						$result[$key]['net_customer_will_pay'] = $result[$key]['customer_will_pay_for_services'] + $result[$key]['customer_will_pay_for_parts'] ;
-						$result[$key]['net_amount_for_owner']= $result[$key]['customer_will_pay_for_parts'] - $result[$key]['owner_have_to_pay_to_sp'];
-						$result[$key]['net_amount_sp']= $result[$key]['sp_will_receive_for_his_services'] - $result[$key]['customer_will_pay_for_parts'];
+						if(!$no_serial){
+							$result[$key]['net_amount_for_owner']= $result[$key]['customer_will_pay_for_parts'] - $result[$key]['owner_have_to_pay_to_sp'];
+							$result[$key]['net_amount_sp']= $result[$key]['sp_will_receive_for_his_services'] - $result[$key]['customer_will_pay_for_parts'];
+						}else{
+							$result[$key]['net_amount_sp']= $result[$key]['sp_will_receive_for_his_services'] + $result[$key]['customer_will_pay_for_parts'];
+						}
+						
+						
+						
 						$result[$key]['total_items_having_nowarranty']= $total_items_having_nowarranty;
 						$result[$key]['total_items_having_warranty']= $total_items_having_nowarranty;
 
@@ -781,7 +813,7 @@ class Detailed_work_order extends Report
 
 					  $res['total_amount_for_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1')[0]->tot;
 					$res['total_amount_for_non_repair_item_without_serial_number'] = 	get_query_data('SELECT COUNT(si.total) as tot FROM `' . $prefix .'sales_items` as si where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0')[0]->tot;
-					$items_having_warranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and (
+					$items_having_warranty = get_query_data('SELECT si.* , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and (
 						(isn.replace_sale_date = 1 and	isn.warranty_end > STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d"))
 						or
 					(isn.replace_sale_date != 1 and isn.sold_warranty_end > STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") )
@@ -794,15 +826,15 @@ class Detailed_work_order extends Report
 						
 						foreach($items_having_warranty as $ihw){
 
-							$items_having_warranty_sub = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+							$items_having_warranty_sub = 	get_query_data('SELECT si.* , i.is_service , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
 							if($items_having_warranty_sub){
 							if(count($items_having_warranty_sub) > 0){
 								foreach($items_having_warranty_sub as $item){
 									if($item->is_service){
-										$res['sp_will_receive_for_his_services']=  $res['sp_will_receive_for_his_services'] + ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
-										$res['owner_have_to_pay_to_sp']=$res['owner_have_to_pay_to_sp']=($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+										$res['sp_will_receive_for_his_services']=  $res['sp_will_receive_for_his_services'] + ($item->unit_price)?$item->unit_price * $item->quantity_purchased:$item->total;
+										$res['owner_have_to_pay_to_sp']=$res['owner_have_to_pay_to_sp']=($item->unit_price)?$item->unit_price * $item->quantity_purchased:$item->total;
 									}else{
-										$res['owner_have_to_pay_for_parts'] =  $res['owner_have_to_pay_for_parts'] + ($item->cost_price)?$item->cost_price * $item->quantity_purchased :$item->total;
+										$res['owner_have_to_pay_for_parts'] =  $res['owner_have_to_pay_for_parts'] + ($item->unit_price)?$item->unit_price * $item->quantity_purchased :$item->total;
 									}
 								}
 							}
@@ -811,7 +843,7 @@ class Detailed_work_order extends Report
 						$total_items_having_warranty =  $total_items_having_warranty + 1; 
 
 					}
-					$items_having_nowarranty = get_query_data('SELECT si.* , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and (
+					$items_having_nowarranty = get_query_data('SELECT si.* , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber  where si.sale_id='.$res['sale_id'].' and si.is_repair_item=1 and isn.is_sold=1 and (
 						(isn.replace_sale_date = 1 and	isn.warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d"))
 						or
 					(isn.replace_sale_date != 1 and isn.sold_warranty_end < STR_TO_DATE('.$res['sale_date'].', "%Y-%m-%d") )
@@ -821,17 +853,18 @@ class Detailed_work_order extends Report
 					if($items_having_nowarranty){
 						foreach($items_having_nowarranty as $ihw){
 							
-							$items_having_not_warranty_sub = 	get_query_data('SELECT si.* , i.is_service , isn.cost_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
+							$items_having_not_warranty_sub = 	get_query_data('SELECT si.* , i.is_service , isn.unit_price   FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id left join ' . $prefix .'items_serial_numbers as isn on isn.item_id= si.item_id and isn.serial_number = si.serialnumber where si.sale_id='.$res['sale_id'].' and si.is_repair_item=0   and si.assigned_repair_item = '.$ihw->item_id.' ');
 							if($items_having_not_warranty_sub  ){
 							if(count($items_having_not_warranty_sub ) > 0){
 								foreach($items_having_not_warranty_sub  as $item){
+									$amount = ($item->unit_price)?$item->unit_price * $item->quantity_purchased:$item->total;
 									if($item->is_service){
-										$amount = ($item->cost_price)?$item->cost_price * $item->quantity_purchased:$item->total;
+									
 										$res['sp_will_receive_for_his_services']=  $res['sp_will_receive_for_his_services'] + $amount;
 										$res['customer_will_pay_for_services']=$res['customer_will_pay_for_services'] + $amount;
 										$res['sp_will_receive_from_customer']=$res['sp_will_receive_from_customer'] + $amount;
 									}else{
-										$amount = ($item->cost_price)?$item->cost_price:$item->total;
+										
 										$res['customer_will_pay_for_parts']=  $res['customer_will_pay_for_parts'] +   $amount;
 										$res['sp_will_pay_to_owner']=  $res['sp_will_pay_to_owner']  + $amount;
 										$res['sp_will_receive_from_customer']=$res['sp_will_receive_from_customer'] + $amount;
@@ -842,10 +875,40 @@ class Detailed_work_order extends Report
 						}
 						$total_items_having_nowarranty =  $total_items_having_nowarranty + 1; 
 					}
+					$no_serial = false;
+					if(!$items_having_warranty && !$items_having_nowarranty){
+						$report_data['items_having_not_warranty_sub'] = 	get_query_data('SELECT si.* , i.is_service    FROM `' . $prefix .'sales_items` as si inner join ' . $prefix .'items as i on i.item_id=si.item_id  where si.sale_id='.$res['sale_id'].'    ');
+						
+							if($report_data['items_having_not_warranty_sub'] ){
+							if(count($report_data['items_having_not_warranty_sub']) > 0){
+								$no_serial = true;
+								foreach($report_data['items_having_not_warranty_sub'] as $item){
+									// dd($item);
+									$amount = ($item->item_unit_price)?$item->item_unit_price * $item->quantity_purchased:$item->total;
+									if($item->is_service){
+										$res['sp_will_receive_for_his_services']=  $res['sp_will_receive_for_his_services'] + $amount;
+										$res['customer_will_pay_for_services']=$res['customer_will_pay_for_services'] + $amount;
+										$res['sp_will_receive_from_customer']=$res['sp_will_receive_from_customer'] + $amount;
+									}else{
+										$res['customer_will_pay_for_parts']=  $res['customer_will_pay_for_parts'] +   $amount;
+										$res['sp_will_receive_from_customer']=$res['sp_will_receive_from_customer'] + $amount;
+									}
+									$total_items_having_nowarranty =  $total_items_having_nowarranty + 1; 
+								}
+							}
+							}
+
+					}
 			
 					$res['net_customer_will_pay'] = $res['customer_will_pay_for_services'] + $res['customer_will_pay_for_parts'] ;
-					$res['net_amount_for_owner']= $res['customer_will_pay_for_parts'] - $res['owner_have_to_pay_to_sp'];
-					$res['net_amount_sp']= $res['sp_will_receive_for_his_services'] - $res['customer_will_pay_for_parts'];
+					if(!$no_serial){
+						$res['net_amount_for_owner']= $res['customer_will_pay_for_parts'] - $res['owner_have_to_pay_to_sp'];
+						$res['net_amount_sp']= $res['sp_will_receive_for_his_services'] - $res['customer_will_pay_for_parts'];
+					}else{
+						$res['net_amount_sp']= $res['sp_will_receive_for_his_services'] + $res['customer_will_pay_for_parts'];
+					}
+						
+					
 					$res['total_items_having_warranty'] = $total_items_having_warranty ;
 					$res['total_items_having_nowarranty'] = $total_items_having_nowarranty ;
 					$data['summary'][$res['sale_id']] = $res; 
