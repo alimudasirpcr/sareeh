@@ -1256,11 +1256,13 @@ class Sale extends MY_Model
 		 
 		if ($sale_id)
 		{
+			
 			//Delete previoulsy sale so we can overwrite data
 			$this->delete($sale_id, true);
 			
 			$this->db->where('sale_id', $sale_id);
 			$this->db->update('sales', $sales_data);
+			
 		}
 		else
 		{
@@ -1640,8 +1642,6 @@ class Sale extends MY_Model
 		
 
 
-
-
 		foreach($items as $line=>$item)
 		{		
 			
@@ -1852,6 +1852,7 @@ class Sale extends MY_Model
 				
 				if ($item->serialnumber && !$cart->is_work_order)
 				{
+				
 					if (!$this->config->item('do_not_delete_serial_number_when_selling'))
 					{
 						// if ($item->quantity > 0)
@@ -1872,11 +1873,14 @@ class Sale extends MY_Model
 					 if(!$serial_exist){
 						$this->Item_serial_number->add_serial($item->item_id, $item->serialnumber , 'from sales');
 						$ser['replace_sale_date'] =1;
+						$ser['serial_location_id'] =0;
 					 }else{
 						
 						$old_data = $this->Item_serial_number->get_info($serial_exist);	
+						$ser['serial_location_id'] =$old_data->serial_location_id;
 						$this->Item_serial_number->add_sn_log($old_data->id , 'Updated' , 'from sales: old values are: warranty start= '.$old_data->warranty_start.',  warranty end = '.$old_data->warranty_end );
 					 }
+					
 					 $warranty_days = $this->Item_serial_number->get_warranty_days($item->item_id);
 					 if($warranty_days){
 						 $dateString = $sales_data['sale_time']; // Format: Y-m-d
@@ -3408,6 +3412,7 @@ class Sale extends MY_Model
 				if ($sale_item_row['serialnumber'])
 				{
 					$this->load->model('Item_serial_number');
+				
 					$this->Item_serial_number->add_serial($sale_item_row['item_id'], $sale_item_row['serialnumber'] , 'from sales');
 				}
 				

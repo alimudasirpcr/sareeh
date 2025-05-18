@@ -3068,5 +3068,8 @@
     "card_number": "Card number",
     "sales_ebt_auth_code": "Sales ebt auth code",
     "please_wait_sales_are_syncing": "Please wait while we synchronize your sales data",
-    "please_wait_loading_receipt": "Preparing your receipt. Just a moment"
+    "please_wait_loading_receipt": "Preparing your receipt. Just a moment",
+    "work_orders_successful_added_new_work_order": "Work orders successful added new work order",
+    "added_to_work_order": "Added to work order",
+    "sales_deleted_voided": "Sales deleted voided"
 }

@@ -5624,7 +5624,7 @@ class Sales extends Secure_area
 
 	
 		$this->cart->destroy();
-			
+		
 		
 		// $this->cart->set_mode('return');
 
@@ -5632,7 +5632,7 @@ class Sales extends Secure_area
 		 $data = get_query_data(" select * from phppos_sales where sale_id =".$this->input->post('sale_id')." ");
 	
 		if($data && $data[0]->sale_json !='' && $data[0]->sale_json !=null){
-			
+		
 			$response = json_decode($data[0]->sale_json);
 			
 			$response[0]->extra->suspended =$data[0]->suspended;
@@ -5677,6 +5677,7 @@ class Sales extends Secure_area
 		if(isset($isWorkOrder->sale_id)) {
 			
 			$this->cart->is_work_order = 1;
+			$response['extra']['is_work_order'] = 1;
 		}
 		
 		$this->cart->save();
@@ -5687,7 +5688,7 @@ class Sales extends Secure_area
 		if ( !$this->agent->is_mobile() && !$this->agent->is_tablet()) {
 			$cart_items = $this->cart->get_list_sort_by_receipt_sort_order();
 		}
-		// dd($this->cart);
+	
 		$response['extra']['sale_id'] = ($this->cart->sale_id)?$this->cart->sale_id:$_POST['sale_id'];
 		$response['extra']['suspended_type'] = $CI->Sale->get_info($response['extra']['sale_id'])->row()->suspended;
 
@@ -5931,6 +5932,7 @@ class Sales extends Secure_area
 				"line_total" => isset($item->line_total) ?$item->line_total : 0,
 				"index" => $line,
 				"free_item" => ($item->unit_price==0)?true:false,
+				"is_repair_item" => $item->is_repair_item,
 				"selected_rule" => $item->rule,
 				"serialnumber" => $serialnumber,
 				"serialnumberText" => $serialnumberText,
@@ -10482,7 +10484,10 @@ class Sales extends Secure_area
 				{
 					$offline_sale_cart->sale_id = $offline_sale['extra']['sale_id'];
 				}
-
+				if (isset($offline_sale['extra']['is_work_order']) && $offline_sale['extra']['is_work_order'])
+				{
+					$offline_sale_cart->is_work_order = 1;
+				}
 				$offline_sale_cart->location_id = $this->Employee->get_logged_in_employee_current_location_id();;
 				date_default_timezone_set($this->Location->get_info_for_key('timezone',$offline_sale_cart->location_id));
 			
@@ -10648,25 +10653,29 @@ class Sales extends Secure_area
 				$offline_sale['items'] = array_filter($offline_sale['items'], function($item) {
 					return $item['name'] !== 'discount';
 				});
-				// dd($offline_sale['items']);
+			
 			
 				if (isset($offline_sale['items']))
 				{
 					
 
-					// dd($offline_sale_cart);
-					foreach($offline_sale['items'] as $item)
+				
+					foreach($offline_sale['items'] as $key_item => $item)
 					{
-
-						// dd($item);
+						
+						
 						// if((int)$item['item_id']==0){
 						// 	continue; /// this is discounted item not actual item
 						// }
-
-
+					
+				if(isset($item['is_repair_item'])  &&  (int)$item['is_repair_item']==1){
+					
+				}else{
 					if(isset($item['free_item'])  &&  $item['free_item']==true){
 						continue; /// this is free item not actual item
 					}
+				}
+					
 
 						
 					
@@ -10723,8 +10732,7 @@ class Sales extends Secure_area
 						$cart_item_to_add['price'] = $item['price'];
 						$cart_item_to_add['tier_id'] = (isset($item['tier_id']))?$item['tier_id'] : '';
 						$cart_item_to_add['quantity_received'] = (isset($item['quantity_received']))?$item['quantity_received']:0;
-						
-						
+						$cart_item_to_add['is_repair_item'] = (isset($item['is_repair_item']))?$item['is_repair_item'] : false;
 						$cart_item_to_add['tier_name'] = (isset($item['tier_name']))?$item['tier_id'] : '';
 						$cart_item_to_add['discount'] = (isset($item['discount_percent']))?$item['discount_percent'] : 0; 
 						$cart_item_to_add['description'] = (isset($item['description']))?$item['description'] : '';
@@ -10747,7 +10755,7 @@ class Sales extends Secure_area
 								$cart_item_to_add['modifier_items'][$key] = array('display_name' => $display_name, 'unit_price' => $mid['unit_price'],'cost_price' => $mid['cost_price']);
 							}
 						}
-						
+					
 						if(strtoupper(substr($item['item_id'], 0, 3)) == 'KIT')
 						{
 							$item_to_add = new PHPPOSCartItemKitSale($cart_item_to_add);							
@@ -10756,10 +10764,12 @@ class Sales extends Secure_area
 						{
 							$item_to_add = new PHPPOSCartItemSale($cart_item_to_add);
 						}
-						// dd($item_to_add->item_id);
-						$offline_sale_cart->add_item($item_to_add);
-						// dd($offline_sale_cart);
-					
+						
+						
+						$resds = $offline_sale_cart->add_item($item_to_add);
+						
+						
+						//  dd($offline_sale_cart);
 						if (isset($item['taxes']) && is_array($item['taxes']))
 						{
 							// dd($item['taxes']);

@@ -327,7 +327,7 @@ class Work_orders extends Secure_area
 		$data = $this->_get_work_order_data($work_order_id);
 
 		$data['summary'] = $this->Work_order->get_single_work_order_summary($work_order_id);
-		// dd($data['summary']);
+		// dd($data['items_being_repaired']);
 
 		$data['redirect']= $redirect_code;
 		$data['work_order_id'] = $work_order_id;
@@ -339,6 +339,7 @@ class Work_orders extends Secure_area
 		$data['checkbox_groups'] = $this->Work_order->get_checkbox_groups();
 
 		$repair_item_id = $this->work_order->create_or_update_repair_item();
+		
 		$data['work_orders_repair_item'] = $repair_item_id;
 		
 		$data['selected_checkbox_groups'] = array();

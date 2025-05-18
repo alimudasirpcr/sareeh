@@ -4013,7 +4013,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="modal-dialog customer-recent-sales">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"
+                                                <button type="button" class="close" data-dismiss="modal" id="cancel_return"
                                                     aria-label=<?php echo lang('close'); ?>><span
                                                         aria-hidden="true">&times;</span></button>
                                                 <h4 class="modal-title" id="lookUpReceipt">

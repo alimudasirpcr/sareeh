@@ -2852,6 +2852,14 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                         cart['extra']['mode'] = 'sale';
                     }
 
+                     let defaultEmployeeId = localStorage.getItem('default_sales_person_id');
+                if (!defaultEmployeeId) {
+                    defaultEmployeeId = current_logged_in_employee;
+                    localStorage.setItem('default_sales_person_id', defaultEmployeeId);
+                    $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').trigger('click');
+                }
+                cart['extra']['sold_by_employee_id'] = defaultEmployeeId;
+
                     localStorage.setItem("cart", JSON.stringify(cart));
 
 
@@ -5040,7 +5048,7 @@ $(document).ready(function() {
         $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').trigger('click');
     }
     cart['extra']['sold_by_employee_id'] = defaultEmployeeId;
-
+    localStorage.setItem("cart", JSON.stringify(cart));
     //Set Item tier after selection
     $('.select-sales-persons a').on('click', function(e) {
         e.preventDefault();
@@ -5146,7 +5154,7 @@ $(document).ready(function() {
             e.preventDefault();
             $('.mode_text').html($(this).data('mode') + "<i class='icon ti-shopping-cart m-2 text-light'></i>");
             // $(".sales-dropdown li:first-child").remove();
-            if ($(this).data('mode') == 'sale') {
+            if ($(this).data('mode') == 'sale' || $(this).data('mode') == 'Sale') {
                 $('.Sale-mode').hide();
                 $('.Return-mode').show();
                
@@ -5164,7 +5172,7 @@ $(document).ready(function() {
             cart['extra']['mode'] = $(this).data('mode');
            
             localStorage.setItem("cart", JSON.stringify(cart));
-            if($(this).data('mode')=='sale'){
+            if($(this).data('mode')=='Sale'  || $(this).data('mode')=='sale' ){
                 cart['extra']['return_sale_id'] = '';
                 change_qty('plus');
                 renderUi();
@@ -5758,6 +5766,9 @@ function enable_popup_modifier(line) {
 
 }
 $(document).ready(function() {
+
+
+   
     <?php if ($this->config->item('require_employee_login_before_each_sale') && isset($dont_switch_employee) && !$dont_switch_employee) { ?>
     $('#switch_user').trigger('click');
     <?php } ?>

@@ -379,6 +379,11 @@ class Item_serial_number extends MY_Model
 
 	function add_serial($item_id, $serial_number, $type_serial_number = 'manually', $cost_price = NULL, $unit_price = NULL,$variation_id = NULL, $location_id = NULL, $serial_number_id = false, $warranty_start = NULL, $warranty_end = NULL, $replace_sale_date =0 )
 	{
+
+		if(!$location_id){
+			$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
+		
+		}
 		if(!$serial_number_id or !$this->exists($serial_number_id)){
 
 			 $this->db->replace('items_serial_numbers', array('item_id' => $item_id, 'serial_number' => $serial_number,'cost_price' => $cost_price, 'unit_price' => $unit_price,'variation_id' => $variation_id, 'serial_location_id' => $location_id, 'warranty_start' => $warranty_start, 'warranty_end' => $warranty_end , 'replace_sale_date' => $replace_sale_date));
