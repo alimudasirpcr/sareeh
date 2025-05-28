@@ -9,7 +9,7 @@
 		foreach($this->Register->get_all()->result() as $register) 
 		{ 
 	?>
-    <div class="col-md-6 mb-10 ">
+    <div class="col-md-4 mb-10 ">
         <div class="bg-light bg-opacity-50 rounded-3 p-10 mx-md-5 h-md-100">
             <div class="d-flex flex-center w-60px h-60px rounded-3 bg-light-info bg-opacity-90 mb-10">
                 <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
@@ -22,8 +22,7 @@
                 <!--end::Svg Icon-->
             </div>
             <h1 class="mb-5"><?php echo $register->name ?></h1>
-            <div class="fs-4 text-gray-600 py-3">Build whatever you want without a single line of CSS/SASS code by just using our low-level utility classes and base components.</div>
-            <a href="<?php echo site_url('sales/choose_register').'/'.$register->register_id ?>" class="btn btn-lg btn-flex btn-link btn-color-info"><?php echo lang('choose') ?>
+             <a href="<?php echo site_url('sales/choose_register').'/'.$register->register_id ?>" class="btn btn-lg btn-flex btn-link btn-color-info"><?php echo lang('choose') ?>
             <!--begin::Svg Icon | path: icons/duotune/arrows/arr064.svg-->
             <span class="svg-icon ms-2 svg-icon-3">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

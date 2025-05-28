@@ -312,8 +312,7 @@ category_item = '<li data-category_count="' + json.categories[k].categories_coun
     '><a class=" border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"> ' +
     item_badge + ' ' + categ_badge +
     ' <div class="nav-icon "> <img class="rounded-3 mb-4" alt="" src="' + SITE_URL +
-    '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k]
-    .image_timestamp +
+    '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp +
     '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[
         k].name +
     '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
@@ -412,12 +411,10 @@ $("#category_item_selection_wrapper_new").append(`
 
 function processTagItemsResult(json) {
 $("#category_item_selection").html('');
-//var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p>');
 
-var back_to_categories_button =
-'<li id="back_to_tags" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
-SITE_URL +
-'/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+var back_to_categories_button = '<li id="back_to_tags" class=" col-2 nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-6 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
+SITE_URL +'/assets/css_good/media/icons/icons8-back-50.png" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1" style="white-space:nowrap"></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 $("#category_item_selection").append(back_to_categories_button);
@@ -441,18 +438,7 @@ price_val = (json.items[k].price ? decodeHtml(json.items[k].price) : '');
 price_val = price_val.replace(currency_, '');
 
 
-var item = '<li data-max_discount="' + json.items[k].max_discount +
-    '" data-can_override_price_adjustments="' + json.items[k].can_override_price_adjustments +
-    '"  data-tax_percent="' + json.items[k].tax_percent + '" data-override_default_tax="' + json
-    .items[k].override_default_tax + '" data-tax_included="' + json.items[k].tax_included +
-    '"  data-name="' + json.items[k].name + '"  data-price="' + price_val + '" data-id="' + json
-    .items[k].id + '"  data-has-variations="' + has_variations + '" data-id="' + json.items[k].id +
-    '" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class +
-    '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' +
-    prod_image + '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k]
-    .name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k]
-        .price) + ')' : '') +
-    '</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+var item = '<li data-max_discount="' + json.items[k].max_discount + '" data-can_override_price_adjustments="' + json.items[k].can_override_price_adjustments +'"  data-tax_percent="' + json.items[k].tax_percent + '" data-override_default_tax="' + json.items[k].override_default_tax + '" data-tax_included="' + json.items[k].tax_included + '"  data-name="' + json.items[k].name + '"  data-price="' + price_val + '" data-id="' + json.items[k].id + '"  data-has-variations="' + has_variations + '" data-id="' + json.items[k].id + '" class=" col-1 category_item item  ' + image_class + '  ' + item_parent_class + '  nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px  px-1 py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"> ' + prod_image + '</div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + ' <span class="text-bold">' + (json.items[k].price ? '(' + decodeHtml(json.items[k].price) + ')' : '') +'</span></p>   </span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 $("#category_item_selection").append(item);
@@ -483,11 +469,7 @@ if (image_src != '') {
 
 //    var item = $("<div/>").attr('data-is_favorite','yes').attr('data-has-variations',has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  '+item_parent_class).attr('data-id', json.items[k].id).append(prod_image+'<p>'+json.items[k].name+'<br /> <span class="text-bold">'+(json.items[k].price ? '('+json.items[k].price+')' : '')+'</span></p>');
 
-item = '<li data-supplier_id="' + json.items[k].id +
-    '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' +
-    image_src + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json
-    .items[k].name +
-    '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+item = '<li data-supplier_id="' + json.items[k].id + '" class=" col-2 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-125px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + image_src + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 $("#category_item_selection").append(item);

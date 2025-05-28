@@ -36,9 +36,9 @@ const BootboxLoader = (function () {
 })();
 
 // Close after 5 seconds (5000 milliseconds)
-setTimeout(() => {
-  loadingDialog.modal('hide');
-}, 5000);
+// setTimeout(() => {
+//   loadingDialog.modal('hide');
+// }, 5000);
 const config = {
     do_not_group_same_items: '<?= $this->config->item('do_not_group_same_items') ?>',
     point_value: '<?php echo $this->config->item('point_value'); ?>',

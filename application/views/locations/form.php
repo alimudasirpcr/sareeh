@@ -67,7 +67,7 @@
                     <a href="#basic_info_tab" data-kt-scroll-toggle="true"
                         class="menu-link p-0 nav-link active scroll-to-link">
                         <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <span class="menu-title">Basic info</span>
+                        <span class="menu-title"> <?= lang('Basic_info') ?></span>
                     </a>
                     <!--end::Link-->
                 </li>
@@ -77,7 +77,7 @@
                     <!--begin::Link-->
                     <a href="#Registers_tab" data-kt-scroll-toggle="true" class="menu-link p-0 nav-link scroll-to-link">
                         <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <span class="menu-title">Registers </span>
+                        <span class="menu-title"> <?= lang('Registers') ?></span>
                     </a>
                     <!--end::Link-->
                 </li>
@@ -88,7 +88,7 @@
                     <a href="#Location-integrations_tab" data-kt-scroll-toggle="true"
                         class="menu-link p-0 nav-link scroll-to-link">
                         <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <span class="menu-title">Location integrations </span>
+                        <span class="menu-title"> <?= lang('Location_integrations') ?></span>
                     </a>
                     <!--end::Link-->
                 </li>
@@ -98,7 +98,7 @@
                     <!--begin::Link-->
                     <a href="#Taxes_tab" data-kt-scroll-toggle="true" class="menu-link p-0 nav-link scroll-to-link">
                         <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                        <span class="menu-title">Taxes</span>
+                        <span class="menu-title"><?= lang('Taxes') ?></span>
                     </a>
                     <!--end::Link-->
                 </li>
@@ -496,7 +496,7 @@
             <div class=" card-header rounded rounded-3 p-5">
                 <h3 class="panel-title" id="Registers_tab">
                     <i class="ion-edit"></i>
-                    Register Information
+                     <?= lang('Register_Information') ?>
                 </h3>
             </div>
             <div class="card-body">
@@ -737,7 +737,7 @@
             <div class=" card-header rounded rounded-3 p-5">
                 <h3 class="panel-title" id="Location-integrations_tab">
                     <i class="ion-edit"></i>
-                    Location Integration
+                     <?= lang('Location_Integration') ?>
                 </h3>
             </div>
             <div class="card-body">
@@ -1577,7 +1577,7 @@
         <div class=" card-header rounded rounded-3 p-5">
             <h3 class="panel-title" id="Taxes_tab">
                 <i class="ion-edit"></i>
-                Taxes
+                  <?= lang('Taxes') ?>
             </h3>
         </div>
         <div class="card-body">

@@ -30,9 +30,9 @@
         <thead>
             <tr>
                 
-                <th>Code</th>
-                <th>Value</th>
-                <th>Action</th>
+                <th><?= lang('Code') ?></th>
+                <th><?= lang('Value') ?></th>
+                <th><?= lang('Action') ?></th>
             </tr>
         </thead>
         <tbody>

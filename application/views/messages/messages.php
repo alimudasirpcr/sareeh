@@ -21,7 +21,7 @@
 														<!--end::Svg Icon-->
 														<!--end::Icon-->
 														<!--begin::Input-->
-														<input id="search" type="text" class="form-control form-control-solid px-15" name="search" value="" placeholder="Search by username or email...">
+														<input id="search" type="text" class="form-control form-control-solid px-15" name="search" value="" placeholder=" <?= lang('Search_by_username_or_email');  ?>...">
 														<!--end::Input-->
 													</form>
 													<!--end::Form-->
@@ -58,7 +58,7 @@
 															</div>
 															<div class="mb-0 lh-1" id="if_main_inactive">
 																<span class="badge badge-secondary badge-circle w-10px h-10px me-1"></span>
-																<span class="fs-7 fw-semibold text-muted">Inactive</span>
+																<span class="fs-7 fw-semibold text-muted"><?= lang('Inactive');  ?></span>
 															</div>
 															<!--end::Info-->
 														</div>
@@ -91,7 +91,7 @@
 												<!--begin::Card footer-->
 												<div class="card-footer pt-4" id="kt_chat_messenger_footer" style="display: none">
 													<!--begin::Input-->
-													<textarea name="txt_message" id="messageText" class="form-control form-control-flush mb-3" rows="1" data-kt-element="input" placeholder="Type a message"></textarea>
+													<textarea name="txt_message" id="messageText" class="form-control form-control-flush mb-3" rows="1" data-kt-element="input" placeholder="<?php echo lang('Type_a_message') ?>"></textarea>
 													<!--end::Input-->
 													<!--begin:Toolbar-->
 													<div class="d-flex flex-stack">
@@ -106,7 +106,7 @@
 														</div>
 														<!--end::Actions-->
 														<!--begin::Send-->
-														<button id="send_message" class="btn btn-primary" type="button" data-kt-element="send">Send</button>
+														<button id="send_message" class="btn btn-primary" type="button" data-kt-element="send"><?php echo lang('Send') ?></button>
 														<!--end::Send-->
 													</div>
 													<!--end::Toolbar-->

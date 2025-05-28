@@ -3085,5 +3085,13 @@
     "year": "Year",
     "reports_list_each_location_separately": "Reports list each location separately",
     "reports_ecommerce_only": "Reports ecommerce only",
-    "upload": "Upload"
+    "upload": "Upload",
+    "basic_info": "Basic info",
+    "registers": "Registers",
+    "location_integrations": "Location integrations",
+    "taxes": "Taxes",
+    "register_information": "Register information",
+    "location_integration": "Location integration",
+    "receivings_update_supplier": "Receivings update supplier",
+    "sales_unable_to_add_item": "Sales unable to add item"
 }

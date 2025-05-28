@@ -1780,7 +1780,7 @@ label.form-check-label {
             foreach(array_keys($this->Sale->get_payment_options_with_language_keys()) as $payment_type)
             {
             ?>
-
+  <div class=" row">
                     <div class="col-md-2">
                     </div>
 
@@ -1801,13 +1801,13 @@ label.form-check-label {
                     </div>
 
 
-
+                    </div>
 
                     <?php
                     }
                     ?>
-
-                    <div class="col-md-12">
+   
+                    <div class="row">
                         <div class="col-md-12 form-group mt-0 mb-0">
                             <div class="py-2 mb-1">
                                 <div class="rounded border p-5">
@@ -4295,7 +4295,7 @@ label.form-check-label {
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
-                                <div class="rounded border p-50">
+                                <div class="rounded border p-5">
                                     <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
@@ -4396,7 +4396,7 @@ label.form-check-label {
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="py-2 mb-1">
-                                <div class="rounded border p-50">
+                                <div class="rounded border p-5">
                                     <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(

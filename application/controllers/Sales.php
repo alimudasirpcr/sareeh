@@ -61,7 +61,7 @@ class Sales extends Secure_area
 		$this->load->model('Supplier');
 		$this->lang->load('work_orders');
 	    $this->load->model('Credit_card_charge_unconfirmed');
-		
+		$this->config->set_item('speedy_pos'  , true) ;
 		$this->cart = PHPPOSCartSale::get_instance('sale');
 		cache_item_and_item_kit_cart_info($this->cart->get_items());
 	}	

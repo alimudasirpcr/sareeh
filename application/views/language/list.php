@@ -33,9 +33,9 @@
 													<!--begin::Table row-->
 													<tr class="text-start text-muted fw-bold fs-7 gs-0">
                                                         
-                                                    <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" >Language</th>
+                                                    <th class="min-w-125px sorting" tabindex="0" aria-controls="kt_table_users" rowspan="1" colspan="1" aria-label="User: activate to sort column ascending" > <?= lang('Language') ?></th>
                                                    
-                                                    <th class="text-end min-w-100px sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="width: 50px;">Actions</th></tr>
+                                                    <th class="text-end min-w-100px sorting_disabled" rowspan="1" colspan="1" aria-label="Actions" style="width: 50px;"><?= lang('Actions') ?></th></tr>
 													<!--end::Table row-->
 												</thead>
 												<!--end::Table head-->
@@ -63,7 +63,7 @@
                                                         
 														<!--begin::Action=-->
 														<td class="text-end">
-															<a href="<?php echo base_url(); ?>language/lang_update/<?php echo $lang; ?>" class="btn btn-light btn-active-light-primary btn-sm">Edit
+															<a href="<?php echo base_url(); ?>language/lang_update/<?php echo $lang; ?>" class="btn btn-light btn-active-light-primary btn-sm"><?= lang('Edit') ?>
 															</a>
 														</td>
 														<!--end::Action=-->
