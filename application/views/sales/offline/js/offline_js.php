@@ -69,6 +69,7 @@ const fee_item_id = <?php echo $fee_item_id; ?>;
 const fee_item_id_discount = <?php echo $fee_item_id_discount; ?>;
 
 const current_logged_in_employee  = parseInt(<?php echo $this->Employee->get_logged_in_employee_info()->person_id; ?>);
+const permission_edit_sale_price = parseInt(<?php if ($this->Employee->has_module_action_permission('sales', 'edit_sale_price', $this->Employee->get_logged_in_employee_info()->person_id)) { echo "1"; }else{   echo "0"; }  ?>);
     function sound(type = 'success'){
         if (ENABLE_SOUNDS) {
                 $.playSound(BASE_URL + 'assets/sounds/'+type);
@@ -2811,6 +2812,8 @@ function calculateCartValues(cart) {
 
 $all_tiers = JSON.parse('<?php echo  json_encode(	$all_tiers_source_data); ?>');
 
+console.log("all_tiers", $all_tiers);
+
 
 
 function renderUi() {
@@ -2869,7 +2872,7 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                 }
             
                 cart['extra']['sold_by_employee_id'] = defaultEmployeeId;
-                cart['extra']['permission_edit_sale_price'] = $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price');
+                cart['extra']['permission_edit_sale_price'] = ($('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price'))?$('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price'):permission_edit_sale_price;
                     localStorage.setItem("cart", JSON.stringify(cart));
 
 
@@ -5061,7 +5064,7 @@ $(document).ready(function() {
         $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').trigger('click');
     }
     cart['extra']['sold_by_employee_id'] = defaultEmployeeId;
-    cart['extra']['permission_edit_sale_price'] = $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price');
+    cart['extra']['permission_edit_sale_price'] = ($('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price'))?$('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price'):permission_edit_sale_price;
     localStorage.setItem("cart", JSON.stringify(cart));
     //Set Item tier after selection
     $('.select-sales-persons a').on('click', function(e) {
