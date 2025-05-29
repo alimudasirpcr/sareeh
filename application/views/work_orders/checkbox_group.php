@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group no-padding-right">	
+                    <div class="form-group no-padding-right row">	
                         <?php echo form_label(lang('work_orders_pre').':', '',array('class'=>'col-sm-12')); ?>
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group no-padding-right">	
+                    <div class="form-group no-padding-right row">	
                         <?php echo form_label(lang('work_orders_post').':', '',array('class'=>'col-sm-12 ')); ?>
                         <div class="col-md-12">
                             <div class="table-responsive">

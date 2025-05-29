@@ -3093,5 +3093,9 @@
     "register_information": "Register information",
     "location_integration": "Location integration",
     "receivings_update_supplier": "Receivings update supplier",
-    "sales_unable_to_add_item": "Sales unable to add item"
+    "sales_unable_to_add_item": "Sales unable to add item",
+    "work_orders_new_work_order_checkbox": "Work orders new work order checkbox",
+    "work_orders_group_name": "Work orders group name",
+    "work_orders_sort_order": "Work orders sort order",
+    "sort": "Sort"
 }
