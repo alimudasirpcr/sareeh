@@ -3695,7 +3695,7 @@ $this->load->view("partial/offline_header"); ?>
                                 data-type="text" data-validate-number="true" data-index="{{index}}" data-pk="1"
                                 data-name="description" data-value="{{description}}"
                                 
-                                data-title="<?= lang('Discount_Percentage'); ?>">{{description}}</a>
+                                data-title="<?= lang('description'); ?>">{{description}}</a>
 
                                 {{else}}
                                 <span>{{description}}</span>
