@@ -2810,7 +2810,7 @@ function calculateCartValues(cart) {
 
 ?>
 
-$all_tiers = JSON.parse('<?php echo  json_encode(	$all_tiers_source_data); ?>');
+$all_tiers = Object.values(JSON.parse('<?php echo  json_encode(	$all_tiers_source_data); ?>'));
 
 console.log("all_tiers", $all_tiers);
 
