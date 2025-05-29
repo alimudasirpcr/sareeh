@@ -3025,7 +3025,7 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
 
                         $('#tier_' + k).editable({
                             value: cart_item['tier_id'],
-                            source: <?php echo json_encode($all_tiers_source_data); ?>,
+                            source: Object.values(JSON.parse('<?php echo  json_encode(	$all_tiers_source_data); ?>')),
                             success: function(response, newValue) {
 
                                 var field = $(this).data('name');
