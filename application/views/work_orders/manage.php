@@ -668,7 +668,7 @@
 
                     <?php foreach ($status_boxes as $status_box) {
 
-                    ?> '<?php echo $this->Work_order->get_status_name($status_box['full_name']); ?>',
+                    ?> '<?php echo lang($this->Work_order->get_status_name($status_box['full_name'])); ?>',
                     <?php } ?>
 
                 ], // Corresponding labels for the data

@@ -953,7 +953,7 @@ $this->load->helper('demo');
 			
 			?>
                             <option value="<?php echo $status_box['id']; ?>">
-                                <?php echo $this->Work_order->get_status_name($status_box['name']); ?></option>
+                                <?php echo lang($this->Work_order->get_status_name($status_box['name'])); ?></option>
                             <?php } ?>
                         </select>
 
@@ -2094,7 +2094,7 @@ $(document).ready(function() {
         labels: [
 
             <?php foreach ($status_boxes as $status_box) { 
-			?> '<?php echo $this->Work_order->get_status_name($status_box['name']); ?>',
+			?> '<?php echo lang($this->Work_order->get_status_name($status_box['name'])); ?>',
             <?php  } ?>
 
         ], // Corresponding labels for the data

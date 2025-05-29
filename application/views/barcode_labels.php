@@ -173,7 +173,7 @@ if (isset($font_enlarge)) {
 
 
 						</div>
-						<input type="submit" class="btn btn-lg btn-primary btn-sm w-100px pull-right my-3">
+						<input type="submit" class="btn btn-lg btn-primary btn-sm w-100px pull-right my-3" value="<?= lang("submit"); ?>">
 					</div>
 				</div>
 			</form>
