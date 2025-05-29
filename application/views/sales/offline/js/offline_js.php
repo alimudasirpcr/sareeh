@@ -2867,8 +2867,9 @@ var saved_sales = JSON.parse(localStorage.getItem('sales')) || {};
                     localStorage.setItem('default_sales_person_id', defaultEmployeeId);
                     $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').trigger('click');
                 }
+            
                 cart['extra']['sold_by_employee_id'] = defaultEmployeeId;
-
+                cart['extra']['permission_edit_sale_price'] = $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price');
                     localStorage.setItem("cart", JSON.stringify(cart));
 
 
@@ -5060,6 +5061,7 @@ $(document).ready(function() {
         $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').trigger('click');
     }
     cart['extra']['sold_by_employee_id'] = defaultEmployeeId;
+    cart['extra']['permission_edit_sale_price'] = $('.select-sales-persons a[data-value="'+defaultEmployeeId+'"]').data('permission_edit_sale_price');
     localStorage.setItem("cart", JSON.stringify(cart));
     //Set Item tier after selection
     $('.select-sales-persons a').on('click', function(e) {

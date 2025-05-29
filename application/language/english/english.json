@@ -3097,5 +3097,7 @@
     "work_orders_new_work_order_checkbox": "Work orders new work order checkbox",
     "work_orders_group_name": "Work orders group name",
     "work_orders_sort_order": "Work orders sort order",
-    "sort": "Sort"
+    "sort": "Sort",
+    "customers_duplicate_exists": "Customers duplicate exists",
+    "complete": "Complete"
 }

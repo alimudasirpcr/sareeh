@@ -1817,7 +1817,7 @@ $(document).ready(function() {
 
 
     <!-- Modal -->
-    <div class="modal fade" id="choose_location_modal" tabindex="-1" role="dialog" aria-labelledby="chooseLocation"
+    <div class="modal fade m-0" id="choose_location_modal" tabindex="-1" role="dialog" aria-labelledby="chooseLocation"
         data-keyboard="false" data-backdrop="static">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
