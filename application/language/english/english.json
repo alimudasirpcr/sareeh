@@ -3099,5 +3099,13 @@
     "work_orders_sort_order": "Work orders sort order",
     "sort": "Sort",
     "customers_duplicate_exists": "Customers duplicate exists",
-    "complete": "Complete"
+    "complete": "Complete",
+    "added_note": "Added note",
+    "custom_field": "Custom field",
+    "dropdown": "Dropdown",
+    "checkbox": "Checkbox",
+    "image": "Image",
+    "show_on_receipt": "Show on receipt",
+    "hide_field_label": "Hide field label",
+    "required": "Required"
 }

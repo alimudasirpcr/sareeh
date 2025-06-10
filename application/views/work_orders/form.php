@@ -1676,7 +1676,7 @@
                                         <!--begin::Heading-->
                                         <div class="menu-item px-3">
                                             <div class="menu-content text-muted pb-2 px-3 fs-7 text-uppercase">
-                                                Payments
+                                            <?php echo lang('notes')?>
                                             </div>
                                         </div>
                                         <!--end::Heading-->

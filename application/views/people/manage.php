@@ -1,10 +1,44 @@
 <?php $this->load->view("partial/header"); ?>
 <script type="text/javascript">
-	
+
+const BootboxLoader = (function () {
+  let dialog = null;
+
+  return {
+    open: function (message = 'Loading...') {
+      if (dialog) return; // prevent multiple dialogs
+      dialog = bootbox.dialog({
+        message: `<div class="text-center"><img src="<?= base_url() ?>assets/css_good/combined_loop.gif" alt="Loading..." class="me-2" style="height: 20px;"><span class="bootbox-loader-message">${message}</span></div>`,
+        closeButton: false,
+        onEscape: false,
+        backdrop: true
+      });
+    },
+
+    update: function (message) {
+      if (dialog) {
+        dialog.find('.bootbox-loader-message').html(message);
+      }
+    },
+
+    close: function () {
+      if (dialog) {
+        dialog.modal('hide');
+        dialog = null;
+      }
+    }
+  };
+})();
+
 	function reload_people_table()
-	{
+	{ 
+		BootboxLoader.open('<?= lang('please_wait') ?>...');
 		clearSelections();
-		$("#table_holder").load(<?php echo json_encode(site_url("$controller_name/reload_table")); ?>);
+
+		$("#table_holder").load(<?php echo json_encode(site_url("$controller_name/reload_table")); ?>, function() {
+        // This callback runs after the AJAX content is fully loaded
+        BootboxLoader.close();
+    });
 	}
 	
 	

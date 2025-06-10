@@ -5472,12 +5472,25 @@ updateOnlineStatus();
         }
 
         //F4
-        if (mycode == 115) {
-            event.preventDefault();
-            $("#finish_sale_alternate_button").click();
-            $("#finish_sale_button").click();
-            return;
-        }
+        if (mycode == 115 || mycode==13 ) {
+           
+           if ($('.modal:visible').length > 0) {
+               console.log('modal:visible');
+               var $confirmButton = $('.bootbox .btn[data-bb-handler="confirm"]:visible');
+
+                   if ($confirmButton.length > 0) {
+                   
+                       // Trigger the confirm (OK) button in the modal
+                       $confirmButton.click();
+                       return;
+                   }
+           } else {
+               // No modal open, proceed to finish sale
+               event.preventDefault();
+               $("#finish_sale_button").click();
+               return;
+           }
+       }
 
         //F9
         if (mycode == 120) {
@@ -5503,10 +5516,24 @@ updateOnlineStatus();
 
         //ESC
         if (mycode == 27) {
-            event.preventDefault();
-            $("#cancel_sale_button").click();
-            return;
-        }
+
+            if ($('.modal:visible').length > 0) {
+                    console.log('modal:visible');
+                    var $confirmButton = $('.close[data-dismiss="modal"]:visible');
+
+                        if ($confirmButton.length > 0) {
+                        
+                            // Trigger the confirm (OK) button in the modal
+                            $confirmButton.click();
+                            return;
+                        }
+                }else{
+                    event.preventDefault();
+                    $("#cancel_sale_button").click();
+                    return;
+                }
+
+            }
 
            //  + 
            if (mycode == 187 || mycode ==107) {
