@@ -3803,66 +3803,84 @@ return $result;
 				$secondary_supplier_join = null;
 				$secondary_supplier_where = null;
 
-				if($supplier_id){
-					$secondary_supplier_join = ' left join `phppos_items_secondary_suppliers` on `phppos_items_secondary_suppliers`.`item_id` = `phppos_items`.`item_id` ';
-					$secondary_supplier_where = ' AND ( `phppos_items`.`supplier_id` = '.$supplier_id.' OR `phppos_items_secondary_suppliers`.`supplier_id` = '.$supplier_id.' ) ';
+				if ($supplier_id) {
+					$secondary_supplier_join = ' LEFT JOIN `phppos_items_secondary_suppliers` ON `phppos_items_secondary_suppliers`.`item_id` = `phppos_items`.`item_id` ';
+					$secondary_supplier_where = ' AND (`phppos_items`.`supplier_id` = '.$supplier_id.' OR `phppos_items_secondary_suppliers`.`supplier_id` = '.$supplier_id.') ';
 				}
 
-				$hide_inactive_sql_snippet = $hide_inactive? 'AND `item_inactive` = 0' : '';
+				$hide_inactive_sql_snippet = $hide_inactive ? 'AND `item_inactive` = 0' : '';
+
 				$sql = <<<SQL
-				select
-					ta.*
-					,IF(SUM(IF(variation_deleted = 0, 1, 0)) > 0,
+				SELECT
+					ta.*,
+					IF(SUM(IF(variation_deleted = 0, 1, 0)) > 0,
 						SUM(IF(variation_deleted = 0, `phppos_location_item_variations`.`quantity`, 0)),
 						`phppos_location_items`.`quantity`) AS quantity
-				from
-					(select
-						`phppos_items`.`item_id`, `phppos_item_variations`.`id` AS item_variation_id, 
-						`phppos_items_serial_numbers`.`serial_number` AS serial_number,
-						`phppos_items_serial_numbers`.`is_sold` AS is_sold,
-						`phppos_items_serial_numbers`.`replace_sale_date` AS replace_sale_date,
-						`phppos_items_serial_numbers`.`warranty_start` AS warranty_start,
-						`phppos_items_serial_numbers`.`warranty_end` AS warranty_end,
-						`phppos_items_serial_numbers`.`sold_warranty_end` AS sold_warranty_end,
-						`phppos_items_serial_numbers`.`sold_warranty_start` AS sold_warranty_start,
-						`phppos_item_variations`.`deleted` AS variation_deleted, (CASE WHEN `phppos_item_variations`.`supplier_id` THEN `phppos_item_variations`.`supplier_id` ELSE `phppos_items`.`supplier_id` END) AS supplier_id,
+				FROM (
+					SELECT
+						`phppos_items`.`item_id`,
+						`phppos_item_variations`.`id` AS item_variation_id,
+						`phppos_items_serial_numbers`.`serial_number`,
+						`phppos_items_serial_numbers`.`is_sold`,
+						`phppos_items_serial_numbers`.`replace_sale_date`,
+						`phppos_items_serial_numbers`.`warranty_start`,
+						`phppos_items_serial_numbers`.`warranty_end`,
+						`phppos_items_serial_numbers`.`sold_warranty_end`,
+						`phppos_items_serial_numbers`.`sold_warranty_start`,
+						`phppos_item_variations`.`deleted` AS variation_deleted,
+						(CASE 
+							WHEN `phppos_item_variations`.`supplier_id` 
+							THEN `phppos_item_variations`.`supplier_id` 
+							ELSE `phppos_items`.`supplier_id` 
+						END) AS supplier_id,
 						`phppos_items`.`item_number`,
 						`phppos_items`.`override_default_tax`,
 						`phppos_items`.`tax_included`,
-						`phppos_items`.`unit_price`, 
+						`phppos_items`.`unit_price`,
 						`phppos_items`.`cost_price`,
-						`phppos_items`.`size`,`phppos_items`.`name`,
-						`phppos_items`.`main_image_id` as image_id,
+						`phppos_items`.`size`,
+						`phppos_items`.`name`,
+						`phppos_items`.`main_image_id` AS image_id,
 						`phppos_categories`.`name` AS category
-						
-					from `phppos_items`
-					LEFT JOIN `phppos_item_variations` ON `phppos_items`.`item_id` = `phppos_item_variations`.`item_id`
-					LEFT JOIN `phppos_categories` ON `phppos_categories`.`id` = `phppos_items`.`category_id`
-					LEFT JOIN `phppos_items_serial_numbers` ON `phppos_items_serial_numbers`.`item_id` = `phppos_items`.`item_id` AND (`phppos_items_serial_numbers`.`serial_number` LIKE  ? ESCAPE '!')
+					FROM `phppos_items`
+					LEFT JOIN `phppos_item_variations` 
+						ON `phppos_items`.`item_id` = `phppos_item_variations`.`item_id`
+					LEFT JOIN `phppos_categories` 
+						ON `phppos_categories`.`id` = `phppos_items`.`category_id`
+					LEFT JOIN `phppos_items_serial_numbers` 
+						ON `phppos_items_serial_numbers`.`item_id` = `phppos_items`.`item_id`
 					$secondary_supplier_join
 					WHERE
-					`phppos_items`.`deleted` = 0
-							AND `phppos_items`.`system_item` = 0
-							$hide_inactive_sql_snippet
-							AND (`phppos_items`.`name` LIKE ? ESCAPE '!' OR `phppos_item_variations`.`name` LIKE ? ESCAPE '!' OR `phppos_items_serial_numbers`.`serial_number` LIKE ? ESCAPE '!')
-							$secondary_supplier_where
-							GROUP by `phppos_items_serial_numbers`.`serial_number`
-					order by `phppos_items`.`item_id`, `phppos_item_variations`.`id`
-					) ta
-				LEFT JOIN `phppos_location_item_variations` ON `phppos_location_item_variations`.`item_variation_id` =  ta.item_variation_id AND `phppos_location_item_variations`.`location_id` = $current_location
-				LEFT JOIN `phppos_location_items` ON `phppos_location_items`.`item_id` = ta.item_id AND `phppos_location_items`.`location_id` = $current_location
+						`phppos_items`.`deleted` = 0
+						AND `phppos_items`.`system_item` = 0
+						$hide_inactive_sql_snippet
+						AND (
+							`phppos_items`.`name` LIKE ? ESCAPE '!'
+							OR `phppos_item_variations`.`name` LIKE ? ESCAPE '!'
+							OR `phppos_items_serial_numbers`.`serial_number` LIKE ? ESCAPE '!'
+						)
+						$secondary_supplier_where
+					GROUP BY `phppos_items`.`item_id`, `phppos_item_variations`.`id`
+					ORDER BY `phppos_items`.`item_id`, `phppos_item_variations`.`id`
+				) ta
+				LEFT JOIN `phppos_location_item_variations` 
+					ON `phppos_location_item_variations`.`item_variation_id` = ta.item_variation_id 
+					AND `phppos_location_item_variations`.`location_id` = $current_location
+				LEFT JOIN `phppos_location_items` 
+					ON `phppos_location_items`.`item_id` = ta.item_id 
+					AND `phppos_location_items`.`location_id` = $current_location
 				GROUP BY ta.item_id, ta.item_variation_id
 				ORDER BY ta.variation_deleted
 				LIMIT ?
 				SQL;
 
 				$wrap_like = $this->config->item('speed_up_search_queries') ? $search.'%' : '%'.$search.'%';
-				
-				$by_name = $this->db->query($sql, array($wrap_like,$wrap_like,$wrap_like,$wrap_like, $limit));
+
+				$by_name = $this->db->query($sql, array($wrap_like, $wrap_like, $wrap_like, $limit));
 				
 			}
 
-			echo $this->db->last_query();
+			
 
 			$temp_suggestions = array();
 			
