@@ -3117,5 +3117,16 @@
     "deliveries_expected_delivery": "Deliveries expected delivery",
     "deliveries_expected_pick_up": "Deliveries expected pick up",
     "deliveries_delivery_comment": "Deliveries delivery comment",
-    "delivery_cancel_delivery": "Delivery cancel delivery"
+    "delivery_cancel_delivery": "Delivery cancel delivery",
+    "clock_out": "Clock out",
+    "confirm_timeclock_logout": "Confirm timeclock logout",
+    "clock_in": "Clock in",
+    "reports_hours": "Reports hours",
+    "clock_in_comment": "Clock in comment",
+    "clock_out_comment": "Clock out comment",
+    "reports_ip_address_clock_in": "Reports ip address clock in",
+    "reports_ip_address_clock_out": "Reports ip address clock out",
+    "reports_detailed_timeclock_report": "Reports detailed timeclock report",
+    "login_swich_user_success": "Login swich user success",
+    "reports_not_clocked_out": "Reports not clocked out"
 }

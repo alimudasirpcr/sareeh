@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="panel">
+			<div class="card">
 				<div class="card-body">
 					
 					<?php
