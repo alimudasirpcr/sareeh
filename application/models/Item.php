@@ -3862,7 +3862,7 @@ return $result;
 				
 			}
 
-
+			echo $this->db->last_query();
 
 			$temp_suggestions = array();
 			
