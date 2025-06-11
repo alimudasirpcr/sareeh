@@ -2089,7 +2089,7 @@ $this->load->view("partial/offline_header"); ?>
                                             <!--end::Menu item-->
 
                                             <!--begin::Menu item-->
-                                            <div class="menu-item px-3">
+                                            <div class="menu-item px-3 d-none">
 
 
                                                 <a href="<?= base_url(); ?>sales/view_delivery_modal/" class="menu-link px-3 "
@@ -2102,7 +2102,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                            <div class="menu-item px-3">
+                                            <div class="menu-item px-3 d-none">
                                                 <a href="<?= base_url(); ?>customers/redeem_series/{{customer.person_id}}" id="redeem_series"
                                                     class="menu-link px-3" title="Redeem Series"><i
                                                         class="ion-ios-compose-outline"></i><?= lang('Redeem_Series'); ?></a>

@@ -3107,5 +3107,15 @@
     "image": "Image",
     "show_on_receipt": "Show on receipt",
     "hide_field_label": "Hide field label",
-    "required": "Required"
+    "required": "Required",
+    "delivery_fee": "Delivery fee",
+    "deliveries_delivery_method": "Deliveries delivery method",
+    "delivery_address": "Delivery address",
+    "deliveries_delivery_fees": "Deliveries delivery fees",
+    "deliveries_in_store_pickup": "Deliveries in store pickup",
+    "deliveries_expected_processing": "Deliveries expected processing",
+    "deliveries_expected_delivery": "Deliveries expected delivery",
+    "deliveries_expected_pick_up": "Deliveries expected pick up",
+    "deliveries_delivery_comment": "Deliveries delivery comment",
+    "delivery_cancel_delivery": "Delivery cancel delivery"
 }
