@@ -2088,7 +2088,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                             <!--end::Menu item-->
 
-                                            <!--begin::Menu item ft-->
+                                            <!--begin::Menu item ftd-->
                                             <div class="menu-item px-3 d-none">
 
 
