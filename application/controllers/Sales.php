@@ -409,7 +409,7 @@ class Sales extends Secure_area
 				$total_payment_subtractions = $this->Register->get_total_payment_subtractions($register_log_id);
 				$closeout_amounts = $this->Register->get_closeout_amounts($register_log_id, $payment_sales);
 			}
-
+			$continueUrl = rtrim($continueUrl, '?');
 			$this->load->view('sales/closing_amount', array(
 				'continue' => $continueUrl ? "?continue=$continueUrl" : '',
 				'open_amounts' => $open_amounts,
@@ -459,7 +459,7 @@ class Sales extends Secure_area
 				$total_payment_subtractions = $this->Register->get_total_payment_subtractions($register_log_id);
 				$closeout_amounts = $this->Register->get_closing_amounts($register_log_id);
 			}
-
+			$continueUrl = rtrim($continueUrl, '?');
 			$this->load->view('sales/closing_amount', array(
 				'continue' => $continueUrl ? "?continue=$continueUrl" : '',
 				'open_amounts' => $open_amounts,
