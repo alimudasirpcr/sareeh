@@ -12,6 +12,7 @@ class Login extends MY_Controller
 	function __construct()
 	{
 		parent::__construct();
+
 		$this->lang->load('login');
 		$this->load->helper('cloud');
 	}
@@ -54,7 +55,7 @@ class Login extends MY_Controller
 
 			
 			
-			$this->form_validation->set_rules('username', 'lang:login_username', 'required');
+			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_employee_location_check|callback_login_check');
 			$this->form_validation->set_message('required', lang('login_invalid_username_and_password'));
     	   $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			if($this->form_validation->run() == FALSE)
@@ -171,6 +172,8 @@ class Login extends MY_Controller
 		
 	function login_check($username)
 	{
+
+		dd('login_check');
 		$this->load->helper('update');
 		if (is_on_phppos_host())
 		{
@@ -181,7 +184,6 @@ class Login extends MY_Controller
 				//If we are not cancelled within 5 days; block login
 				if (!is_subscription_cancelled_within_grace_period($site_db))
 				{
-					dd('login_invalid_username_and_password');
 					$this->form_validation->set_message('login_check', lang('login_invalid_username_and_password'));
 					return false;
 				}
@@ -197,12 +199,10 @@ class Login extends MY_Controller
 		{
 			if ($this->Employee->login_failed_time_period($username,$password))
 			{
-				dd('login_you_are_not_allowed_to_login_at_this_time');
 				$this->form_validation->set_message('login_check', lang('login_you_are_not_allowed_to_login_at_this_time'));
 			}
 			else
 			{
-				dd('login_invalid_username_and_password');
 				$this->form_validation->set_message('login_check', lang('login_invalid_username_and_password'));
 			}
 			
@@ -215,6 +215,8 @@ class Login extends MY_Controller
 	
 	function employee_location_check($username)
 	{		
+
+		dd('employee_location_check');
 		$employee_id = $this->Employee->get_employee_id($username);
 		
 		if ($employee_id)
@@ -223,7 +225,6 @@ class Login extends MY_Controller
 
 			if ($employee_location_count < 1)
 			{
-				dd('login_employee_is_not_assigned_to_any_locations');
 				$this->form_validation->set_message('employee_location_check', lang('login_employee_is_not_assigned_to_any_locations'));
 				return false;
 			}
