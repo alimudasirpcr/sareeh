@@ -46,6 +46,7 @@ class Login extends MY_Controller
 		
 		if($this->Employee->is_logged_in())
 		{
+			dd("i am exit");
 			redirect('home');
 		}
 		else
@@ -59,7 +60,7 @@ class Login extends MY_Controller
 			if($this->form_validation->run() == FALSE)
 			{
 
-				dd("i am exit");
+				
 				
 				//Only set the username when we have a non false value (not '' or FALSE)
 				if ($this->input->post('username'))
