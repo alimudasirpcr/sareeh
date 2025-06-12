@@ -58,6 +58,8 @@ class Login extends MY_Controller
     	   $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			if($this->form_validation->run() == FALSE)
 			{
+
+				dd("i am exit");
 				
 				//Only set the username when we have a non false value (not '' or FALSE)
 				if ($this->input->post('username'))
