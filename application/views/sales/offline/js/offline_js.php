@@ -137,14 +137,17 @@ async function handleFinishSaleStore(e = null) {
 
         $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
             offline_sales: JSON.stringify([sale]),
+            preview: 'true',
         }, function(response) {
             BootboxLoader.close();
             if (response.success) {
              
                 let firstSaleId = response.sale_ids[0];
-             
-    
-                displayReceipt(firstSaleId);
+                $("#print_receipt_holder").html(response.preview);
+                $("#print_receipt_holder").show();
+                $('#print_modal').modal('show');
+                $("#sales_page_holder").hide();
+                // displayReceipt(firstSaleId);
               
                 cart = {
                     items: [],
@@ -1912,13 +1915,18 @@ async function handleFinishSale(e = null) {
         BootboxLoader.open('<?= lang('please_wait_sales_are_syncing') ?>...');
         $.post('<?php echo site_url("sales/sync_offline_sales"); ?>', {
             offline_sales: JSON.stringify([sale]),
+            preview: 'true',
         }, function(response) {
             BootboxLoader.close();
             if (response.success) {
               
                 let firstSaleId = response.sale_ids[0];
               
-                displayReceipt(firstSaleId);
+                // displayReceipt(firstSaleId);
+                $("#print_receipt_holder").html(response.preview);
+                $("#print_receipt_holder").show();
+                $('#print_modal').modal('show');
+                $("#sales_page_holder").hide();
                 cart = {
                     items: [],
                     payments: [],
