@@ -216,7 +216,7 @@ class Login extends MY_Controller
 	function employee_location_check($username)
 	{		
 
-		dd('employee_location_check');
+	
 		$employee_id = $this->Employee->get_employee_id($username);
 		
 		if ($employee_id)
@@ -229,7 +229,7 @@ class Login extends MY_Controller
 				return false;
 			}
 		}
-		
+		dd('true');
 		//Didn't find an employee, we can pass validation
 		return true;
 	}
