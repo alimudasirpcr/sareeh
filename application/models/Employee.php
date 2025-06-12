@@ -1147,7 +1147,7 @@ class Employee extends Person
 		if($this->session->userdata('person_id')!=false){
 			//now check in db
 
-			dd("i am exit");
+			
 			if($this->exists($this->session->userdata('person_id'))){
 				return $this->login_failed_time_period_via_id($this->session->userdata('person_id'));
 			}else{
