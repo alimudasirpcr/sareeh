@@ -196,10 +196,12 @@ class Login extends MY_Controller
 		{
 			if ($this->Employee->login_failed_time_period($username,$password))
 			{
+				dd("one");
 				$this->form_validation->set_message('login_check', lang('login_you_are_not_allowed_to_login_at_this_time'));
 			}
 			else
 			{
+				dd("two");
 				$this->form_validation->set_message('login_check', lang('login_invalid_username_and_password'));
 			}
 			
