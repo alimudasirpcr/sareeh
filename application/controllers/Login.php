@@ -13,7 +13,7 @@ class Login extends MY_Controller
 	{
 		parent::__construct();
 		
-		if(isset($_GET['continue'])){
+		if(isset($_GET['continue']) && $_GET['continue'] != ''){
 			dd($_GET);
 		}
 		$this->lang->load('login');
