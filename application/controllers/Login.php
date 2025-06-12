@@ -210,7 +210,6 @@ class Login extends MY_Controller
 		}
 		$this->load->model('License_lib');
 		$res = $this->License_lib->check_license();
-		
 		return true;		
 	}
 	
