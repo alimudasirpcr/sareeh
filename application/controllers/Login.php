@@ -132,6 +132,7 @@ class Login extends MY_Controller
 			}
 			else
 			{
+				echo $this->session->userdata('person_id'); 
 				
 				$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
 				dd( $logged_in_employee_info);
