@@ -134,7 +134,7 @@ class Login extends MY_Controller
 			{
 				
 				$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
-				
+				dd( $logged_in_employee_info);
 				if ($logged_in_employee_info->force_password_change)
 				{
 					$this->Employee->logout(false);
