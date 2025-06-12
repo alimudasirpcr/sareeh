@@ -18,7 +18,14 @@ class Secure_area extends MY_Controller
        
 		if(!$this->Employee->is_logged_in()) {
 			dd("not log");
-			redirect('login?continue='.rawurlencode(uri_string().'?'.$_SERVER['QUERY_STRING']));
+
+			$query_string = $_SERVER['QUERY_STRING'];
+			if($query_string){
+				redirect('login?continue='.rawurlencode(uri_string().'?'.$_SERVER['QUERY_STRING']));
+			}else{
+				redirect('login?continue='.rawurlencode(uri_string()));
+			}
+			
 		}else{
 			$employee = $this->Employee->get_info($this->session->userdata('person_id'));
 
