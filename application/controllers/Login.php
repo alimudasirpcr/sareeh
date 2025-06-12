@@ -54,7 +54,7 @@ class Login extends MY_Controller
 
 			
 			
-			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_employee_location_check|callback_login_check');
+			$this->form_validation->set_rules('username', 'lang:login_username', 'required');
 			$this->form_validation->set_message('required', lang('login_invalid_username_and_password'));
     	   $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			if($this->form_validation->run() == FALSE)
