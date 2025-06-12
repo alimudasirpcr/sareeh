@@ -173,7 +173,7 @@ class Login extends MY_Controller
 	function login_check($username)
 	{
 
-		dd('login_check');
+		
 		$this->load->helper('update');
 		if (is_on_phppos_host())
 		{
@@ -210,6 +210,7 @@ class Login extends MY_Controller
 		}
 		$this->load->model('License_lib');
 		$res = $this->License_lib->check_license();
+		dd('login_check true');
 		return true;		
 	}
 	
