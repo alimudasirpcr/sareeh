@@ -154,7 +154,7 @@ class Login extends MY_Controller
 
 						session_regenerate_id();
 						$number_of_locations = count($this->Employee->get_authenticated_location_ids($logged_in_employee_info->person_id));
-						
+						dd("i am fine i am loggedin ");
 						if ($this->input->get('continue'))
 						{
 							$continue = rtrim($this->input->get('continue'),'?');
@@ -210,7 +210,7 @@ class Login extends MY_Controller
 		}
 		$this->load->model('License_lib');
 		$res = $this->License_lib->check_license();
-		dd('login_check true');
+		
 		return true;		
 	}
 	
