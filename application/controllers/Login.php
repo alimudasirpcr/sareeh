@@ -181,6 +181,7 @@ class Login extends MY_Controller
 				//If we are not cancelled within 5 days; block login
 				if (!is_subscription_cancelled_within_grace_period($site_db))
 				{
+					dd('login_invalid_username_and_password');
 					$this->form_validation->set_message('login_check', lang('login_invalid_username_and_password'));
 					return false;
 				}
@@ -196,12 +197,12 @@ class Login extends MY_Controller
 		{
 			if ($this->Employee->login_failed_time_period($username,$password))
 			{
-				dd("one");
+				dd('login_you_are_not_allowed_to_login_at_this_time');
 				$this->form_validation->set_message('login_check', lang('login_you_are_not_allowed_to_login_at_this_time'));
 			}
 			else
 			{
-				dd("two");
+				dd('login_invalid_username_and_password');
 				$this->form_validation->set_message('login_check', lang('login_invalid_username_and_password'));
 			}
 			
@@ -222,6 +223,7 @@ class Login extends MY_Controller
 
 			if ($employee_location_count < 1)
 			{
+				dd('login_employee_is_not_assigned_to_any_locations');
 				$this->form_validation->set_message('employee_location_check', lang('login_employee_is_not_assigned_to_any_locations'));
 				return false;
 			}
