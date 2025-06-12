@@ -46,7 +46,7 @@ class Login extends MY_Controller
 		
 		if($this->Employee->is_logged_in())
 		{
-			dd("i am exit");
+			
 			redirect('home');
 		}
 		else
