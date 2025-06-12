@@ -9418,7 +9418,7 @@ class Sales extends Secure_area
 	{
 
 		$get_preview =false;
-		if(isset($_POST['preview'])  && $_POST['preview'] == 'true') {
+		if(isset($_POST['preview'])  && $_GET['preview'] == 'true') {
 			$get_preview =true;
 		}
 
