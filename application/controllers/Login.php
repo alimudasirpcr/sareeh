@@ -229,7 +229,7 @@ class Login extends MY_Controller
 				return false;
 			}
 		}
-		dd('true');
+		
 		//Didn't find an employee, we can pass validation
 		return true;
 	}
