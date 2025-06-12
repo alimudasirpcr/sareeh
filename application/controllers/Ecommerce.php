@@ -11,9 +11,7 @@ class Ecommerce extends MY_Controller
 				$this->load->model('Location');
 				if(!$this->Employee->is_logged_in())
 				{
-					$query_string = $_SERVER['QUERY_STRING'];
-					$continue = uri_string() . ($query_string ? '?' . $query_string : '');
-					redirect('login?continue=' . rawurlencode($continue));
+					redirect('login?continue='.rawurlencode(uri_string().'?'.$_SERVER['QUERY_STRING']));
 				}
 		
 				if(!$this->Employee->has_module_permission('config',$this->Employee->get_logged_in_employee_info()->person_id))

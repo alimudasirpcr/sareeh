@@ -17,10 +17,7 @@ class Secure_area extends MY_Controller
 		$this->load->model('Location');
        
 		if(!$this->Employee->is_logged_in()) {
-			$query_string = $_SERVER['QUERY_STRING']; // No built-in CI method for this
-			$uri = uri_string();
-			$continue = $query_string ? "$uri?$query_string" : $uri;
-			redirect('login?continue=' . rawurlencode($continue));
+			redirect('login?continue='.rawurlencode(uri_string().'?'.$_SERVER['QUERY_STRING']));
 		}else{
 			$employee = $this->Employee->get_info($this->session->userdata('person_id'));
 
