@@ -12,6 +12,10 @@ class Login extends MY_Controller
 	function __construct()
 	{
 		parent::__construct();
+		
+		if(isset($_GET['continue'])){
+			dd("i am exit");
+		}
 		$this->lang->load('login');
 		$this->load->helper('cloud');
 	}
