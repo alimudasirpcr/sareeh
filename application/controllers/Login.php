@@ -132,10 +132,9 @@ class Login extends MY_Controller
 			}
 			else
 			{
-				echo $this->session->userdata('person_id'); 
 				
 				$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
-				dd( $logged_in_employee_info);
+				
 				if ($logged_in_employee_info->force_password_change)
 				{
 					$this->Employee->logout(false);
@@ -155,7 +154,7 @@ class Login extends MY_Controller
 
 						session_regenerate_id();
 						$number_of_locations = count($this->Employee->get_authenticated_location_ids($logged_in_employee_info->person_id));
-						dd("i am fine i am loggedin ");
+						
 						if ($this->input->get('continue'))
 						{
 							$continue = rtrim($this->input->get('continue'),'?');
@@ -174,7 +173,6 @@ class Login extends MY_Controller
 	function login_check($username)
 	{
 
-		
 		$this->load->helper('update');
 		if (is_on_phppos_host())
 		{
