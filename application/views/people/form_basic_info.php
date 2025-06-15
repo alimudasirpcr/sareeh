@@ -5,14 +5,14 @@
             <label class="fs-6 fw-semibold mb-2">
                 <span> <?php echo lang('Update_Avatar'); ?></span>
 
-                <?php $avatar = base_url().'assets/img/avatar.png'; 
+                <?php $avatar = base_url() . 'assets/img/avatar.png';
 
-                    if($person_info->image_id){
-                        $avatar =  cacheable_app_file_url($person_info->image_id);
-                    }
-                    
-                    
-                    ?>
+                if ($person_info->image_id) {
+                    $avatar =  cacheable_app_file_url($person_info->image_id);
+                }
+
+
+                ?>
 
                 <span class="ms-1" data-bs-toggle="tooltip" aria-label="Allowed file types: png, jpg, jpeg."
                     data-bs-original-title="Allowed file types: png, jpg, jpeg." data-kt-initialized="1">
@@ -25,13 +25,13 @@
             <div class="mt-1">
                 <!--begin::Image input placeholder-->
                 <style>
-                .image-input-placeholder {
-                    background-image: url('<?= $avatar ?>');
-                }
+                    .image-input-placeholder {
+                        background-image: url('<?= $avatar ?>');
+                    }
 
-                [data-bs-theme="dark"] .image-input-placeholder {
-                    background-image: url('<?= $avatar ?>');
-                }
+                    [data-bs-theme="dark"] .image-input-placeholder {
+                        background-image: url('<?= $avatar ?>');
+                    }
                 </style>
                 <!--end::Image input placeholder-->
 
@@ -66,23 +66,23 @@
 
 
 
-                    <?php if($person_info->image_id) {  ?>
-                    <div class="my-3">
-                        <div class="form-check">
+                    <?php if ($person_info->image_id) {  ?>
+                        <div class="my-3">
+                            <div class="form-check">
 
-                            <label class="form-check-label" for="flexCheckChecked">
-                                <?php echo form_label(lang('del_image'))?></label>
-                            <?php echo form_checkbox(array(
-			'name'=>'del_image',
-			'id'=>'del_image ',
-			'class'=>'delete-checkbox form-check-input', 
-			'value'=>1
-		));
-		echo '<label for="del_image"><span></span></label> ';
-		
-		?>
+                                <label class="form-check-label" for="flexCheckChecked">
+                                    <?php echo form_label(lang('del_image')) ?></label>
+                                <?php echo form_checkbox(array(
+                                    'name' => 'del_image',
+                                    'id' => 'del_image ',
+                                    'class' => 'delete-checkbox form-check-input',
+                                    'value' => 1
+                                ));
+                                echo '<label for="del_image"><span></span></label> ';
+
+                                ?>
+                            </div>
                         </div>
-                    </div>
                     <?php }  ?>
 
 
@@ -99,65 +99,91 @@
             <div class="">
                 <div class="mb-10">
                     <div class="form-check">
-                        <?php  
-						$title_list = $this->Person->get_titles()->result_array();
+                        <?php
+                        $title_list = $this->Person->get_titles()->result_array();
 
-						$titles = array( "0" => "" );
+                        $titles = array("0" => "");
 
-						foreach( $title_list as $index => $title ){
-							if($index <= 11){
-								$titles[$title['id']] =  lang($title['name']);
-							}else{
-								$titles[$title['id']] =  $title['name'];
-							}
-						}
+                        foreach ($title_list as $index => $title) {
+                            if ($index <= 11) {
+                                $titles[$title['id']] =  lang($title['name']);
+                            } else {
+                                $titles[$title['id']] =  $title['name'];
+                            }
+                        }
 
-						// $titles["-1"] = lang('add')."...";
-						?>
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			$required = ($controller_name == "suppliers") ? "" : "required";
-			echo form_label(lang('first_name'))?></label>
+                        // $titles["-1"] = lang('add')."...";
+                        ?>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
+                                                                                $required = ($controller_name == "suppliers") ? "" : "required";
+                                                                                echo form_label(lang('first_name')) ?></label>
 
-<?php
+                        <?php
 
-$full_name = $person_info->full_name;
-
-
-$name_parts = explode(' ', $full_name);
-$first_name = isset($name_parts[0]) ? $name_parts[0] : '';
-$last_name = isset($name_parts[1]) ? $name_parts[1] : '';
+                        $full_name = $person_info->full_name;
 
 
-echo form_input(array(
-    'class' => 'form-control form-control-solid',
-    'name' => 'first_name',
-    'id' => 'first_name',
-    'value' => $first_name
-));
-                    
-                 
-  
-?>
+                        $name_parts = explode(' ', $full_name);
+                        $first_name = isset($name_parts[0]) ? $name_parts[0] : '';
+                        $last_name = isset($name_parts[1]) ? $name_parts[1] : '';
+
+
+                        echo form_input(array(
+                            'class' => 'form-control form-control-solid',
+                            'name' => 'first_name',
+                            'id' => 'first_name',
+                            'value' => $first_name
+                        ));
+
+
+
+                        ?>
                     </div>
-                    <?php if($this->config->item('enable_name_prefix')){?>
-                    <div style="margin-top:5px;">
-                        <a href="javascript:void(0);" style="text-transform: lowercase;"
-                            id="add_title"><?php echo lang('add').' '.lang('title'); ?></a>
-                    </div>
+                    <?php if ($this->config->item('enable_name_prefix')) { ?>
+                        <div style="margin-top:5px;">
+                            <a href="javascript:void(0);" style="text-transform: lowercase;"
+                                id="add_title"><?php echo lang('add') . ' ' . lang('title'); ?></a>
+                        </div>
                     <?php } ?>
                 </div>
                 <div class="mb-0">
                     <div class="form-check">
 
                         <label class="form-check-label" for="flexCheckChecked">
-                            <?php echo form_label(lang('last_name'))?></label>
-                        <?php echo form_input(array(
-				'class'=>'form-control form-control-solid',
-				'name'=>'last_name',
-				'id'=>'last_name',
-				'value'=>$last_name)
-			);?>
+                            <?php echo form_label(lang('last_name')) ?></label>
+                        <?php echo form_input(
+                            array(
+                                'class' => 'form-control form-control-solid',
+                                'name' => 'last_name',
+                                'id' => 'last_name',
+                                'value' => $last_name
+                            )
+                        ); ?>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <div class="mb-5">
+            <div class="">
+                <div class="mb-10">
+                    <div class="form-check">
+                        <?php echo form_label(lang('username') . ':', 'username', array('class' => 'form-label required')); ?>
+
+                        <?php echo form_input(array(
+                            'name' => 'username',
+                            'id' => 'username',
+                            'class' => 'form-control',
+                            'value' => $person_info->username
+
+                        )); ?>
+
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -167,28 +193,75 @@ echo form_input(array(
         <div class="mb-5">
             <div class="">
                 <div class="mb-10">
-                <div class="form-check">
-    <label class="form-check-label" for="email"> 
-   
-        <?php echo lang('email'); ?>
-    </label>
+                    <div class="form-check">
+                        <?php echo form_label(lang('password') . ':', 'password', array('class' => 'form-label')); ?>
 
-    <?php 
-    echo form_input(array(
-        'class' => 'form-control form-control-solid',
-        'name'  => 'email',
-        'id'    => 'email',
-        'type'  => 'text',
-        'value' => isset($person_info->email) ? $person_info->email : '' // Ensure it doesn't break if null
-    ));
-    ?>
-</div>
+                        <?php echo form_password(array(
+                            'name' => 'password',
+                            'id' => 'password',
+                            'class' => 'form-control',
+                            'autocomplete' => 'off',
+                        )); ?>
+                    </div>
 
 
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="mb-5">
+            <div class="">
+                <div class="mb-10">
+                    <div class="form-check">
+                        <?php echo form_label(lang('repeat_password') . ':', 'repeat_password', array('class' => 'form-label')); ?>
+
+                        <?php echo form_password(array(
+                            'name' => 'repeat_password',
+                            'id' => 'repeat_password',
+                            'class' => 'form-control',
+                            'autocomplete' => 'off',
+                        )); ?>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <div class="mb-5">
+            <div class="">
+                <div class="mb-10">
+                    <div class="form-check">
+                        <label class="form-check-label" for="email">
+
+                            <?php echo lang('email'); ?>
+                        </label>
+
+                        <?php
+                        echo form_input(array(
+                            'class' => 'form-control form-control-solid',
+                            'name'  => 'email',
+                            'id'    => 'email',
+                            'type'  => 'text',
+                            'value' => isset($person_info->email) ? $person_info->email : '' // Ensure it doesn't break if null
+                        ));
+                        ?>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="col-md-6">
         <div class="mb-5">
             <div class="">
@@ -198,12 +271,13 @@ echo form_input(array(
                     <div class="form-check">
 
                         <label class="form-check-label" for="flexCheckChecked">
-                            <?php echo form_label(lang('phone_number'))?></label>
+                            <?php echo form_label(lang('phone_number')) ?></label>
                         <?php echo form_input(array(
-				'class'=>'form-control form-control-solid',
-				'name'=>'phone_number',
-				'id'=>'phone_number',
-				'value'=>format_phone_number($person_info->phone_number)));?>
+                            'class' => 'form-control form-control-solid',
+                            'name' => 'phone_number',
+                            'id' => 'phone_number',
+                            'value' => format_phone_number($person_info->phone_number)
+                        )); ?>
                     </div>
                 </div>
             </div>
@@ -220,15 +294,16 @@ echo form_input(array(
                 <div class="mb-10">
                     <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('address_1'))?></label>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
+
+                                                                                echo form_label(lang('address_1')) ?></label>
 
                         <?php echo form_input(array(
-		'class'=>'form-control form-control-solid',
-		'name'=>'address_1',
-		'id'=>'address_1',
-		'value'=>$person_info->address_1));?>
+                            'class' => 'form-control form-control-solid',
+                            'name' => 'address_1',
+                            'id' => 'address_1',
+                            'value' => $person_info->address_1
+                        )); ?>
                     </div>
 
                 </div>
@@ -243,14 +318,15 @@ echo form_input(array(
                 <div class="mb-0">
                     <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('address_2'))?></label>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
+
+                                                                                echo form_label(lang('address_2')) ?></label>
                         <?php echo form_input(array(
-		'class'=>'form-control form-control-solid',
-		'name'=>'address_2',
-		'id'=>'address_2',
-		'value'=>$person_info->address_2));?>
+                            'class' => 'form-control form-control-solid',
+                            'name' => 'address_2',
+                            'id' => 'address_2',
+                            'value' => $person_info->address_2
+                        )); ?>
                     </div>
                 </div>
             </div>
@@ -265,29 +341,31 @@ echo form_input(array(
                 <div class="mb-10">
                     <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('city'))?></label>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
+
+                                                                                echo form_label(lang('city')) ?></label>
 
                         <?php echo form_input(array(
-		'class'=>'form-control form-control-solid ',
-		'name'=>'city',
-		'id'=>'city',
-		'value'=>$person_info->city));?>
+                            'class' => 'form-control form-control-solid ',
+                            'name' => 'city',
+                            'id' => 'city',
+                            'value' => $person_info->city
+                        )); ?>
                     </div>
 
                 </div>
                 <div class="mb-0">
                     <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('state'))?></label>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
+
+                                                                                echo form_label(lang('state')) ?></label>
                         <?php echo form_input(array(
-		'class'=>'form-control form-control-solid',
-		'name'=>'state',
-		'id'=>'state',
-		'value'=>$person_info->state));?>
+                            'class' => 'form-control form-control-solid',
+                            'name' => 'state',
+                            'id' => 'state',
+                            'value' => $person_info->state
+                        )); ?>
                     </div>
                 </div>
             </div>
@@ -300,29 +378,31 @@ echo form_input(array(
                 <div class="mb-10">
                     <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('zip'))?></label>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
+
+                                                                                echo form_label(lang('zip')) ?></label>
 
                         <?php echo form_input(array(
-		'class'=>'form-control form-control-solid',
-		'name'=>'zip',
-		'id'=>'zip',
-		'value'=>$person_info->zip));?>
+                            'class' => 'form-control form-control-solid',
+                            'name' => 'zip',
+                            'id' => 'zip',
+                            'value' => $person_info->zip
+                        )); ?>
                     </div>
 
                 </div>
                 <div class="mb-0">
                     <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-			
-			echo form_label(lang('country'))?></label>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
+
+                                                                                echo form_label(lang('country')) ?></label>
                         <?php echo form_input(array(
-		'class'=>'form-control form-control-solid',
-		'name'=>'country',
-		'id'=>'country',
-		'value'=>$person_info->country));?>
+                            'class' => 'form-control form-control-solid',
+                            'name' => 'country',
+                            'id' => 'country',
+                            'value' => $person_info->country
+                        )); ?>
                     </div>
                 </div>
             </div>
@@ -337,18 +417,20 @@ echo form_input(array(
                 <div class="mb-10">
                     <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-						
-						echo form_label(lang('comments'))?></label>
+                        <label class="form-check-label" for="flexCheckDefault"> <?php
 
-                        <?php echo form_textarea(array(
-					'name'=>'comments',
-					'id'=>'comments',
-					'class'=>'form-control form-control-solid text-area',
-					'value'=>$person_info->comments,
-					'rows'=>'5',
-					'cols'=>'17')		
-				);?>
+                                                                                echo form_label(lang('comments')) ?></label>
+
+                        <?php echo form_textarea(
+                            array(
+                                'name' => 'comments',
+                                'id' => 'comments',
+                                'class' => 'form-control form-control-solid text-area',
+                                'value' => $person_info->comments,
+                                'rows' => '5',
+                                'cols' => '17'
+                            )
+                        ); ?>
                     </div>
 
                 </div>
@@ -357,102 +439,146 @@ echo form_input(array(
         </div>
     </div>
 </div>
+
+<?php if (count($locations) == 1) { ?>
+	<?php
+	echo form_hidden('locations[]', current(array_keys($locations)));
+	?>
+<?php } else { ?>
+	<div class="d-flex flex-wrap gap-5">
+		<div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
+			<?php echo form_label(lang('locations') . ':', null, array('class' => ' form-label  required')); ?>
+
+			<ul id="locations_list" class="list-inline">
+				<?php
+				echo '<li class=" form-check form-check-custom form-check-solid">' . form_checkbox(
+					array(
+						'id' => 'select_all',
+						'class' => 'all_checkboxes form-check-input',
+						'name' => 'select_all',
+						'value' => '1',
+					)
+				) . '<label class="form-check-label"   for="select_all"><span></span><strong>' . lang('select_all') . '</strong></label></li>';
+
+				foreach ($locations_new as $location_id => $location) {
+					$checkbox_options = array(
+						'name' => 'locations[]',
+						'class' => 'location_checkboxes form-check-input',
+						'id' => 'locations' . $location_id,
+						'value' => $location_id,
+						'checked' => $location['has_access'],
+					);
+
+					if (!$location['can_assign_access']) {
+						$checkbox_options['disabled'] = 'disabled';
+
+						//Only send permission if checked
+						if ($checkbox_options['checked']) {
+							echo form_hidden('locations[]', $location_id);
+						}
+					}
+
+					echo '<li class=" form-check form-check-custom form-check-solid">' . form_checkbox($checkbox_options) . '<label class="form-check-label" for="locations' . $location_id . '"><span></span></label> ' . $location['name'] . '</li>';
+				}
+				?>
+			</ul>
+		</div>
+	</div>
+<?php } ?>
 
 <?php
-if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name != "login")
-{
-	$this->load->helper('mailchimp');
-	
-	$default_mailchimp_lists = array();
-		
-	if ($this->Location->get_info_for_key('default_mailchimp_lists'))
-	{
-		$default_mailchimp_lists =	unserialize($this->Location->get_info_for_key('default_mailchimp_lists'));
-	}
-	
-	if (!$default_mailchimp_lists)
-	{
-		$default_mailchimp_lists = array();								
-	}
-	
+if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name != "login") {
+    $this->load->helper('mailchimp');
+
+    $default_mailchimp_lists = array();
+
+    if ($this->Location->get_info_for_key('default_mailchimp_lists')) {
+        $default_mailchimp_lists =    unserialize($this->Location->get_info_for_key('default_mailchimp_lists'));
+    }
+
+    if (!$default_mailchimp_lists) {
+        $default_mailchimp_lists = array();
+    }
+
 ?>
-<div class="row">
-    <div class="col-md-6">
-        <div class="mb-5">
-            <div class=" ">
-                <div class="mb-10">
-                    <div class="form-check">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-5">
+                <div class=" ">
+                    <div class="mb-10">
+                        <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-						
-						echo form_label(lang('mailing_lists'))?></label>
+                            <label class="form-check-label" for="flexCheckDefault"> <?php
 
-                        <?php
-	foreach(get_all_mailchimps_lists() as $list)
-	{
-		echo '<li>';
-		echo form_checkbox(array('name'=> 'mailing_lists[]',
-		'id' => $list['id'],
-		'value' => $list['id'],
-		'checked' => $person_info->id ? email_subscribed_to_list($person_info->email, $list['id']) : in_array($list['id'],$default_mailchimp_lists),
-		'label'	=> $list['id']));
-		
-		echo '<label for="'.$list['id'].'"><span></span></label> '.$list['name'];
-		echo '</li>';
-	}
-	?>
+                                                                                    echo form_label(lang('mailing_lists')) ?></label>
+
+                            <?php
+                            foreach (get_all_mailchimps_lists() as $list) {
+                                echo '<li>';
+                                echo form_checkbox(array(
+                                    'name' => 'mailing_lists[]',
+                                    'id' => $list['id'],
+                                    'value' => $list['id'],
+                                    'checked' => $person_info->id ? email_subscribed_to_list($person_info->email, $list['id']) : in_array($list['id'], $default_mailchimp_lists),
+                                    'label'    => $list['id']
+                                ));
+
+                                echo '<label for="' . $list['id'] . '"><span></span></label> ' . $list['name'];
+                                echo '</li>';
+                            }
+                            ?>
+                        </div>
+
                     </div>
 
                 </div>
-
             </div>
         </div>
     </div>
-</div>
 
 <?php
 }
 ?>
 
 <?php
-if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name != "login" && 1==2)
-{
-	$this->load->helper('platformly');
+if ($this->Location->get_info_for_key('platformly_api_key') && $controller_name != "login" && 1 == 2) {
+    $this->load->helper('platformly');
 ?>
-<div class="row">
-    <div class="col-md-6">
-        <div class="mb-5">
-            <div class=" ">
-                <div class="mb-10">
-                    <div class="form-check">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-5">
+                <div class=" ">
+                    <div class="mb-10">
+                        <div class="form-check">
 
-                        <label class="form-check-label" for="flexCheckDefault"> <?php 
-						
-						echo form_label(lang('segments'))?></label>
+                            <label class="form-check-label" for="flexCheckDefault"> <?php
 
-                        <?php
-    
-                            foreach(get_all_platformly_segments() as $segment)
-                            {
+                                                                                    echo form_label(lang('segments')) ?></label>
+
+                            <?php
+
+                            foreach (get_all_platformly_segments() as $segment) {
                                 echo '<li>';
-                                echo form_checkbox(array('name'=> 'segments[]',
-                                'id' => $segment['id'],
-                                'value' => $segment['id'],
-                                'checked' => email_subscribed_to_segment($person_info->email, $segment['id']),
-                                'label'	=> $segment['id']));
-                                
-                                echo '<label for="'.$segment['id'].'"><span></span></label> '.$segment['name'];
+                                echo form_checkbox(array(
+                                    'name' => 'segments[]',
+                                    'id' => $segment['id'],
+                                    'value' => $segment['id'],
+                                    'checked' => email_subscribed_to_segment($person_info->email, $segment['id']),
+                                    'label'    => $segment['id']
+                                ));
+
+                                echo '<label for="' . $segment['id'] . '"><span></span></label> ' . $segment['name'];
                                 echo '</li>';
                             }
-                        ?>
+                            ?>
+                        </div>
+
                     </div>
 
                 </div>
-
             </div>
         </div>
     </div>
-</div>
 
 <?php
 }

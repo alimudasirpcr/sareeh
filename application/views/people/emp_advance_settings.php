@@ -234,51 +234,7 @@
 	</div>
 </div>
 
-<?php if (count($locations) == 1) { ?>
-	<?php
-	echo form_hidden('locations[]', current(array_keys($locations)));
-	?>
-<?php } else { ?>
-	<div class="d-flex flex-wrap gap-5">
-		<div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
-			<?php echo form_label(lang('locations') . ':', null, array('class' => ' form-label  required')); ?>
 
-			<ul id="locations_list" class="list-inline">
-				<?php
-				echo '<li class=" form-check form-check-custom form-check-solid">' . form_checkbox(
-					array(
-						'id' => 'select_all',
-						'class' => 'all_checkboxes form-check-input',
-						'name' => 'select_all',
-						'value' => '1',
-					)
-				) . '<label class="form-check-label"   for="select_all"><span></span><strong>' . lang('select_all') . '</strong></label></li>';
-
-				foreach ($locations_new as $location_id => $location) {
-					$checkbox_options = array(
-						'name' => 'locations[]',
-						'class' => 'location_checkboxes form-check-input',
-						'id' => 'locations' . $location_id,
-						'value' => $location_id,
-						'checked' => $location['has_access'],
-					);
-
-					if (!$location['can_assign_access']) {
-						$checkbox_options['disabled'] = 'disabled';
-
-						//Only send permission if checked
-						if ($checkbox_options['checked']) {
-							echo form_hidden('locations[]', $location_id);
-						}
-					}
-
-					echo '<li class=" form-check form-check-custom form-check-solid">' . form_checkbox($checkbox_options) . '<label class="form-check-label" for="locations' . $location_id . '"><span></span></label> ' . $location['name'] . '</li>';
-				}
-				?>
-			</ul>
-		</div>
-	</div>
-<?php } ?>
 
 <?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) { ?>
 	<?php

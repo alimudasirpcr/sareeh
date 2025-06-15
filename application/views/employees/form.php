@@ -1,9 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
 <script src="<?= site_url(); ?>assets/css_good/plugins/custom/typedjs/typedjs.bundle.js"></script>
 <style>
-.form-check-custom {
-    display: block !important;
-}
+    .form-check-custom {
+        display: block !important;
+    }
 </style>
 <div class="row " id="form">
     <div class="spinner" id="grid-loader" style="display:none">
@@ -15,40 +15,40 @@
 
 
         <?php if ($person_info->person_id && !isset($is_clone)) { ?>
-        <div class="panel hidden">
-            <div class="card-body ">
-                <div class="user-badge">
-                    <?php echo $person_info->image_id ? '<div class="user-badge-avatar symbol symbol-50px">' . img(array('src' => cacheable_app_file_url($person_info->image_id), 'class' => 'img-polaroid img-polaroid-s')) . '</div>' : '<div class="user-badge-avatar">' . img(array('src' => base_url('assets/assets/images/avatar-default.jpg'), 'class' => 'img-polaroid')) . '</div>'; ?>
-                    <div class="user-badge-details">
-                        <?php echo H($person_info->first_name . ' ' . $person_info->last_name); ?>
-                        <p><?php echo H($person_info->username); ?></p>
+            <div class="panel hidden">
+                <div class="card-body ">
+                    <div class="user-badge">
+                        <?php echo $person_info->image_id ? '<div class="user-badge-avatar symbol symbol-50px">' . img(array('src' => cacheable_app_file_url($person_info->image_id), 'class' => 'img-polaroid img-polaroid-s')) . '</div>' : '<div class="user-badge-avatar">' . img(array('src' => base_url('assets/assets/images/avatar-default.jpg'), 'class' => 'img-polaroid')) . '</div>'; ?>
+                        <div class="user-badge-details">
+                            <?php echo H($person_info->first_name . ' ' . $person_info->last_name); ?>
+                            <p><?php echo H($person_info->username); ?></p>
+                        </div>
+                        <ul class="list-inline pull-right">
+                            <?php
+                            $one_year_ago = date('Y-m-d', strtotime('-1 year'));
+                            $today = date('Y-m-d') . '%2023:59:59';
+                            ?>
+                            <li><a target="_blank"
+                                    href="<?php echo site_url('reports/generate/specific_employee?employee_type=logged_in_employee&report_type=complex&start_date=' . $one_year_ago . '&start_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime($one_year_ago)) . '&end_date=' . $today . '&end_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime(date('Y-m-d') . ' 23:59:59')) . '&employee_id=' . $person_info->person_id . '&sale_type=all&export_excel=0'); ?>"
+                                    class="btn btn-success"><?php echo lang('view_report'); ?></a></li>
+                            <?php if ($person_info->email) { ?>
+                                <li><a href="mailto:<?php echo H($person_info->email); ?>"
+                                        class="btn btn-primary"><?php echo lang('send_email'); ?></a></li>
+                            <?php } ?>
+                        </ul>
                     </div>
-                    <ul class="list-inline pull-right">
-                        <?php
-							$one_year_ago = date('Y-m-d', strtotime('-1 year'));
-							$today = date('Y-m-d') . '%2023:59:59';
-							?>
-                        <li><a target="_blank"
-                                href="<?php echo site_url('reports/generate/specific_employee?employee_type=logged_in_employee&report_type=complex&start_date=' . $one_year_ago . '&start_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime($one_year_ago)) . '&end_date=' . $today . '&end_date_formatted=' . date(get_date_format() . ' ' . get_time_format(), strtotime(date('Y-m-d') . ' 23:59:59')) . '&employee_id=' . $person_info->person_id . '&sale_type=all&export_excel=0'); ?>"
-                                class="btn btn-success"><?php echo lang('view_report'); ?></a></li>
-                        <?php if ($person_info->email) { ?>
-                        <li><a href="mailto:<?php echo H($person_info->email); ?>"
-                                class="btn btn-primary"><?php echo lang('send_email'); ?></a></li>
-                        <?php } ?>
-                    </ul>
                 </div>
             </div>
-        </div>
         <?php } ?>
 
         <?php $current_employee_editing_self = $this->Employee->get_logged_in_employee_info()->person_id == $person_info->person_id;
-		echo form_open_multipart('employees/save/' . (!isset($is_clone) ? $person_info->person_id : ''), array('id' => 'employee_form', 'class' => 'form-horizontal'));
-		?>
+        echo form_open_multipart('employees/save/' . (!isset($is_clone) ? $person_info->person_id : ''), array('id' => 'employee_form', 'class' => 'form-horizontal'));
+        ?>
 
 
         <div class="d-flex flex-column flex-xl-row">
             <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-10">
-                <?php $this->load->view("people/form_sidebar" , ['type' =>'employee' ]); ?>
+                <?php $this->load->view("people/form_sidebar", ['type' => 'employee']); ?>
 
             </div>
             <div class="flex-lg-row-fluid ms-lg-15">
@@ -87,7 +87,7 @@
                     <li class="nav-item" role="presentation">
                         <a class="nav-link text-active-primary pb-4" data-toggle="tab"
                             href="#kt_ecommerce_customer_login_info" aria-selected="false" role="tab"
-                            tabindex="-1">  <?= lang('Login_Info'); ?>
+                            tabindex="-1"> <?= lang('Login_Info'); ?>
                         </a>
                     </li>
                     <!--end:::Tab item-->
@@ -115,9 +115,9 @@
                                     <div class="card-header border-0">
                                         <!--begin::Card title-->
                                         <div class="card-title">
-                                            <h2 class="fw-bold"><?php 
-						
-						                    echo form_label(lang('total'))?></h2>
+                                            <h2 class="fw-bold"><?php
+
+                                                                echo form_label(lang('total')) ?></h2>
                                         </div>
                                         <!--end::Card title-->
                                     </div>
@@ -178,7 +178,7 @@
                                         </span>
                                         <!--end::Svg Icon-->
                                         <div class="text-white fw-bold fs-2 mt-5">
-                                            <?php echo lang('profit').': '; ?>
+                                            <?php echo lang('profit') . ': '; ?>
                                         </div>
 
                                         <div class="fw-semibold text-white" id="profit_sum">
@@ -224,12 +224,12 @@
                             <script src="https://cdn.datatables.net/colreorder/2.0.4/js/colReorder.dataTables.js">
                             </script>
 
-                            <?php  $columns = get_table_columns('sales'); 
-                                                $columnSearch = array_filter($columns, function($key) {
-                                                    return $key !== 'default_order';
-                                                }, ARRAY_FILTER_USE_KEY);
-                                                
-                                    ?>
+                            <?php $columns = get_table_columns('sales');
+                            $columnSearch = array_filter($columns, function ($key) {
+                                return $key !== 'default_order';
+                            }, ARRAY_FILTER_USE_KEY);
+
+                            ?>
                             <?php $this->load->view("sales/sales_header"); ?>
                             <input type="hidden" id="employee_id"
                                 value="<?php echo $this->Employee->get_logged_in_employee_info()->id; ?>">
@@ -250,11 +250,11 @@
                                                 <tr
                                                     class="fw-semibold fs-6 text-gray-800 border-bottom border-gray-200">
                                                     <?php if (!empty($all_columns)): ?>
-                                                    <?php foreach ($all_columns as $col_key => $col_value): ?>
-                                                    <th><?php echo H($col_value['label']); ?></th>
-                                                    <?php endforeach; ?>
+                                                        <?php foreach ($all_columns as $col_key => $col_value): ?>
+                                                            <th><?php echo H($col_value['label']); ?></th>
+                                                        <?php endforeach; ?>
                                                     <?php else: ?>
-                                                    <th>No data available</th>
+                                                        <th>No data available</th>
                                                     <?php endif; ?>
 
 
@@ -266,267 +266,237 @@
                                         </table>
 
                                         <script>
-                                        $(document).ready(function() {
+                                            $(document).ready(function() {
 
-                                            // $("#customer_listd").hide();
-                                            let openSelect2 = null;
+                                                // $("#customer_listd").hide();
+                                                let openSelect2 = null;
 
-                                            $("#location_listd").select2({
-                                                dropdownAutoWidth: true
-                                            });
-                                            $("#customer_listd").select2({
-                                                dropdownAutoWidth: true
-                                            });
-                                            $("#sale_type").select2({
-                                                dropdownAutoWidth: true
-                                            });
-
-
+                                                $("#location_listd").select2({
+                                                    dropdownAutoWidth: true
+                                                });
+                                                $("#customer_listd").select2({
+                                                    dropdownAutoWidth: true
+                                                });
+                                                $("#sale_type").select2({
+                                                    dropdownAutoWidth: true
+                                                });
 
 
-                                            var table = $('#example').DataTable({
-                                                colReorder: true,
-                                                "paging": true, // Ensure paging is enabled
-                                                "pageLength": 5, // Adjust as per your requirement
-                                                "pagingType": "full_numbers",
-                                                "processing": true,
-                                                "serverSide": true,
-                                                "order": [],
 
-                                                "ajax": {
-                                                    "url": "<?php echo site_url('sales/ajaxList') ?>",
-                                                    "type": "POST",
-                                                    "data": function(d) {
-                                                        d.from_date = $('#from_date').val();
-                                                        d.to_date = $('#to_date').val();
+
+                                                var table = $('#example').DataTable({
+                                                    colReorder: true,
+                                                    "paging": true, // Ensure paging is enabled
+                                                    "pageLength": 5, // Adjust as per your requirement
+                                                    "pagingType": "full_numbers",
+                                                    "processing": true,
+                                                    "serverSide": true,
+                                                    "order": [],
+
+                                                    "ajax": {
+                                                        "url": "<?php echo site_url('sales/ajaxList') ?>",
+                                                        "type": "POST",
+                                                        "data": function(d) {
+                                                            d.from_date = $('#from_date').val();
+                                                            d.to_date = $('#to_date').val();
+                                                        },
+                                                        "dataSrc": function(json) {
+                                                            // Summing total and profit fields
+                                                            var totalSum = 0;
+                                                            var profitSum = 0;
+
+                                                            json.data.forEach(function(row) {
+                                                                totalSum += parseFloat(row
+                                                                    .total) || 0;
+                                                                profitSum += parseFloat(row
+                                                                    .profit) || 0;
+                                                            });
+
+                                                            // Display the total and profit sum somewhere on the page
+                                                            $('#total_sum').text(totalSum.toFixed(2) +
+                                                                '<?= get_store_currency(); ?>');
+                                                            $('#profit_sum').text(profitSum.toFixed(2) +
+                                                                '<?= get_store_currency(); ?>');
+
+                                                            return json
+                                                                .data; // Return the data to be rendered in DataTable
+                                                        }
                                                     },
-                                                    "dataSrc": function(json) {
-                                                        // Summing total and profit fields
-                                                        var totalSum = 0;
-                                                        var profitSum = 0;
+                                                    "columns": [
+                                                        <?php $i = 0;
+                                                        foreach ($all_columns as $key => $col): ?> {
+                                                                "data": "<?= $key ?>"
+                                                            },
+                                                        <?php $i++;
+                                                        endforeach ?>
 
-                                                        json.data.forEach(function(row) {
-                                                            totalSum += parseFloat(row
-                                                                .total) || 0;
-                                                            profitSum += parseFloat(row
-                                                                .profit) || 0;
+                                                    ],
+                                                    "initComplete": function() {
+
+                                                        this.api().search('<?php if ($this->uri->segment(3) > 0) {
+                                                                                echo H($person_info->first_name . ' ' . $person_info->last_name);
+                                                                            } else {
+                                                                                echo 'dont_show_anything';
+                                                                            } ?>').draw();
+                                                        // Apply the search for each column
+                                                        $('#employee_id').on('change', function() {
+                                                            this.api().search('<?php if ($this->uri->segment(3) > 0) {
+                                                                                    echo H($person_info->first_name . ' ' . $person_info->last_name);
+                                                                                } else {
+                                                                                    echo 'dont_show_anything';
+                                                                                } ?>').draw();
+
+
+                                                            var searchTerm =
+                                                                '';
+                                                            var colIndex = $(
+                                                                    '#sortable input:checkbox')
+                                                                .index($('#employee_name'));
+                                                            console.log(searchTerm);
+
+                                                            // Apply the search to the specific column
+                                                            if (colIndex !== -1) {
+                                                                table.column(colIndex).search(
+                                                                    searchTerm).draw();
+                                                            } else {
+                                                                console.error(
+                                                                    "Column index not found. Check if the checkbox selector is correct."
+                                                                );
+                                                            }
                                                         });
 
-                                                        // Display the total and profit sum somewhere on the page
-                                                        $('#total_sum').text(totalSum.toFixed(2) +
-                                                            '<?= get_store_currency(); ?>');
-                                                        $('#profit_sum').text(profitSum.toFixed(2) +
-                                                            '<?= get_store_currency(); ?>');
-
-                                                        return json
-                                                            .data; // Return the data to be rendered in DataTable
-                                                    }
-                                                },
-                                                "columns": [
-                                                    <?php $i=0; foreach($all_columns as $key => $col): ?> {
-                                                        "data": "<?= $key ?>"
+                                                        $('#employee_id').trigger('change');
                                                     },
-                                                    <?php $i++; endforeach ?>
+                                                    "drawCallback": function(settings) {
+                                                        // Custom class for the pagination wrapper
+                                                        $('.dt-paging').addClass('pagination');
+                                                    }
+                                                });
+                                                $('.columns').on('change', function(e) {
+                                                    //     console.log('callled');
+                                                    // // Get the column API object
+                                                    //     var column = table.column($(this).data('column-index'));
 
-                                                ],
-                                                "initComplete": function() {
-
-                                                    this.api().search('<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>').draw();
-                                                    // Apply the search for each column
-                                                    $('#employee_id').on('change', function() {
-                                                        this.api().search('<?php  if($this->uri->segment(3) > 0) {  echo H($person_info->first_name.' '.$person_info->last_name); }else{ echo 'dont_show_anything'; } ?>').draw();
 
 
-                                                        var searchTerm =
-                                                            '';
-                                                        var colIndex = $(
-                                                                '#sortable input:checkbox')
-                                                            .index($('#employee_name'));
-                                                        console.log(searchTerm);
+                                                    //     // Toggle the visibility
+                                                    //     column.visible(!column.visible());
+                                                });
 
-                                                        // Apply the search to the specific column
-                                                        if (colIndex !== -1) {
-                                                            table.column(colIndex).search(
-                                                                searchTerm).draw();
-                                                        } else {
-                                                            console.error(
-                                                                "Column index not found. Check if the checkbox selector is correct."
-                                                            );
+                                                $('#employee_id').on('change', function() {
+
+                                                    var searchTerm =
+                                                        '<?php echo $this->Employee->get_logged_in_employee_info()->id; ?>';
+                                                    var colIndex = $('#sortable input:checkbox').index($(
+                                                        '#employee_name'));
+                                                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    table.column(colIndex).search(searchTerm)
+                                                        .draw(); // Adjust the column index as necessary
+                                                });
+
+
+                                                // $('#s2id_customer_listd').hide();
+                                                $('#location_listd').on('change', function() {
+
+                                                    var searchTerm = $(this).val();
+                                                    var colIndex = $('#sortable input:checkbox').index($(
+                                                        '#location_name'));
+                                                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    table.column(colIndex).search(searchTerm)
+                                                        .draw(); // Adjust the column index as necessary
+                                                });
+
+                                                $('#s2id_location_listd').on('click', function() {
+
+                                                    $('#customer_listd').select2(
+                                                        'close'); // Close the previously opened dropdown
+                                                    $('#sale_type').select2('close');
+
+                                                });
+                                                $('#customer_listd').on('change', function() {
+                                                    var searchTerm = $(this).val();
+                                                    var colIndex = $('#sortable input:checkbox').index($(
+                                                        '#customer_name'));
+                                                    // console.log(colIndex);
+                                                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    table.column(colIndex).search(searchTerm)
+                                                        .draw(); // Adjust the column index as necessary
+                                                });
+
+                                                $('#s2id_customer_listd').on('click', function() {
+
+                                                    $('#location_listd').select2(
+                                                        'close'); // Close the previously opened dropdown
+                                                    $('#sale_type').select2('close');
+
+                                                });
+                                                $('#sale_type').on('change', function() {
+                                                    var searchTerm = $(this).val();
+                                                    var colIndex = $('#sortable input:checkbox').index($(
+                                                        '#suspended_type'));
+                                                    // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    table.column(colIndex).search(searchTerm)
+                                                        .draw(); // Adjust the column index as necessary
+
+
+                                                    // var searchTerm ='<?php echo H($person_info->first_name . ' ' . $person_info->last_name); ?>';
+                                                    // var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
+                                                    // // console.log(colIndex);
+                                                    // // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
+                                                    // table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
+
+
+                                                });
+                                                $('#s2id_sale_type').on('click', function() {
+
+                                                    $('#location_listd').select2(
+                                                        'close'); // Close the previously opened dropdown
+                                                    $('#customer_listd').select2('close');
+
+                                                });
+                                                $('#from_date , #to_date').on('change', function() {
+                                                    var searchTerm = $(this).val();
+                                                    table.ajax.reload();
+                                                });
+                                                $('#resetButton').click(function() {
+                                                    $('#from_date').val('');
+                                                    $('#to_date').val('');
+
+                                                    <?php if (getenv('MASTER_USER') == $this->Employee->get_logged_in_employee_info()->id) { ?>
+                                                        $('#location_listd').val(-1).trigger('change');
+                                                    <?php } ?>
+
+
+                                                    var customerColIndex = $('#sortable input:checkbox')
+                                                        .index($(
+                                                            '#customer_name'
+                                                        )); // Get the customer column index
+
+                                                    // $('#customer_listd').val(customerSearchTerm).trigger('change'); // Trigger change to keep customer filter
+
+                                                    table.state
+                                                        .clear(); // Clears the saved state of the table
+
+                                                    // Reset all column searches except the customer column
+                                                    table.columns().every(function(index) {
+                                                        console.log('customerColIndex',
+                                                            customerColIndex);
+                                                        if (index !==
+                                                            customerColIndex
+                                                        ) { // Skip the customer column
+                                                            this.search('');
                                                         }
                                                     });
 
-                                                    $('#employee_id').trigger('change');
-                                                },
-                                                "drawCallback": function(settings) {
-                                                    // Custom class for the pagination wrapper
-                                                    $('.dt-paging').addClass('pagination');
-                                                }
-                                            });
-                                            $('.columns').on('change', function(e) {
-                                                //     console.log('callled');
-                                                // // Get the column API object
-                                                //     var column = table.column($(this).data('column-index'));
-
-
-
-                                                //     // Toggle the visibility
-                                                //     column.visible(!column.visible());
-                                            });
-
-                                            $('#employee_id').on('change', function() {
-
-                                                var searchTerm =
-                                                    '<?php echo $this->Employee->get_logged_in_employee_info()->id; ?>';
-                                                var colIndex = $('#sortable input:checkbox').index($(
-                                                    '#employee_name'));
-                                                // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                                                table.column(colIndex).search(searchTerm)
-                                                    .draw(); // Adjust the column index as necessary
-                                            });
-
-
-                                            // $('#s2id_customer_listd').hide();
-                                            $('#location_listd').on('change', function() {
-
-                                                var searchTerm = $(this).val();
-                                                var colIndex = $('#sortable input:checkbox').index($(
-                                                    '#location_name'));
-                                                // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                                                table.column(colIndex).search(searchTerm)
-                                                    .draw(); // Adjust the column index as necessary
-                                            });
-
-                                            $('#s2id_location_listd').on('click', function() {
-
-                                                $('#customer_listd').select2(
-                                                    'close'); // Close the previously opened dropdown
-                                                $('#sale_type').select2('close');
-
-                                            });
-                                            $('#customer_listd').on('change', function() {
-                                                var searchTerm = $(this).val();
-                                                var colIndex = $('#sortable input:checkbox').index($(
-                                                    '#customer_name'));
-                                                // console.log(colIndex);
-                                                // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                                                table.column(colIndex).search(searchTerm)
-                                                    .draw(); // Adjust the column index as necessary
-                                            });
-
-                                            $('#s2id_customer_listd').on('click', function() {
-
-                                                $('#location_listd').select2(
-                                                    'close'); // Close the previously opened dropdown
-                                                $('#sale_type').select2('close');
-
-                                            });
-                                            $('#sale_type').on('change', function() {
-                                                var searchTerm = $(this).val();
-                                                var colIndex = $('#sortable input:checkbox').index($(
-                                                    '#suspended_type'));
-                                                // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                                                table.column(colIndex).search(searchTerm)
-                                                    .draw(); // Adjust the column index as necessary
-
-
-                                                // var searchTerm ='<?php echo H($person_info->first_name.' '.$person_info->last_name); ?>';
-                                                // var colIndex = $('#sortable input:checkbox').index($('#customer_name'));
-                                                // // console.log(colIndex);
-                                                // // Apply the search to the specific DataTable column (e.g., the "Payment Type" column)
-                                                // table.column(colIndex).search(searchTerm).draw(); // Adjust the column index as necessary
-
-
-                                            });
-                                            $('#s2id_sale_type').on('click', function() {
-
-                                                $('#location_listd').select2(
-                                                    'close'); // Close the previously opened dropdown
-                                                $('#customer_listd').select2('close');
-
-                                            });
-                                            $('#from_date , #to_date').on('change', function() {
-                                                var searchTerm = $(this).val();
-                                                table.ajax.reload();
-                                            });
-                                            $('#resetButton').click(function() {
-                                                $('#from_date').val('');
-                                                $('#to_date').val('');
-
-                                                <?php if(getenv('MASTER_USER') == $this->Employee->get_logged_in_employee_info()->id) { ?>
-                                                $('#location_listd').val(-1).trigger('change');
-                                                <?php } ?>
-
-
-                                                var customerColIndex = $('#sortable input:checkbox')
-                                                    .index($(
-                                                        '#customer_name'
-                                                    )); // Get the customer column index
-
-                                                // $('#customer_listd').val(customerSearchTerm).trigger('change'); // Trigger change to keep customer filter
-
-                                                table.state
-                                                    .clear(); // Clears the saved state of the table
-
-                                                // Reset all column searches except the customer column
-                                                table.columns().every(function(index) {
-                                                    console.log('customerColIndex',
-                                                        customerColIndex);
-                                                    if (index !==
-                                                        customerColIndex
-                                                    ) { // Skip the customer column
-                                                        this.search('');
-                                                    }
+                                                    table
+                                                        .draw(); // Redraw the table after clearing non-customer columns
                                                 });
-
-                                                table
-                                                    .draw(); // Redraw the table after clearing non-customer columns
-                                            });
-                                            var old_columns = [];
-                                            $("#sortable input:checkbox").each(function() {
-                                                old_columns.push($(this)
-                                                    .val()
-                                                ); // Assuming checkbox values correspond to column indices
-                                            });
-                                            $("#sortable input:checkbox").each(function() {
-                                                // Get the index of the checkbox within the collection of checkboxes
-                                                var colIndex = $('#sortable input:checkbox').index(
-                                                    this);
-
-                                                // Check if the checkbox is checked
-                                                if ($(this).is(':checked')) {
-                                                    // Show the corresponding column if checked
-                                                    table.column(colIndex).visible(true);
-                                                } else {
-                                                    // Hide the corresponding column if unchecked
-                                                    table.column(colIndex).visible(false);
-                                                }
-                                            });
-
-                                            function setTableColumnOrder() {
-                                                var columns = [];
-
-                                                // Get checked checkboxes and reorder columns accordingly
+                                                var old_columns = [];
                                                 $("#sortable input:checkbox").each(function() {
-                                                    columns.push($(this)
+                                                    old_columns.push($(this)
                                                         .val()
                                                     ); // Assuming checkbox values correspond to column indices
                                                 });
-
-
-
-                                                // Apply the new order
-                                                // $i=0;
-                                                newOrder = []
-                                                columns.forEach(function(colIndex, i) {
-                                                    newOrder.push(old_columns.indexOf(colIndex));
-
-                                                });
-                                                // var newOrder = [4, 0, 1, 2, 3, 5, 6, 7, 8, 9];
-                                                table.colReorder.order(newOrder);
-
-                                                old_columns = [];
-                                                old_columns = columns;
-                                                // Hide unchecked columns
                                                 $("#sortable input:checkbox").each(function() {
                                                     // Get the index of the checkbox within the collection of checkboxes
                                                     var colIndex = $('#sortable input:checkbox').index(
@@ -541,45 +511,85 @@
                                                         table.column(colIndex).visible(false);
                                                     }
                                                 });
-                                            }
-                                            $("#sortable").sortable({
-                                                items: '.sort',
-                                                containment: "#sortable",
-                                                cursor: "move",
-                                                handle: ".handle",
-                                                revert: 100,
-                                                update: function(event, ui) {
-                                                    $input = ui.item.find("input[type=checkbox]");
-                                                    $input.trigger('change');
+
+                                                function setTableColumnOrder() {
+                                                    var columns = [];
+
+                                                    // Get checked checkboxes and reorder columns accordingly
+                                                    $("#sortable input:checkbox").each(function() {
+                                                        columns.push($(this)
+                                                            .val()
+                                                        ); // Assuming checkbox values correspond to column indices
+                                                    });
+
+
+
+                                                    // Apply the new order
+                                                    // $i=0;
+                                                    newOrder = []
+                                                    columns.forEach(function(colIndex, i) {
+                                                        newOrder.push(old_columns.indexOf(colIndex));
+
+                                                    });
+                                                    // var newOrder = [4, 0, 1, 2, 3, 5, 6, 7, 8, 9];
+                                                    table.colReorder.order(newOrder);
+
+                                                    old_columns = [];
+                                                    old_columns = columns;
+                                                    // Hide unchecked columns
+                                                    $("#sortable input:checkbox").each(function() {
+                                                        // Get the index of the checkbox within the collection of checkboxes
+                                                        var colIndex = $('#sortable input:checkbox').index(
+                                                            this);
+
+                                                        // Check if the checkbox is checked
+                                                        if ($(this).is(':checked')) {
+                                                            // Show the corresponding column if checked
+                                                            table.column(colIndex).visible(true);
+                                                        } else {
+                                                            // Hide the corresponding column if unchecked
+                                                            table.column(colIndex).visible(false);
+                                                        }
+                                                    });
                                                 }
-                                            });
-                                            var columns = [];
-                                            $("#sortable").disableSelection();
-
-                                            $("#sortable input[type=checkbox]").on('change', function(e) {
-                                                console.log("changed");
+                                                $("#sortable").sortable({
+                                                    items: '.sort',
+                                                    containment: "#sortable",
+                                                    cursor: "move",
+                                                    handle: ".handle",
+                                                    revert: 100,
+                                                    update: function(event, ui) {
+                                                        $input = ui.item.find("input[type=checkbox]");
+                                                        $input.trigger('change');
+                                                    }
+                                                });
                                                 var columns = [];
+                                                $("#sortable").disableSelection();
 
-                                                // Get all checked checkboxes in the sorted order
-                                                $("#sortable input:checkbox:checked").each(function() {
-                                                    columns.push($(this)
-                                                        .val()
-                                                    ); // Add the column's index or identifier
+                                                $("#sortable input[type=checkbox]").on('change', function(e) {
+                                                    console.log("changed");
+                                                    var columns = [];
+
+                                                    // Get all checked checkboxes in the sorted order
+                                                    $("#sortable input:checkbox:checked").each(function() {
+                                                        columns.push($(this)
+                                                            .val()
+                                                        ); // Add the column's index or identifier
+                                                    });
+
+
+                                                    $.post(<?php echo json_encode(site_url("sales/save_list_column_prefs")); ?>, {
+                                                        columns: columns
+                                                    }, function(json) {
+                                                        setTableColumnOrder();
+                                                        // table.draw();
+
+                                                    });
+
                                                 });
 
-
-                                                $.post(<?php echo json_encode(site_url("sales/save_list_column_prefs")); ?>, {
-                                                    columns: columns
-                                                }, function(json) {
-                                                    setTableColumnOrder();
-                                                    // table.draw();
-
-                                                });
 
                                             });
-
-
-                                        });
                                         </script>
 
                                     </div>
@@ -639,44 +649,44 @@
                             </div>
 
                             <?php if (isset($files) && count($files)) { ?>
-                            <ul class="list-group">
-                                <?php foreach ($files as $file) { ?>
-                                <li class="list-group-item permission-action-item">
+                                <ul class="list-group">
+                                    <?php foreach ($files as $file) { ?>
+                                        <li class="list-group-item permission-action-item">
 
-                                    <?php echo anchor($controller_name . '/delete_file/' . $file->file_id, '<i class="icon ion-android-cancel text-danger" style="font-size: 120%"></i>', array('class' => 'delete_file')); ?>
-                                    <?php echo anchor($controller_name . '/download/' . $file->file_id, $file->file_name, array('target' => '_blank')); ?>
-                                </li>
-                                <?php } ?>
-                            </ul>
-                            <h4 style="padding: 20px;"><?php echo lang('add_files'); ?></h4>
+                                            <?php echo anchor($controller_name . '/delete_file/' . $file->file_id, '<i class="icon ion-android-cancel text-danger" style="font-size: 120%"></i>', array('class' => 'delete_file')); ?>
+                                            <?php echo anchor($controller_name . '/download/' . $file->file_id, $file->file_name, array('target' => '_blank')); ?>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                                <h4 style="padding: 20px;"><?php echo lang('add_files'); ?></h4>
                             <?php } ?>
-                           
+
                             <div class="row">
-                                <?php for($k=1;$k<=5;$k++) { ?>
+                                <?php for ($k = 1; $k <= 5; $k++) { ?>
 
-                                <div class="col-md-6">
-                                    <div class="py-5 mb-5 px-8">
-                                        <div class=" ">
-                                            <div class="mb-10">
-                                                <div
-                                                    class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex flex-stack text-start p-6 mb-5 active">
+                                    <div class="col-md-6">
+                                        <div class="py-5 mb-5 px-8">
+                                            <div class=" ">
+                                                <div class="mb-10">
+                                                    <div
+                                                        class="btn btn-outline btn-outline-dashed btn-active-light-primary d-flex flex-stack text-start p-6 mb-5 active">
 
-                                                    <label class="form-check-label" for="flexCheckDefault"> <?php 
+                                                        <label class="form-check-label" for="flexCheckDefault"> <?php
 
-								echo form_label(lang('file').' '.$k.':', 'files_'.$k)?></label>
-                                                    <div class="file-upload">
-                                                        <input type="file" class="form-control form-control-solid"
-                                                            name="files[]" id="files_<?php echo $k; ?>">
+                                                                                                                echo form_label(lang('file') . ' ' . $k . ':', 'files_' . $k) ?></label>
+                                                        <div class="file-upload">
+                                                            <input type="file" class="form-control form-control-solid"
+                                                                name="files[]" id="files_<?php echo $k; ?>">
+                                                        </div>
+
                                                     </div>
+
 
                                                 </div>
 
-
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
 
                                 <?php } ?>
                             </div>
@@ -695,47 +705,9 @@
                             </div>
 
                             <div class="card-body">
-                                <div class="d-flex flex-wrap gap-5">
+                              
 
-                                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
-                                        <?php echo form_label(lang('username') . ':', 'username', array('class' => 'form-label required')); ?>
-
-                                        <?php echo form_input(array(
-							'name' => 'username',
-							'id' => 'username',
-							'class' => 'form-control',
-							'value' => $person_info->username
-
-						)); ?>
-
-                                    </div>
-
-
-                                </div>
-
-                                <div class="d-flex flex-wrap gap-5">
-                                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
-                                        <?php echo form_label(lang('password') . ':', 'password', array('class' => 'form-label')); ?>
-
-                                        <?php echo form_password(array(
-							'name' => 'password',
-							'id' => 'password',
-							'class' => 'form-control',
-							'autocomplete' => 'off',
-						)); ?>
-                                    </div>
-                                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
-                                        <?php echo form_label(lang('repeat_password') . ':', 'repeat_password', array('class' => 'form-label')); ?>
-
-                                        <?php echo form_password(array(
-							'name' => 'repeat_password',
-							'id' => 'repeat_password',
-							'class' => 'form-control',
-							'autocomplete' => 'off',
-						)); ?>
-
-                                    </div>
-                                </div>
+                               
 
                                 <div class="d-flex flex-wrap gap-5">
 
@@ -743,30 +715,30 @@
 
                                         <div class=" form-check form-check-custom form-check-solid">
                                             <?php
-						echo	form_checkbox(array(
-							'name' => 'force_password_change',
-							'id' => 'force_password_change',
-							'value' => 1,
-							'class' =>'form-check-input' ,
-							'checked' => $person_info->force_password_change,
-						));
-						echo '<label class="form-check-label" for="force_password_change">'.lang('employees_force_password_change_upon_login').'</label>';;
-						?>
+                                            echo    form_checkbox(array(
+                                                'name' => 'force_password_change',
+                                                'id' => 'force_password_change',
+                                                'value' => 1,
+                                                'class' => 'form-check-input',
+                                                'checked' => $person_info->force_password_change,
+                                            ));
+                                            echo '<label class="form-check-label" for="force_password_change">' . lang('employees_force_password_change_upon_login') . '</label>';;
+                                            ?>
                                         </div>
                                     </div>
 
                                     <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
                                         <div class="form-check form-check-custom form-check-solid">
                                             <?php
-						echo	form_checkbox(array(
-							'name' => 'always_require_password',
-							'id' => 'always_require_password',
-							'value' => 1,
-							'class' =>'form-check-input' ,
-							'checked' => $person_info->always_require_password,
-						));
-						echo '<label class="form-check-label" for="always_require_password">'.lang('employees_always_require_password').'</label>';;
-						?>
+                                            echo    form_checkbox(array(
+                                                'name' => 'always_require_password',
+                                                'id' => 'always_require_password',
+                                                'value' => 1,
+                                                'class' => 'form-check-input',
+                                                'checked' => $person_info->always_require_password,
+                                            ));
+                                            echo '<label class="form-check-label" for="always_require_password">' . lang('employees_always_require_password') . '</label>';;
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -775,51 +747,53 @@
 
 
                                     <?php if ($this->config->item('timeclock')) { ?>
-                                    <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
-                                        <div class=" form-check form-check-custom form-check-solid">
-                                            <?php
-							echo	form_checkbox(array(
-								'name' => 'not_required_to_clock_in',
-								'id' => 'not_required_to_clock_in',
-								'value' => 1,
-								'class' =>'form-check-input' ,
-								'checked' => $person_info->not_required_to_clock_in,
-							));
-							echo '<label class="form-check-label" for="not_required_to_clock_in">'.lang('employees_not_required_to_clock_in').'</label>';;
-							?>
+                                        <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
+                                            <div class=" form-check form-check-custom form-check-solid">
+                                                <?php
+                                                echo    form_checkbox(array(
+                                                    'name' => 'not_required_to_clock_in',
+                                                    'id' => 'not_required_to_clock_in',
+                                                    'value' => 1,
+                                                    'class' => 'form-check-input',
+                                                    'checked' => $person_info->not_required_to_clock_in,
+                                                ));
+                                                echo '<label class="form-check-label" for="not_required_to_clock_in">' . lang('employees_not_required_to_clock_in') . '</label>';;
+                                                ?>
+                                            </div>
                                         </div>
-                                    </div>
                                     <?php } ?>
 
                                     <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
                                         <div class=" form-check form-check-custom form-check-solid">
                                             <?php
-						echo	form_checkbox(array(
-							'name' => 'dark_mode',
-							'id' => 'dark_mode',
-							'value' => 1,
-							'class' =>'form-check-input' ,
-							'checked' => $person_info->dark_mode,
-							));
-							echo '<label class="form-check-label" for="dark_mode">'.lang('dark_mode').'</label>';;
-						?>
+                                            echo    form_checkbox(array(
+                                                'name' => 'dark_mode',
+                                                'id' => 'dark_mode',
+                                                'value' => 1,
+                                                'class' => 'form-check-input',
+                                                'checked' => $person_info->dark_mode,
+                                            ));
+                                            echo '<label class="form-check-label" for="dark_mode">' . lang('dark_mode') . '</label>';;
+                                            ?>
                                         </div>
                                     </div>
 
                                     <div
-                                        class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 <?php if($this->Employee->get_logged_in_employee_info()->person_id ==$person_info->person_id ) { echo 'd-none'; } ?>">
+                                        class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5 <?php if ($this->Employee->get_logged_in_employee_info()->person_id == $person_info->person_id) {
+                                                                                                            echo 'd-none';
+                                                                                                        } ?>">
 
                                         <div class=" form-check form-check-custom form-check-solid">
                                             <?php
-						echo	form_checkbox(array(
-							'name' => 'inactive',
-							'id' => 'inactive',
-							'value' => 1,
-							'class' =>'form-check-input' ,
-							'checked' => $person_info->inactive,
-						));
-						echo '<label class="form-check-label" for="inactive">'.lang('employees_inactive').'</label>';;
-						?>
+                                            echo    form_checkbox(array(
+                                                'name' => 'inactive',
+                                                'id' => 'inactive',
+                                                'value' => 1,
+                                                'class' => 'form-check-input',
+                                                'checked' => $person_info->inactive,
+                                            ));
+                                            echo '<label class="form-check-label" for="inactive">' . lang('employees_inactive') . '</label>';;
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -835,13 +809,13 @@
                                             <?php echo form_label(lang('employees_reason_inactive') . ':', 'reason_inactive', array('class' => 'form-label ')); ?>
 
                                             <?php echo form_textarea(array(
-								'name' => 'reason_inactive',
-								'id' => 'reason_inactive',
-								'class' => 'form-control text-area',
-								'value' => $person_info->reason_inactive,
-								'rows' => '5',
-								'cols' => '17'
-							)); ?>
+                                                'name' => 'reason_inactive',
+                                                'id' => 'reason_inactive',
+                                                'class' => 'form-control text-area',
+                                                'value' => $person_info->reason_inactive,
+                                                'rows' => '5',
+                                                'cols' => '17'
+                                            )); ?>
                                         </div>
 
                                         <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
@@ -852,11 +826,11 @@
                                                     <i class="ion ion-ios-calendar-outline"></i>
                                                 </span>
                                                 <?php echo form_input(array(
-									'name' => 'termination_date',
-									'id' => 'termination_date',
-									'class' => 'form-control datepicker',
-									'value' => $person_info->termination_date ? date(get_date_format(), strtotime($person_info->termination_date)) : ''
-								)); ?>
+                                                    'name' => 'termination_date',
+                                                    'id' => 'termination_date',
+                                                    'class' => 'form-control datepicker',
+                                                    'value' => $person_info->termination_date ? date(get_date_format(), strtotime($person_info->termination_date)) : ''
+                                                )); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -865,11 +839,11 @@
                                 <div class="d-flex flex-wrap gap-5">
 
                                     <div class="fv-row w-100 flex-md-root fv-plugins-icon-container my-5">
-                                        <?php echo form_label(lang('employees_acess_ip_range').':', 'employees_acess_ip_range',array('class'=>'form-label')); ?>
+                                        <?php echo form_label(lang('employees_acess_ip_range') . ':', 'employees_acess_ip_range', array('class' => 'form-label')); ?>
 
                                         <input id="allowed_ip_address" name='allowed_ip_address'
                                             value='<?php echo is_array($person_info->allowed_ip_address) ? implode(",", $person_info->allowed_ip_address) : $person_info->allowed_ip_address; ?>'
-                                            placeholder=<?php echo json_encode(lang('employees_enter_ip'));?>; ?>
+                                            placeholder=<?php echo json_encode(lang('employees_enter_ip')); ?>; ?>
                                     </div>
 
                                 </div>
@@ -893,192 +867,192 @@
                                     <?php echo lang("employees_permission_desc"); ?>
                                 </div>
 
-                                <?php 
-					$templates = array('' => lang('none'));
-					foreach($permission_templates->result() as $template){
-						$templates[$template->id] = $template->name;
-					}
-				?>
+                                <?php
+                                $templates = array('' => lang('none'));
+                                foreach ($permission_templates->result() as $template) {
+                                    $templates[$template->id] = $template->name;
+                                }
+                                ?>
 
                                 <div class="form-group row">
                                     <?php echo form_label(lang('permission_templates') . ': ', 'permission_templates', array('class' => 'form-label')); ?>
                                     <div class="">
                                         <?php echo form_dropdown(
-							'permission_templates',
-							$templates,
-							$person_info->template_id,
-							array(
-								'class' => 'form-control',
-								'id' => 'permission_templates'
-							)
-						)
-						?>
+                                            'permission_templates',
+                                            $templates,
+                                            $person_info->template_id,
+                                            array(
+                                                'class' => 'form-control',
+                                                'id' => 'permission_templates'
+                                            )
+                                        )
+                                        ?>
                                     </div>
                                 </div>
 
                                 <?php
-				foreach ($all_modules->result() as $module) {
-					$checkbox_options = array(
-						'name' => 'permissions[]',
-						'id' => 'permissions' . $module->module_id,
-						'value' => $module->module_id,
-						'checked' => $this->Employee->has_module_permission($module->module_id, $person_info->person_id, FALSE, TRUE),
-						'class' => 'module_checkboxes form-check-input '
-					);
+                                foreach ($all_modules->result() as $module) {
+                                    $checkbox_options = array(
+                                        'name' => 'permissions[]',
+                                        'id' => 'permissions' . $module->module_id,
+                                        'value' => $module->module_id,
+                                        'checked' => $this->Employee->has_module_permission($module->module_id, $person_info->person_id, FALSE, TRUE),
+                                        'class' => 'module_checkboxes form-check-input '
+                                    );
 
-					if ($logged_in_employee_id != 1) {
-						if (($current_employee_editing_self && $checkbox_options['checked']) || !$this->Employee->has_module_permission($module->module_id, $logged_in_employee_id, FALSE, TRUE)) {
-							$checkbox_options['disabled'] = 'disabled';
+                                    if ($logged_in_employee_id != 1) {
+                                        if (($current_employee_editing_self && $checkbox_options['checked']) || !$this->Employee->has_module_permission($module->module_id, $logged_in_employee_id, FALSE, TRUE)) {
+                                            $checkbox_options['disabled'] = 'disabled';
 
-							//Only send permission if checked
-							if ($checkbox_options['checked']) {
-								echo form_hidden('permissions[]', $module->module_id);
-							}
-						}
-					}
-				?>
-                                <div class="card mt-2">
-                                    <div class="card-header rounded rounded-3 p-5 my-3  rounded border-primary border border-none rounded-3 list-group-item form-check form-check-custom form-check-solid"
-                                        id="<?php echo 'lmodule_' . $module->module_id; ?>">
-                                        <?php echo form_checkbox($checkbox_options) . '<label class="form-check-label" for="permissions' . $module->module_id . '"><span></span></label>'; ?>
-                                        <span
-                                            class="text-success"><?php echo lang('module_' . $module->module_id); ?>:&nbsp;</span>
-                                        <span
-                                            class="text-warning"><?php echo lang('module_' . $module->module_id . '_desc'); ?></span>
-
-
-                                        <span class="text-info pull-right">
-                                            <div class="drop-down">
-                                                <?php
-									if ($this->Location->count_all() > 1) {
-									?>
-                                                <span style="color:#EAC841;"
-                                                    onclick="getEmployeeLocation('<?php echo 'lmodule_' . $module->module_id; ?>')"
-                                                    class="iconi"
-                                                    id="<?php echo 'lmodule_head' . $module->module_id; ?>"
-                                                    aria-haspopup="true">
-                                                    <i class="icon ti-location-pin arrow"
-                                                        aria-hidden="true"></i><?php echo lang('override_location'); ?>
-                                                </span>
-                                                <?php } ?>
-                                                <div class="drop-menu">
-                                                    <div class="form-check form-check-custom form-check-solid">
-                                                        <input
-                                                            onclick="selectAllLocation('select-all-<?php echo $module->module_id; ?>')"
-                                                            id="select-all-<?php echo $module->module_id; ?>"
-                                                            class="form-check-input" type="checkbox"
-                                                            name="<?php echo 'select-all-' . $module->module_id; ?>">
-                                                        <label class="form-check-label"
-                                                            for="select-all-<?php echo $module->module_id; ?>"><b><?= lang('Select_All') ?></b></label>
-                                                    </div>
-                                                    <hr>
-
-                                                    <?php foreach ($locations_new as $lmk => $lmv) :
-											$tmp_checkbox_id = 'module-location-' . $module->module_id . "-" . $lmk;
-											$module_location_checkbox = array(
-												'name' => "module_location[]",
-												'id' => $tmp_checkbox_id,
-												'value' => $module->module_id . "|" . $lmk,
-												'checked' => $this->Employee->check_module_has_location($action_locations, $module->module_id, $lmk),
-												'class' => 'form-check-input',
-												'data-temp_name' => 'select-all-' . $module->module_id
-											);
-
-										?>
-                                                    <div class="form-check form-check-custom form-check-solid">
-                                                        <?php echo form_checkbox($module_location_checkbox); ?>
-                                                        <label class="form-check-label"
-                                                            for="<?php echo 'module-location-' . $module->module_id . "-" . $lmk; ?>"
-                                                            class="text_align"><?php echo $lmv['name']; ?></label>
-                                                    </div>
-                                                    <?php endforeach; ?>
-
-                                                </div>
-                                            </div>
-                                        </span>
-
-                                    </div>
-
-                                    <ul class="list-group">
-                                        <?php
-							foreach ($this->Module_action->get_module_actions($module->module_id)->result() as $mk => $module_action) {
-								$checkbox_options = array(
-									'name' => 'permissions_actions[]',
-									'data-module-checkbox-id' => 'permissions' . $module->module_id,
-									'class' => 'module_action_checkboxes form-check-input' ,
-									'id' => 'permissions_actions' . $module_action->module_id . "-" . $module_action->action_id,
-									'value' => $module_action->module_id . "|" . $module_action->action_id,
-									'checked' => $this->Employee->has_module_action_permission($module->module_id, $module_action->action_id, $person_info->person_id, FALSE, TRUE)
-								);
-
-								if ($logged_in_employee_id != 1) {
-									if (($current_employee_editing_self && $checkbox_options['checked']) || (!$this->Employee->has_module_action_permission($module->module_id, $module_action->action_id, $logged_in_employee_id, FALSE, TRUE))) {
-										$checkbox_options['disabled'] = 'disabled';
-
-										//Only send permission if checked
-										if ($checkbox_options['checked']) {
-											echo form_hidden('permissions_actions[]', $module_action->module_id . "|" . $module_action->action_id);
-										}
-									}
-								}
-
-							?>
-                                        <li class="list-group-item permission-action-item form-check form-check-custom form-check-solid border-none"
-                                            id="<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>">
-                                            <?php echo form_checkbox($checkbox_options) . '<label for="permissions_actions' . $module_action->module_id . "-" . $module_action->action_id . '"><span></span></label>'; ?>
+                                            //Only send permission if checked
+                                            if ($checkbox_options['checked']) {
+                                                echo form_hidden('permissions[]', $module->module_id);
+                                            }
+                                        }
+                                    }
+                                ?>
+                                    <div class="card mt-2">
+                                        <div class="card-header rounded rounded-3 p-5 my-3  rounded border-primary border border-none rounded-3 list-group-item form-check form-check-custom form-check-solid"
+                                            id="<?php echo 'lmodule_' . $module->module_id; ?>">
+                                            <?php echo form_checkbox($checkbox_options) . '<label class="form-check-label" for="permissions' . $module->module_id . '"><span></span></label>'; ?>
                                             <span
-                                                class="text-info"><?php echo lang($module_action->action_name_key); ?></span>
+                                                class="text-success"><?php echo lang('module_' . $module->module_id); ?>:&nbsp;</span>
+                                            <span
+                                                class="text-warning"><?php echo lang('module_' . $module->module_id . '_desc'); ?></span>
+
+
                                             <span class="text-info pull-right">
                                                 <div class="drop-down">
-
                                                     <?php
-											if ($this->Location->count_all() > 1) {
-											?>
-                                                    <span class="iconi"
-                                                        onclick="getEmployeeLocation('<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>')"
-                                                        aria-haspopup="true">
-                                                        <i class="icon ti-location-pin arrow"
-                                                            aria-hidden="true"></i><?php echo lang('override_location'); ?>
-                                                    </span>
+                                                    if ($this->Location->count_all() > 1) {
+                                                    ?>
+                                                        <span style="color:#EAC841;"
+                                                            onclick="getEmployeeLocation('<?php echo 'lmodule_' . $module->module_id; ?>')"
+                                                            class="iconi"
+                                                            id="<?php echo 'lmodule_head' . $module->module_id; ?>"
+                                                            aria-haspopup="true">
+                                                            <i class="icon ti-location-pin arrow"
+                                                                aria-hidden="true"></i><?php echo lang('override_location'); ?>
+                                                        </span>
                                                     <?php } ?>
                                                     <div class="drop-menu">
                                                         <div class="form-check form-check-custom form-check-solid">
-                                                            <input class="form-check-input"
-                                                                onclick="selectAllLocation('select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>')"
-                                                                id="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>"
-                                                                type="checkbox"
-                                                                name="<?php echo 'select-all-' . $module_action->module_id . "-" . $module_action->action_id; ?>">
-                                                            <label
-                                                                for="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>"
-                                                                class="form-check-label"><b><?= lang('Select_All') ?></b></label>
+                                                            <input
+                                                                onclick="selectAllLocation('select-all-<?php echo $module->module_id; ?>')"
+                                                                id="select-all-<?php echo $module->module_id; ?>"
+                                                                class="form-check-input" type="checkbox"
+                                                                name="<?php echo 'select-all-' . $module->module_id; ?>">
+                                                            <label class="form-check-label"
+                                                                for="select-all-<?php echo $module->module_id; ?>"><b><?= lang('Select_All') ?></b></label>
                                                         </div>
                                                         <hr>
-                                                        <?php
-												foreach ($locations_new as $lk => $lv) :
-													$checkbox_id = 'permissions-actions' . $lk . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk;
-													$location_checkbox = array(
-														'name' => "action-location[]",
-														'id' => $checkbox_id,
-														'class' => 'form-check-input',
-														'value' => $module_action->module_id . "|" . $module_action->action_id . "|" . $lk,
-														'checked' => $this->Employee->check_action_has_employee_location($action_locations, $module->module_id, $module_action->action_id, $lk),
-														'data-temp_name' => 'select-all-' . $module_action->module_id . "-" . $module_action->action_id
-													);
-												?>
-                                                        <div class="form-check form-check-custom form-check-solid">
-                                                            <?php echo form_checkbox($location_checkbox); ?>
-                                                            <label class="form-check-label"
-                                                                for="<?php echo $checkbox_id; ?>"><?php echo $lv['name']; ?></label>
-                                                        </div>
+
+                                                        <?php foreach ($locations_new as $lmk => $lmv) :
+                                                            $tmp_checkbox_id = 'module-location-' . $module->module_id . "-" . $lmk;
+                                                            $module_location_checkbox = array(
+                                                                'name' => "module_location[]",
+                                                                'id' => $tmp_checkbox_id,
+                                                                'value' => $module->module_id . "|" . $lmk,
+                                                                'checked' => $this->Employee->check_module_has_location($action_locations, $module->module_id, $lmk),
+                                                                'class' => 'form-check-input',
+                                                                'data-temp_name' => 'select-all-' . $module->module_id
+                                                            );
+
+                                                        ?>
+                                                            <div class="form-check form-check-custom form-check-solid">
+                                                                <?php echo form_checkbox($module_location_checkbox); ?>
+                                                                <label class="form-check-label"
+                                                                    for="<?php echo 'module-location-' . $module->module_id . "-" . $lmk; ?>"
+                                                                    class="text_align"><?php echo $lmv['name']; ?></label>
+                                                            </div>
                                                         <?php endforeach; ?>
+
                                                     </div>
                                                 </div>
                                             </span>
-                                        </li>
 
-                                        <?php } ?>
-                                    </ul>
-                                </div>
+                                        </div>
+
+                                        <ul class="list-group">
+                                            <?php
+                                            foreach ($this->Module_action->get_module_actions($module->module_id)->result() as $mk => $module_action) {
+                                                $checkbox_options = array(
+                                                    'name' => 'permissions_actions[]',
+                                                    'data-module-checkbox-id' => 'permissions' . $module->module_id,
+                                                    'class' => 'module_action_checkboxes form-check-input',
+                                                    'id' => 'permissions_actions' . $module_action->module_id . "-" . $module_action->action_id,
+                                                    'value' => $module_action->module_id . "|" . $module_action->action_id,
+                                                    'checked' => $this->Employee->has_module_action_permission($module->module_id, $module_action->action_id, $person_info->person_id, FALSE, TRUE)
+                                                );
+
+                                                if ($logged_in_employee_id != 1) {
+                                                    if (($current_employee_editing_self && $checkbox_options['checked']) || (!$this->Employee->has_module_action_permission($module->module_id, $module_action->action_id, $logged_in_employee_id, FALSE, TRUE))) {
+                                                        $checkbox_options['disabled'] = 'disabled';
+
+                                                        //Only send permission if checked
+                                                        if ($checkbox_options['checked']) {
+                                                            echo form_hidden('permissions_actions[]', $module_action->module_id . "|" . $module_action->action_id);
+                                                        }
+                                                    }
+                                                }
+
+                                            ?>
+                                                <li class="list-group-item permission-action-item form-check form-check-custom form-check-solid border-none"
+                                                    id="<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>">
+                                                    <?php echo form_checkbox($checkbox_options) . '<label for="permissions_actions' . $module_action->module_id . "-" . $module_action->action_id . '"><span></span></label>'; ?>
+                                                    <span
+                                                        class="text-info"><?php echo lang($module_action->action_name_key); ?></span>
+                                                    <span class="text-info pull-right">
+                                                        <div class="drop-down">
+
+                                                            <?php
+                                                            if ($this->Location->count_all() > 1) {
+                                                            ?>
+                                                                <span class="iconi"
+                                                                    onclick="getEmployeeLocation('<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>')"
+                                                                    aria-haspopup="true">
+                                                                    <i class="icon ti-location-pin arrow"
+                                                                        aria-hidden="true"></i><?php echo lang('override_location'); ?>
+                                                                </span>
+                                                            <?php } ?>
+                                                            <div class="drop-menu">
+                                                                <div class="form-check form-check-custom form-check-solid">
+                                                                    <input class="form-check-input"
+                                                                        onclick="selectAllLocation('select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>')"
+                                                                        id="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>"
+                                                                        type="checkbox"
+                                                                        name="<?php echo 'select-all-' . $module_action->module_id . "-" . $module_action->action_id; ?>">
+                                                                    <label
+                                                                        for="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>"
+                                                                        class="form-check-label"><b><?= lang('Select_All') ?></b></label>
+                                                                </div>
+                                                                <hr>
+                                                                <?php
+                                                                foreach ($locations_new as $lk => $lv) :
+                                                                    $checkbox_id = 'permissions-actions' . $lk . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk;
+                                                                    $location_checkbox = array(
+                                                                        'name' => "action-location[]",
+                                                                        'id' => $checkbox_id,
+                                                                        'class' => 'form-check-input',
+                                                                        'value' => $module_action->module_id . "|" . $module_action->action_id . "|" . $lk,
+                                                                        'checked' => $this->Employee->check_action_has_employee_location($action_locations, $module->module_id, $module_action->action_id, $lk),
+                                                                        'data-temp_name' => 'select-all-' . $module_action->module_id . "-" . $module_action->action_id
+                                                                    );
+                                                                ?>
+                                                                    <div class="form-check form-check-custom form-check-solid">
+                                                                        <?php echo form_checkbox($location_checkbox); ?>
+                                                                        <label class="form-check-label"
+                                                                            for="<?php echo $checkbox_id; ?>"><?php echo $lv['name']; ?></label>
+                                                                    </div>
+                                                                <?php endforeach; ?>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </li>
+
+                                            <?php } ?>
+                                        </ul>
+                                    </div>
                                 <?php } ?>
 
                             </div>
@@ -1087,14 +1061,14 @@
                 </div>
 
                 <?php
-	echo form_submit(array(
-		'name' => 'submitf',
-		'id' => 'submitf',
-		'value' => lang('save'),
-		'class' => 'btn submit_button floating-button btn-primary btn-lg float_right'
-	));
+                echo form_submit(array(
+                    'name' => 'submitf',
+                    'id' => 'submitf',
+                    'value' => lang('save'),
+                    'class' => 'btn submit_button floating-button btn-primary btn-lg float_right'
+                ));
 
-	?>
+                ?>
 
             </div>
         </div>
@@ -1116,460 +1090,460 @@
 </div>
 
 <script type='text/javascript'>
-$('#image_id').imagePreview({
-    selector: '#avatar'
-}); // Custom preview container
+    $('#image_id').imagePreview({
+        selector: '#avatar'
+    }); // Custom preview container
 
-//validation and submit handling
-$(document).ready(function() {
-    date_time_picker_field($(".datepicker"), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
-    date_time_picker_field($(".timepicker"), JS_TIME_FORMAT);
-    $("#inactive").change(check_inactive);
+    //validation and submit handling
+    $(document).ready(function() {
+        date_time_picker_field($(".datepicker"), JS_DATE_FORMAT + " " + JS_TIME_FORMAT);
+        date_time_picker_field($(".timepicker"), JS_TIME_FORMAT);
+        $("#inactive").change(check_inactive);
 
-    check_inactive();
+        check_inactive();
 
-    function check_inactive() {
-        if ($("#inactive").prop('checked')) {
-            $("#inactive_info").show();
-        } else {
-            $("#inactive_info").hide();
+        function check_inactive() {
+            if ($("#inactive").prop('checked')) {
+                $("#inactive_info").show();
+            } else {
+                $("#inactive_info").hide();
+            }
         }
-    }
 
-    setTimeout(function() {
-        $(":input:visible:first", "#employee_form").focus();
-    }, 100);
+        setTimeout(function() {
+            $(":input:visible:first", "#employee_form").focus();
+        }, 100);
 
-    $(".module_checkboxes").change(function() {
-        if ($(this).prop('checked')) {
-            $(this).parent().parent().find('.module_action_checkboxes').not(':disabled').prop('checked',
-                true);
-        } else {
-            $(this).parent().parent().find('.module_action_checkboxes').not(':disabled').prop('checked',
-                false);
-        }
-    });
+        $(".module_checkboxes").change(function() {
+            if ($(this).prop('checked')) {
+                $(this).parent().parent().find('.module_action_checkboxes').not(':disabled').prop('checked',
+                    true);
+            } else {
+                $(this).parent().parent().find('.module_action_checkboxes').not(':disabled').prop('checked',
+                    false);
+            }
+        });
 
-    $(".module_action_checkboxes").change(function() {
-        if ($(this).prop('checked')) {
-            $('#' + $(this).data('module-checkbox-id')).prop('checked', true);
-        }
-    });
+        $(".module_action_checkboxes").change(function() {
+            if ($(this).prop('checked')) {
+                $('#' + $(this).data('module-checkbox-id')).prop('checked', true);
+            }
+        });
 
-    $('#employee_form').validate({
-        submitHandler: function(form) {
-            $.post('<?php echo site_url("employees/check_duplicate"); ?>', {
-                    term: $('#first_name').val() + ' ' + $('#last_name').val()
-                }, function(data) {
-                    <?php if (!$person_info->person_id) { ?>
-                    if (data.duplicate) {
-                        bootbox.confirm(
-                            <?php echo json_encode(lang('employees_duplicate_exists')); ?>,
-                            function(result) {
-                                if (result) {
-                                    doEmployeeSubmit(form);
-                                }
-                            });
-                    } else {
-                        doEmployeeSubmit(form);
+        $('#employee_form').validate({
+            submitHandler: function(form) {
+                $.post('<?php echo site_url("employees/check_duplicate"); ?>', {
+                        term: $('#first_name').val() + ' ' + $('#last_name').val()
+                    }, function(data) {
+                        <?php if (!$person_info->person_id) { ?>
+                            if (data.duplicate) {
+                                bootbox.confirm(
+                                    <?php echo json_encode(lang('employees_duplicate_exists')); ?>,
+                                    function(result) {
+                                        if (result) {
+                                            doEmployeeSubmit(form);
+                                        }
+                                    });
+                            } else {
+                                doEmployeeSubmit(form);
+                            }
+                        <?php } else { ?>
+                            doEmployeeSubmit(form);
+                        <?php } ?>
+                    }, "json")
+                    .error(function() {});
+            },
+            ignore: '',
+            errorClass: "text-danger",
+            errorElement: "p",
+            errorPlacement: function(error, element) {
+                error.insertBefore(element);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).parents('.form-group').removeClass('has-success').addClass('has-error');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents('.form-group').removeClass('has-error').addClass('has-success');
+            },
+            rules: {
+                first_name: "required",
+                <?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+                    $custom_field = $this->Employee->get_custom_field($k);
+                    if ($custom_field !== FALSE) {
+                        if ($this->Employee->get_custom_field($k, 'required') && in_array($current_location, $this->Employee->get_custom_field($k, 'locations'))) {
+                            if (($this->Employee->get_custom_field($k, 'type') == 'file' || $this->Employee->get_custom_field($k, 'type') == 'image') && !$person_info->{"custom_field_${k}_value"}) {
+                                echo "custom_field_${k}_value: 'required',\n";
+                            }
+
+                            if (($this->Employee->get_custom_field($k, 'type') != 'file' && $this->Employee->get_custom_field($k, 'type') != 'image')) {
+                                echo "custom_field_${k}_value: 'required',\n";
+                            }
+                        }
                     }
-                    <?php } else { ?>
-                    doEmployeeSubmit(form);
+                }
+                ?>
+
+
+                username: {
+                    <?php
+
+
+                    if (!$person_info->person_id || $person_info->username == '') { ?>
+                        remote: {
+                            url: "<?php echo site_url('employees/exmployee_exists'); ?>",
+                            type: "post"
+                        },
                     <?php } ?>
+                    required: true,
+                    minlength: 1
+                },
+
+                password: {
+                    <?php
+                    if ($person_info->person_id == "") {
+                    ?>
+                        required: true,
+                    <?php
+                    }
+                    ?>
+                    minlength: 1
+                },
+                repeat_password: {
+                    equalTo: "#password"
+                },
+                email: {
+                    "required": true
+                },
+
+                "locations[]": "required"
+            },
+            messages: {
+                first_name: <?php echo json_encode(lang('first_name_required')); ?>,
+                last_name: <?php echo json_encode(lang('last_name_required')); ?>,
+                <?php for ($k = 1; $k <= NUMBER_OF_PEOPLE_CUSTOM_FIELDS; $k++) {
+                    $custom_field = $this->Employee->get_custom_field($k);
+                    if ($custom_field !== FALSE) {
+                        if ($this->Employee->get_custom_field($k, 'required') && in_array($current_location, $this->Employee->get_custom_field($k, 'locations'))) {
+                            if (($this->Employee->get_custom_field($k, 'type') == 'file' || $this->Employee->get_custom_field($k, 'type') == 'image') && !$person_info->{"custom_field_${k}_value"}) {
+                                $error_message = json_encode($custom_field . " " . lang('is_required'));
+                                echo "custom_field_${k}_value: $error_message,\n";
+                            }
+
+                            if (($this->Employee->get_custom_field($k, 'type') != 'file' && $this->Employee->get_custom_field($k, 'type') != 'image')) {
+                                $error_message = json_encode($custom_field . " " . lang('is_required'));
+                                echo "custom_field_${k}_value: $error_message,\n";
+                            }
+                        }
+                    }
+                }
+                ?>
+
+                username: {
+                    <?php if (!$person_info->person_id  || $person_info->username == '') { ?>
+                        remote: <?php echo json_encode(lang('employees_username_exists')); ?>,
+                    <?php } ?>
+                    required: <?php echo json_encode(lang('username_required')); ?>,
+                    minlength: <?php echo json_encode(lang('username_minlength')); ?>
+                },
+                password: {
+                    <?php
+                    if ($person_info->person_id == "") {
+                    ?>
+                        required: <?php echo json_encode(lang('employees_password_required')); ?>,
+                    <?php
+                    }
+                    ?>
+                    minlength: <?php echo json_encode(lang('password_minlength')); ?>
+                },
+                repeat_password: {
+                    equalTo: <?php echo json_encode(lang('password_must_match')); ?>
+                },
+                email: <?php echo json_encode(lang('email_invalid_format')); ?>,
+                "locations[]": <?php echo json_encode(lang('employees_one_location_required')); ?>
+            }
+        });
+
+        $(document).on('change', '#permission_templates', function() {
+            $(".module_checkboxes, .module_action_checkboxes, input[name='action-location[]'], input[name='module_location[]']")
+                .prop('checked', false);
+
+            var template_id = $(this).val();
+
+            $.post('<?php echo site_url("employees/get_permission_template_wise_modules_actions_locations"); ?>', {
+                    template_id: template_id
+                }, function(data) {
+                    console.log(data)
+                    $.each(data, function(key, value) {
+                        if (value === true) {
+                            $("#" + key).prop('checked', value);
+                        }
+                    });
                 }, "json")
                 .error(function() {});
-        },
-        ignore: '',
-        errorClass: "text-danger",
-        errorElement: "p",
-        errorPlacement: function(error, element) {
-            error.insertBefore(element);
-        },
-        highlight: function(element, errorClass, validClass) {
-            $(element).parents('.form-group').removeClass('has-success').addClass('has-error');
-        },
-        unhighlight: function(element, errorClass, validClass) {
-            $(element).parents('.form-group').removeClass('has-error').addClass('has-success');
-        },
-        rules: {
-            first_name: "required",
-            <?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { 
-					$custom_field = $this->Employee->get_custom_field($k);
-					if($custom_field !== FALSE) {
-						if( $this->Employee->get_custom_field($k,'required') && in_array($current_location, $this->Employee->get_custom_field($k,'locations'))){
-							if(($this->Employee->get_custom_field($k,'type') == 'file' || $this->Employee->get_custom_field($k,'type') == 'image') && !$person_info->{"custom_field_${k}_value"}){
-								echo "custom_field_${k}_value: 'required',\n";
-							}
-							
-							if(($this->Employee->get_custom_field($k,'type') != 'file' && $this->Employee->get_custom_field($k,'type') != 'image')){
-								echo "custom_field_${k}_value: 'required',\n";
-							}
-						}
-					}
-				}
-					?>
-
-
-            username: {
-                <?php 
-						
-						
-						 if (!$person_info->person_id || $person_info->username=='') { ?>
-                remote: {
-                    url: "<?php echo site_url('employees/exmployee_exists'); ?>",
-                    type: "post"
-                },
-                <?php } ?>
-                required: true,
-                minlength: 1
-            },
-
-            password: {
-                <?php
-					if ($person_info->person_id == "") {
-					?>
-                required: true,
-                <?php
-					}
-					?>
-                minlength: 1
-            },
-            repeat_password: {
-                equalTo: "#password"
-            },
-            email: {
-                "required": true
-            },
-
-            "locations[]": "required"
-        },
-        messages: {
-            first_name: <?php echo json_encode(lang('first_name_required')); ?>,
-            last_name: <?php echo json_encode(lang('last_name_required')); ?>,
-            <?php for($k=1;$k<=NUMBER_OF_PEOPLE_CUSTOM_FIELDS;$k++) { 
-					$custom_field = $this->Employee->get_custom_field($k);
-					if($custom_field !== FALSE) {
-						if( $this->Employee->get_custom_field($k,'required') && in_array($current_location, $this->Employee->get_custom_field($k,'locations'))){
-							if(($this->Employee->get_custom_field($k,'type') == 'file' || $this->Employee->get_custom_field($k,'type') == 'image') && !$person_info->{"custom_field_${k}_value"}){
-								$error_message = json_encode($custom_field." ".lang('is_required'));
-								echo "custom_field_${k}_value: $error_message,\n";
-							}
-
-							if(($this->Employee->get_custom_field($k,'type') != 'file' && $this->Employee->get_custom_field($k,'type') != 'image')){
-								$error_message = json_encode($custom_field." ".lang('is_required'));
-								echo "custom_field_${k}_value: $error_message,\n";
-							}
-						}
-					}
-				}
-				?>
-
-            username: {
-                <?php if (!$person_info->person_id  || $person_info->username=='') { ?>
-                remote: <?php echo json_encode(lang('employees_username_exists')); ?>,
-                <?php } ?>
-                required: <?php echo json_encode(lang('username_required')); ?>,
-                minlength: <?php echo json_encode(lang('username_minlength')); ?>
-            },
-            password: {
-                <?php
-					if ($person_info->person_id == "") {
-					?>
-                required: <?php echo json_encode(lang('employees_password_required')); ?>,
-                <?php
-					}
-					?>
-                minlength: <?php echo json_encode(lang('password_minlength')); ?>
-            },
-            repeat_password: {
-                equalTo: <?php echo json_encode(lang('password_must_match')); ?>
-            },
-            email: <?php echo json_encode(lang('email_invalid_format')); ?>,
-            "locations[]": <?php echo json_encode(lang('employees_one_location_required')); ?>
-        }
+        });
     });
 
-    $(document).on('change', '#permission_templates', function() {
-        $(".module_checkboxes, .module_action_checkboxes, input[name='action-location[]'], input[name='module_location[]']")
-            .prop('checked', false);
+    var submitting = false;
 
-        var template_id = $(this).val();
+    function doEmployeeSubmit(form) {
+        $("#grid-loader").show();
+        if (submitting) return;
+        submitting = true;
 
-        $.post('<?php echo site_url("employees/get_permission_template_wise_modules_actions_locations"); ?>', {
-                template_id: template_id
-            }, function(data) {
-                console.log(data)
-                $.each(data, function(key, value) {
-                    if (value === true) {
-                        $("#" + key).prop('checked', value);
+        $(form).ajaxSubmit({
+            success: function(response) {
+                $("#grid-loader").hide();
+                submitting = false;
+                if (response.redirect_code == 1 && response.success) {
+                    if (response.success) {
+                        show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
+                    } else {
+                        show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
                     }
-                });
-            }, "json")
-            .error(function() {});
-    });
-});
-
-var submitting = false;
-
-function doEmployeeSubmit(form) {
-    $("#grid-loader").show();
-    if (submitting) return;
-    submitting = true;
-
-    $(form).ajaxSubmit({
-        success: function(response) {
-            $("#grid-loader").hide();
-            submitting = false;
-            if (response.redirect_code == 1 && response.success) {
-                if (response.success) {
+                } else if (response.redirect_code == 2 && response.success) {
+                    window.location.href = '<?php echo site_url('employees'); ?>';
+                } else if (response.success) {
                     show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
+                    $("html, body").animate({
+                        scrollTop: 0
+                    }, "slow");
+                    $(".form-group").removeClass('has-success has-error');
                 } else {
                     show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
+                    $("html, body").animate({
+                        scrollTop: 0
+                    }, "slow");
+                    $(".form-group").removeClass('has-success has-error');
                 }
-            } else if (response.redirect_code == 2 && response.success) {
-                window.location.href = '<?php echo site_url('employees'); ?>';
-            } else if (response.success) {
-                show_feedback('success', response.message, <?php echo json_encode(lang('success')); ?>);
-                $("html, body").animate({
-                    scrollTop: 0
-                }, "slow");
-                $(".form-group").removeClass('has-success has-error');
-            } else {
-                show_feedback('error', response.message, <?php echo json_encode(lang('error')); ?>);
-                $("html, body").animate({
-                    scrollTop: 0
-                }, "slow");
-                $(".form-group").removeClass('has-success has-error');
+            },
+
+            <?php if (!$person_info->person_id) { ?>
+                resetForm: true,
+            <?php } ?>
+            dataType: 'json'
+        });
+    }
+
+    $('.delete_file').click(function(e) {
+        e.preventDefault();
+        var $link = $(this);
+        bootbox.confirm(<?php echo json_encode(lang('confirm_file_delete')); ?>, function(response) {
+            if (response) {
+                $.get($link.attr('href'), function() {
+                    $link.parent().fadeOut();
+                });
+            }
+        });
+
+    });
+
+
+    function getEmployeeLocation(id) {
+        var listid = ".list-group-item#" + id + " .drop-menu";
+        var listarow = ".list-group-item#" + id + " .arrow";
+
+        if ($(listid).hasClass('current')) {
+            $('.drop-menu').removeClass('current');
+        } else {
+            $(listarow).animate({
+                top: '-5px'
+            });
+            $(listarow).animate({
+                top: '0px'
+            });
+            $(listarow).animate({
+                top: '-5px'
+            });
+            $(listarow).animate({
+                top: '0px'
+            });
+            $('.drop-menu').removeClass('current');
+            $(listid).toggleClass('current');
+        }
+    }
+
+    function selectAllLocation(id_name) {
+        var name = ($('#' + id_name).attr("name"));
+
+        if ($('#' + id_name).prop("checked") == true) {
+            $('input[data-temp_name=' + name + ']').prop('checked', true);
+        } else if ($('#' + id_name).prop("checked") == false) {
+            $('input[data-temp_name=' + name + ']').prop('checked', false);
+        }
+    }
+
+    $("#select_all").click(function(e) {
+
+        if (!$(this).prop('checked')) {
+            $(".location_checkboxes").prop('checked', false);
+        } else {
+            $(".location_checkboxes").prop('checked', true);
+            check_boxes();
+        }
+
+    });
+    $('.location_checkboxes').click(function() {
+        check_boxes();
+    });
+    check_boxes();
+
+    function check_boxes() {
+        var total_checkboxes = $(".location_checkboxes").length;
+        var checked_boxes = 0;
+        $(".location_checkboxes").each(function(index) {
+            if ($(this).prop('checked')) {
+                checked_boxes++;
+            }
+        });
+
+        if (checked_boxes == total_checkboxes) {
+            $("#select_all").prop('checked', true);
+        } else {
+            $("#select_all").prop('checked', false);
+        }
+    }
+
+    $("#allowed_ip_address").selectize({
+        create: true,
+        render: {
+            option_create: function(data, escape) {
+                var add_new = <?php echo json_encode(lang('add_new_ip')) ?>;
+                return '<div class="create">' + escape(add_new) + ' <strong>' + escape(data.input) +
+                    '</strong></div>';
             }
         },
-
-        <?php if (!$person_info->person_id) { ?>
-        resetForm: true,
-        <?php } ?>
-        dataType: 'json'
     });
-}
-
-$('.delete_file').click(function(e) {
-    e.preventDefault();
-    var $link = $(this);
-    bootbox.confirm(<?php echo json_encode(lang('confirm_file_delete')); ?>, function(response) {
-        if (response) {
-            $.get($link.attr('href'), function() {
-                $link.parent().fadeOut();
-            });
-        }
-    });
-
-});
-
-
-function getEmployeeLocation(id) {
-    var listid = ".list-group-item#" + id + " .drop-menu";
-    var listarow = ".list-group-item#" + id + " .arrow";
-
-    if ($(listid).hasClass('current')) {
-        $('.drop-menu').removeClass('current');
-    } else {
-        $(listarow).animate({
-            top: '-5px'
-        });
-        $(listarow).animate({
-            top: '0px'
-        });
-        $(listarow).animate({
-            top: '-5px'
-        });
-        $(listarow).animate({
-            top: '0px'
-        });
-        $('.drop-menu').removeClass('current');
-        $(listid).toggleClass('current');
-    }
-}
-
-function selectAllLocation(id_name) {
-    var name = ($('#' + id_name).attr("name"));
-
-    if ($('#' + id_name).prop("checked") == true) {
-        $('input[data-temp_name=' + name + ']').prop('checked', true);
-    } else if ($('#' + id_name).prop("checked") == false) {
-        $('input[data-temp_name=' + name + ']').prop('checked', false);
-    }
-}
-
-$("#select_all").click(function(e) {
-
-    if (!$(this).prop('checked')) {
-        $(".location_checkboxes").prop('checked', false);
-    } else {
-        $(".location_checkboxes").prop('checked', true);
-        check_boxes();
-    }
-
-});
-$('.location_checkboxes').click(function() {
-    check_boxes();
-});
-check_boxes();
-
-function check_boxes() {
-    var total_checkboxes = $(".location_checkboxes").length;
-    var checked_boxes = 0;
-    $(".location_checkboxes").each(function(index) {
-        if ($(this).prop('checked')) {
-            checked_boxes++;
-        }
-    });
-
-    if (checked_boxes == total_checkboxes) {
-        $("#select_all").prop('checked', true);
-    } else {
-        $("#select_all").prop('checked', false);
-    }
-}
-
-$("#allowed_ip_address").selectize({
-    create: true,
-    render: {
-        option_create: function(data, escape) {
-            var add_new = <?php echo json_encode(lang('add_new_ip')) ?>;
-            return '<div class="create">' + escape(add_new) + ' <strong>' + escape(data.input) +
-                '</strong></div>';
-        }
-    },
-});
 </script>
 
 <?php $this->load->view("partial/footer"); ?>
 <style>
-.drop-menu input {
-    display: inline-block;
-}
+    .drop-menu input {
+        display: inline-block;
+    }
 
-.list-group-item .iconi {
-    position: relative;
-    top: 0;
-    left: -15px;
-    transform: translate(-50%, -50%);
-    width: 80px;
-    height: 60px;
-    cursor: pointer;
-}
+    .list-group-item .iconi {
+        position: relative;
+        top: 0;
+        left: -15px;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 60px;
+        cursor: pointer;
+    }
 
-.list-group-item .arrow {
-    position: absolute;
-    top: 0;
-    left: -15px;
-    animation: arrow 700ms linear infinite;
-}
+    .list-group-item .arrow {
+        position: absolute;
+        top: 0;
+        left: -15px;
+        animation: arrow 700ms linear infinite;
+    }
 
-.list-group-item .open>.dropdown-menu {
-    display: grid;
-    position: relative;
-    padding: 5px;
-    left: -45px;
-}
+    .list-group-item .open>.dropdown-menu {
+        display: grid;
+        position: relative;
+        padding: 5px;
+        left: -45px;
+    }
 
-.list-group-item .open>.dropdown-menu:before {
-    position: absolute;
-    display: block;
-    content: '';
-    bottom: 100%;
-    top: 5px;
-    right: -4px;
-    width: 7px;
-    height: 7px;
-    margin-bottom: -4px;
-    border-top: 1px solid #b5b5b5;
-    border-right: 1px solid #b5b5b5;
-    background: #fff;
-    transform: rotate(45deg);
-    transition: all .4s ease-in-out;
-}
+    .list-group-item .open>.dropdown-menu:before {
+        position: absolute;
+        display: block;
+        content: '';
+        bottom: 100%;
+        top: 5px;
+        right: -4px;
+        width: 7px;
+        height: 7px;
+        margin-bottom: -4px;
+        border-top: 1px solid #b5b5b5;
+        border-right: 1px solid #b5b5b5;
+        background: #fff;
+        transform: rotate(45deg);
+        transition: all .4s ease-in-out;
+    }
 
-.list-group-item .drop-down,
-.dropup {
-    position: relative;
-}
+    .list-group-item .drop-down,
+    .dropup {
+        position: relative;
+    }
 
-.list-group-item .drop-menu {
-    position: absolute;
-    top: 100%;
-    right: 95px;
-    z-index: 1000;
-    visibility: hidden;
-    float: left;
-    min-width: 160px;
-    padding: 8px;
-    margin: 2px 0 0;
-    font-size: 14px;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0, 0, 0, .15);
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-    width: max-content;
-    top: 20px;
-    opacity: 0;
-}
+    .list-group-item .drop-menu {
+        position: absolute;
+        top: 100%;
+        right: 95px;
+        z-index: 1000;
+        visibility: hidden;
+        float: left;
+        min-width: 160px;
+        padding: 8px;
+        margin: 2px 0 0;
+        font-size: 14px;
+        text-align: left;
+        list-style: none;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        width: max-content;
+        top: 20px;
+        opacity: 0;
+    }
 
-.list-group-item .current.drop-menu {
-    visibility: visible;
-    top: -3px;
-    transition: all .6s;
-    opacity: 1;
-}
+    .list-group-item .current.drop-menu {
+        visibility: visible;
+        top: -3px;
+        transition: all .6s;
+        opacity: 1;
+    }
 
-.list-group-item input+label {
-    font-weight: 400;
-    cursor: pointer;
-}
+    .list-group-item input+label {
+        font-weight: 400;
+        cursor: pointer;
+    }
 
-.list-group-item input:checked+label {
-    font-weight: 600;
-    color: #6cadd1;
-}
+    .list-group-item input:checked+label {
+        font-weight: 600;
+        color: #6cadd1;
+    }
 
-.list-group-item .drop-menu.current:before {
-    position: absolute;
-    display: block;
-    content: '';
-    bottom: 100%;
-    top: 5px;
-    right: -4px;
-    width: 7px;
-    height: 7px;
-    margin-bottom: -4px;
-    border-top: 1px solid #b5b5b5;
-    border-right: 1px solid #b5b5b5;
-    background: #fff;
-    transform: rotate(45deg);
-    transition: all .4s ease-in-out;
-}
+    .list-group-item .drop-menu.current:before {
+        position: absolute;
+        display: block;
+        content: '';
+        bottom: 100%;
+        top: 5px;
+        right: -4px;
+        width: 7px;
+        height: 7px;
+        margin-bottom: -4px;
+        border-top: 1px solid #b5b5b5;
+        border-right: 1px solid #b5b5b5;
+        background: #fff;
+        transform: rotate(45deg);
+        transition: all .4s ease-in-out;
+    }
 
-.list-group-item .text_align {
-    transform: translateY(-2px);
-    display: inline-block;
-}
+    .list-group-item .text_align {
+        transform: translateY(-2px);
+        display: inline-block;
+    }
 
-.list-group-item .text-info {
-    margin-top: 8px;
-}
+    .list-group-item .text-info {
+        margin-top: 8px;
+    }
 
-.list-group-item i.icon.ti-location-pin.arrow {
-    transform: translateY(2px);
-}
+    .list-group-item i.icon.ti-location-pin.arrow {
+        transform: translateY(2px);
+    }
 
-.list-group-item hr {
-    margin-top: 3px;
-    margin-bottom: 8px;
-    border: 0;
-    border-top: 1px solid #eeeeee;
-}
+    .list-group-item hr {
+        margin-top: 3px;
+        margin-bottom: 8px;
+        border: 0;
+        border-top: 1px solid #eeeeee;
+    }
 </style>
