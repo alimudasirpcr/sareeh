@@ -3129,5 +3129,6 @@
     "reports_detailed_timeclock_report": "Reports detailed timeclock report",
     "login_swich_user_success": "Login swich user success",
     "reports_not_clocked_out": "Reports not clocked out",
-    "employees_successful_adding": "Employees successful adding"
+    "employees_successful_adding": "Employees successful adding",
+    "customers_successful_adding": "Customers successful adding"
 }

@@ -708,7 +708,7 @@ class Customers extends Person_controller
 			{
 				$this->Appconfig->save('wizard_add_customer',1);				
 				$success_message = lang('customers_successful_adding').' '.$person_data['first_name'].' '.$person_data['last_name'];
-				echo json_encode(array('success'=>true,'message'=> H($success_message),'person_id'=>$customer_data['person_id'],'redirect_code'=>$redirect_code));
+				echo json_encode(array('success'=>true,'message'=> H($success_message),'person_id'=>$customer_data['person_id'],'redirect_code'=>$redirect_code , 'person_data' => $person_data));
 				$customer_id = $customer_data['person_id'];
 				
 			}
@@ -717,7 +717,7 @@ class Customers extends Person_controller
 				$this->Appconfig->save('wizard_add_customer',1);
 				$success_message = lang('customers_successful_updating').' '.$person_data['first_name'].' '.$person_data['last_name'];
 				$this->session->set_flashdata('manage_success_message', H($success_message));
-				echo json_encode(array('success'=>true,'message'=>H($success_message),'person_id'=>$customer_id,'redirect_code'=>$redirect_code));
+				echo json_encode(array('success'=>true,'message'=>H($success_message),'person_id'=>$customer_id,'redirect_code'=>$redirect_code , 'person_data' => $person_data));
 			}
 		}
 		else {

@@ -397,19 +397,38 @@ function doEmployeeSubmit(form,type = null)
 		{
 
 			$('#grid-loader').hide();
-			window.location.reload(true);
+			
 			submitting = false;
 			$('#myModalDisableClose').modal('hide');
 			if (response.success)
 			{
 				if (type == 'customer') {
-					$.post('<?php echo site_url("sales/select_customer");?>', {customer: response.person_id + '|FORCE_PERSON_ID|'}, function()
-					{
-						window.location.href = '<?php echo site_url('sales/index/1'); ?>';
-					});
+					// $.post('<?php echo site_url("sales/select_customer");?>', {customer: response.person_id + '|FORCE_PERSON_ID|'}, function()
+					// {
+					// 	window.location.href = '<?php echo site_url('sales/index/1'); ?>';
+					// });
+					cart = JSON.parse(localStorage.getItem('cart'));
+					cart['customer']['person_id'] = response.person_id;
+					cart['customer']['avatar'] ='<?php echo base_url() . "assets/img/user.png"; ?>';
+					cart['customer']['customer_name'] = response.person_data.first_name + ' ' + response.person_data.last_name;
+					cart['customer']['email'] = response.person_data.email;
+					cart['customer']['balance'] = to_currency_no_money(0);
+					cart['customer']['internal_notes'] = '';
+					cart['customer']['points'] =  0;
+					cart['customer']['sales_until_discount'] = 0;
+					cart['customer']['customer_credit_limit'] =  0;
+					cart['customer']['disable_loyalty'] =  0;
+					cart['customer']['is_over_credit_limit'] =  0;
+					cart['customer']['unpaid_store_account_sale_ids'] =  [];
+					cart['customer']['store_account_payment_item_id'] = 0;
+					localStorage.setItem('cart', JSON.stringify(cart));
+					$('#customers_form')[0].reset();
+					close_all_drawers();
+					renderUi();
 				}
 
 				if (type == 'supplier') {
+					window.location.reload(true);
 					$.post('<?php echo site_url("receivings/select_supplier");?>', {supplier: response.person_id}, function()
 					{
 						window.location.href = '<?php echo site_url('receivings'); ?>';
