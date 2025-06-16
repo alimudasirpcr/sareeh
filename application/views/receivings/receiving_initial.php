@@ -493,7 +493,7 @@
 
 
 				var supplier_item = $('<li data-supplier_id="' + json.suppliers[k].id + '"  class="  col-1  category_item supplier register-holder tags-holder  nav-item mb-3 me-1 me-lg-1 p-0" role="presentation">' +
-					'<div class="nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active" data-bs-toggle="pill" aria-selected="true" role="tab">' +
+					'<div class="nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px p-0 active" data-bs-toggle="pill" aria-selected="true" role="tab">' +
 						'<div class="nav-icon"><i class="ion-ios-folder-outline" style="font-size:30px"></i></div>' +
 						'<span class="nav-text text-gray-700 fw-bold fs-8 lh-1 h-30px"><p>' + json.suppliers[k].name + '</p></span>' +
 						'<span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>' +
