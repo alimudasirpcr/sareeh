@@ -2565,39 +2565,39 @@ class Receivings extends Secure_area
 		
 		$items_result_query = $this->Item->get_all_favorite_items($this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid')+4 : 18);
 
-		if(!$items_result_query){	
+		if($items_result_query !== false){	
 			$items_result = $items_result_query->result();
 			foreach($items_result as $item)
-		{
-			$img_src = "";
-			if ($item->image_id != 'no_image' && trim($item->image_id) != '') {
-				$img_src = cacheable_app_file_url($item->image_id);
-			}
+				{
+					$img_src = "";
+					if ($item->image_id != 'no_image' && trim($item->image_id) != '') {
+						$img_src = cacheable_app_file_url($item->image_id);
+					}
 
-			if (strpos($item->item_id, 'KIT') === 0)
-			{
-				$price_to_use = FALSE;
-			}
-			else
-			{
-				$cur_item_info = $this->Item->get_info($item->item_id);
-				$cur_item_location_info = $this->Item_location->get_info($item->item_id);
-	
-				$price_to_use = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
-			}
+					if (strpos($item->item_id, 'KIT') === 0)
+					{
+						$price_to_use = FALSE;
+					}
+					else
+					{
+						$cur_item_info = $this->Item->get_info($item->item_id);
+						$cur_item_location_info = $this->Item_location->get_info($item->item_id);
+			
+						$price_to_use = ($cur_item_location_info && $cur_item_location_info->cost_price) ? $cur_item_location_info->cost_price : $cur_item_info->cost_price;
+					}
 
-			$has_cost_price_permission = $this->Employee->has_module_action_permission('items', 'see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
+					$has_cost_price_permission = $this->Employee->has_module_action_permission('items', 'see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
 
-			$items[] = array(
-				'id' => $item->item_id,
-				'has_variations' => count($this->Item_variations->get_variations($item->item_id)) > 0 ? TRUE: FALSE,
-				'name' => character_limiter($item->name, 58),				
-				'image_src' => 	$img_src,
-				'type' => 'item',		
-				'price' => $has_cost_price_permission && $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,		
+					$items[] = array(
+						'id' => $item->item_id,
+						'has_variations' => count($this->Item_variations->get_variations($item->item_id)) > 0 ? TRUE: FALSE,
+						'name' => character_limiter($item->name, 58),				
+						'image_src' => 	$img_src,
+						'type' => 'item',		
+						'price' => $has_cost_price_permission && $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,		
 
-			);		
-		}
+					);		
+				}
 		}	
 		
 		
