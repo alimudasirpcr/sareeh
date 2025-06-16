@@ -3134,5 +3134,6 @@
     "reports_store_account_activity_summary_report": "Reports store account activity summary report",
     "reports_debits": "Reports debits",
     "reports_credits": "Reports credits",
-    "reports_total_balance_of_all_store_accounts": "Reports total balance of all store accounts"
+    "reports_total_balance_of_all_store_accounts": "Reports total balance of all store accounts",
+    "receivings_unable_to_add_item": "Receivings unable to add item"
 }

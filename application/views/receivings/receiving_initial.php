@@ -12,16 +12,16 @@
 				<div class="text-center">
 					<div id="grid_selection" class="btn-group" role="group">
 					<?php if($this->config->item('hide_categories_receivings_grid') != 1 ){ ?>
-						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_category"><?php echo lang('categories') ?></a>
+						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'categories' || !$this->config->item('default_type_for_grid') ? 'btn active' : ''; ?> btn btn-grid btn-primary" id="by_category"><?php echo lang('categories') ?></a>
 					<?php }
 					if($this->config->item('hide_tags_receivings_grid') != 1 ){ ?>
-						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_tag"><?php echo lang('tags') ?></a>
+						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'tags' ? 'btn active' : ''; ?> btn btn-grid btn-primary" id="by_tag"><?php echo lang('tags') ?></a>
 					<?php }
 					if($this->config->item('hide_suppliers_receivings_grid') != 1 ){ ?>
-						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : '';?> btn btn-grid btn-success" id="by_supplier"><?php echo lang('suppliers') ?></a>
+						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'suppliers' ? 'btn active' : '';?> btn btn-grid btn-primary" id="by_supplier"><?php echo lang('suppliers') ?></a>
 					<?php }
 					if($this->config->item('hide_favorites_receivings_grid') != 1 ){ ?>
-						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorite' ? 'btn active' : ''; ?> btn btn-grid btn-success" id="by_favorite"><?php echo lang('favorite') ?></a>
+						<a href="javascript:void(0);" class="<?php echo $this->config->item('default_type_for_grid') == 'favorite' ? 'btn active' : ''; ?> btn btn-grid btn-primary" id="by_favorite"><?php echo lang('favorite') ?></a>
 					<?php } ?>
 					</div>
 				</div>
@@ -454,7 +454,7 @@
 					category_item.css('background-color', 'white');
 					category_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + ')');
 				}
-			category_item = '<li data-category_id="'+json.categories[k].id+'" class=" col-1 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+			category_item = '<li data-category_id="'+json.categories[k].id+'" class=" col-1 category_item category register-holder categories-holder nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4" alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.categories[k].image_id + '?timestamp=' + json.categories[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.categories[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 
 				$("#category_item_selection").append(category_item);
@@ -473,7 +473,7 @@
 			for (var k = 0; k < json.tags.length; k++) {
 				//var tag_item = $("<div/>").attr('class', 'category_item tag col-md-2 register-holder tags-holder col-sm-3 col-xs-6').data('tag_id', json.tags[k].id).append('<p> <i class="ion-ios-pricetag-outline"></i> ' + json.tags[k].name + '</p>');
 
-				var tag_item = '<li data-tag_id="'+json.tags[k].id+'"  class=" col-1  category_item tag register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-150px py-4 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-pricetag-outline text-danger " style="font-size:60px"></i> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.tags[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
+				var tag_item = '<li data-tag_id="'+json.tags[k].id+'"  class=" col-1  category_item tag register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"><i class="ion-ios-pricetag-outline text-danger " style="font-size:30px"></i> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.tags[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
 
 				$("#category_item_selection").append(tag_item);
 			}
@@ -488,11 +488,26 @@
 			$("#category_item_selection").html('');
 
 			for (var k = 0; k < json.suppliers.length; k++) {
-				var supplier_item = $("<div/>").attr('class', 'category_item supplier col-md-2 register-holder categories-holder col-sm-3 col-xs-6').data('supplier_id', json.suppliers[k].id).append('<p> <i class="ion-ios-folder-outline"></i> ' + json.suppliers[k].name + '</p>');
+				
 
+
+
+				var supplier_item = $('<li data-supplier_id="' + json.suppliers[k].id + '"  class=" col-1  category_item supplier register-holder tags-holder  nav-item mb-3 me-3 me-lg-6" role="presentation">' +
+					'<div class="nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active" data-bs-toggle="pill" aria-selected="true" role="tab">' +
+						'<div class="nav-icon"><i class="ion-ios-folder-outline" style="font-size:30px"></i></div>' +
+						'<span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.suppliers[k].name + '</p></span>' +
+						'<span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span>' +
+					'</div>' +
+				'</li>');
+
+				// ✅ Modify conditionally with jQuery
 				if (json.suppliers[k].image_id) {
-					supplier_item.css('background-color', 'white');
-					supplier_item.css('background-image', 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + ')');
+					supplier_item.css({
+						'background-color': 'white',
+						'background-image': 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + ')',
+						'background-size': 'cover',
+						'background-position': 'center'
+					});
 				}
 				$("#category_item_selection").append(supplier_item);
 			}
@@ -590,7 +605,13 @@
 
 				//var item = $("<div/>").attr('data-is_favorite', 'yes').attr('data-has-variations', has_variations).attr('class', 'category_item item col-md-2 register-holder ' + image_class + ' col-sm-3 col-xs-6  ' + item_parent_class).attr('data-id', json.items[k].id).append(prod_image + '<p>' + json.items[k].name + '<br /> <span class="text-bold">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></p>');
 
-				item = '<a class=" col-2 border border-gray-900  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 active symbol" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab">   <div class="nav-icon "> <img class="rounded-3 mb-4 ' + image_class + '" alt="" src="'+ image_src +'"></div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p>' + json.items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary">' + (json.items[k].price ? '(' + json.items[k].price + ')' : '') + '</span></a>';
+				
+
+				var item = '<li data-is_favorite="yes" data-category_id="'+json.items[k].id+'" class=" col-1 category_item item nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.items[k].image_id + '?timestamp=' + json.items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-7 lh-1"><p>' + json.items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+
+				
+
+
 				$("#category_item_selection").append(item);
 
 			}
