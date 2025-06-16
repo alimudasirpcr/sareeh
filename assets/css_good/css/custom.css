@@ -9985,7 +9985,7 @@ button.toast-close-button {
 }
 .register .register-right .sale-buttons .btn-suspended {
   height: 35px;
-  background-color: #FFF0DD;
+  background-color: #4f55da;
   border: 1px solid #FFCD90;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -9996,7 +9996,7 @@ button.toast-close-button {
   line-height: 20px;
 }
 .register .register-right .sale-buttons .btn-suspended:hover {
-  background-color: #ffdaaa;
+  background-color: #8a8fff;
 }
 .register .register-right .sale-buttons .btn-cancel {
   height: 35px;
