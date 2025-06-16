@@ -2417,7 +2417,7 @@ class Receivings extends Secure_area
 		$this->load->model('Appfile');
 		foreach($categories as $id=>$value)
 		{
-				$categories_response[] = array('id' => $id, 'name' => $value['name'], 'color' => $value['color'], 'image_id' => $value['image_id'], 'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']));
+				$categories_response[] = array('id' => $id, 'name' => character_limiter($value['name'], 15) , 'color' => $value['color'], 'image_id' => $value['image_id'], 'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']));
 		}
 		
 		$data = array();
@@ -2446,7 +2446,7 @@ class Receivings extends Secure_area
 		$this->load->model('Appfile');
 		foreach($suppliers->result_array() as $id=>$value)
 		{
-				$suppliers_response[] = array('id' => $value['pid'], 'name' => $value['company_name'], 'image_id' => $value['image_id'], 'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']));
+				$suppliers_response[] = array('id' => $value['pid'], 'name' =>  character_limiter($value['company_name'], 15) , 'image_id' => $value['image_id'], 'image_timestamp' => $this->Appfile->get_file_timestamp($value['image_id']));
 		}
 
 		$data = array();
@@ -2474,7 +2474,7 @@ class Receivings extends Secure_area
 	
 		foreach($tags as $id=>$value)
 		{
-				$tags_response[] = array('id' => $id, 'name' => $value['name']);
+				$tags_response[] = array('id' => $id, 'name' => character_limiter($value['name'], 15) );
 		}
 	
 
@@ -2528,7 +2528,7 @@ class Receivings extends Secure_area
 			$items[] = array(
 				'id' => $item->item_id,
 				'has_variations' => count($this->Item_variations->get_variations($item->item_id)) > 0 ? TRUE: FALSE,
-				'name' => character_limiter($item->name, 58),				
+				'name' => character_limiter($item->name, 15),				
 				'image_src' => 	$img_src,
 				'type' => 'item',		
 				'price' => $has_cost_price_permission && $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,		
@@ -2591,7 +2591,7 @@ class Receivings extends Secure_area
 					$items[] = array(
 						'id' => $item->item_id,
 						'has_variations' => count($this->Item_variations->get_variations($item->item_id)) > 0 ? TRUE: FALSE,
-						'name' => character_limiter($item->name, 58),				
+						'name' => character_limiter($item->name, 15),				
 						'image_src' => 	$img_src,
 						'type' => 'item',		
 						'price' => $has_cost_price_permission && $price_to_use !== FALSE ? to_currency($price_to_use) : FALSE,		

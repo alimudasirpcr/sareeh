@@ -27,8 +27,8 @@
 				</div>
 				<div class="pagination hidden-print alternate text-center"></div>
 				<div id="grid_breadcrumbs"></div>
-				<div id="category_item_selection" class="row register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0"></div>
-				<div id="category_item_selection_wrapper_new" class="row register-grid nav nav-pills nav-pills-custom  p-0 mt-1 m-0"></div>
+				<div id="category_item_selection" class="row register-grid nav nav-pills nav-pills-custom  p-0 mt-1  mx-0 mb-4"></div>
+				<div id="category_item_selection_wrapper_new" class="row register-grid nav nav-pills nav-pills-custom  p-0 mt-1  mx-0 mb-4"></div>
 				
 			</div>
 		</div>
