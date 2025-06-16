@@ -13,8 +13,12 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 	}
 
 	.xeditable.edit-quantity {
-    z-index: 0;
-}
+    	z-index: 0;
+	}
+
+	.register .list-group {
+		z-index: 0;
+	}
 </style>
 <a tabindex="-1" href="#" class="dismissfullscreen <?php echo !$fullscreen ? 'hidden' : ''; ?>"><i class="ion-close-circled"></i></a>
 <?php if ($cart->get_previous_receipt_id()) { ?>
