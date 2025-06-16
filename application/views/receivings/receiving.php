@@ -837,7 +837,7 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 
 					<!-- if the location is not set , show location adding form -->
 					<?php echo form_open("receivings/select_location", array('id' => 'select_location_form', 'autocomplete' => 'off')); ?>
-					<div class="input-group contacts d-flex">
+					<div class="input-group contacts d-flex justify-content-center">
 						<span class="input-group-text">
 							<?php echo anchor("locations/view/-1", "<i class='ion-plus'></i>", array('class' => 'none', 'title' => lang('new_customer'), 'id' => 'new-customer')); ?>
 						</span>
