@@ -10615,7 +10615,7 @@ span.fw-bold.text-left.text-gray-800.cursor-pointer.text-hover-primary.fs-6.d-bl
   /* background-color: #f3f4f8; */
 }
 .register-grid .register-holder.back-to-categories {
-  background: rgba(0, 0, 0, 0.3);
+  background: #fff;
   border: 1px solid #ddd;
 }
 .register-items-header {
