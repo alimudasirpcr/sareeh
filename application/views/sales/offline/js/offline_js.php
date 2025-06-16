@@ -6758,7 +6758,7 @@ $(document).on('click', '#kt_app_layout_builder_close_submit', function(event)
 		$('body').attr("data-kt-drawer", "off");
 		$('body').attr("data-kt-drawer-null" ,"off");
 
-        handleFinishSale();
+        // handleFinishSale();
 	});
 
 

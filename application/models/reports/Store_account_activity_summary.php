@@ -44,7 +44,7 @@ class Store_account_activity_summary extends Report
 		$this->setupDefaultPagination();
 		$report_data = $this->getData();
 		$location_count = $this->Location->count_all();
-
+		$tabular_data = array();
 		foreach($report_data as $row)
 		{
 			$tab_row = array(array('data'=>$row['first_name'].' '.$row['last_name'], 'align'=> 'left'),

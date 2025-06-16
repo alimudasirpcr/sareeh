@@ -3130,5 +3130,9 @@
     "login_swich_user_success": "Login swich user success",
     "reports_not_clocked_out": "Reports not clocked out",
     "employees_successful_adding": "Employees successful adding",
-    "customers_successful_adding": "Customers successful adding"
+    "customers_successful_adding": "Customers successful adding",
+    "reports_store_account_activity_summary_report": "Reports store account activity summary report",
+    "reports_debits": "Reports debits",
+    "reports_credits": "Reports credits",
+    "reports_total_balance_of_all_store_accounts": "Reports total balance of all store accounts"
 }

@@ -19775,7 +19775,7 @@ background-color: #11192a !important;
 }
 
 div#kt_app_settings_content {
-  height: auto !important;
+  height: 100% !important;
 }
 
 #network-status {

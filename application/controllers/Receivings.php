@@ -2563,10 +2563,11 @@ class Receivings extends Secure_area
 		//Items
 		$items = array();
 		
-		$items_result = $this->Item->get_all_favorite_items($this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid')+4 : 18)->result();
-		
-		
-		foreach($items_result as $item)
+		$items_result_query = $this->Item->get_all_favorite_items($this->config->item('hide_out_of_stock_grid') ? TRUE : FALSE, $offset, $this->config->item('number_of_items_in_grid') ? $this->config->item('number_of_items_in_grid')+4 : 18);
+
+		if(!$items_result_query){	
+			$items_result = $items_result_query->result();
+			foreach($items_result as $item)
 		{
 			$img_src = "";
 			if ($item->image_id != 'no_image' && trim($item->image_id) != '') {
@@ -2597,6 +2598,10 @@ class Receivings extends Secure_area
 
 			);		
 		}
+		}	
+		
+		
+		
 	
 		$items_count = $this->Item->count_all_favorite_items();
 		
