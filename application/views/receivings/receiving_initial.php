@@ -582,6 +582,8 @@
 					var item_parent_class = "item_parent_class";
 					var prod_image = '<img src="' + image_src + '" alt="" />';
 					var image_class = "";
+				}else{
+					image_src = SITE_URL + '/app_files/view_cacheable/' + json.items[k].image_id + '?timestamp=' + json.items[k].image_timestamp + '';
 				}
 
 			
