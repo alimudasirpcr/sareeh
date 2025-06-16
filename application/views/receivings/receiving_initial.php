@@ -564,7 +564,12 @@
 
 		function processTagItemsResult(json) {
 			$("#category_item_selection").html('');
-			var back_to_categories_button = $("<div/>").attr('id', 'back_to_tags').attr('class', 'category_item register-holder no-image back-to-categories col-md-2 col-sm-3 col-xs-6 ').append('<p>&laquo; ' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p>');
+		
+
+
+			var back_to_categories_button = '<li id="back_to_tags"  class=" col-1  category_item back-to-categories register-holder tags-holder  nav-item mb-3 me-3 me-lg-6 p-0" role="presentation"><div class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden  h-100px py-4 px-0 active " data-bs-toggle="pill"  aria-selected="true" role="tab"><div class="nav-icon"> </div><span class="nav-text text-gray-700 fw-bold fs-6 lh-1"><p> &laquo;' + <?php echo json_encode(lang('back_to_tags')); ?> + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></div></li>';
+
+
 			$("#category_item_selection").append(back_to_categories_button);
 
 			for (var k = 0; k < json.items.length; k++) {
