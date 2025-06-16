@@ -502,7 +502,7 @@
 
 				// ✅ Modify conditionally with jQuery
 				if (json.suppliers[k].image_id) {
-					supplier_item.find('.nav-link').addClass('bg-light');
+					supplier_item.find('.nav-text').addClass('bg-light');
 					supplier_item.find('.nav-link').css({
 						'background-color': 'white',
 						'background-image': 'url(' + SITE_URL + '/app_files/view_cacheable/' + json.suppliers[k].image_id + '?timestamp=' + json.suppliers[k].image_timestamp + ')',
