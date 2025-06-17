@@ -23,5 +23,7 @@ application/libraries/htmlpurifier/library/HTMLPurifier/DefinitionCache/Serializ
 .vscode/
 tools/
 application/config/redis.php
+application/migrations/*
+!application/migrations/.gitkeep
 .env.production
 .env.development
