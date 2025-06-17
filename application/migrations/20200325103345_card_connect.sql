@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c3ccc10c1d7d7c3b5266b052287fd6f4d445a99a546d0bdfd5137fe9d7d74c82
-size 482
+-- card_connect --
+
+ALTER TABLE `phppos_locations` ADD `card_connect_mid` VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE `phppos_locations` ADD `card_connect_rest_username` VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE `phppos_locations` ADD `card_connect_rest_password` VARCHAR(255) NULL DEFAULT NULL;
+
+ALTER TABLE `phppos_registers` ADD `card_connect_hsn` VARCHAR(255) NULL DEFAULT NULL;
+
+ALTER TABLE `phppos_customers` ADD `cc_expire` VARCHAR(255) NULL DEFAULT NULL AFTER `cc_token`;

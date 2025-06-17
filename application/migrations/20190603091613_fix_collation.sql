@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e25307a7e3c10b385914a0c9b25d288f95f29b61d868a24870554df650ced833
-size 481
+-- fix_collation --
+ALTER TABLE phppos_customers_series_log CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE phppos_customers_series CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE phppos_register_log_payments CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE phppos_employees_time_off CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+ALTER TABLE phppos_people_files CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;

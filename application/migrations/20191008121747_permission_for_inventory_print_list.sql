@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8750e17b38b3be62085470351ad1d1268dac67b39cb12198c6de63e70e1025c3
-size 624
+-- permission_for_inventory_print_list --
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('view_inventory_print_list', 'items', 'common_view_inventory_print_list', 267);
+INSERT INTO phppos_permissions_actions (module_id, person_id, action_id)
+SELECT DISTINCT phppos_permissions.module_id, phppos_permissions.person_id, action_id
+from phppos_permissions
+inner join phppos_modules_actions on phppos_permissions.module_id = phppos_modules_actions.module_id
+WHERE phppos_permissions.module_id = 'items' and
+action_id = 'view_inventory_print_list'
+order by module_id, person_id;

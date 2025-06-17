@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:223e20ff4060713206c2e15a28f736c71e948b4b8001114b602c2c4c1daed8a2
-size 213
+-- dashboard_statistics_per_employee --
+
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('view_dashboard_stats', 'reports', 'reports_view_dashboard_stats', 300);

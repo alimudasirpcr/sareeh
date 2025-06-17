@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:839b6b77fd642a21c5880a5e415a9ac908fa63beb324a2b5c8ca7dc2d75c487f
-size 631
+
+SET foreign_key_checks = 0;
+ALTER TABLE `phppos_modules_actions` CHANGE `action_id` `action_id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, CHANGE `module_id` `module_id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, CHANGE `action_name_key` `action_name_key` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+ALTER TABLE `phppos_permissions_actions` CHANGE `module_id` `module_id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL, CHANGE `action_id` `action_id` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
+SET foreign_key_checks = 1;

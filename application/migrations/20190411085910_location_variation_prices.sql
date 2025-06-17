@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2da275c466eb0e2f88ecda919a82ac28d2740cf75890a6be04f50f42c899a752
-size 181
+-- location_variation_prices --
+ALTER TABLE phppos_location_item_variations ADD COLUMN `unit_price` decimal(23,10) DEFAULT NULL,
+ADD COLUMN `cost_price` decimal(23,10) DEFAULT NULL;

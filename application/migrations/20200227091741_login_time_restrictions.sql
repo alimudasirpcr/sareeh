@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4c838122b7ecff9c0656d8b06d11694245b0c510bb8db6d8a10cfec6ad369880
-size 187
+-- login_time_restrictions --
+ALTER TABLE `phppos_employees` ADD COLUMN `login_start_time` TIME DEFAULT NULL;
+ALTER TABLE `phppos_employees` ADD COLUMN `login_end_time` TIME DEFAULT NULL;

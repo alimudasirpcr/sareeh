@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fe73dd25bd1e4b729b120e89af3fabfaeaef3a6ed7660530689191b9b45b3e45
-size 144
+-- is_repair_item_in_sales_item_kits --
+
+ALTER TABLE `phppos_sales_item_kits` ADD `is_repair_item` INT(11) NULL DEFAULT '0' AFTER `supplier_id`;

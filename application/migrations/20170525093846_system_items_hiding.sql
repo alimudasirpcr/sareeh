@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4b24e827b592140f2ac862e7165eff4246b457746032bc5d2a586e7e412d60e3
-size 157
+-- system_items_hiding --
+
+ALTER table phppos_items ADD `system_item` int(1) NOT NULL DEFAULT '0', ADD INDEX `deleted_system_item` (`deleted`,`system_item`);

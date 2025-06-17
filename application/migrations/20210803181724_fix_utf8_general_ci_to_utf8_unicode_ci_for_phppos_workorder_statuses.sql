@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6ab785e78911580670c732d7f8a490ca500bfe90a07c5c19820efd019d856aaf
-size 168
+-- fix_utf8_general_ci_to_utf8_unicode_ci_for_phppos_workorder_statuses --
+
+ALTER TABLE phppos_workorder_statuses convert to character set utf8 collate utf8_unicode_ci;

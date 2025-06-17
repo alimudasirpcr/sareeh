@@ -1,3 +1,2 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e0435f00fbd3217367c86f631f20e37534bd44da6e9129872255eacbc478fa52
-size 158
+-- update_item_being_repaired --
+update phppos_sales_items SET is_repair_item = 1 WHERE `line`=0 and sale_id IN(select sale_id FROM phppos_sales_work_orders);

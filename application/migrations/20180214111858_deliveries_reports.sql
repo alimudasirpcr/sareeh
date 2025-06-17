@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3b6d4cf11f6b3160d4a5118a76c793b7afab9cdff7cb05ea630ea4f7d5fa66fb
-size 579
+-- deliveries_reports --
+
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('view_deliveries', 'reports', 'reports_deliveries', 135);
+INSERT INTO phppos_permissions_actions (module_id, person_id, action_id)
+SELECT DISTINCT phppos_permissions.module_id, phppos_permissions.person_id, action_id
+from phppos_permissions
+inner join phppos_modules_actions on phppos_permissions.module_id = phppos_modules_actions.module_id
+WHERE phppos_permissions.module_id = 'reports' and
+action_id = 'view_deliveries'
+order by module_id, person_id; 

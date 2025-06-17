@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:32e4d060835f4af38b92c959792a1af3d57cabd6192d5867507e9e1693cf2195
-size 592
+-- can_change_sale_date_permission --
+INSERT INTO `phppos_modules_actions` (`action_id`, `module_id`, `action_name_key`, `sort`) VALUES ('change_sale_date', 'sales', 'sales_change_sale_date', 184);
+INSERT INTO phppos_permissions_actions (module_id, person_id, action_id)
+SELECT DISTINCT phppos_permissions.module_id, phppos_permissions.person_id, action_id
+from phppos_permissions
+inner join phppos_modules_actions on phppos_permissions.module_id = phppos_modules_actions.module_id
+WHERE phppos_permissions.module_id = 'sales' and
+action_id = 'change_sale_date'
+order by module_id, person_id;

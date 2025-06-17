@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b254c6c166ce0c4923c0d8df5bce9949bf9716845637884a5858a442091fb6b6
-size 288
+-- twilio_sms_api_integration --
+ALTER TABLE phppos_locations ADD COLUMN twilio_sid VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE phppos_locations ADD COLUMN twilio_token VARCHAR(255) NULL DEFAULT NULL;
+ALTER TABLE phppos_locations ADD COLUMN twilio_sms_from VARCHAR(255) NULL DEFAULT NULL;

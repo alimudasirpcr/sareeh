@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3f9f8f488a123a63c0ffdf7a34e853727742cbc69eb32d678b5c2e812a8182a7
-size 299
+-- deliveries_status_email_template --
+CREATE TABLE `phppos_delivery_email_templates`(
+	`id` int(11) NOT NULL  auto_increment , 
+	`status_id` int(11) NOT NULL  , 
+	`content` longtext COLLATE utf8_unicode_ci NULL  , 
+	PRIMARY KEY (`id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

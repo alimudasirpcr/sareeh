@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f6a7dc2977c45b94c1b664372939a26ec4fc487fb8c76a90d62de1f230a21f0e
-size 154
+-- allow_ecommerce_order_id_to_be_larger_int --
+
+ALTER TABLE `phppos_sales` CHANGE `ecommerce_order_id` `ecommerce_order_id` BIGINT(20) NULL DEFAULT NULL;

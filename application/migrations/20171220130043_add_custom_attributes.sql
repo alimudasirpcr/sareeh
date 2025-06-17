@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9268daa225652cef252dd65491ad6213d335335f1cf7b7895f08e069d3a03362
-size 280
+-- add_custom_attributes --
+
+
+ALTER TABLE `phppos_attributes`
+ADD `item_id` int(11) NULL DEFAULT NULL AFTER `id`,
+ADD CONSTRAINT `phppos_attributes_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `phppos_items` (`item_id`),
+DROP INDEX name, 
+ADD UNIQUE KEY `name` (`item_id`,`name`);
+

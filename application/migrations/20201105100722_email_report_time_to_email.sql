@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:622be0b20ecf9f0e5688dd46e37b179c69327a2b96e009e5c623eb50ed40191f
-size 114
+-- email_report_time_to_email --
+
+ALTER TABLE phppos_locations ADD auto_reports_email_time TIME NULL DEFAULT NULL;

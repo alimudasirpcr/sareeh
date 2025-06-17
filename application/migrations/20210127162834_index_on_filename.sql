@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c99b2ea0af569aa2da156f8331f6e9fb567113ecc8b631d23ecebffb82f8ea36
-size 216
+-- index_on_filename --
+ALTER TABLE phppos_app_files ADD INDEX(`file_name`);
+ALTER TABLE phppos_app_files ADD INDEX(`timestamp`);
+ALTER TABLE phppos_app_files ADD INDEX `filename_timestamp` (`file_name`,`timestamp`);

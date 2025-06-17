@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aaa7186e9ff36e519d0ce9f3c88c08bbf61d1c169dadcfe6c46deab8708d178c
-size 285
+-- partial_store_account_payment --
+ALTER TABLE `phppos_store_accounts_paid_sales` ADD COLUMN partial_payment_amount DECIMAL(23,10) NOT NULL DEFAULT '0';
+ALTER TABLE `phppos_supplier_store_accounts_paid_receivings` ADD COLUMN partial_payment_amount DECIMAL(23,10) NOT NULL DEFAULT '0';

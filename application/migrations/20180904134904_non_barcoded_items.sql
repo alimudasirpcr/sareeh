@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8c73e8bc426a087d4b0f3c1ea5382e7df44004e69ac99410722932e1c68c2bb2
-size 183
+-- non_barcoded_items --
+
+ALTER TABLE phppos_items ADD COLUMN is_barcoded INT(1) NOT NULL DEFAULT '1';
+ALTER TABLE phppos_item_kits ADD COLUMN is_barcoded INT(1) NOT NULL DEFAULT '1';

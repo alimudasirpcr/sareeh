@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2368635d3cdb53e4744235030537d9ec46f7f3bfd3864c83300b8260631ffe3f
-size 578
+-- price_tiers_cost_plus_fixed_amount --
+
+ALTER TABLE `phppos_price_tiers` ADD `default_cost_plus_fixed_amount` decimal(23,10) NULL DEFAULT NULL;
+ALTER TABLE `phppos_item_kits_tier_prices` ADD `cost_plus_fixed_amount` decimal(23,10) NULL DEFAULT NULL;
+ALTER TABLE `phppos_items_tier_prices` ADD `cost_plus_fixed_amount`decimal(23,10) NULL DEFAULT NULL;
+ALTER TABLE `phppos_location_item_kits_tier_prices` ADD `cost_plus_fixed_amount` decimal(23,10) NULL DEFAULT NULL;
+ALTER TABLE `phppos_location_items_tier_prices` ADD `cost_plus_fixed_amount` decimal(23,10) NULL DEFAULT NULL;

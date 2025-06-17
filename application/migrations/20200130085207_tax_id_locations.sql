@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:30a997d07715628184a0278cefe46cac65ef6efa2c324ed613de1dbed77b536c
-size 122
+-- tax_id_locations --
+
+ALTER TABLE phppos_locations ADD tax_id varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '';

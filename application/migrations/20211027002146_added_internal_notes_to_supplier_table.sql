@@ -1,3 +1,2 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5d26cb9c1819018e37d0fe8d93d1d82792d7ecfb848f4c5c449e57067acc5335
-size 151
+-- added_internal_notes_to_supplier_table --
+ALTER TABLE `phppos_suppliers` ADD `internal_notes` TEXT NULL DEFAULT NULL AFTER `custom_field_10_value`; 

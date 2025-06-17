@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0d6e360e9fa707d8bd3705cf4b00e66002794c0177c9b1057f9213e5351c050e
-size 395
+-- additional_item_numbers_change --
+
+ALTER TABLE `phppos_additional_item_numbers`  DROP FOREIGN KEY `phppos_additional_item_numbers_ibfk_1`;
+ALTER TABLE `phppos_additional_item_numbers` CHANGE `item_id` `item_id` INT(11) NOT NULL;
+ALTER TABLE `phppos_additional_item_numbers`  ADD CONSTRAINT `phppos_additional_item_numbers_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `phppos_items` (`item_id`);

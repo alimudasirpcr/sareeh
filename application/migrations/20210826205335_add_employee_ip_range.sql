@@ -1,3 +1,2 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fdf6df45e75abf6062e16b6b9e6007b64faaabf33933e34c6c36771cba64385a
-size 143
+-- add_employee_ip_range --
+ALTER TABLE `phppos_employees` ADD `allowed_ip_address` TEXT NULL DEFAULT NULL AFTER `override_price_adjustments`;

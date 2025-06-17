@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c11bb1743116bdff8131990b8b553ee6ac5b3ef4faf5160984345dee5b520b30
-size 154
+-- ebt_non_integrated_flag --
+
+ALTER TABLE phppos_locations ADD ebt_integrated int(1) NOT NULL DEFAULT 0;
+UPDATE phppos_locations SET ebt_integrated = 1;

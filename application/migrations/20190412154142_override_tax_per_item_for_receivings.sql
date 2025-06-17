@@ -1,3 +1,2 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e2f413e408d20f5db1543f1834368dffe9cf2b8c056bb223480279869c6a651e
-size 126
+-- override_tax_per_item_for_receivings --
+ALTER TABLE `phppos_receivings_items` ADD `override_taxes` TEXT NULL DEFAULT NULL;

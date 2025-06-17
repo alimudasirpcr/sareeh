@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f776810d1079e7b96df78946fac5c1e2119b9dc3fe717b2837fd69dcdd1a5976
-size 506
+-- price_rules_per_location --
+CREATE TABLE `phppos_price_rules_locations` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `rule_id`  int(10) NOT NULL,
+  `location_id`  int(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `phppos_price_rules_locations_ibfk_1` FOREIGN KEY (`rule_id`) REFERENCES `phppos_price_rules` (`id`),
+  CONSTRAINT `phppos_price_rules_locations_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `phppos_locations` (`location_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

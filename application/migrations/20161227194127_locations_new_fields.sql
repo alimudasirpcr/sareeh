@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5fcb2b18f3fa0a3d9f9b4adc8ce2787a8d33b8ad78b2a15679a4674764edb81d
-size 404
+-- locations_new_fields --
+
+ALTER TABLE `phppos_locations` ADD `company` TEXT NULL AFTER `name`;
+ALTER TABLE `phppos_locations` ADD `website` TEXT NULL AFTER `company`;
+ALTER TABLE `phppos_locations` ADD `company_logo` int(10) DEFAULT NULL AFTER `website`;
+
+ALTER TABLE phppos_locations 
+    ADD CONSTRAINT `phppos_locations_ibfk_1` FOREIGN KEY (`company_logo`) REFERENCES `phppos_app_files` (`file_id`);

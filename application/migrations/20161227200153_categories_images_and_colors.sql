@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a449a98f633ed7226dd4674e0f0aa0b0ccddc05c6dde61dfbcb924a78823c9f7
-size 352
+-- categories_images_and_colors --
+
+ALTER TABLE `phppos_categories` ADD `image_id` int(10) DEFAULT NULL AFTER `name`;
+ALTER TABLE `phppos_categories` ADD `color` text COLLATE utf8_unicode_ci AFTER `image_id`;
+
+ALTER TABLE `phppos_categories`
+	ADD CONSTRAINT `phppos_categories_ibfk_2` FOREIGN KEY (`image_id`) REFERENCES `phppos_app_files` (`file_id`);

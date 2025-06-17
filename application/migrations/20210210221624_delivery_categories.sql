@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aa1e0b45de372d0c4d91de15f2195c681faadc98099ffd3b7e9d9bee8e7fd3de
-size 495
+-- delivery_categories --
+CREATE TABLE `phppos_delivery_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `color` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_modified` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deleted` int(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `delivery_category_name` (`name`),
+  KEY `deleted` (`deleted`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

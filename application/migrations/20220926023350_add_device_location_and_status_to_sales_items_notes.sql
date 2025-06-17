@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1202c7ef6a6632bed36cb60e9f553ab7afc96aece4a12a8f5bbe676debcc2dd5
-size 371
+-- add_device_location_and_status_to_sales_items_notes --
+ALTER TABLE `phppos_sales_items_notes` ADD COLUMN `device_location` VARCHAR(255) NULL AFTER `images`;
+
+ALTER TABLE `phppos_sales_items_notes` 
+ADD `status` INT(10) NULL AFTER `device_location`, 
+ADD	CONSTRAINT `phppos_sales_items_notes_ibfk_4` FOREIGN KEY (`status`) REFERENCES `phppos_workorder_statuses` (`id`);

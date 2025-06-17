@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3035ba8900f121c746de133a4f889324b47198948078975722dd482c0c0f3b85
-size 206
+-- Customer fields --
+
+ALTER TABLE `phppos_customers` ADD `cc_ref_no` VARCHAR(255) NULL DEFAULT NULL AFTER `cc_token`, ADD `disable_loyalty` int(1) NOT NULL DEFAULT '0' AFTER `points`;
+-- Customer Fields --

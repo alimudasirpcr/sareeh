@@ -1,3 +1,50 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c30029c91127fb93af4a799e00f9e42f2cfb56f878b7fa0246e5e5379ce992c0
-size 1588
+-- additional_custom_fields --
+
+
+ALTER TABLE `phppos_suppliers` 
+ADD `custom_field_6_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_6_value`),
+
+ADD `custom_field_7_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_7_value`),
+
+ADD `custom_field_8_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_8_value`),
+
+ADD `custom_field_9_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_9_value`),
+
+ADD `custom_field_10_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_10_value`);
+
+ALTER TABLE `phppos_employees` 
+ADD `custom_field_6_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_6_value`),
+
+ADD `custom_field_7_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_7_value`),
+
+ADD `custom_field_8_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_8_value`),
+
+ADD `custom_field_9_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_9_value`),
+
+ADD `custom_field_10_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_10_value`);
+
+ALTER TABLE `phppos_customers` 
+ADD `custom_field_6_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_6_value`),
+
+ADD `custom_field_7_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_7_value`),
+
+ADD `custom_field_8_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_8_value`),
+
+ADD `custom_field_9_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_9_value`),
+
+ADD `custom_field_10_value` VARCHAR(255) NULL DEFAULT NULL, 
+ADD INDEX (`custom_field_10_value`);

@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:abb9d285a5db72b7d2344b1202fa5ea3c39c65c5935cfff85bfb70268616b498
-size 422
+-- add_approved_by_and_assigned_to_to_sale_items --
+ALTER TABLE `phppos_sales_items` 
+ADD `approved_by` INT(10) NULL AFTER `supplier_id`, 
+ADD CONSTRAINT `phppos_sales_items_ibfk_8` FOREIGN KEY (`approved_by`) REFERENCES `phppos_employees`(`person_id`),
+ADD `assigned_to` INT(10) NULL AFTER `approved_by`, 
+ADD CONSTRAINT `phppos_sales_items_ibfk_9` FOREIGN KEY (`assigned_to`) REFERENCES `phppos_employees`(`person_id`);
