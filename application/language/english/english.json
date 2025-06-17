@@ -3135,5 +3135,7 @@
     "reports_debits": "Reports debits",
     "reports_credits": "Reports credits",
     "reports_total_balance_of_all_store_accounts": "Reports total balance of all store accounts",
-    "receivings_unable_to_add_item": "Receivings unable to add item"
+    "receivings_unable_to_add_item": "Receivings unable to add item",
+    "due_date": "Due date",
+    "add_item": "Add item"
 }

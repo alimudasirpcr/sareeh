@@ -318,6 +318,8 @@ class Invoices extends Secure_area
 	{
 
 		$this->invoice_type = $type;
+
+		dd($_POST);
 		
 		if (empty($this->input->post($this->invoice_type.'_id'))) {
 
