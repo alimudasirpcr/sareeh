@@ -318,8 +318,7 @@ class Invoices extends Secure_area
 	{
 
 		$this->invoice_type = $type;
-		echo $this->invoice_type;
-		dd($_POST);
+		
 		
 		if (empty($this->input->post($this->invoice_type.'_id'))) {
 
@@ -359,7 +358,8 @@ class Invoices extends Secure_area
 		}
 		
 		$invoice_id = $this->Invoice->save($this->invoice_type,$invoice_data,$invoice_id);
-		
+		echo $invoice_id;
+		dd($invoice_data);
 		$id = $invoice_id == -1 ? $invoice_data['invoice_id'] : $invoice_id;
 		if( $invoice_id > 0){
 			$this->add_item_to_invoice($this->invoice_type,$invoice_id , $this->input->post());
