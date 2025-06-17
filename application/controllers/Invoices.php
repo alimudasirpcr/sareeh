@@ -356,10 +356,8 @@ class Invoices extends Secure_area
 		{
 			$invoice_data['location_id'] = $this->Employee->get_logged_in_employee_current_location_id();
 		}
-		$this->db->save_queries = true;
 		$invoice_id = $this->Invoice->save($this->invoice_type,$invoice_data,$invoice_id);
-		echo $this->db->last_query();
-		exit();
+		
 		$id = $invoice_id == -1 ? $invoice_data['invoice_id'] : $invoice_id;
 		if( $invoice_id > 0){
 			$this->add_item_to_invoice($this->invoice_type,$invoice_id , $this->input->post());
