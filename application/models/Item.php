@@ -735,6 +735,7 @@ return $result;
 	
 	function get_all_favorite_items($hide_out_of_stock_grid = FALSE, $offset=0, $limit = 14)
 	{
+		save_query();
 		$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 		
 		$items_table = $this->db->dbprefix('items');
@@ -785,8 +786,7 @@ return $result;
 			FROM $item_kits_table 
 			WHERE deleted = 0 and $item_kits_table.is_favorite = 1 and $item_kits_table.item_kit_id NOT IN (SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id=$location_id) ORDER BY name) LIMIT $offset, $limit");
 		}
-		$query = $this->db->get();
-
+		
 		echo "<pre>"; $this->db->last_query();
 		dd($result); exit();
 		return $result;
