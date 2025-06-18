@@ -168,7 +168,7 @@
 		function loadFavoriteItems(offset) {
 			$('#grid-loader').show();
 			//Get sub categories then items
-			$.get('<?php echo site_url("sales/favorite_items"); ?>/' + offset, function(json) {
+			$.get('<?php echo site_url("receivings/favorite_items"); ?>/' + offset, function(json) {
 				processFavoriteItemsResult(json);
 			}, "json");
 		}
