@@ -9787,7 +9787,7 @@ class Sales extends Secure_area
 			if($sale_ids[0] != lang('sales_test_mode_transaction')){
 				$preview = 	$this->preview_receipt($sale_ids[0], null ,  true);	
 			}else{
-				$preview = lang('sales_test_mode_transaction' );
+				$preview = lang('sales_test_mode_transaction' ) . ": ". lang('Test_mode_will_not_have_any_receipt_or_entry' ) ;
 			}
 			
 		}
