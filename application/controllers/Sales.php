@@ -9771,7 +9771,10 @@ class Sales extends Secure_area
 
 
 			$sale_id = $this->Sale->save($offline_sale_cart, false);
-			update_data_by_where('phppos_sales', array('sale_json' => json_encode(array($offline_sale))), 'sale_id = ' . $sale_id . ' ');
+			if($sale_id != lang('sales_test_mode_transaction')){
+				update_data_by_where('phppos_sales', array('sale_json' => json_encode(array($offline_sale))), 'sale_id = ' . $sale_id . ' ');
+			}
+			
 			// dd($sale_id);
 			$sale_ids[] = $sale_id;
 		}
@@ -9780,7 +9783,13 @@ class Sales extends Secure_area
 
 
 		if($get_preview){
-			$preview = 	$this->preview_receipt($sale_ids[0], null ,  true);
+
+			if($sale_ids[0] != lang('sales_test_mode_transaction')){
+				$preview = 	$this->preview_receipt($sale_ids[0], null ,  true);	
+			}else{
+				$preview = lang('sales_test_mode_transaction' );
+			}
+			
 		}
 
 	
