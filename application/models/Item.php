@@ -786,8 +786,8 @@ return $result;
 			FROM $item_kits_table 
 			WHERE deleted = 0 and $item_kits_table.is_favorite = 1 and $item_kits_table.item_kit_id NOT IN (SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id=$location_id) ORDER BY name) LIMIT $offset, $limit");
 		}
-		$res = $result->get();
-		echo "<pre>"; $this->db->last_query();
+		echo $this->db->last_query();
+		
 		dd($result); exit();
 		return $result;
 		
