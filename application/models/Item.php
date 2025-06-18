@@ -787,6 +787,7 @@ return $result;
 		}
 		
 		return $result;
+		echo $result; exit();
 	}
 
 	function get_all_item_by_supplier($supplier_id, $hide_out_of_stock_grid = FALSE, $offset=0, $limit = 14)
