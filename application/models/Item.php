@@ -785,9 +785,9 @@ return $result;
 			FROM $item_kits_table 
 			WHERE deleted = 0 and $item_kits_table.is_favorite = 1 and $item_kits_table.item_kit_id NOT IN (SELECT item_kit_id FROM phppos_grid_hidden_item_kits WHERE location_id=$location_id) ORDER BY name) LIMIT $offset, $limit");
 		}
-		
-		return $result;
 		echo $result; exit();
+		return $result;
+		
 	}
 
 	function get_all_item_by_supplier($supplier_id, $hide_out_of_stock_grid = FALSE, $offset=0, $limit = 14)
