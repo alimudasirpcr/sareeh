@@ -18,16 +18,21 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 		
 		if($people_to_email!=false)
 		{
-			$mailto_url='mailto:';
+			$mailto_url='';
 			foreach($this->Person->get_multiple_info($people_to_email)->result() as $person)
 			{
-				if ($person->email)
+				if ($person->email &&  $person->email!='')
 				{
 					$mailto_url.=$person->email.',';	
 				}
 			}
 			//remove last comma
 			$mailto_url=substr($mailto_url,0,strlen($mailto_url)-1);
+			if($mailto_url!=''){
+				$mailto_url='mailto:'.$mailto_url;
+			}else{
+				$mailto_url = '#';
+			}
 			
 			echo $mailto_url;
 			exit;

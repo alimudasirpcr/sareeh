@@ -165,7 +165,7 @@
         </div>
     </div>
 
-
+<?php if(!isset($customer)): ?>
     <div class="col-md-6">
         <div class="mb-5">
             <div class="">
@@ -188,6 +188,8 @@
             </div>
         </div>
     </div>
+
+
 
     <div class="col-md-6">
         <div class="mb-5">
@@ -231,7 +233,7 @@
             </div>
         </div>
     </div>
-
+    <?php endif; ?>
 
     <div class="col-md-6">
         <div class="mb-5">
@@ -439,7 +441,7 @@
         </div>
     </div>
 </div>
-
+<?php if(!isset($customer)): ?>
 <?php if (count($locations) == 1) { ?>
 	<?php
 	echo form_hidden('locations[]', current(array_keys($locations)));
@@ -485,6 +487,8 @@
 		</div>
 	</div>
 <?php } ?>
+
+<?php endif; ?>
 
 <?php
 if ($this->Location->get_info_for_key('mailchimp_api_key') && $controller_name != "login") {

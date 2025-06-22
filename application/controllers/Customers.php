@@ -285,6 +285,7 @@ class Customers extends Person_controller
 		$data['controller_name']=strtolower(get_class());
 		$data['tiers']=$tiers;
 		$data['person_info']=$this->Customer->get_info($customer_id);
+	
 		$this->load->model('Customer_taxes');
 		$data['customer_tax_info']=$this->Customer_taxes->get_info($customer_id);
 		

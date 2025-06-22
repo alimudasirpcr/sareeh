@@ -158,16 +158,21 @@ const BootboxLoader = (function () {
 			return false;
 		});
 
-		$('#generate_barcode_labels').click(function()
+		$('#generate_barcode_labels').click(function(e)
 		{
+
+			e.preventDefault();
 			var selected = get_selected_values();
+			console.log('selected' , selected);
 			if (selected.length == 0)
 			{
 				bootbox.alert(<?php echo json_encode(lang('must_select_item_for_barcode')); ?>);
 				return false;
 			}
-
-			$(this).attr('href','<?php echo site_url("customers/generate_barcode_labels");?>/'+selected.join('~'));
+			// generate full URL and redirect manually
+			var url = '<?php echo site_url("customers/generate_barcode_labels"); ?>/' + selected.join('~');
+				window.location.href = url;
+			
 		});		
 	
 	
@@ -374,9 +379,9 @@ $message = $this->session->flashdata('error');
 </div>
 
 <div class="manage-row-options   px-5 hidden">
-<div class="email_buttons people">
+<div class="email_buttons people"> 
 	<?php if(!$deleted) { ?>
-	<a class="btn btn-primary btn-lg disabled email email_inactive" title="<?php echo lang("email");?>" id="email" href="<?php echo current_url(). '#'; ?>" >
+	<a class="btn btn-primary btn-lg disabled email email_inactive" title="<?php echo lang("email");?>" id="email" href="#" >
 		<span class="ion-email"> <?php echo lang('email'); ?></span>
 	</a>
 	

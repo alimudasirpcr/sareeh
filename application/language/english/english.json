@@ -3137,5 +3137,16 @@
     "reports_total_balance_of_all_store_accounts": "Reports total balance of all store accounts",
     "receivings_unable_to_add_item": "Receivings unable to add item",
     "due_date": "Due date",
-    "add_item": "Add item"
+    "add_item": "Add item",
+    "load_saved_value": "Load saved value",
+    "items_overall_barcode_width": "Items overall barcode width",
+    "items_overall_barcode_height": "Items overall barcode height",
+    "items_overall_font_size": "Items overall font size",
+    "items_barcode_image_width": "Items barcode image width",
+    "items_barcode_image_height": "Items barcode image height",
+    "items_barcode_image_font_size": "Items barcode image font size",
+    "items_zerofill_barcode": "Items zerofill barcode",
+    "save_above_values_name": "Save above values name",
+    "items_reset_labels": "Items reset labels",
+    "customers_successful_updating": "Customers successful updating"
 }
