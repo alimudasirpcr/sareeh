@@ -31,13 +31,13 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 			if($mailto_url!=''){
 				$mailto_url='mailto:'.$mailto_url;
 			}else{
-				$mailto_url = '#';
+				$mailto_url = 'javascript:void(0);';
 			}
 			
 			echo $mailto_url;
 			exit;
 		}
-		echo '#';
+		echo 'javascript:void(0);';
 	}		
 	
 	function download($file_id)
