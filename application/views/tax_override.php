@@ -1,12 +1,24 @@
 <script src="<?php echo base_url() ?>assets/css_good/plugins/custom/formrepeater/formrepeater.bundle.js"></script>
 
-<div class="" style="width: inherit;">
+<div class="modal-dialog" style="width: inherit;">
 	<!--begin::Modal content-->
-	<div class="">
+	<div class="modal-content">
 		<!--begin::Form-->
+		<div class="modal-header  ">
+                <h3 class="fs-3 fw-bold text-black flex-column m-0 card-title w-50 "><?php echo lang('edit_taxes'); ?></h3>
+
+            
+					<div class="card-toolbar w-50 text-right ">
+                    <button type="button" class="btn btn-sm btn-icon fs-2 text-black p-0 w-20px h-20px rounded-1" data-dismiss="modal" aria-label="Close">
+                        x </button>
+                </div>
+                <!--end::Close-->
+            </div>
+
+
 
 		<!--begin::Modal body-->
-		<div class="  px-lg-17">
+		<div class=" modal-body px-lg-17">
 			<!--begin::Scroll-->
 			<div class="scroll-y me-n7 pe-7" id="kt_modal_create_api_key_scroll" data-kt-scroll="true" data-kt-scroll-activate="{default: false, lg: true}" data-kt-scroll-max-height="auto" data-kt-scroll-dependencies="#kt_modal_create_api_key_header" data-kt-scroll-wrappers="#kt_modal_create_api_key_scroll" data-kt-scroll-offset="300px">
 				<!--begin::Notice-->
