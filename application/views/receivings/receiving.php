@@ -1370,15 +1370,15 @@ $has_cost_price_permission = $this->Employee->has_module_action_permission('item
 							<div id="finish_sale" class="receivings-finish-sale">
 								<div class="input-group add-payment-form">
 									<span class="input-group-text">
-										<a href="#" id="finish_sale_button_transfer_request" class="finish-transfer-button"><?php echo lang('receivings_send_transfer_request'); ?></a>
+										<a href="#" id="finish_sale_button_transfer_request" class="finish-transfer-button text-white"><?php echo lang('receivings_send_transfer_request'); ?></a>
 									</span>
 								</div>
 							</div>
 							<h3 style="text-align:center;"><?php echo lang('or'); ?></h3>
 							<div id="finish_sale" class="receivings-finish-sale">
 								<div class="input-group add-payment-form">
-									<span class="input-group-text" style="background-color: inherit !important;">
-										<a href="#" id="finish_sale_button" class="finish-transfer-button btn-danger"><?php echo lang('receivings_complete_transfer'); ?></a>
+									<span class="input-group-text" >
+										<a href="#" id="finish_sale_button" class="finish-transfer-button text-white"><?php echo lang('receivings_complete_transfer'); ?></a>
 									</span>
 								</div>
 							</div>

@@ -3191,5 +3191,10 @@
     "suppliers_successful_undeleted": "Suppliers successful undeleted",
     "locations_default": "Locations default",
     "locations_successful_adding": "Locations successful adding",
-    "locations_successful_updating": "Locations successful updating"
+    "locations_successful_updating": "Locations successful updating",
+    "items_returned": "Items returned",
+    "receivings_edit": "Receivings edit",
+    "receivings_new_receiving": "Receivings new receiving",
+    "receivings_transfer_id": "Receivings transfer id",
+    "receivings_edit_confirm": "Receivings edit confirm"
 }
