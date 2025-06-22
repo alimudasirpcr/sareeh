@@ -508,8 +508,8 @@
                         <div class="rect3"></div>
                     </div>
 
-                    <?php echo form_label(lang('locations_registers') . ':', null, array('class' => 'col-sm-3 col-md-3 col-lg-2 control-label ')); ?>
-                    <div class="table-responsive m-lr-15">
+                    <?php echo form_label(lang('locations_registers') . ':', null, array('class' => 'col-sm-12 col-md-12 col-lg-12 control-label text-left ')); ?>
+                    <div class="table-responsive m-lr-15 col-md-12">
                         <table id="price_registers" class="table">
                             <thead>
                                 <tr>
@@ -608,7 +608,7 @@
 												}
 												?>
                                     </td>
-                                    <td class="enable_tips register-cc-field">
+                                    <td class="enable_tips register-cc-field-datacap ">
 
                                         <?php echo form_checkbox(array(
 													'name' => 'registers_to_edit[' . $register->register_id . '][enable_tips]',
@@ -621,21 +621,21 @@
 
 
                                     </td>
-                                    <td><input type="text"
+                                    <td class="register-cc-field-datacap"><input type="text"
                                             class="form-control iptran register-cc-field register-cc-field-datacap"
                                             name="registers_to_edit[<?php echo $register->register_id; ?>][iptran_device_id]"
                                             value="<?php echo H($register->iptran_device_id); ?>" /></td>
-                                    <td><input id="pinpad_ip_<?php echo $counter; ?>" type="text"
+                                    <td class="register-cc-field-datacap"><input id="pinpad_ip_<?php echo $counter; ?>" type="text"
                                             class="form-control emv_pinpad_ip register-cc-field register-cc-field-datacap"
                                             name="registers_to_edit[<?php echo $register->register_id; ?>][emv_pinpad_ip]"
                                             value="<?php echo H($register->emv_pinpad_ip); ?>" /></td>
-                                    <td><input id="pinpad_port_<?php echo $counter; ?>" type="text"
+                                    <td class="register-cc-field-datacap"><input id="pinpad_port_<?php echo $counter; ?>" type="text"
                                             class="form-control emv_pinpad_port register-cc-field register-cc-field-datacap"
                                             name="registers_to_edit[<?php echo $register->register_id; ?>][emv_pinpad_port]"
                                             value="<?php echo H($register->emv_pinpad_port); ?>" /></td>
 
 
-                                    <td>
+                                    <td class="register-cc-field-datacap">
                                         <a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap"
                                             href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a><span
                                             class="register-cc-field register-cc-field-datacap"> / </span>
@@ -2053,36 +2053,73 @@ $(document).ready(function() {
             .data('register-id') + '" />');
         $(this).parent().parent().remove();
     });
+    <?php
+$receipt_options = '<option value="0">Default</option>';
+if (!empty($receipt_types)) {
+    foreach ($receipt_types as $ty) {
+        $receipt_options .= '<option value="' . $ty->id . '">' . htmlspecialchars($ty->title) . '</option>';
+    }
+}
 
-    $("#add_register").click(function() {
-        $("#price_registers tbody").append(
-            '<tr><td><span class="dot terminal"></span><input type="text" style="margin-top: -18px;" class="registers_to_add form-control form-control-solid next-to-status" name="registers_to_add[' +
-            add_register_index +
-            '][name]" value="" /></td><td class="card_connect_info"><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add[' +
-            add_register_index +
-            '][card_connect_hsn]" value="" /></td><td><input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add[' +
-            add_register_index +
-            '][emv_terminal_id]" value="" /></td><td class="enable_tips register-cc-field"><input class="form-check-input" type="checkbox" name="registers_to_add[' +
-            add_register_index + '][enable_tips]" value="1" id="registers_to_add_' +
-            add_register_index + '_enable_tips"><label for="registers_to_add_' +
-            add_register_index +
-            '_enable_tips"><span></span></label></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add[' +
-            add_register_index +
-            '][iptran_device_id]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add[' +
-            add_register_index +
-            '][emv_pinpad_ip]" value="" /></td><td><input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add[' +
-            add_register_index +
-            '][emv_pinpad_port]" value="" /></td><td><a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a><span class="register-cc-field register-cc-field-datacap"> / </span><a class="init_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_init_mercury_emv'); ?></a> </td><td><select class="form-control" name="registers_to_add[' +
-            add_register_index +
-            '][receipt_type]"><option value="0">Default</option> <?php if ($receipt_types) : foreach ($receipt_types  as $ty) : ?> <option  value="<?= $ty->id ?>"><?= $ty->title ?></option><?php endforeach; ?>   <?php else : ?>  <?php endif; ?></select></td><td><select class="form-select form-select-solid  " data-control="select2"  multiple  name="registers_to_add[' +
-            add_register_index +
-            '][categories][]"><?php if ($categories) : foreach ($categories  as $cat) : ?><option  value="<?= $cat->id ?>"><?= $cat->name ?></option><?php endforeach;
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																	endif; ?></select></td><td>&nbsp;</td></tr>'
-            );
-        check_credit_card_processor();
-        add_register_index++;
-    });
+$category_options = '';
+if (!empty($categories)) {
+    foreach ($categories as $cat) {
+        $category_options .= '<option value="' . $cat->id . '">' . htmlspecialchars($cat->name) . '</option>';
+    }
+}
+?>
+   var receiptOptions = <?php echo json_encode($receipt_options); ?>;
+var categoryOptions = <?php echo json_encode($category_options); ?>;
 
+$("#add_register").click(function() {
+    const rowHtml = `
+    <tr>
+        <td>
+            <span class="dot terminal"></span>
+            <input type="text" style="margin-top: -18px;" class="registers_to_add form-control form-control-solid next-to-status" name="registers_to_add[${add_register_index}][name]" value="" />
+        </td>
+        <td class="card_connect_info">
+            <input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add[${add_register_index}][card_connect_hsn]" value="" />
+        </td>
+        <td>
+            <input type="text" class="registers_to_add form-control form-control-solid register-cc-field" name="registers_to_add[${add_register_index}][emv_terminal_id]" value="" />
+        </td>
+        <td class="enable_tips register-cc-field-datacap">
+            <input class="form-check-input" type="checkbox" name="registers_to_add[${add_register_index}][enable_tips]" value="1" id="registers_to_add_${add_register_index}_enable_tips">
+            <label for="registers_to_add_${add_register_index}_enable_tips"><span></span></label>
+        </td>
+        <td class="register-cc-field-datacap">
+            <input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add[${add_register_index}][iptran_device_id]" value="" />
+        </td>
+        <td class="register-cc-field-datacap">
+            <input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add[${add_register_index}][emv_pinpad_ip]" value="" />
+        </td>
+        <td class="register-cc-field-datacap">
+            <input type="text" class="registers_to_add form-control iptran register-cc-field register-cc-field-datacap" name="registers_to_add[${add_register_index}][emv_pinpad_port]" value="" />
+        </td>
+        <td class="register-cc-field-datacap">
+            <a class="update_parameters_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_update_params_ip_tran'); ?></a>
+            <span class="register-cc-field register-cc-field-datacap"> / </span>
+            <a class="init_ip_tran register-cc-field register-cc-field-datacap" href="javascript:void(0);"><?php echo lang('locations_init_mercury_emv'); ?></a>
+        </td>
+        <td>
+            <select class="form-control" name="registers_to_add[${add_register_index}][receipt_type]">
+                ${receiptOptions}
+            </select>
+        </td>
+        <td>
+            <select class="form-select form-select-solid" data-control="select2" name="registers_to_add[${add_register_index}][categories][]" multiple>
+                ${categoryOptions}
+            </select>
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+    `;
+
+    $("#price_registers tbody").append(rowHtml);
+    check_credit_card_processor();
+    add_register_index++;
+});
 
     if ($("#location_form_auth").length == 1) {
         setTimeout(function() {

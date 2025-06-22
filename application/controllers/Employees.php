@@ -355,6 +355,7 @@ class Employees extends Person_controller
 		$data['files'] = $this->Person->get_files($employee_id)->result();
 		$data['action_locations'] = $this->Employee->get_action_wise_employee_location($employee_id);
 		$data['current_location'] = $this->Employee->get_logged_in_employee_current_location_id();
+		$data['is_employee'] = true;
 		// dd($data);
 		$this->load->view("employees/form",$data);
 	}

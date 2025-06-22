@@ -50,7 +50,7 @@ class Suppliers extends Person_controller
 		$data['default_columns'] = $this->Supplier->get_default_columns();
 		$data['selected_columns'] = $this->Employee->get_supplier_columns_to_display();
 		$data['all_columns'] = array_merge($data['selected_columns'], $this->Supplier->get_displayable_columns());		
-		$data['location_id'] = $params['location_id'] ? $params['location_id'] : "";
+		$data['location_id'] = isset($params['location_id']) &&  $params['location_id'] ? $params['location_id'] : "";
 		
 		
 		if (!$this->config->item('only_allow_current_location_customers'))

@@ -165,7 +165,7 @@
         </div>
     </div>
 
-<?php if(!isset($customer)): ?>
+<?php if(isset($is_employee)): ?>
     <div class="col-md-6">
         <div class="mb-5">
             <div class="">
@@ -441,7 +441,7 @@
         </div>
     </div>
 </div>
-<?php if(!isset($customer)): ?>
+<?php if(isset($is_employee)): ?>
 <?php if (count($locations) == 1) { ?>
 	<?php
 	echo form_hidden('locations[]', current(array_keys($locations)));
