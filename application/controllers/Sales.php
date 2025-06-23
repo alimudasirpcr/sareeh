@@ -3297,7 +3297,7 @@ class Sales extends Secure_area
 	}
 	function complete($dont_check_validation = false)
 	{
-		echo "one";
+		echo "one"; exit();
 		if (!$this->Employee->has_module_action_permission('sales', 'complete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 			$this->_reload(array('error' => lang('sales_you_do_not_have_permission_to_complete_sales')), false);
 			return;
