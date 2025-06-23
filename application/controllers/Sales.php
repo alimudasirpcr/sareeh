@@ -1924,7 +1924,9 @@ class Sales extends Secure_area
 		}
 	
 		$this->cart->save();
-		
+		if($this->cart->get_mode() == 'store_account_payment'){
+			return;
+		}
 
 		$this->sales_reload($data);
 	}
