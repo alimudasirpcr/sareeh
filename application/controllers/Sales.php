@@ -3381,16 +3381,16 @@ class Sales extends Secure_area
 		}
 
 		if (empty($data['cart_items'])) {
-			echo "no items"; exit();
+		
 			redirect('sales');
 		}
 
 		if (!$this->_payments_cover_total()) {
-			echo "total_iss"; exit();
+		
 			$this->_reload(array('error' => lang('sales_cannot_complete_sale_as_payments_do_not_cover_total')), false);
 			return;
 		}
-		echo "seven"; exit();
+		
 
 		$tier_id = $this->cart->selected_tier_id;
 		$tier_info = $this->Tier->get_info($tier_id);
@@ -3443,7 +3443,7 @@ class Sales extends Secure_area
 		$cvm = $this->session->userdata('cvm') ? $this->session->userdata('cvm') : '';
 		$tran_type = $this->session->userdata('tran_type') ? $this->session->userdata('tran_type') : '';
 		$application_label = $this->session->userdata('application_label') ? $this->session->userdata('application_label') : '';
-		echo "eight";
+		
 		if ($ref_no) {
 			if (count($this->cart->get_payment_ids(lang('credit'))) || count($this->cart->get_payment_ids(lang('ebt'))) || count($this->cart->get_payment_ids(lang('ebt_cash')))) {
 				$cc_payment_id = current($this->cart->get_payment_ids(lang('credit')));
@@ -3480,7 +3480,7 @@ class Sales extends Secure_area
 		$old_date = $this->cart->get_previous_receipt_id()  ? $this->Sale->get_info($this->cart->get_previous_receipt_id())->row_array() : false;
 		$old_date =  $old_date ? date(get_date_format() . ' ' . get_time_format(), strtotime($old_date['sale_time'])) : date(get_date_format() . ' ' . get_time_format());
 
-		echo "nine";
+	
 		$suspended_change_sale_id = $this->cart->get_previous_receipt_id();
 
 		$data['store_account_payment'] = $this->cart->get_mode() == 'store_account_payment' ? 1 : 0;
@@ -3504,7 +3504,7 @@ class Sales extends Secure_area
 		$this->cart->suspended = 0;
 
 		//SAVE sale to database
-		echo "ten"; exit();
+		
 		$sale_id_raw = $this->Sale->save($this->cart);
 
 		
