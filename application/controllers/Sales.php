@@ -1919,6 +1919,7 @@ class Sales extends Secure_area
 			}
 		}
 		if (!$this->cart->add_payment(new PHPPOSCartPaymentSale(array('payment_type' => $payment_type, 'payment_amount' => $payment_amount)))) {
+			echo "error in payment"; exit();
 			$data['error'] = lang('unable_to_add_payment');
 		}
 
@@ -5605,7 +5606,7 @@ class Sales extends Secure_area
 			}
 		}
 		$comment = lang('sales_pays_sales') . ' - ' . implode(', ', array_keys($this->cart->get_paid_store_account_ids()));
-		dd($comment);
+	
 		$this->cart->comment = $comment;
 		$this->cart->save();
 		// $this->_reload();
