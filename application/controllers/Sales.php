@@ -5597,7 +5597,7 @@ class Sales extends Secure_area
 		
 		$this->cart->add_paid_store_account_payment_id($sale_id, $amount);
 		$cart = $this->cart->get_items();
-		dd($cart);
+	
 		foreach ($cart as $item) {
 			if ($item->name == lang('store_account_payment')) {
 				$item->unit_price += $amount;
@@ -5605,7 +5605,7 @@ class Sales extends Secure_area
 			}
 		}
 		$comment = lang('sales_pays_sales') . ' - ' . implode(', ', array_keys($this->cart->get_paid_store_account_ids()));
-
+		dd($comment);
 		$this->cart->comment = $comment;
 		$this->cart->save();
 		// $this->_reload();
