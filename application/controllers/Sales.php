@@ -1922,7 +1922,8 @@ class Sales extends Secure_area
 			echo "error in payment"; exit();
 			$data['error'] = lang('unable_to_add_payment');
 		}
-
+		$cart = $this->cart->get_items();
+		dd($cart);
 		$this->cart->save();
 		$this->sales_reload($data);
 	}
