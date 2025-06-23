@@ -355,8 +355,17 @@ class Invoices extends Secure_area
 		if ($invoice_id == -1)
 		{
 			$invoice_data['location_id'] = $this->Employee->get_logged_in_employee_current_location_id();
-		}
+		
+		save_query();
+
 		$invoice_id = $this->Invoice->save($this->invoice_type,$invoice_data,$invoice_id);
+
+		dd($this->db->last_query());
+		}
+		else
+		{
+			$this->Invoice->save($this->invoice_type,$invoice_data,$invoice_id);
+		}
 		
 		$id = $invoice_id == -1 ? $invoice_data['invoice_id'] : $invoice_id;
 		if( $invoice_id > 0){
@@ -888,7 +897,7 @@ class Invoices extends Secure_area
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>lang('invoices_term_successful_error')));
+			echo json_encode(array('success'=>false,'message'=>lang('invoices_term_unsuccessful_error')));
 		}
 	}
 

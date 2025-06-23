@@ -3198,5 +3198,12 @@
     "receivings_transfer_id": "Receivings transfer id",
     "receivings_edit_confirm": "Receivings edit confirm",
     "work_orders_successful_deleted": "Work orders successful deleted",
-    "work_orders_one_or_multiple": "Work orders one or multiple"
+    "work_orders_one_or_multiple": "Work orders one or multiple",
+    "invoices_add_term": "Invoices add term",
+    "term": "Term",
+    "term_name": "Term name",
+    "days_due": "Days due",
+    "invoices_term_delete_confirmation": "Invoices term delete confirmation",
+    "invoices_term_successful_adding": "Invoices term successful adding",
+    "invoices_terms_successful_deleted": "Invoices terms successful deleted"
 }
