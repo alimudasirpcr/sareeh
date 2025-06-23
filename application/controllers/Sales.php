@@ -5303,7 +5303,7 @@ class Sales extends Secure_area
 	function sales_reload($data = array(), $is_data = false)
 	{
 
-		dd($data);
+	
 
 		//This is used for upgrade installs that never had this set (sales in progress)
 		if ($this->cart->limit === NULL) {
