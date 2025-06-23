@@ -1080,14 +1080,14 @@ function create_breadcrumb()
 		{
 			if(isset($params['deleted']) && $params['deleted'])
 			{
-				$return =create_current_page_url(lang('module_deleted_deliveries_orders'));
+				$deliveries_home_link =create_current_page_url(lang('module_deleted_deliveries_orders'));
 			}
 			else
 			{
-				$return =create_current_page_url(lang('deliveries_orders'));
+				$deliveries_home_link =create_current_page_url(lang('deliveries_orders'));
 			}
 		}
-
+		$return.=$deliveries_home_link;
 		if ($ci->uri->segment(2)=='view')
 		{
 			$return.= ' <li class="breadcrumb-item"><a tabindex = "-1" class="breadcrumb-link  text-hover-primary" href="'.site_url('deliveries').'">'.lang('deliveries_orders').'</li></a>';
