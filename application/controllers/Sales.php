@@ -3347,7 +3347,7 @@ class Sales extends Secure_area
 			$this->_reload(array('error' => lang('sales_customer_required_for_return')), false);
 			return;
 		}
-		echo "five"; exit();
+	
 		if ($this->cart->get_mode() == 'estimate') {
 			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate');
 		}
@@ -3367,7 +3367,7 @@ class Sales extends Secure_area
 				}
 			}
 		}
-		echo "six";
+		echo "six"; exit();
 		if (!is_all_sale_credit_card_payments_confirmed($this->cart)) {
 			///Make sure we have actually processed a transaction before compelting sale
 			if (is_sale_integrated_cc_processing($this->cart) && !$this->session->userdata('CC_SUCCESS')) {
