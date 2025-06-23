@@ -521,6 +521,7 @@ class Deliveries extends Secure_area implements Idata_controller
 			$table_data = $this->Delivery->get_all($params['deleted'],$data['per_page'],$params['offset'],$params['order_col'],$params['order_dir'],$data['filters']);
 		}
 		
+		
 		echo get_orders_manage_table($table_data,$this);
 	}
 	

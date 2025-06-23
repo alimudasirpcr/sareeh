@@ -3208,5 +3208,11 @@
     "invoices_terms_successful_deleted": "Invoices terms successful deleted",
     "supplier_override_default_tax_for_recv": "Supplier override default tax for recv",
     "reports_supplier": "Reports supplier",
-    "reports_detailed_suppliers_report": "Reports detailed suppliers report"
+    "reports_detailed_suppliers_report": "Reports detailed suppliers report",
+    "suppliers_import_suppliers_from_excel": "Suppliers import suppliers from excel",
+    "suppliers_step_1_desc": "Suppliers step 1 desc",
+    "suppliers_new_suppliers_import": "Suppliers new suppliers import",
+    "suppliers_update_suppliers_import": "Suppliers update suppliers import",
+    "suppliers_step_2_desc": "Suppliers step 2 desc",
+    "full_path_to_excel_required": "Full path to excel required"
 }

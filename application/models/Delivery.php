@@ -95,12 +95,12 @@ class Delivery extends MY_Model
 		employee_person.full_name as delivery_employee,
 		shipping_methods.name as `shipping_method_name`,
 		shipping_providers.name as `shipping_provider_name`, locations.name as `location_name`,
-		delivery_categories.name as category, delivery_categories.color as category_color
+		delivery_categories.name as category, delivery_categories.color as category_color,  sales.sale_time , sale_types.name as sale_type_name , sales.customer_id
 		');
 		$this->db->from('sales_deliveries');
 
 		$this->db->join('sales', 'sales.sale_id = sales_deliveries.sale_id','left');
-
+		$this->db->join('sale_types', 'sale_types.id = sales.suspended', 'left');
 		$this->db->join('delivery_categories', 'delivery_categories.id = sales_deliveries.category_id','left');
 
 		$this->db->join('sales_items', 'sales.sale_id = sales_items.sale_id', 'left');
