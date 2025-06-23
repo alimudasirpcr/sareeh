@@ -3325,7 +3325,7 @@ class Sales extends Secure_area
 				redirect('sales');
 			};
 		}
-		echo "three"; exit();
+		
 		if ($this->config->item('do_not_allow_sales_with_zero_value_line_items')) {
 
 			foreach ($this->cart->get_items() as $item) {
@@ -3337,7 +3337,7 @@ class Sales extends Secure_area
 			}
 		}
 
-		echo "four";
+		echo "four"; exit();
 		if ($data['total'] < 0 && $this->config->item('require_receipt_for_return') && !$this->cart->return_sale_id) {
 			$this->_reload(array('error' => lang('sales_receipt_required_for_return')), false);
 			return;
