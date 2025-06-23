@@ -5608,6 +5608,8 @@ class Sales extends Secure_area
 		$comment = lang('sales_pays_sales') . ' - ' . implode(', ', array_keys($this->cart->get_paid_store_account_ids()));
 	
 		$this->cart->comment = $comment;
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$this->cart->sold_by_employee_id =$employee_id;
 		$this->cart->save();
 	
 		// $this->_reload();
