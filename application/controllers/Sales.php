@@ -3297,6 +3297,7 @@ class Sales extends Secure_area
 	}
 	function complete($dont_check_validation = false)
 	{
+		echo "one";
 		if (!$this->Employee->has_module_action_permission('sales', 'complete_sale', $this->Employee->get_logged_in_employee_info()->person_id)) {
 			$this->_reload(array('error' => lang('sales_you_do_not_have_permission_to_complete_sales')), false);
 			return;
@@ -3315,7 +3316,7 @@ class Sales extends Secure_area
 			}
 		}
 
-
+		echo "two";
 		$data = $this->_get_shared_data();
 
 		if ($this->config->item('do_not_allow_sales_with_zero_value')) {
@@ -3324,7 +3325,7 @@ class Sales extends Secure_area
 				redirect('sales');
 			};
 		}
-
+		echo "three";
 		if ($this->config->item('do_not_allow_sales_with_zero_value_line_items')) {
 
 			foreach ($this->cart->get_items() as $item) {
@@ -3336,7 +3337,7 @@ class Sales extends Secure_area
 			}
 		}
 
-
+		echo "four";
 		if ($data['total'] < 0 && $this->config->item('require_receipt_for_return') && !$this->cart->return_sale_id) {
 			$this->_reload(array('error' => lang('sales_receipt_required_for_return')), false);
 			return;
@@ -3346,7 +3347,7 @@ class Sales extends Secure_area
 			$this->_reload(array('error' => lang('sales_customer_required_for_return')), false);
 			return;
 		}
-
+		echo "five";
 		if ($this->cart->get_mode() == 'estimate') {
 			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate');
 		}
@@ -3366,7 +3367,7 @@ class Sales extends Secure_area
 				}
 			}
 		}
-
+		echo "six";
 		if (!is_all_sale_credit_card_payments_confirmed($this->cart)) {
 			///Make sure we have actually processed a transaction before compelting sale
 			if (is_sale_integrated_cc_processing($this->cart) && !$this->session->userdata('CC_SUCCESS')) {
@@ -3383,7 +3384,7 @@ class Sales extends Secure_area
 			$this->_reload(array('error' => lang('sales_cannot_complete_sale_as_payments_do_not_cover_total')), false);
 			return;
 		}
-
+		echo "seven";
 
 		$tier_id = $this->cart->selected_tier_id;
 		$tier_info = $this->Tier->get_info($tier_id);
@@ -3436,7 +3437,7 @@ class Sales extends Secure_area
 		$cvm = $this->session->userdata('cvm') ? $this->session->userdata('cvm') : '';
 		$tran_type = $this->session->userdata('tran_type') ? $this->session->userdata('tran_type') : '';
 		$application_label = $this->session->userdata('application_label') ? $this->session->userdata('application_label') : '';
-
+		echo "eight";
 		if ($ref_no) {
 			if (count($this->cart->get_payment_ids(lang('credit'))) || count($this->cart->get_payment_ids(lang('ebt'))) || count($this->cart->get_payment_ids(lang('ebt_cash')))) {
 				$cc_payment_id = current($this->cart->get_payment_ids(lang('credit')));
@@ -3473,7 +3474,7 @@ class Sales extends Secure_area
 		$old_date = $this->cart->get_previous_receipt_id()  ? $this->Sale->get_info($this->cart->get_previous_receipt_id())->row_array() : false;
 		$old_date =  $old_date ? date(get_date_format() . ' ' . get_time_format(), strtotime($old_date['sale_time'])) : date(get_date_format() . ' ' . get_time_format());
 
-
+		echo "nine";
 		$suspended_change_sale_id = $this->cart->get_previous_receipt_id();
 
 		$data['store_account_payment'] = $this->cart->get_mode() == 'store_account_payment' ? 1 : 0;
@@ -3497,10 +3498,10 @@ class Sales extends Secure_area
 		$this->cart->suspended = 0;
 
 		//SAVE sale to database
-
+		echo "ten"; exit();
 		$sale_id_raw = $this->Sale->save($this->cart);
 
-		echo $sale_id_raw; exit();
+		
 
 		$isWorkOrder = $this->work_order->get_info_by_sale_id($sale_id_raw)->row();
 		if (isset($isWorkOrder->sale_id)) {
