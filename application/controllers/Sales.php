@@ -3367,7 +3367,7 @@ class Sales extends Secure_area
 				}
 			}
 		}
-		echo "six"; exit();
+		
 		if (!is_all_sale_credit_card_payments_confirmed($this->cart)) {
 			///Make sure we have actually processed a transaction before compelting sale
 			if (is_sale_integrated_cc_processing($this->cart) && !$this->session->userdata('CC_SUCCESS')) {
@@ -3384,7 +3384,7 @@ class Sales extends Secure_area
 			$this->_reload(array('error' => lang('sales_cannot_complete_sale_as_payments_do_not_cover_total')), false);
 			return;
 		}
-		echo "seven";
+		echo "seven"; exit();
 
 		$tier_id = $this->cart->selected_tier_id;
 		$tier_info = $this->Tier->get_info($tier_id);
