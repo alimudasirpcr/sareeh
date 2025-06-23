@@ -1922,8 +1922,7 @@ class Sales extends Secure_area
 			echo "error in payment"; exit();
 			$data['error'] = lang('unable_to_add_payment');
 		}
-		$cart = $this->cart->get_items();
-		dd($cart);
+	
 		$this->cart->save();
 		$this->sales_reload($data);
 	}
@@ -5304,7 +5303,7 @@ class Sales extends Secure_area
 	function sales_reload($data = array(), $is_data = false)
 	{
 
-
+		dd($data);
 
 		//This is used for upgrade installs that never had this set (sales in progress)
 		if ($this->cart->limit === NULL) {
