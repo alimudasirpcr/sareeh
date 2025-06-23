@@ -1924,9 +1924,8 @@ class Sales extends Secure_area
 		}
 	
 		$this->cart->save();
-		$cart = $this->cart->get_items();
+		
 
-		dd($cart);
 		$this->sales_reload($data);
 	}
 
