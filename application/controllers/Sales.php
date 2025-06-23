@@ -5609,6 +5609,8 @@ class Sales extends Secure_area
 	
 		$this->cart->comment = $comment;
 		$this->cart->save();
+		$cart = $this->cart->get_items();
+		dd($cart);
 		// $this->_reload();
 		echo $this->Customer->get_store_account_details($this->cart, $this->cart->customer_id);
 	}
