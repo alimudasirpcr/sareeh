@@ -3205,5 +3205,8 @@
     "days_due": "Days due",
     "invoices_term_delete_confirmation": "Invoices term delete confirmation",
     "invoices_term_successful_adding": "Invoices term successful adding",
-    "invoices_terms_successful_deleted": "Invoices terms successful deleted"
+    "invoices_terms_successful_deleted": "Invoices terms successful deleted",
+    "supplier_override_default_tax_for_recv": "Supplier override default tax for recv",
+    "reports_supplier": "Reports supplier",
+    "reports_detailed_suppliers_report": "Reports detailed suppliers report"
 }

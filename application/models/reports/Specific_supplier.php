@@ -199,11 +199,11 @@ class Specific_supplier extends Report
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and items.supplier_id='.$this->db->escape($this->params['supplier_id']));
 		
-		if ($this->params['sale_type'] == 'sales')
+		if (isset($this->params['sale_type']) && $this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('sales_items.quantity_purchased  > 0');
 		}
-		elseif ($this->params['sale_type'] == 'returns')
+		elseif ( isset($this->params['sale_type']) && $this->params['sale_type'] == 'returns')
 		{
 			$this->db->where('sales_items.quantity_purchased < 0');
 		}
@@ -287,11 +287,11 @@ class Specific_supplier extends Report
 		$this->db->where_in('sales.location_id', $location_ids);
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and items.supplier_id='.$this->db->escape($this->params['supplier_id']));
 		
-		if ($this->params['sale_type'] == 'sales')
+		if (isset($this->params['sale_type']) && $this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('sales.total_quantity_purchased > 0');
 		}
-		elseif ($this->params['sale_type'] == 'returns')
+		elseif (isset($this->params['sale_type']) && $this->params['sale_type'] == 'returns')
 		{
 			$this->db->where('sales.total_quantity_purchased < 0');
 		}
@@ -326,11 +326,11 @@ class Specific_supplier extends Report
 		$this->db->where('sale_time BETWEEN '. $this->db->escape($this->params['start_date']). ' and '. $this->db->escape($this->params['end_date']).' and items.supplier_id='.$this->db->escape($this->params['supplier_id']));
 		
 		
-		if ($this->params['sale_type'] == 'sales')
+		if (isset($this->params['sale_type']) && $this->params['sale_type'] == 'sales')
 		{
 			$this->db->where('sales.total_quantity_purchased > 0');
 		}
-		elseif ($this->params['sale_type'] == 'returns')
+		elseif ( isset($this->params['sale_type']) && $this->params['sale_type'] == 'returns')
 		{
 			$this->db->where('sales.total_quantity_purchased < 0');
 		}
