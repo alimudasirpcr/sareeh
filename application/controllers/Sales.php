@@ -3337,7 +3337,7 @@ class Sales extends Secure_area
 			}
 		}
 
-		echo "four"; exit();
+	
 		if ($data['total'] < 0 && $this->config->item('require_receipt_for_return') && !$this->cart->return_sale_id) {
 			$this->_reload(array('error' => lang('sales_receipt_required_for_return')), false);
 			return;
@@ -3347,7 +3347,7 @@ class Sales extends Secure_area
 			$this->_reload(array('error' => lang('sales_customer_required_for_return')), false);
 			return;
 		}
-		echo "five";
+		echo "five"; exit();
 		if ($this->cart->get_mode() == 'estimate') {
 			$data['sale_type'] = $this->config->item('user_configured_estimate_name') ? $this->config->item('user_configured_estimate_name') : lang('estimate');
 		}
