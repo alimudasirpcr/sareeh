@@ -1075,7 +1075,7 @@ function create_breadcrumb()
 	elseif($ci->uri->segment(1) == 'deliveries')
 	{
 		$params = $ci->session->userdata('deliveries_orders_search_data') ? $ci->session->userdata('deliveries_orders_search_data') : array('deleted' => 0);
-		
+		$deliveries_home_link='';
 		if ($ci->uri->segment(2) == NULL) //Main page
 		{
 			if(isset($params['deleted']) && $params['deleted'])
