@@ -1742,7 +1742,7 @@ class Sales extends Secure_area
 	//Alain Multiple Payments
 	function add_payment()
 	{
-		ini_set('display_errors', 1); ini_set('display_startup_errors', 1); error_reporting(E_ALL);
+		
 		//Percent of amount due
 		if (strpos($this->input->post('amount_tendered'), '%') !== FALSE) {
 			$percentage = (float)$this->input->post('amount_tendered');
@@ -3497,7 +3497,10 @@ class Sales extends Secure_area
 		$this->cart->suspended = 0;
 
 		//SAVE sale to database
+
 		$sale_id_raw = $this->Sale->save($this->cart);
+
+		echo $sale_id_raw; exit();
 
 		$isWorkOrder = $this->work_order->get_info_by_sale_id($sale_id_raw)->row();
 		if (isset($isWorkOrder->sale_id)) {
@@ -5588,7 +5591,7 @@ class Sales extends Secure_area
 
 	function pay_store_account_sale($sale_id, $amount)
 	{
-		ini_set('display_errors', 1); ini_set('display_startup_errors', 1); error_reporting(E_ALL);
+		
 		$this->cart->add_paid_store_account_payment_id($sale_id, $amount);
 		$cart = $this->cart->get_items();
 		foreach ($cart as $item) {
