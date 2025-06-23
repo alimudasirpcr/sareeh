@@ -72,6 +72,9 @@ span.toggle-links.btn.btn-info {
 .pull-right {
 	float: left !important;
 }
+.pull-left {
+	float: right !important;
+}
 .dl-horizontal dd {
 	width: 50%;
     margin-left: 0px;

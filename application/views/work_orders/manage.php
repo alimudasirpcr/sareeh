@@ -300,7 +300,7 @@
                     <div class="me-2">
                         <button type="button" class="btn btn-light btn-active-light-primary"
                             data-kt-stepper-action="previous">
-                             <?php echo lang('Back'); ?>
+                            <?php echo lang('Back'); ?>
                         </button>
                     </div>
                     <!--end::Wrapper-->
@@ -309,15 +309,15 @@
                     <div>
                         <button type="submit" name="sale_item_notes_save_btn" id="sale_item_notes_save_btn" class="btn btn-primary sale_item_notes_save_btn" data-kt-stepper-action="submit">
                             <span class="indicator-label">
-                                 <?php echo lang('Submit'); ?>
-                            </span> 
+                                <?php echo lang('Submit'); ?>
+                            </span>
                             <span class="indicator-progress">
-                            <?php echo lang('Please_wait'); ?>... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                <?php echo lang('Please_wait'); ?>... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
                             </span>
                         </button>
 
                         <button type="button" class="btn btn-primary" data-kt-stepper-action="next">
-                               <?php echo lang('Continue'); ?>
+                            <?php echo lang('Continue'); ?>
                         </button>
                         <?php
 
@@ -815,10 +815,10 @@
                                 <div class="mb-10">
                                     <label class="form-label fs-6 fw-semibold"><?= lang('search') ?>:</label>
                                     <input type="text"
-                                                    class="form-control form-control form-control-solid w-100"
-                                                    name='search' id='search' value="<?php echo H($search); ?>"
-                                                    placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_' . $controller_name); ?>" />
-                                        
+                                        class="form-control form-control form-control-solid w-100"
+                                        name='search' id='search' value="<?php echo H($search); ?>"
+                                        placeholder="<?php echo $deleted ? lang('common_search_deleted') : lang('common_search'); ?> <?php echo lang('module_' . $controller_name); ?>" />
+
                                 </div>
 
 
@@ -846,24 +846,24 @@
                                     ?>
                                 </div>
                                 <div class="mb-10">
-                                <button type="submit" class="btn btn-primary btn-sm py-4 "
-                                                    id="hide_completed_work_orders_btn">
-                                                    <?php echo form_checkbox(array(
-                                                        'name' => 'hide_completed_work_orders',
-                                                        'id' => 'hide_completed_work_orders',
-                                                        'class' => 'form-check-input p-0 m-0 hidden',
-                                                        'value' => '1',
-                                                        'checked' => $hide_completed_work_orders ? true : false
-                                                    )); ?>
+                                    <button type="submit" class="btn btn-primary btn-sm py-4 "
+                                        id="hide_completed_work_orders_btn">
+                                        <?php echo form_checkbox(array(
+                                            'name' => 'hide_completed_work_orders',
+                                            'id' => 'hide_completed_work_orders',
+                                            'class' => 'form-check-input p-0 m-0 hidden',
+                                            'value' => '1',
+                                            'checked' => $hide_completed_work_orders ? true : false
+                                        )); ?>
 
-                                                    <?php echo form_label(lang('hide_completed'), 'hide_completed_work_orders', array('class' => 'control-label text-light p-0 m-0', 'style' => 'padding-right: 30px; margin-left:0px')); ?>
+                                        <?php echo form_label(lang('hide_completed'), 'hide_completed_work_orders', array('class' => 'control-label text-light p-0 m-0', 'style' => 'padding-right: 30px; margin-left:0px')); ?>
 
-                                                </button>
-                                                </div>
+                                    </button>
+                                </div>
 
                                 <!--begin::Actions-->
                                 <div class="d-flex justify-content-end">
-                                     <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter"><?= lang('Apply'); ?></button>
+                                    <button type="submit" class="btn btn-primary fw-semibold px-6" data-kt-menu-dismiss="true" data-kt-user-table-filter="filter"><?= lang('Apply'); ?></button>
                                 </div>
                                 <!--end::Actions-->
                                 </form>
@@ -879,9 +879,9 @@
                                             <li>
                                                 <div
                                                     class="clear-block <?php echo ($search == '' && $status == '' && $technician == '-1') ? 'hidden' : ''  ?>">
-                                                    <a class="clear btn btn-danger" 
+                                                    <a class="clear btn btn-danger"
                                                         href="<?php echo site_url($controller_name . '/clear_state'); ?>">
-                                                       <?= lang('clear_filter') ?>
+                                                        <?= lang('clear_filter') ?>
                                                     </a>
                                                 </div>
                                             </li>
@@ -929,7 +929,7 @@
                                                 fill="currentColor" />
                                         </svg>
                                     </span>
-                                     <?= lang('Toggle_Stats'); ?>
+                                    <?= lang('Toggle_Stats'); ?>
                                 </button>
                                 <?php if (!$deleted) { ?>
 
@@ -1007,13 +1007,18 @@
                                                     $checked = 'checked ="checked" ';
                                                 }
                                             ?>
-                                                <li class="sort"><a class="form-check form-check-sm form-check-custom form-check-solid"><label
-                                                            class="form-check-label"
-                                                            for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><input <?php echo $checked; ?>
+                                                <li class="sort">
+                                                    <a class="form-check form-check-sm form-check-custom form-check-solid">
+                                                        <input <?php echo $checked; ?>
                                                             name="selected_columns[]" type="checkbox"
-                                                            class="columns form-check-input" id="<?php echo $col_key; ?>"
-                                                            value="<?php echo $col_key; ?>"><span
-                                                            class="handle ion-drag pull-right"></span></a></li>
+                                                            class="columns form-check-input pull-left " id="<?php echo $col_key; ?>"
+                                                            value="<?php echo $col_key; ?>">
+                                                        <label
+                                                            class="form-check-label"
+                                                            for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label>
+                                                        <span
+                                                            class="handle ion-drag pull-right"></span></a>
+                                                </li>
                                             <?php } ?>
                                         </ul>
                                     </div>

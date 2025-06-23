@@ -5325,10 +5325,13 @@ function do_delete(url) {
     var selected_rows = get_selected_rows();
     $.post(url, { 'ids[]': row_ids , 'cleanup' : cleanup }, function(response) {
         //delete was successful, remove checkbox rows
+
+		console.log("all" ,selected_rows );
         if (response.success) {
             show_feedback('success', response.message, COMMON_SUCCESS);
             $(".manage-row-options").addClass("hidden");
-            $(selected_rows).each(function(index, dom) {
+            $(selected_rows).each(function() {
+				
                 // $(this).find("td").addClass({ backgroundColor: "#FF0000" }, 1200, "linear")
                 //     .end().animate({ opacity: 0 }, 1200, "linear", function() {
                         $(this).remove();
@@ -5493,7 +5496,7 @@ function get_selected_values() {
 function get_selected_rows() {
     var selected_rows = new Array();
     $("#sortable_table tbody :checkbox:checked").each(function() {
-        selected_rows.push($(this).parent().parent().parent());
+		selected_rows.push($(this).closest('tr'));
     });
     return selected_rows;
 }

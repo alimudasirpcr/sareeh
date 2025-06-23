@@ -3196,5 +3196,7 @@
     "receivings_edit": "Receivings edit",
     "receivings_new_receiving": "Receivings new receiving",
     "receivings_transfer_id": "Receivings transfer id",
-    "receivings_edit_confirm": "Receivings edit confirm"
+    "receivings_edit_confirm": "Receivings edit confirm",
+    "work_orders_successful_deleted": "Work orders successful deleted",
+    "work_orders_one_or_multiple": "Work orders one or multiple"
 }

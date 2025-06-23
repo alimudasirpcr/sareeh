@@ -634,7 +634,7 @@ $message = $this->session->flashdata('error');
 										
 										<a class="form-check form-check-sm form-check-custom form-check-solid">
 
-											<input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>">
+											<input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input pull-left" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>">
 											
 											<label class=" form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label>
 
