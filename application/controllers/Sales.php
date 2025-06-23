@@ -3316,7 +3316,7 @@ class Sales extends Secure_area
 			}
 		}
 
-		echo "two"; exit();
+		
 		$data = $this->_get_shared_data();
 
 		if ($this->config->item('do_not_allow_sales_with_zero_value')) {
@@ -3325,7 +3325,7 @@ class Sales extends Secure_area
 				redirect('sales');
 			};
 		}
-		echo "three";
+		echo "three"; exit();
 		if ($this->config->item('do_not_allow_sales_with_zero_value_line_items')) {
 
 			foreach ($this->cart->get_items() as $item) {
