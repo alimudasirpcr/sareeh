@@ -1919,11 +1919,14 @@ class Sales extends Secure_area
 			}
 		}
 		if (!$this->cart->add_payment(new PHPPOSCartPaymentSale(array('payment_type' => $payment_type, 'payment_amount' => $payment_amount)))) {
-			echo "error in payment"; exit();
+			
 			$data['error'] = lang('unable_to_add_payment');
 		}
 	
 		$this->cart->save();
+		$cart = $this->cart->get_items();
+
+		dd($cart);
 		$this->sales_reload($data);
 	}
 
