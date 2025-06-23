@@ -356,11 +356,9 @@ class Invoices extends Secure_area
 		{
 			$invoice_data['location_id'] = $this->Employee->get_logged_in_employee_current_location_id();
 		
-		save_query();
 
 		$invoice_id = $this->Invoice->save($this->invoice_type,$invoice_data,$invoice_id);
 
-		dd($this->db->last_query());
 		}
 		else
 		{
