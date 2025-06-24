@@ -3214,5 +3214,16 @@
     "suppliers_new_suppliers_import": "Suppliers new suppliers import",
     "suppliers_update_suppliers_import": "Suppliers update suppliers import",
     "suppliers_step_2_desc": "Suppliers step 2 desc",
-    "full_path_to_excel_required": "Full path to excel required"
+    "full_path_to_excel_required": "Full path to excel required",
+    "deliveries_notify_customer_via_email": "Deliveries notify customer via email",
+    "color": "Color",
+    "deliveries_add_status": "Deliveries add status",
+    "deliveries_edit_status": "Deliveries edit status",
+    "deliveries_status_delete_confirmation": "Deliveries status delete confirmation",
+    "deliveries_status_successful_adding": "Deliveries status successful adding",
+    "items_new_modifier": "Items new modifier",
+    "receive_type": "Receive type",
+    "receivings_list_of_suspended": "Receivings list of suspended",
+    "receivings_delete_confirmation": "Receivings delete confirmation",
+    "delete_suspended_receivings_confirmation": "Delete suspended receivings confirmation"
 }

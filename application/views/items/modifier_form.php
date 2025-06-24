@@ -34,11 +34,12 @@
                                             for="flexCheckDefault"><?php echo form_label(lang('name')) ?></label>
 
                                         <?php echo form_input(array(
-						'class'=>'form-control form-control-solid form-inps',
-						'name'=>'name',
-						'id'=>'name_input',
-						'value'=>$modifier_info->name)
-					);?>
+                                            'class'=>'form-control form-control-solid form-inps',
+                                            'name'=>'name',
+                                            'id'=>'name_input',
+                                            'required'=>'required',
+                                            'value'=>$modifier_info->name)
+                                        );?>
                                     </div>
                                 </div>
 

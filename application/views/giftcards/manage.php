@@ -236,12 +236,14 @@ function init_table_sorting()
 							?>
 						</li>
 						<?php } ?>
-						<li>
-							<?php echo anchor("http://giftcards.".$this->config->item('branding')['domain'],
-							'<span class="ion-loop"> '.lang("giftcards_buy").'</span>',
-								array('class'=>'hidden-xs', 'target'=>'_blank'));
-							?>
-						</li>
+						<?php 
+						// <li>
+						// 	<?php echo anchor("http://giftcards.".$this->config->item('branding')['domain'],
+						// 	'<span class="ion-loop"> '.lang("giftcards_buy").'</span>',
+						// 		array('class'=>'hidden-xs', 'target'=>'_blank'));
+						// 
+						// </li> 
+						?>
 						<?php if ($this->Employee->has_module_action_permission($controller_name, 'delete', $this->Employee->get_logged_in_employee_info()->person_id)) {?>
 							<li>
 								<?php echo 
