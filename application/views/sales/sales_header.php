@@ -69,12 +69,12 @@
 												$checked = 'checked ="checked" ';
 											}
 											?>
-                    <li class="sort "><a class="form-check form-check-sm form-check-custom form-check-solid"><input
+                    <li class="sort "><span class="form-check form-check-sm form-check-custom form-check-solid"><input
                                 <?php echo $checked; ?> name="selected_columns[]" type="checkbox"
                                 class="columns form-check-input" id="<?php echo $col_key; ?>"
                                 value="<?php echo $col_key; ?>"><label class="form-check-label"
                                 for="<?php echo $col_key; ?>"><span></span><?php echo H($col_value['label']); ?></label><span
-                                class="handle ion-drag pull-right"></span></a></li>
+                                class="handle ion-drag pull-right"></span></span></li>
                     <?php } ?>
                 </ul>
                 </ul>

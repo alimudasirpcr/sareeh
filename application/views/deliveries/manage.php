@@ -388,13 +388,13 @@
 									}
 								?>
 									<li class="sort">
-										<a class="form-check form-check-sm form-check-custom form-check-solid">
+										<span class="form-check form-check-sm form-check-custom form-check-solid">
 											<input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input  pull-left" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>">
 											<label class=" form-check-label" for="<?php echo $col_key; ?>"><span></span>
 												<?php echo H($col_value['label']); ?>
 											</label>
 											<span class="handle ion-drag pull-right"></span>
-										</a>
+								</span>
 									</li>
 								<?php } ?>
 							</ul>
@@ -413,11 +413,11 @@
 									<a id="reset_filters_to_default" class="pull-right filter_action"><span class="ion-refresh"></span> <?= lang('Reset'); ?> </a><?php echo lang('column_filters'); ?>
 								</li>
 
-								<span class="panel">
+								<span class="panel px-2">
 									<li data-toggle="collapse" data-target="#status_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('deliveries_status'); ?> :</li>
 									<li id="status_container" class="collapse in">
 										<?php foreach ($delivery_statuses as $id => $row) { ?>
-											<a class="filter_action form-check form-check-sm form-check-custom form-check-solid"><input name="status[]" type="checkbox" class="columns form-check-input" id="status_id_<?php echo $id; ?>" value="<?php echo $id; ?>" <?php echo (isset($filters['status']) && in_array($id, $filters['status'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="status_id_<?php echo $id; ?>"><span></span><?php echo $row['name']; ?></label></a>
+											<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2"><input name="status[]" type="checkbox" class="columns form-check-input" id="status_id_<?php echo $id; ?>" value="<?php echo $id; ?>" <?php echo (isset($filters['status']) && in_array($id, $filters['status'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="status_id_<?php echo $id; ?>"><span></span><?php echo $row['name']; ?></label></span>
 										<?php } ?>
 									</li>
 								</span>
@@ -426,7 +426,7 @@
 									<li data-toggle="collapse" data-target="#category_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('category'); ?> :</li>
 									<li id="category_container" class="collapse">
 										<?php foreach ($delivery_categories as $id => $row) { ?>
-											<a class="filter_action"><input name="category[]" type="checkbox" class="columns" id="category_id_<?php echo $id; ?>" value="<?php echo $id; ?>" <?php echo (isset($filters['category']) && in_array($id, $filters['category'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="category_id_<?php echo $id; ?>"><span></span><?php echo $row['name']; ?></label></a>
+											<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2"><input name="category[]" type="checkbox" class="columns form-check-input" id="category_id_<?php echo $id; ?>" value="<?php echo $id; ?>" <?php echo (isset($filters['category']) && in_array($id, $filters['category'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="category_id_<?php echo $id; ?>"><span></span><?php echo $row['name']; ?></label></span>
 										<?php } ?>
 									</li>
 								</span>
@@ -434,8 +434,8 @@
 								<span class="panel">
 									<li data-toggle="collapse" data-target="#in_store_pickup" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('deliveries_instore_pickup'); ?> :</li>
 									<li id="in_store_pickup" class="collapse">
-										<a class="filter_action"><input name="is_pickup[]" type="checkbox" class="columns" id="Pickup1" value="1" <?php echo (isset($filters['is_pickup']) && in_array('1', $filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="Pickup1"><span></span><?php echo lang('yes'); ?></label></a>
-										<a class="filter_action"><input name="is_pickup[]" type="checkbox" class="columns" id="Pickup0" value="0" <?php echo (isset($filters['is_pickup']) &&  in_array('0', $filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="Pickup0"><span></span><?php echo lang('no'); ?></label></a>
+										<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2"><input name="is_pickup[]" type="checkbox" class="columns form-check-input" id="Pickup1" value="1" <?php echo (isset($filters['is_pickup']) && in_array('1', $filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="Pickup1"><span></span><?php echo lang('yes'); ?></label></span>
+										<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2"><input name="is_pickup[]" type="checkbox" class="columns form-check-input" id="Pickup0" value="0" <?php echo (isset($filters['is_pickup']) &&  in_array('0', $filters['is_pickup'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="Pickup0"><span></span><?php echo lang('no'); ?></label></span>
 									</li>
 								</span>
 
@@ -506,17 +506,17 @@
 									<span class="panel">
 										<li data-toggle="collapse" data-target="#location_container" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('locations'); ?> :</li>
 										<li id="location_container" class="collapse">
-											<a class="filter_action"><input type="checkbox" class="columns" id="select_all_location"><label class="filterable_column_name" for="select_all_location"><span></span><?php echo lang('select_all'); ?></label></a>
+											<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2"><input type="checkbox" class="columns form-check-input" id="select_all_location"><label class="filterable_column_name form-check-label" for="select_all_location"><span></span><?php echo lang('select_all'); ?></label></span>
 											<?php
 											foreach ($locations as $location_id => $location) {
 												$checkbox_options = array(
 													'name' => 'locations[]',
-													'class' => 'location_checkboxes columns',
+													'class' => 'location_checkboxes columns form-check-input',
 													'id' => 'locations' . $location->location_id,
 													'value' => $location->location_id,
 													'checked' => isset($filters['locations']) && in_array($location->location_id, $filters['locations']),
 												);
-												echo '<a class="filter_action">' . form_checkbox($checkbox_options) . '<label for="locations' . $location->location_id . '" class="filterable_column_name"><span></span>' . $location->name . '</label></a>';
+												echo '<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2">' . form_checkbox($checkbox_options) . '<label for="locations' . $location->location_id . '" class="filterable_column_name form-check-label"><span></span>' . $location->name . '</label></span>';
 											}
 											?>
 										</li>
@@ -526,8 +526,8 @@
 								<span class="panel">
 									<li data-toggle="collapse" data-target="#deliveries_with_or_without_sales" data-parent="#filter_dropdown" class="dropdown-header filter-header"><i class="plus-minus expand-collapse-icon glyphicon glyphicon-plus"></i> <?php echo lang('deliveries_with_or_without_sales'); ?> :</li>
 									<li id="deliveries_with_or_without_sales" class="collapse">
-										<a class="filter_action"><input name="deliveries_with_or_without_sales[]" type="checkbox" class="columns" id="deliveries_with_sales" value="with_sales" <?php echo (isset($filters['deliveries_with_or_without_sales']) && in_array('with_sales', $filters['deliveries_with_or_without_sales'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="deliveries_with_sales"><span></span><?php echo lang('deliveries_with_sales'); ?></label></a>
-										<a class="filter_action"><input name="deliveries_with_or_without_sales[]" type="checkbox" class="columns" id="deliveries_without_sales" value="without_sales" <?php echo (isset($filters['deliveries_with_or_without_sales']) &&  in_array('without_sales', $filters['deliveries_with_or_without_sales'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name" for="deliveries_without_sales"><span></span><?php echo lang('deliveries_without_sales'); ?></label></a>
+										<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2"><input name="deliveries_with_or_without_sales[]" type="checkbox" class="columns form-check-input" id="deliveries_with_sales" value="with_sales" <?php echo (isset($filters['deliveries_with_or_without_sales']) && in_array('with_sales', $filters['deliveries_with_or_without_sales'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="deliveries_with_sales"><span></span><?php echo lang('deliveries_with_sales'); ?></label></span>
+										<span class="filter_action form-check form-check-sm form-check-custom form-check-solid px-2"><input name="deliveries_with_or_without_sales[]" type="checkbox" class="columns form-check-input" id="deliveries_without_sales" value="without_sales" <?php echo (isset($filters['deliveries_with_or_without_sales']) &&  in_array('without_sales', $filters['deliveries_with_or_without_sales'])) ? 'checked="checked"' : '' ?>><label class="filterable_column_name form-check-label" for="deliveries_without_sales"><span></span><?php echo lang('deliveries_without_sales'); ?></label></span>
 									</li>
 								</span>
 

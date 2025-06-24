@@ -665,7 +665,7 @@ $.post('<?php echo site_url("items/clear_select_inventory");?>', {select_invento
 												$checked = 'checked ="checked" ';
 											}
 											?>
-											<li class="sort " title="<?php echo H($col_value['label']); ?>"><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo character_limiter(H($col_value['label']),20); ?></label><span class="handle ion-drag pull-right"></span></a></li>									
+											<li class="sort " title="<?php echo H($col_value['label']); ?>"><span class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="form-check-label" for="<?php echo $col_key; ?>"><span></span><?php echo character_limiter(H($col_value['label']),20); ?></label><span class="handle ion-drag pull-right"></span></span></li>									
 										<?php } ?>
 									</ul>
 							</div>

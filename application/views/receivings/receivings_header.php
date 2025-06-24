@@ -82,13 +82,13 @@
                 <li class="dropdown-header"><a id="reset_to_default" class="pull-right"><span class="ion-refresh"></span> <?= lang('Reset'); ?> </a>Column Configuration</li>
             <?php $i=0; foreach($columns as $key => $col): ?>
                 <li class="sort">
-                    <a class="d-flex justify-content-space-between ">
-                        <div class="form-check">
+                    <span class="form-check form-check-sm form-check-custom form-check-solid ">
+                        
                             <input type="checkbox" class="toggle-vis form-check-input" data-column-index="<?= $i ?>" id="check<?= $i ?>" checked>
                             <label class="form-check-label" for="check<?= $i ?>"><span></span><?= $col ?></label>
-                        </div>
-                        <span class="handle ion-drag"></span>
-                    </a>
+                       
+                        <span class="handle ion-drag pull-right"></span>
+                    </span>
                 </li>
             <?php $i++; endforeach ?>
             </ul>

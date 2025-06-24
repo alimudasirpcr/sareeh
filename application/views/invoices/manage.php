@@ -323,7 +323,7 @@ function getStatusCardClass($days_past_due_option)
 											$checked = 'checked ="checked" ';
 										}
 										?>
-										<li class="sort "><a class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name form-check-label" for="<?php echo $col_key; ?>"><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></a> <div class="separator separator-dashed my-0"></div></li>
+										<li class="sort "><span class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key; ?>" value="<?php echo $col_key; ?>"><label class="sortable_column_name form-check-label" for="<?php echo $col_key; ?>"><?php echo H($col_value['label']); ?></label><span class="handle ion-drag"></span></span> <div class="separator separator-dashed my-0"></div></li>
 									<?php } ?>
 								</ul>
 						</div>

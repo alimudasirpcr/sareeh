@@ -3225,5 +3225,21 @@
     "receive_type": "Receive type",
     "receivings_list_of_suspended": "Receivings list of suspended",
     "receivings_delete_confirmation": "Receivings delete confirmation",
-    "delete_suspended_receivings_confirmation": "Delete suspended receivings confirmation"
+    "delete_suspended_receivings_confirmation": "Delete suspended receivings confirmation",
+    "receiving_id": "Receiving id",
+    "receiving_time": "Receiving time",
+    "transfer_to_location": "Transfer to location",
+    "receiving_type": "Receiving type",
+    "appointments_appointment_person": "Appointments appointment person",
+    "appointments_start_date": "Appointments start date",
+    "appointments_end_date": "Appointments end date",
+    "appointments_update": "Appointments update",
+    "appointments_confirm_delete": "Appointments confirm delete",
+    "appointments_none_selected": "Appointments none selected",
+    "appointments_new": "Appointments new",
+    "appointments_calendar": "Appointments calendar",
+    "appointments_todays_appointments": "Appointments todays appointments",
+    "appointments_manage_appointment_types": "Appointments manage appointment types",
+    "appointments_manage_deleted": "Appointments manage deleted",
+    "calendar": "Calendar"
 }
