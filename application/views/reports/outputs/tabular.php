@@ -175,7 +175,7 @@ if(isset($export_excel) && $export_excel == 1)
 				
 				<?php /* Html code for hide show and sort columns */ ?>
 				<form id="config_columns" class="report-config hidden-print">
-					<div  id="config_columns" class="piluku-dropdown btn-group table_buttons pull-right m-left-20">
+					<div  id="config_columns" class="piluku-dropdown btn-group table_buttons pull-right m-left-20"> 
 						
 						<button type="button" class="btn btn-more btn-light-primary dropdown-toggle" style="margin-top: -21px;" data-toggle="dropdown" aria-expanded="false">
 							<i class="ion-gear-a"></i>
@@ -189,7 +189,7 @@ if(isset($export_excel) && $export_excel == 1)
 										$checked = 'checked ="checked" ';
 									}
 									?>
-									<li class="col<?php echo $i; ?>"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key['column_id']; ?>" value="<?php echo $col_key['column_id']; ?>"><label class="sortable_column_name" for="<?php echo $col_key['column_id']; ?>"><span></span><?php echo H($col_key['data']); ?></label><span class=""></span></a></li>									
+									<li class="col<?php echo $i; ?>"><span class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key['column_id']; ?>" value="<?php echo $col_key['column_id']; ?>"><label class="sortable_column_name form-check-label" for="<?php echo $col_key['column_id']; ?>"><span></span><?php echo H($col_key['data']); ?></label><span class=""></span></span></li>									
 								<?php } ?>
 							</ul>
 					</div>

@@ -3611,5 +3611,8 @@
     "deliveries_edit_status": "تعديل حالة التسليم",
     "deliveries_status_delete_confirmation": "هل أنت متأكد أنك تريد حذف حالة التسليم؟",
     "complete": "مكتمل",
-    "reports_detailed_employees_report": "Reports detailed employees report"
+    "reports_detailed_employees_report": "Reports detailed employees report",
+    "reports_detailed_inventory_report": "Reports detailed inventory report",
+    "reports_show_manual_adjustments_only": "Reports show manual adjustments only",
+    "reports_average_quantity": "Reports average quantity"
 }

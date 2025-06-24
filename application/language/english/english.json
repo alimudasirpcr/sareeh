@@ -3274,5 +3274,9 @@
     "items_edit_count": "Items edit count",
     "items_upload_excel_file_to_update_damage_products_inventory": "Items upload excel file to update damage products inventory",
     "items_download_excel_template": "Items download excel template",
-    "items_item_id_upc_product_id": "Items item id upc product id"
+    "items_item_id_upc_product_id": "Items item id upc product id",
+    "reports_show_manual_adjustments_only": "Reports show manual adjustments only",
+    "reports_detailed_inventory_report": "Reports detailed inventory report",
+    "reports_item_name": "Reports item name",
+    "reports_average_quantity": "Reports average quantity"
 }
