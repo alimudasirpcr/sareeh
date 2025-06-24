@@ -3299,7 +3299,7 @@ label.form-check-label {
                                     <div class="mb-1">
                                         <div class="form-check">
                                             <?php echo form_checkbox(array(
-														'name'=>'track_payment_types',
+														'name'=>'track_payment_types[]',
 														'id'=>'track_check',
 														'class' => 'form-check-input',
 														'value'=>'common_check',
