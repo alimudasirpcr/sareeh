@@ -3393,7 +3393,7 @@ label.form-check-label {
 								'value'=> $additional_payment_type,
 								'checked'=>in_array($additional_payment_type,$track_payment_types)));?>
                                             <label class="form-check-label"
-                                                for="flexCheckChecked"><?php echo form_label(lang('track')) ?></label>
+                                                for="flexCheckChecked"><?php echo form_label(lang('track')) . '' . $additional_payment_type ?></label>
                                         </div>
                                     </div>
 
