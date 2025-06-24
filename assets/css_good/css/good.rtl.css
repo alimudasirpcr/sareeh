@@ -48,6 +48,7 @@
 input[type="checkbox"] + label,
 input[type="radio"] + label {
 	margin-left: 0px !important;
+	margin-right: -22px;
 }
 
 span.toggle-links.btn.btn-info {
