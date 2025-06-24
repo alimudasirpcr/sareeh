@@ -16815,7 +16815,7 @@ disabled look for disabled choices in the results dropdown
 ul.token-input-list-facebook {
     overflow: hidden; 
     min-height: 40px !important; 
-    width: 100%;
+    width: 85%;
     border: 1px solid #d7dce5;
     cursor: text;
     font-size: 12px;
