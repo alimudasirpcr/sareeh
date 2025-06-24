@@ -34,7 +34,7 @@
 						<?php echo form_label(lang('file_path').':', 'file_path',array('class'=>'col-sm-3 col-md-3 col-lg-2 control-label')); ?>
 						<div class="col-sm-9 col-md-9 col-lg-10">
 							<ul class="list-inline">
-								<li >
+								<li class="w-50" >
 									<input type="file" name="file_path" id="file_path" class="filestyle" data-icon="false" >
 								</li>
 								<li>

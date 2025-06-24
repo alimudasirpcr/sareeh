@@ -7438,11 +7438,29 @@ class Items extends Secure_area implements Idata_controller
 						$item_number = '';
 					}
 
+					if (!is_numeric($item_number)) {
+						
+							$msg =  "Item number in row $k is not numeric: '$item_number'";
+							echo json_encode(array('success' => false, 'message' => $msg));
+							$this->db->trans_complete();
+							return;
+					}
+
+
+
 
 					$damaged_qty = $sheet->getCellByColumnAndRow(1, $k);
 					if (!$damaged_qty) {
 						$damaged_qty = '';
 					}
+
+					if (!is_numeric($damaged_qty)) {
+						
+						$msg =  "damaged_qty in row $k is not numeric: '$damaged_qty'";
+						echo json_encode(array('success' => false, 'message' => $msg));
+						$this->db->trans_complete();
+						return;
+				}
 
 					$damaged_reason = $sheet->getCellByColumnAndRow(2, $k);
 					if (!$damaged_reason) {
