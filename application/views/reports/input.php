@@ -271,7 +271,7 @@
                     <div class="py-5 mb-5">
 						<form class="form-horizontal form-horizontal-mobiles" id="report_input_form" method="get"
                     action="<?php echo site_url('reports/generate/'.$report); ?>">
-                            <div class="mb-10">
+                            <div class="mb-10 mx-2">
                                 <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
 								<?php 
 					$this->load->helper('view');

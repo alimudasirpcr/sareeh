@@ -3241,5 +3241,7 @@
     "appointments_todays_appointments": "Appointments todays appointments",
     "appointments_manage_appointment_types": "Appointments manage appointment types",
     "appointments_manage_deleted": "Appointments manage deleted",
-    "calendar": "Calendar"
+    "calendar": "Calendar",
+    "reports_employee": "Reports employee",
+    "reports_detailed_employees_report": "Reports detailed employees report"
 }

@@ -3610,5 +3610,6 @@
     "deliveries_add_status": "إضافة حالة التسليم",
     "deliveries_edit_status": "تعديل حالة التسليم",
     "deliveries_status_delete_confirmation": "هل أنت متأكد أنك تريد حذف حالة التسليم؟",
-    "complete": "مكتمل"
+    "complete": "مكتمل",
+    "reports_detailed_employees_report": "Reports detailed employees report"
 }
