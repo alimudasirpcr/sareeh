@@ -333,18 +333,10 @@
                                                     ],
                                                     "initComplete": function() {
 
-                                                        this.api().search('<?php if ($this->uri->segment(3) > 0) {
-                                                                                echo H($person_info->first_name . ' ' . $person_info->last_name);
-                                                                            } else {
-                                                                                echo 'dont_show_anything';
-                                                                            } ?>').draw();
+                                                      
                                                         // Apply the search for each column
                                                         $('#employee_id').on('change', function() {
-                                                            this.api().search('<?php if ($this->uri->segment(3) > 0) {
-                                                                                    echo H($person_info->first_name . ' ' . $person_info->last_name);
-                                                                                } else {
-                                                                                    echo 'dont_show_anything';
-                                                                                } ?>').draw();
+                                                            
 
 
                                                             var searchTerm =
@@ -912,7 +904,7 @@
                                     }
                                 ?>
                                     <div class="card mt-2">
-                                        <div class="card-header rounded rounded-3 p-5 my-3  rounded border-primary border border-none rounded-3 list-group-item form-check form-check-custom form-check-solid"
+                                        <div class="card-header rounded rounded-3 p-5 my-3  rounded border-primary border border-none rounded-3 list-group-item form-check form-check-custom form-check-solid w-75"
                                             id="<?php echo 'lmodule_' . $module->module_id; ?>">
                                             <?php echo form_checkbox($checkbox_options) . '<label class="form-check-label" for="permissions' . $module->module_id . '"><span></span></label>'; ?>
                                             <span
@@ -936,7 +928,7 @@
                                                         </span>
                                                     <?php } ?>
                                                     <div class="drop-menu">
-                                                        <div class="form-check form-check-custom form-check-solid">
+                                                        <div class="form-check form-check-custom form-check-solid text-left">
                                                             <input
                                                                 onclick="selectAllLocation('select-all-<?php echo $module->module_id; ?>')"
                                                                 id="select-all-<?php echo $module->module_id; ?>"
@@ -959,7 +951,7 @@
                                                             );
 
                                                         ?>
-                                                            <div class="form-check form-check-custom form-check-solid">
+                                                            <div class="form-check form-check-custom form-check-solid text-left">
                                                                 <?php echo form_checkbox($module_location_checkbox); ?>
                                                                 <label class="form-check-label"
                                                                     for="<?php echo 'module-location-' . $module->module_id . "-" . $lmk; ?>"
@@ -997,7 +989,7 @@
                                                 }
 
                                             ?>
-                                                <li class="list-group-item permission-action-item form-check form-check-custom form-check-solid border-none"
+                                                <li class="list-group-item permission-action-item form-check form-check-custom form-check-solid border-none w-75"
                                                     id="<?php echo 'permissions-actions-' . $module_action->module_id . "-" . $module_action->action_id . '-ext-' . $mk; ?>">
                                                     <?php echo form_checkbox($checkbox_options) . '<label for="permissions_actions' . $module_action->module_id . "-" . $module_action->action_id . '"><span></span></label>'; ?>
                                                     <span
@@ -1016,7 +1008,7 @@
                                                                 </span>
                                                             <?php } ?>
                                                             <div class="drop-menu">
-                                                                <div class="form-check form-check-custom form-check-solid">
+                                                                <div class="form-check form-check-custom form-check-solid text-left">
                                                                     <input class="form-check-input"
                                                                         onclick="selectAllLocation('select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>')"
                                                                         id="select-all-<?php echo $module_action->module_id . "-" . $module_action->action_id; ?>"
@@ -1039,7 +1031,7 @@
                                                                         'data-temp_name' => 'select-all-' . $module_action->module_id . "-" . $module_action->action_id
                                                                     );
                                                                 ?>
-                                                                    <div class="form-check form-check-custom form-check-solid">
+                                                                    <div class="form-check form-check-custom form-check-solid text-left">
                                                                         <?php echo form_checkbox($location_checkbox); ?>
                                                                         <label class="form-check-label"
                                                                             for="<?php echo $checkbox_id; ?>"><?php echo $lv['name']; ?></label>
@@ -1361,7 +1353,19 @@
             $(listid).toggleClass('current');
         }
     }
-
+// Close dropdown if clicked outside
+$(document).on('click', function (e) {
+    console.log("clicked");
+    // Check if any drop-menu is currently open
+    if ($('.drop-menu.current').length > 0) {
+        console.log("yes");
+        // If the click is outside .drop-menu and .list-group-item
+        if (!$(e.target).closest('.drop-menu, .drop-down').length) {
+            console.log("yo");
+            $('.drop-menu.current').removeClass('current');
+        }
+    }
+});
     function selectAllLocation(id_name) {
         var name = ($('#' + id_name).attr("name"));
 

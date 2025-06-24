@@ -67,13 +67,17 @@ span.toggle-links.btn.btn-info {
 	margin-left: 0;
 	margin-right: auto;
 }
-.text-left {
-	text-align: right !important;
-}
 .pull-right {
 	float: left !important;
 }
 .pull-left {
+	float: right !important;
+}
+
+.text-right {
+	float: left !important;
+}
+.text-left {
 	float: right !important;
 }
 .dl-horizontal dd {
