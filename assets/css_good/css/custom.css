@@ -20018,3 +20018,24 @@ select.form-control.tier_dropdown {
   background-color: var(--kt-input-group-addon-bg) !important;
   border: 1px solid var(--kt-input-group-addon-border-color) !important;
 }
+
+
+.piluku-dropdown .dropdown-menu li .form-check {
+  line-height: 36px;
+  letter-spacing: 0.25px;
+  border-bottom: 1px solid #eeeeee;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+
+.dropdown-menu>li>.form-check  {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+}
+
