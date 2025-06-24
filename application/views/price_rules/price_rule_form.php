@@ -412,116 +412,58 @@
                     <span class="input-group-text bg icon ti-truck">
 
                     </span>
-                    <input type="text" name="manufacturers[]" w="itemsManufacturers" value="<?php echo set_value('manufacturers[],$rule_manus'); ?>" class="form-control form-inps manus">
+                    <input type="text" name="manufacturers[]" id="itemsManufacturers" value="<?php echo set_value('manufacturers[],$rule_manus'); ?>" class="form-control form-inps manus">
                 </div>
             </div>
 
         </span>
 
 
-        <div class="row">
 
-            <div id="items_to_buy_field" class="form-group hidden">
+        <div id="items_to_buy_field" class="row hidden  my-2">
 
-                <div class="col-md-12">
-                    <div class="py-5 mb-5">
-                        <div class="p-10">
-                            <div class="mb-10">
-                                <div class="form-check">
-                                    <label class="form-check-label" for="flexCheckDefault"><?php echo form_label(lang('price_rules_items_to_buy')) ?></label>
-                                    <?php echo form_input(
-                                        array(
-                                            'name' => 'items_to_buy',
-                                            'type' => 'text',
-                                            'id' => 'items_to_buy',
-                                            'class' => 'form-control form-control-solid form-inps items_to_buy',
-                                            'value' => isset($rule_info['items_to_buy']) ? to_quantity($rule_info['items_to_buy'], false) : ''
-                                        )
-                                    ); ?>
-                                </div>
+            <label class="form-check-label col-sm-3 col-md-3 col-lg-2" for="flexCheckDefault"><?php echo form_label(lang('price_rules_items_to_buy')) ?></label>
+            <div class="input-group col-sm-9 col-md-9 col-lg-10">
+                <span class="input-group-text bg icon ti-tag">
 
-
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
+                </span>
+                <input type="text" name="items_to_buy" id="items_to_buy" value="<?php echo isset($rule_info['items_to_buy']) ? to_quantity($rule_info['items_to_buy'], false) : ''; ?>" class="form-control  form-inps items_to_buy">
             </div>
+        </div>
 
-            <?php
-            $items_to_get = 0;
+        <?php
+        $items_to_get = 0;
 
-            if (isset($rule_info['items_to_get'])) {
-                $items_to_get = $rule_info['items_to_get'];
-            }
-            ?>
-
-
-            <div id="items_to_get_field" class="form-group hidden">
-
-                <div class="col-md-12">
-                    <div class="py-5 mb-5">
-                        <div class="p-10">
-                            <div class="mb-10">
-                                <div class="form-check">
-                                    <label class="form-check-label" for="flexCheckDefault"><?php echo form_label(lang('price_rules_items_to_get')) ?></label>
-                                    <?php echo form_input(
-                                        array(
-                                            'name' => 'items_to_get',
-                                            'id' => 'items_to_get',
-                                            'class' => 'form-control form-control-solid form-inps items_to_get',
-                                            'type' => 'text',
-                                            'value' => (int) $items_to_get == 0 ? '' : to_quantity($items_to_get, false)
-                                        )
-                                    ); ?>
-                                </div>
+        if (isset($rule_info['items_to_get'])) {
+            $items_to_get = $rule_info['items_to_get'];
+        }
+        ?>
 
 
+        <div id="items_to_get_field" class="row hidden  my-2">
 
+            <label class="form-check-label col-sm-3 col-md-3 col-lg-2" for="flexCheckDefault"><?php echo form_label(lang('price_rules_items_to_get')) ?></label>
+            <div class="input-group col-sm-9 col-md-9 col-lg-10">
+                <span class="input-group-text bg icon ti-tag">
 
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
+                </span>
+                <input type="text" name="items_to_get" id="items_to_get" value="<?php echo (int) $items_to_get == 0 ? '' : to_quantity($items_to_get, false); ?>" class="form-control form-inps items_to_get">
             </div>
         </div>
 
 
-        <div id="spend_amount_field" class="form-group hidden">
+        <div id="spend_amount_field" class="row hidden my-2">
 
-            <div class="col-md-12">
-                <div class="py-5 mb-5">
-                    <div class="p-10">
-                        <div class="mb-10">
-                            <div class="form-check">
-                                <label class="form-check-label" for="flexCheckDefault"><?php echo form_label(lang('price_rules_spend_amount')) ?></label>
-                                <?php echo form_input(
-                                    array(
-                                        'name' => 'spend_amount',
-                                        'type' => 'text',
-                                        'id' => 'spend_amount',
-                                        'class' => 'form-control form-inps',
-                                        'value' => isset($rule_info['spend_amount']) ? to_currency_no_money($rule_info['spend_amount']) : ''
-                                    )
-                                ); ?>
-                            </div>
+            <label class="form-check-label col-sm-3 col-md-3 col-lg-2" for="flexCheckDefault"><?php echo form_label(lang('price_rules_spend_amount')) ?></label>
+            <div class="input-group col-sm-9 col-md-9 col-lg-10">
+                <span class="input-group-text bg icon ti-money">
 
-
-
-
-                        </div>
-
-                    </div>
-                </div>
+                </span>
+                <input type="text" name="spend_amount" id="spend_amount" value="<?php echo isset($rule_info['spend_amount']) ? to_currency_no_money($rule_info['spend_amount']) : ''; ?>" class="form-control form-inps  ">
             </div>
-
-
         </div>
+
+      
 
         <span id="discount_fields" class="hidden">
 
@@ -652,6 +594,8 @@
             </div>
 
         </div>
+
+        
         <div class="row">
             <div class="col-sm-9 col-md-9 col-lg-12">
 
