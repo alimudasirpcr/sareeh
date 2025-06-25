@@ -129,7 +129,7 @@ class MY_Email extends CI_Email
 		$result = stream_context_set_option($context, 'ssl', 'verify_peer', false);
 		$ssl = ($this->smtp_crypto === 'ssl') ? 'ssl://' : '';
 		
-		$this->_smtp_connect = stream_socket_client($ssl.$this->smtp_host . ':'.$this->smtp_port, $errno, $errstr, $this->smtp_timeout, STREAM_CLIENT_CONNECT, $context);
+		$this->_smtp_connect = @stream_socket_client($ssl.$this->smtp_host . ':'.$this->smtp_port, $errno, $errstr, $this->smtp_timeout, STREAM_CLIENT_CONNECT, $context);
 		if ( ! is_resource($this->_smtp_connect))
 		{
 			$this->_set_error_message('lang:email_smtp_error', $errno.' '.$errstr);
