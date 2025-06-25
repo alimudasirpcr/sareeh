@@ -3993,7 +3993,7 @@ class Sale extends MY_Model
 		}else{
 			$this->db->order_by('sale_id');
 		}
-
+		$this->db->limit('10');
 		$sales = $this->db->get()->result_array();
 				
 		$sale_ids = array();
