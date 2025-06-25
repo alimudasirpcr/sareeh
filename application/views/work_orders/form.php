@@ -991,7 +991,7 @@
                         <?php if (count($files)) {?>
                         <?php foreach($files as $file){?>
                         <!--begin::Col-->
-                        <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="col-md-6 col-lg-4 col-xl-3" id="img_main_card">
                             <!--begin::Card-->
                             <div class="card h-100 ">
                                 <!--begin::Card body-->
@@ -3229,7 +3229,7 @@ if ($("#item").length) {
             bootbox.confirm(<?php echo json_encode(lang('confirm_file_delete')); ?>, function(response) {
                 if (response) {
                     $.get($link.attr('href'), function() {
-                        $link.parent().fadeOut();
+                        $link.closest('#img_main_card').remove();
                     });
                 }
             });
