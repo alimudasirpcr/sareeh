@@ -619,7 +619,7 @@
 
 				
 
-				var item = '<li data-is_favorite="yes" data-category_id="'+json.items[k].id+'" class=" col-1 category_item item nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.items[k].image_id + '?timestamp=' + json.items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-7 lh-1"><p>' + json.items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
+				var item = '<li data-is_favorite="yes" data-id="'+json.items[k].id+'" class=" col-1 category_item item nav-item mb-3 me-3 me-lg-6" role="presentation"><a class="  nav-link d-flex justify-content-between flex-column flex-center overflow-hidden h-100px py-4 active" data-bs-toggle="pill" href="#kt_stats_widget_2_tab_1" aria-selected="true" role="tab"><div class="nav-icon"><img class="rounded-3 mb-4 " alt="" src="' + SITE_URL + '/app_files/view_cacheable/' + json.items[k].image_id + '?timestamp=' + json.items[k].image_timestamp + '" class=""></div><span class="nav-text text-gray-700 fw-bold fs-7 lh-1"><p>' + json.items[k].name + '</p></span><span class="bullet-custom position-absolute bottom-0 w-100 h-4px bg-primary"></span></a></li>';
 
 				
 
