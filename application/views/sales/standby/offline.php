@@ -1611,8 +1611,8 @@ $this->load->view("partial/offline_header"); ?>
                                 <!-- Start: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
                                 <!-- Customer Balance -->
-                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2 mt-1 gap-10 vertical-center text-hover-info">
-                                    <div>
+                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2 mt-1 gap-10 vertical-center ">
+                                    <div class="text-hover-info">
                                             <i class="fa fa-money-bill me-2"></i>
                                      
 
