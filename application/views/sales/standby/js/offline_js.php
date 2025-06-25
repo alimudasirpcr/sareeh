@@ -3396,33 +3396,43 @@ function add_default_tax_to_item() {
                         }
                     });
 
-                $(".btn[data-kt-menu-trigger='custom']").on("click", function (e) {
-                    e.stopPropagation(); // Prevent event from bubbling up
+                    $(".btn[data-kt-menu-trigger='custom']").on("click", function (e) {
+    e.stopPropagation(); // Prevent event from bubbling up
 
-                    let button = $(this); // Get the clicked button
-                    let menu = button.next(".menu-sub-dropdown"); // Get the associated menu
+    let button = $(this); // Get the clicked button
+    let menu = button.next(".menu-sub-dropdown"); // Get the associated menu
 
-                    if (menu.is(":visible")) {
-                        menu.hide(); // Hide menu if already visible
-                    } else {
-                        $(".menu-sub-dropdown").hide(); // Hide all other open menus first
+    if (menu.is(":visible")) {
+        menu.hide(); // Hide menu if already visible
+    } else {
+        $(".menu-sub-dropdown").hide(); // Hide all other open menus first
 
-                        // Calculate position
-                        let buttonOffset = button.offset();
-                        let buttonHeight = button.outerHeight();
-                        let buttonWidth = button.outerWidth();
-                        let menuWidth = menu.outerWidth();
-                        let right = $(window).width() - (buttonOffset.left + buttonWidth);
-                        menu.css({
-                            display: "block",
-                            position: "absolute",
-                            top: buttonOffset.top + buttonHeight + 5 + "px", // Below the button with 5px gap
-                            right: right  + "px", // Centered horizontally
-                            display: "block", // Show menu
-                            zIndex: 100, // Ensure it's above other elements
-                        });
-                    }
-                });
+        // Calculate position
+        let buttonOffset = button.offset();
+        let buttonHeight = button.outerHeight();
+        let buttonWidth = button.outerWidth();
+        let menuWidth = menu.outerWidth();
+        let isRTL = $("html").attr("dir") === "rtl";
+
+        let positionCSS = {
+            display: "block",
+            position: "absolute",
+            top: buttonOffset.top + buttonHeight + 5 + "px",
+            zIndex: 100
+        };
+
+        if (isRTL) {
+            // RTL: position from left side
+            positionCSS.left = buttonOffset.left + "px";
+        } else {
+            // LTR: position from right side
+            let right = $(window).width() - (buttonOffset.left + buttonWidth);
+            positionCSS.right = right + "px";
+        }
+
+        menu.css(positionCSS);
+    }
+});
 
                 // Hide menu when clicking outside
                 $(document).on("click", function (e) {
