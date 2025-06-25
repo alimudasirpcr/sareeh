@@ -1592,10 +1592,10 @@ $this->load->view("partial/offline_header"); ?>
                             <div class="d-flex flex-column mt-1">
                                 <!--begin::Name-->
                                 <div class="d-flex align-items-center">
-                                    <a href="#" class="text-gray-900 text-hover-primary fs-6 fw-bold"> </a><a
+                                    <a href="#" class="text-gray-900 text-hover-info fs-6 fw-bold"> </a><a
                                         href="<?= base_url(); ?>sales/customer_recent_sales/{{customer.person_id}}" data-toggle="modal"
                                         data-target="#myModal"
-                                        class="text-gray-700 text-hover-primary fs-7 fw-bold me-1 name"
+                                        class="text-gray-700 text-hover-info fs-7 fw-bold me-1 name"
                                         id="customer_name">{{customer.customer_name}}</a>
 
 
