@@ -58,7 +58,7 @@
 
 
 		$("#config_filters span.filter_action").on("click", function(e) {
-			e.preventDefault();
+		
 
 			var $checkboxs = $("#config_filters a").find("input[type=checkbox]");
 
