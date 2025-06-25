@@ -1979,10 +1979,10 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                    <div class="loyalty {{#equal customer.disable_loyalty 0}} d-none  {{/equal}} text-hover-info">
+                                    <div class="loyalty {{#equal customer.disable_loyalty 0}} d-none  {{/equal}} ">
                                         <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple') { ?>
                                         <span
-                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 {{#if customer.sales_until_discount}} text-danger {{else}} text-success {{/if}}  sales_until_discount_main">
+                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-info me-5 {{#if customer.sales_until_discount}} text-danger {{else}} text-success {{/if}}  sales_until_discount_main">
                                             <i class="fa fa-gift me-2"></i>
                                             <div class="fs-6 fw-bold counted  sales_until_discount"
                                                 data-kt-countup="true" data-kt-countup-value="4500"
