@@ -59,7 +59,9 @@
 
 		$("#config_filters span.filter_action").on("click", function(e) {
 		
-
+			if ($(e.target).is("input[type=checkbox]")) {
+				return true;
+			}
 			var $checkboxs = $("#config_filters a").find("input[type=checkbox]");
 
 			if ($(this).attr("id") == "reset_filters_to_default") {
@@ -79,7 +81,7 @@
 			check_filters_active_inactive();
 			save_filters();
 
-			// return false;
+			return false;
 		});
 
 		$(document).on(
