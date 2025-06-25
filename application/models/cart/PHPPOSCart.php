@@ -694,7 +694,14 @@ abstract class PHPPOSCart
 	public function get_amount_due()
 	{
 		  
-		  $change_due = ($this->get_total() + $this->get_over_all_taxes() ) - $this->get_payments_total();
+		
+		  	$total         = floatval($this->get_total());
+			$taxes         = floatval($this->get_over_all_taxes());
+			$payments      = floatval($this->get_payments_total());
+
+			$change_due    = ($total + $taxes) - $payments;
+
+
 		  $change_due = ($change_due < .05 )? 0 : $change_due;
 
 		return to_currency_no_money( $change_due);
