@@ -4003,7 +4003,7 @@ class Sale extends MY_Model
 	
 		}
 		
-		$all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
+		// $all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
 				
 		// for($k=0;$k<count($sales);$k++)
 		// {
