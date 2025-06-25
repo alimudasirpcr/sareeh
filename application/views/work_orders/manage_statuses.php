@@ -34,6 +34,7 @@
 							'type'  => 'text',
 							'name'  => 'status_name',
 							'id'    => 'status_name',
+							'required' => 'required',
 							'value' => '',
 							'class'=> 'form-control form-inps',
 						)); ?>
