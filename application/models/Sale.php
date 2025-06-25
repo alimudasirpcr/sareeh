@@ -3960,12 +3960,19 @@ class Sale extends MY_Model
 		{
 			$sale_type = 'sales_work_orders.status as sale_type_name';
 		}
-		$this->db->select('customers.*,people.*,'.$sale_type.',sales.*,locations.name as location_name');
+		$this->db->select('customers.*,people.*,'.$sale_type.',sales.*,locations.name as location_name ,  CONCAT(employee.first_name, " ", employee.last_name) AS employee_name,
+		CONCAT(sold_by.first_name, " ", sold_by.last_name) AS sales_person');
 		$this->db->from('sales');
 		$this->db->join('sale_types', 'sale_types.id = sales.suspended', 'left');
 		$this->db->join('customers', 'sales.customer_id = customers.person_id', 'left');
 		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
 		$this->db->join('locations', 'sales.location_id = locations.location_id', 'left');
+		// Add these two joins for employee and salesperson
+		$this->db->join('employees AS e1', 'e1.person_id = sales.employee_id', 'left');
+		$this->db->join('people AS employee', 'employee.person_id = e1.person_id', 'left');
+
+		$this->db->join('employees AS e2', 'e2.person_id = sales.sold_by_employee_id', 'left');
+		$this->db->join('people AS sold_by', 'sold_by.person_id = e2.person_id', 'left');
 		
 		if($work_order){
 			$this->db->join('sales_work_orders', 'sales.sale_id = sales_work_orders.sale_id');
@@ -3994,14 +4001,6 @@ class Sale extends MY_Model
 		{
 			$sale_ids[] = $sale['sale_id'];
 	
-			// Get Employee First Name and Last Name for the suspended sales Use $this->Employee->get_info($employee_id) to get more info
-			$employee 			= $this->Employee->get_info($sale['employee_id']);
-			$sold_by_employee 	= $this->Employee->get_info($sale['sold_by_employee_id']);
-			
-			// CONCAT first and last name
-			$sales[$key]['employee_name'] 	= $employee->first_name.' '.$employee->last_name;
-			$sales[$key]['sales_person'] 	= $sold_by_employee->first_name.' '.$sold_by_employee->last_name;
-
 		}
 		
 		$all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
