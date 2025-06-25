@@ -518,36 +518,33 @@ $this->load->view("partial/offline_header"); ?>
                             </div>
                             <?php  }  ?>
                             <?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ( isset($cart) && $this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
-                            <div
-                                class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
-                                <div class="d-flex justify-content-start">
-                                    <?php echo form_checkbox(array(
+                                <div
+                            class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
+                            <div class="d-flex justify-content-between">
+                                <?php echo form_checkbox(array(
 										'name' => 'change_date_enable',
 										'id' => 'change_date_enable',
 										'value' => '1',
 										'class' => 'form-check-input ml-0',
-										'checked' => (bool) (isset($change_date_enable))?$change_date_enable:false,
+										'checked' => (bool) $change_date_enable
 									));
-									echo '<label class="form-check-label w-20" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
+									echo '<label class="form-check-label" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
 
 									?>
 
-                                    <div id="change_cart_date_picker" class="w-62 date datepicker">
-                                        <div class="input-group">
+                                    <div id="change_cart_date_picker" class="input-group w-62 date datepicker">
                                             <span class="input-group-text"><i class="ion-calendar"></i></span>
 
                                             <?php echo form_input(array(
-                                            'name' => 'change_cart_date',
-                                            'id' => 'change_cart_date',
-                                            'size' => '8',
-                                            'class' => 'form-control',
-                                            'value' => date(get_date_format() . " " . get_time_format(), isset($change_cart_date) ? strtotime($change_cart_date) : time()),
-                                        )); ?>
+                                                    'name' => 'change_cart_date',
+                                                    'id' => 'change_cart_date',
+                                                    'size' => '8',
+                                                    'class' => 'form-control',
+                                                    'value' => date(get_date_format() . " " . get_time_format(), $change_cart_date ? strtotime($change_cart_date) : time()),
+                                                )); ?>
                                         </div>
-
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
 
                             <?php } ?>
 

@@ -48,7 +48,7 @@
 			<div class=" card-body">
 				<div class="form-group">
 				
-						<?php echo form_label(lang('suppliers_company_name').':', 'company_name', array('class'=>'required form-label')); ?>
+						<?php echo form_label(lang('suppliers_company_name').':', 'company_name', array('class'=>'required form-label col-sm-3 col-md-3 col-lg-2 ')); ?> 
 						<div class="col-sm-9 col-md-9 col-lg-10 cmp-inps">
 						<?php echo form_input(array(
 							'class'=>'form-control form-inps',

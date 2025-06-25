@@ -271,7 +271,7 @@ class PHPPOSCartSale extends PHPPOSCart
 					$item_props['variation_choices'][$item_variation_id] = $variation['name'] ? $variation['name'] : implode(', ', array_column($variation['attributes'],'label'));
 				}
 				
-				if ($row->item_variation_id)
+				if ($row->item_variation_id && isset($item_props['variation_choices'][$row->item_variation_id]))
 				{
 					$item_props['variation_name'] = $item_props['variation_choices'][$row->item_variation_id];
 				}			

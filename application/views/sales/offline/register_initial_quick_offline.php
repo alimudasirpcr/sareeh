@@ -531,21 +531,23 @@ $this->load->view("partial/offline_header"); ?>
                             <?php if ($this->Employee->has_module_action_permission('sales', 'change_sale_date', $this->Employee->get_logged_in_employee_info()->person_id) && ($this->cart->get_previous_receipt_id() || $this->config->item('change_sale_date_for_new_sale'))) { ?>
                             <div
                                 class="change-date form-check  col-12  border border-dashed rounded min-w-125px py-2  px-4">
-                                <div class="d-flex justify-content-start">
-                                    <?php echo form_checkbox(array(
+                                <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                    <?php 
+									echo '<label class="form-check-label w-20 pull-right mb-0 mt-3" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
+                                    echo form_checkbox(array(
 										'name' => 'change_date_enable',
 										'id' => 'change_date_enable',
 										'value' => '1',
 										'class' => 'form-check-input ml-0',
 										'checked' => (bool) $change_date_enable
 									));
-									echo '<label class="form-check-label w-20" for="change_date_enable"><span></span>' . lang('change_date') . '</label>';
+                                    
 
 									?>
 
-                                    <div id="change_cart_date_picker" class="w-62 date datepicker">
+                                    <div id="change_cart_date_picker" class=" date datepicker fv-row w-100 flex-md-root fv-plugins-icon-container my-5 ">
                                         <div class="input-group">
-                                            <span class="input-group-text"><i class="ion-calendar"></i></span>
+                                            <span class="input-group-text"><i class="ion-calendar text-light"></i></span>
 
                                             <?php echo form_input(array(
                                             'name' => 'change_cart_date',
