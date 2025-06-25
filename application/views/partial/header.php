@@ -1,5 +1,11 @@
 <!DOCTYPE html>
-<html class="<?php echo $this->config->item('language'); ?>">
+<html class="<?php echo $this->config->item('language'); ?>" 
+ <?php if(is_rtl_lang())
+			{ ?>
+direction="rtl" dir="rtl" style="direction: rtl" 
+
+<?php } ?>
+>
 
 <head>
     <script>
