@@ -306,12 +306,6 @@ class Deliveries extends Secure_area implements Idata_controller
 				$refer = $this->input->get('redirect');
 			}
 		
-			if(empty($this->input->post('title'))){
-				$error=lang('deliveries_error');
-				$this->session->set_flashdata('error', $error);
-				$this->session->unset_userdata('item_info');
-				redirect($refer);
-			}
 			
 
 

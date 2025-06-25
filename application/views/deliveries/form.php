@@ -151,6 +151,7 @@
 								<?php echo form_input(array(
 									'name'=>'first_name',
 									'id'=>'first_name',
+									'required' => 'required',
 									'class'=>'form-control form-inps',
 									'value'=>$delivery_person_info['first_name'])
 								);?>
@@ -168,6 +169,7 @@
 						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'last_name',
+								'required' => 'required',
 								'id'=>'last_name',
 								'class'=>'form-control form-inps',
 								'value'=>$delivery_person_info['last_name'])
@@ -181,6 +183,7 @@
 						<div class="col-11">
 							<?php echo form_input(array(
 								'name'=>'email',
+								'required' => 'required',
 								'id'=>'email',
 								'class'=>'form-control form-inps',
 								'value'=>$delivery_person_info['email'])
