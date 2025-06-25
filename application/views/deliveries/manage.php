@@ -57,27 +57,29 @@
 		$("#sortable").disableSelection();
 
 
-		$("#config_filters span.filter_action").on("click", function(e) {
-		
-			if ($(e.target).is("input[type=checkbox]")) {
-				return true;
-			}
-			var $checkboxs = $("#config_filters a").find("input[type=checkbox]");
+		$("#config_filters span.filter_action").on("click", function (e) {
+			var $checkbox = $(this).find("input[type=checkbox]");
 
-			if ($(this).attr("id") == "reset_filters_to_default") {
-				$checkboxs.prop("checked", false);
+			// If this is the reset action, clear all
+			if ($(this).attr("id") === "reset_filters_to_default") {
+				$("#config_filters input[type=checkbox]").prop("checked", false).trigger("change");
+
 				$('#shipping_start').data("DateTimePicker").clear();
 				$('#shipping_end').data("DateTimePicker").clear();
-
 				$('#delivery_start').data("DateTimePicker").clear();
 				$('#delivery_end').data("DateTimePicker").clear();
+
+				check_filters_active_inactive();
+				save_filters();
+				return false;
 			}
 
-			var $checkbox = $(this).find("input[type=checkbox]");
-			if ($checkbox.length == 1) {
+			// Only manually toggle checkbox if the click is NOT directly on it
+			if (!$(e.target).is("input[type=checkbox]")) {
 				$checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
 			}
 
+			// Logic should run even if user clicked directly on checkbox
 			check_filters_active_inactive();
 			save_filters();
 
