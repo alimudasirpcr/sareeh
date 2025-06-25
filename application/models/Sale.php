@@ -4005,86 +4005,86 @@ class Sale extends MY_Model
 		
 		$all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
 				
-		for($k=0;$k<count($sales);$k++)
-		{
-			$item_names = array();
-			$this->db->select('name, sales_items.description');
-			$this->db->from('items');
-			$this->db->join('sales_items', 'sales_items.item_id = items.item_id');
-			$this->db->where('sale_id', $sales[$k]['sale_id']);
+		// for($k=0;$k<count($sales);$k++)
+		// {
+		// 	$item_names = array();
+		// 	$this->db->select('name, sales_items.description');
+		// 	$this->db->from('items');
+		// 	$this->db->join('sales_items', 'sales_items.item_id = items.item_id');
+		// 	$this->db->where('sale_id', $sales[$k]['sale_id']);
 		
-			foreach($this->db->get()->result_array() as $row)
-			{
-				$item_name_and_desc = $row['name'];
+		// 	foreach($this->db->get()->result_array() as $row)
+		// 	{
+		// 		$item_name_and_desc = $row['name'];
 
-				if ($row['description'] && !$this->config->item('hide_description_on_suspended_sales'))
-				{
-					$item_name_and_desc .= ' - '.$row['description'];
-				}
-				$item_names[] = $item_name_and_desc;
-			}
+		// 		if ($row['description'] && !$this->config->item('hide_description_on_suspended_sales'))
+		// 		{
+		// 			$item_name_and_desc .= ' - '.$row['description'];
+		// 		}
+		// 		$item_names[] = $item_name_and_desc;
+		// 	}
 			
-			$this->db->select('name');
-			$this->db->from('item_kits');
-			$this->db->join('sales_item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
-			$this->db->where('sale_id', $sales[$k]['sale_id']);
+		// 	$this->db->select('name');
+		// 	$this->db->from('item_kits');
+		// 	$this->db->join('sales_item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
+		// 	$this->db->where('sale_id', $sales[$k]['sale_id']);
 		
-			foreach($this->db->get()->result_array() as $row)
-			{
-				$item_names[] = $row['name'];
-			}
+		// 	foreach($this->db->get()->result_array() as $row)
+		// 	{
+		// 		$item_names[] = $row['name'];
+		// 	}
 			
 			
-			$sales[$k]['items'] = implode(', ', $item_names);
+		// 	$sales[$k]['items'] = implode(', ', $item_names);
 			
 			
 			
-			$sales[$k]['last_payment_date'] = lang('none');			
-			$sale_total = $sales[$k]['total'];	
-			$amount_paid = 0;
-			$sale_id = $sales[$k]['sale_id'];
+		// 	$sales[$k]['last_payment_date'] = lang('none');			
+		// 	$sale_total = $sales[$k]['total'];	
+		// 	$amount_paid = 0;
+		// 	$sale_id = $sales[$k]['sale_id'];
 						
-			$payment_data = array();
-			$sales[$k]['all_payments'] = array();
+		// 	$payment_data = array();
+		// 	$sales[$k]['all_payments'] = array();
 
-			if (isset($all_payments_for_sales[$sale_id]))
-			{
-				$total_sale_balance = $sale_total;		
+		// 	if (isset($all_payments_for_sales[$sale_id]))
+		// 	{
+		// 		$total_sale_balance = $sale_total;		
 				
-				foreach($all_payments_for_sales[$sale_id] as $payment_row)
-				{
-					//Postive sale total, positive payment
-					if ($sale_total >= 0 && $payment_row['payment_amount'] >=0)
-					{
-						$payment_amount = $payment_row['payment_amount'] <= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
-					}//Negative sale total negative payment
-					elseif ($sale_total < 0 && $payment_row['payment_amount']  < 0)
-					{
-						$payment_amount = $payment_row['payment_amount'] >= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
-					}//Positive Sale total negative payment
-					elseif($sale_total >= 0 && $payment_row['payment_amount']  < 0)
-					{
-						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
-					}//Negtive sale total postive payment
-					elseif($sale_total < 0 && $payment_row['payment_amount']  >= 0)
-					{
-						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
-					}				
+		// 		foreach($all_payments_for_sales[$sale_id] as $payment_row)
+		// 		{
+		// 			//Postive sale total, positive payment
+		// 			if ($sale_total >= 0 && $payment_row['payment_amount'] >=0)
+		// 			{
+		// 				$payment_amount = $payment_row['payment_amount'] <= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+		// 			}//Negative sale total negative payment
+		// 			elseif ($sale_total < 0 && $payment_row['payment_amount']  < 0)
+		// 			{
+		// 				$payment_amount = $payment_row['payment_amount'] >= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+		// 			}//Positive Sale total negative payment
+		// 			elseif($sale_total >= 0 && $payment_row['payment_amount']  < 0)
+		// 			{
+		// 				$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+		// 			}//Negtive sale total postive payment
+		// 			elseif($sale_total < 0 && $payment_row['payment_amount']  >= 0)
+		// 			{
+		// 				$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+		// 			}				
 			
-					$total_sale_balance-=$payment_amount;	
-					$amount_paid+=	$payment_amount;	
+		// 			$total_sale_balance-=$payment_amount;	
+		// 			$amount_paid+=	$payment_amount;	
 					
 					
-					$sales[$k]['last_payment_date'] = date(get_date_format().' '.get_time_format(), strtotime($payment_row['payment_date']));		
-				}
+		// 			$sales[$k]['last_payment_date'] = date(get_date_format().' '.get_time_format(), strtotime($payment_row['payment_date']));		
+		// 		}
 
-				$sales[$k]['all_payments'] = $all_payments_for_sales[$sale_id];	
-			}
+		// 		$sales[$k]['all_payments'] = $all_payments_for_sales[$sale_id];	
+		// 	}
 			
-			$sales[$k]['sale_total'] = $sale_total;
-			$sales[$k]['amount_paid'] = $amount_paid;
-			$sales[$k]['amount_due'] = $sale_total - $amount_paid;
-		}
+		// 	$sales[$k]['sale_total'] = $sale_total;
+		// 	$sales[$k]['amount_paid'] = $amount_paid;
+		// 	$sales[$k]['amount_due'] = $sale_total - $amount_paid;
+		// }
 		
 		return $sales;
 		
