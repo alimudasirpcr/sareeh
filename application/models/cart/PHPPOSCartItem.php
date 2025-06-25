@@ -383,7 +383,7 @@ abstract class PHPPOSCartItem extends PHPPOSCartItemBase
 		$CI =& get_instance();
 		$CI->load->model('Item');
 		$valid_item = $this->get_id() && !$CI->Item->get_info($this->get_id())->deleted && !$CI->Item->get_info($this->get_id())->item_inactive;
-		
+		echo "validating"; exit();
 		if (!$valid_item)
 		{
 			return FALSE;
