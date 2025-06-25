@@ -1611,7 +1611,7 @@ $this->load->view("partial/offline_header"); ?>
                                 <!-- Start: ++++++++++++++++++++++++++++++++++++++++++++++++++ Customer added info +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
                                 <!-- Customer Balance -->
-                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2 mt-1 gap-10 vertical-center">
+                                <div class="d-flex flex-wrap fw-semibold fs-6 pe-2 mt-1 gap-10 vertical-center text-hover-info">
                                     <div>
                                             <i class="fa fa-money-bill me-2"></i>
                                      
@@ -1629,7 +1629,7 @@ $this->load->view("partial/offline_header"); ?>
 
 
 
-                                    <div class="loyalty {{#equal customer.disable_loyalty 0}} d-none  {{/equal}}">
+                                    <div class="loyalty {{#equal customer.disable_loyalty 0}} d-none  {{/equal}} text-hover-info">
                                         <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'simple') { ?>
                                         <span
                                             class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5 {{#if customer.sales_until_discount}} text-danger {{else}} text-success {{/if}}  sales_until_discount_main">
@@ -1657,7 +1657,7 @@ $this->load->view("partial/offline_header"); ?>
 
                                         <?php if ($this->config->item('enable_customer_loyalty_system') && $this->config->item('loyalty_option') == 'advanced') { ?>
                                         <span title="  <?php echo lang('points') ?>"
-                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-primary me-5  {{#LessThanEqual customer.points 0}} text-danger {{else}} text-success  {{/LessThanEqual}} points_main">
+                                            class="d-flex align-items-center text-gray-500 fw-normal fs-7 text-hover-info me-5   {{#LessThanEqual customer.points 0}} text-danger {{else}} text-success  {{/LessThanEqual}} points_main">
                                             <i class="fa fa-gift me-2"></i>
                                             <div class="fs-6 fw-bold counted  points" data-kt-countup="true"
                                                 data-kt-countup-value="4500" data-kt-countup-prefix="$"
@@ -1673,7 +1673,7 @@ $this->load->view("partial/offline_header"); ?>
                                     <div class="d-flex">
                                     <i class="fa fa-comments me-2 mt-2"></i>
                                     <a href="#" id="internal_notes"
-                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-primary fw-normal fs-7  editable-click px-2"
+                                        class="xeditable-comment edit-internal_notes d-flex align-items-center text-gray-500 text-hover-info fw-normal fs-7  editable-click px-2"
                                         data-type="text" data-validate-number="false" data-pk="1"
                                         data-name="internal_notes" data-placement="bottom" data-value="{{customer.internal_notes}}">
                                         <span id="customer_internal_notes">{{customer.internal_notes}}</span>
