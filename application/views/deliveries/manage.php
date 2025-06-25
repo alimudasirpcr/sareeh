@@ -79,7 +79,7 @@
 			check_filters_active_inactive();
 			save_filters();
 
-			return false;
+			// return false;
 		});
 
 		$(document).on(
