@@ -300,11 +300,9 @@ for ($k = 0; $k < count($items); $k++) {
 <script>
 	<?php if (isset($_POST) && count($_POST)) { ?>
 
-		show_feedback('success',
-            <?php echo json_encode(lang('saved_successfully')); ?>,
-            <?php echo json_encode(lang('success')); ?>);
+		
 
-			
+
 		var post_data = <?php echo json_encode($_POST); ?>;
 		var post_data_clean = [];
 
@@ -321,7 +319,9 @@ for ($k = 0; $k < count($items); $k++) {
 		$("#barcode_form").submit(function(e) {
 			e.preventDefault();
 			$(this).ajaxSubmit(function() {
-				
+				show_feedback('success',
+            <?php echo json_encode(lang('saved_successfully')); ?>,
+            <?php echo json_encode(lang('success')); ?>);
 
 
 				post_submit(<?php echo json_encode(current_url()); ?>, "POST", post_data_clean);
@@ -337,6 +337,9 @@ for ($k = 0; $k < count($items); $k++) {
 
 
 		$("#reset_labels").click(function(e) {
+			show_feedback('success',
+            <?php echo json_encode(lang('saved_successfully')); ?>,
+            <?php echo json_encode(lang('success')); ?>);
 			e.preventDefault();
 			$.get($(this).attr('href'), function() {
 				post_submit(<?php echo json_encode(current_url()); ?>, "POST", post_data_clean);
@@ -346,6 +349,10 @@ for ($k = 0; $k < count($items); $k++) {
 		$("#barcode_form").submit(function(e) {
 			e.preventDefault();
 			$(this).ajaxSubmit(function() {
+				show_feedback('success',
+            <?php echo json_encode(lang('saved_successfully')); ?>,
+            <?php echo json_encode(lang('success')); ?>);
+
 				window.location.reload();
 			});
 		});
