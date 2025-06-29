@@ -372,7 +372,7 @@ class Summary_customers extends Report
 			$this->db->where_in('customer_id', $customer_ids);
 			$this->db->group_by('sale_id');
 			$cust_ret = $this->db->get();
-			echo $this->db->last_query(); exit();
+	
 			
 			$customers_points = array();
 			
