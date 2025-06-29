@@ -315,6 +315,11 @@ for ($k = 0; $k < count($items); $k++) {
 		$("#barcode_form").submit(function(e) {
 			e.preventDefault();
 			$(this).ajaxSubmit(function() {
+				show_feedback('success',
+            <?php echo json_encode(lang('saved_successfully')); ?>,
+            <?php echo json_encode(lang('success')); ?>);
+
+
 				post_submit(<?php echo json_encode(current_url()); ?>, "POST", post_data_clean);
 			});
 		});
