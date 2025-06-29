@@ -320,7 +320,7 @@ for ($k = 0; $k < count($items); $k++) {
             <?php echo json_encode(lang('success')); ?>);
 
 
-				post_submit(<?php echo json_encode(current_url()); ?>, "POST", post_data_clean);
+				// post_submit(<?php echo json_encode(current_url()); ?>, "POST", post_data_clean);
 			});
 		});
 
