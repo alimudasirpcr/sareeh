@@ -3310,5 +3310,7 @@
     "reports_total_expenses": "Reports total expenses",
     "track_register": "Track register",
     "reports_data": "Reports data",
-    "edit_tag": "Edit tag"
+    "edit_tag": "Edit tag",
+    "reports_hide_items": "Reports hide items",
+    "reports_hide_paid": "Reports hide paid"
 }
