@@ -447,7 +447,59 @@ function get_item_data_row($item,$controller)
 	$table_data_row.='</tr>';
 	return $table_data_row;
 }
+function get_suspended_sales_manage_table_list($items,$controller , $is_quick= false)
+{
+	$CI =& get_instance();
+	$CI->load->model('Employee');
+	$lang_url = base_url().'index.php/home/datatable_language';
+	$controller_name=strtolower(get_class($CI));
+	
+	$table='<table class="table table-striped table-hover table-row-dashed data-table" id="sortable_table">';	
+	$columns_to_display = $CI->Employee->get_suspended_sales_columns_to_display($is_quick);
+	if(!$is_quick){
+	$headers[] = array('label' => '<input class="form-check-input" type="checkbox" class="form-check-input" id="select_all" /><label for="select_all"><span></span></label>', 'sort_column' => '');
+	}
+	foreach(array_values($columns_to_display) as $value)
+	{
+		$headers[] = H($value);
+	}
+	if(!$is_quick){
+		$headers[] = array('label' => lang('unsuspend'), 'sort_column' => '');
+		$headers[] = array('label' => lang('sales_receipt'), 'sort_column' => '');
+		$headers[] = array('label' => lang('email_receipt'), 'sort_column' => '');
+		
+	}
 
+	if ($CI->Employee->has_module_action_permission('sales', 'delete_suspended_sale', $CI->Employee->get_logged_in_employee_info()->person_id)){
+		$headers[] = array('label' => lang('delete'), 'sort_column' => '');
+	}
+		
+	$table.='<thead><tr class="text-start text-muted fw-bold fs-7 gs-0" >';
+	$count = 0;
+	foreach($headers as $header)
+	{
+		$count++;
+		$label = $header['label'];
+		$sort_col = $header['sort_column'];
+		if ($count == 1 && !$is_quick) 
+		{
+			$table.="<th data-sort-column='$sort_col' class=' form-check form-check-sm form-check-custom form-check-solid leftmost'>$label</th>";
+		}
+		elseif ($count == count($headers))
+		{
+			$table.="<th data-sort-column='$sort_col' class='rightmost'>$label</th>";
+		}
+		else
+		{
+			$table.="<th data-sort-column='$sort_col'>$label</th>";		
+		}
+	}
+	$table.='</tr></thead><tbody>';
+	$table.=get_suspended_sales_manage_table_data_rows($items,$controller , $is_quick);
+	$table.='</tbody></table>';
+
+	return $table;
+}
 
 /*
 Gets the html table to manage items.
@@ -513,7 +565,7 @@ function get_suspended_sales_manage_table($items,$controller , $is_quick= false)
 
 		$dropdown_option = [ $number_per_page, 10,  25, 50, 100];
 	}else{
-		$number_per_page = $CI->config->item('number_of_items_per_page') ? (int)$CI->config->item('number_of_items_per_page') : 20;
+		$number_per_page = 5;
 		$dropdown_values = [10, $number_per_page, 25, 50, 100];
 		asort($dropdown_values);
 		
@@ -540,6 +592,7 @@ function get_suspended_sales_manage_table($items,$controller , $is_quick= false)
 			"sUrl" => $lang_url
 		),
 	);
+	// dd($table_options);/
 
 	$dt_option = json_encode($table_options, JSON_UNESCAPED_SLASHES);
 

@@ -3935,7 +3935,401 @@ class Sale extends MY_Model
 		$this->db->where('giftcard_number',$giftcardNumber);
 		return $this->db->get()->row()->value;
 	}
+
+	function count_suspended($suspended_types = NULL, $customer_id=null, $params=null, $work_order=false){
+		if ($suspended_types === NULL)
+		{
+			$suspended_types = array(1,2);
+			$this->load->model('Sale_types');
+			if($this->Sale_types->get_all()){
+				foreach($this->Sale_types->get_all()->result_array() as $row)
+				{
+					$suspended_types[] = $row['id'];
+				}
+			}
+			
+		}
+
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();		
+		
+		$sale_type = 'sale_types.name as sale_type_name';
+		
+		if ($work_order)
+		{
+			$sale_type = 'sales_work_orders.status as sale_type_name';
+		}
+		$this->db->select('count(*) as total');
+		$this->db->from('sales');
+		$this->db->join('sale_types', 'sale_types.id = sales.suspended', 'left');
+		$this->db->join('customers', 'sales.customer_id = customers.person_id', 'left');
+		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
+		$this->db->join('locations', 'sales.location_id = locations.location_id', 'left');
+		// Add these two joins for employee and salesperson
+		$this->db->join('employees AS e1', 'e1.person_id = sales.employee_id', 'left');
+		$this->db->join('people AS employee', 'employee.person_id = e1.person_id', 'left');
+
+		$this->db->join('employees AS e2', 'e2.person_id = sales.sold_by_employee_id', 'left');
+		$this->db->join('people AS sold_by', 'sold_by.person_id = e2.person_id', 'left');
+		
+		if($work_order){
+			$this->db->join('sales_work_orders', 'sales.sale_id = sales_work_orders.sale_id');
+		}
+
+		$this->db->where('sales.deleted', 0);
+		$this->db->where_in('suspended', $suspended_types);
+		$this->db->where('sales.location_id', $location_id);
+
+		if($customer_id){
+			$this->db->where('sales.customer_id', $customer_id);
+		}
+
+		if($params){
+			$this->db->where('sale_time >=', $params['start_date']);
+			$this->db->where('sale_time <=', $params['end_date']. ' 23:59:59');
+			$this->db->order_by('sale_time');
+		}else{
+			$this->db->order_by('sale_id');
+		}
+
+		return $this->db->get()->result_array()[0]['total'];
+
+
+		
+	}
+	function get_all_suspended_data_table_search($search='' ,  $deleted=0,$limit=10000, $offset=0,$col='sale_id',$order='desc', $suspended_types = NULL, $customer_id=null, $params=null, $work_order=false)
+	{				
+
+		$col = 'sale_id';
+		if (!$deleted)
+		{
+			$deleted = 0;
+		}
+		if ($suspended_types === NULL)
+		{
+			$suspended_types = array(1,2);
+			$this->load->model('Sale_types');
+			if($this->Sale_types->get_all()){
+				foreach($this->Sale_types->get_all()->result_array() as $row)
+				{
+					$suspended_types[] = $row['id'];
+				}
+			}
+			
+		}
+		
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();		
+		
+		$sale_type = 'sale_types.name as sale_type_name';
+		
+		if ($work_order)
+		{
+			$sale_type = 'sales_work_orders.status as sale_type_name';
+		}
+		$this->db->select('customers.*,people.*,'.$sale_type.',sales.*,locations.name as location_name ,  CONCAT(employee.first_name, " ", employee.last_name) AS employee_name,
+		CONCAT(sold_by.first_name, " ", sold_by.last_name) AS sales_person');
+		$this->db->from('sales');
+		$this->db->join('sale_types', 'sale_types.id = sales.suspended', 'left');
+		$this->db->join('customers', 'sales.customer_id = customers.person_id', 'left');
+		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
+		$this->db->join('locations', 'sales.location_id = locations.location_id', 'left');
+		// Add these two joins for employee and salesperson
+		$this->db->join('employees AS e1', 'e1.person_id = sales.employee_id', 'left');
+		$this->db->join('people AS employee', 'employee.person_id = e1.person_id', 'left');
+
+		$this->db->join('employees AS e2', 'e2.person_id = sales.sold_by_employee_id', 'left');
+		$this->db->join('people AS sold_by', 'sold_by.person_id = e2.person_id', 'left');
+		
+		if($work_order){
+			$this->db->join('sales_work_orders', 'sales.sale_id = sales_work_orders.sale_id');
+		}
+
+		$this->db->where('sales.deleted', $deleted);
+		$this->db->where_in('suspended', $suspended_types);
+		$this->db->where('sales.location_id', $location_id);
+
+		if($customer_id){
+			$this->db->where('sales.customer_id', $customer_id);
+		}
+
+		if($params){
+			$this->db->where('sale_time >=', $params['start_date']);
+			$this->db->where('sale_time <=', $params['end_date']. ' 23:59:59');
+			$this->db->order_by($col, $order);
+		}else{
+				$this->db->order_by($col, $order);
+		}
+		$this->db->limit($limit);
+		$this->db->offset($offset);
+		$sales = $this->db->get()->result_array();
+				
+		$sale_ids = array();
+		foreach($sales as $key => $sale)
+		{
+			$sale_ids[] = $sale['sale_id'];
 	
+			// Get Employee First Name and Last Name for the suspended sales Use $this->Employee->get_info($employee_id) to get more info
+			$employee 			= $this->Employee->get_info($sale['employee_id']);
+			$sold_by_employee 	= $this->Employee->get_info($sale['sold_by_employee_id']);
+			
+			// CONCAT first and last name
+			$sales[$key]['employee_name'] 	= $employee->first_name.' '.$employee->last_name;
+			$sales[$key]['sales_person'] 	= $sold_by_employee->first_name.' '.$sold_by_employee->last_name;
+
+		}
+		
+		$all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
+				
+		for($k=0;$k<count($sales);$k++)
+		{
+			$item_names = array();
+			$this->db->select('name, sales_items.description');
+			$this->db->from('items');
+			$this->db->join('sales_items', 'sales_items.item_id = items.item_id');
+			$this->db->where('sale_id', $sales[$k]['sale_id']);
+		
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$item_name_and_desc = $row['name'];
+
+				if ($row['description'] && !$this->config->item('hide_description_on_suspended_sales'))
+				{
+					$item_name_and_desc .= ' - '.$row['description'];
+				}
+				$item_names[] = $item_name_and_desc;
+			}
+			
+			$this->db->select('name');
+			$this->db->from('item_kits');
+			$this->db->join('sales_item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
+			$this->db->where('sale_id', $sales[$k]['sale_id']);
+		
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$item_names[] = $row['name'];
+			}
+			
+			
+			$sales[$k]['items'] = implode(', ', $item_names);
+			
+			
+			
+			$sales[$k]['last_payment_date'] = lang('none');			
+			$sale_total = $sales[$k]['total'];	
+			$amount_paid = 0;
+			$sale_id = $sales[$k]['sale_id'];
+						
+			$payment_data = array();
+			$sales[$k]['all_payments'] = array();
+
+			if (isset($all_payments_for_sales[$sale_id]))
+			{
+				$total_sale_balance = $sale_total;		
+				
+				foreach($all_payments_for_sales[$sale_id] as $payment_row)
+				{
+					//Postive sale total, positive payment
+					if ($sale_total >= 0 && $payment_row['payment_amount'] >=0)
+					{
+						$payment_amount = $payment_row['payment_amount'] <= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+					}//Negative sale total negative payment
+					elseif ($sale_total < 0 && $payment_row['payment_amount']  < 0)
+					{
+						$payment_amount = $payment_row['payment_amount'] >= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+					}//Positive Sale total negative payment
+					elseif($sale_total >= 0 && $payment_row['payment_amount']  < 0)
+					{
+						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+					}//Negtive sale total postive payment
+					elseif($sale_total < 0 && $payment_row['payment_amount']  >= 0)
+					{
+						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+					}				
+			
+					$total_sale_balance-=$payment_amount;	
+					$amount_paid+=	$payment_amount;	
+					
+					
+					$sales[$k]['last_payment_date'] = date(get_date_format().' '.get_time_format(), strtotime($payment_row['payment_date']));		
+				}
+
+				$sales[$k]['all_payments'] = $all_payments_for_sales[$sale_id];	
+			}
+			
+			$sales[$k]['sale_total'] = $sale_total;
+			$sales[$k]['amount_paid'] = $amount_paid;
+			$sales[$k]['amount_due'] = $sale_total - $amount_paid;
+		}
+		
+		return $sales;
+		
+	}
+		function get_all_suspended_data_table($deleted=0,$limit=10000, $offset=0,$col='sale_id',$order='desc', $suspended_types = NULL, $customer_id=null, $params=null, $work_order=false)
+	{				
+
+		// $col = 'sale_id';
+		if (!$deleted)
+		{
+			$deleted = 0;
+		}
+		if ($suspended_types === NULL)
+		{
+			$suspended_types = array(1,2);
+			$this->load->model('Sale_types');
+			if($this->Sale_types->get_all()){
+				foreach($this->Sale_types->get_all()->result_array() as $row)
+				{
+					$suspended_types[] = $row['id'];
+				}
+			}
+			
+		}
+		
+		$location_id = $this->Employee->get_logged_in_employee_current_location_id();		
+		
+		$sale_type = 'sale_types.name as sale_type_name';
+		
+		if ($work_order)
+		{
+			$sale_type = 'sales_work_orders.status as sale_type_name';
+		}
+		$this->db->select('customers.*,people.*,'.$sale_type.',sales.*,locations.name as location_name ,  CONCAT(employee.first_name, " ", employee.last_name) AS employee_name,
+		CONCAT(sold_by.first_name, " ", sold_by.last_name) AS sales_person');
+		$this->db->from('sales');
+		$this->db->join('sale_types', 'sale_types.id = sales.suspended', 'left');
+		$this->db->join('customers', 'sales.customer_id = customers.person_id', 'left');
+		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
+		$this->db->join('locations', 'sales.location_id = locations.location_id', 'left');
+		// Add these two joins for employee and salesperson
+		$this->db->join('employees AS e1', 'e1.person_id = sales.employee_id', 'left');
+		$this->db->join('people AS employee', 'employee.person_id = e1.person_id', 'left');
+
+		$this->db->join('employees AS e2', 'e2.person_id = sales.sold_by_employee_id', 'left');
+		$this->db->join('people AS sold_by', 'sold_by.person_id = e2.person_id', 'left');
+		
+		if($work_order){
+			$this->db->join('sales_work_orders', 'sales.sale_id = sales_work_orders.sale_id');
+		}
+
+		$this->db->where('sales.deleted', $deleted);
+		$this->db->where_in('suspended', $suspended_types);
+		$this->db->where('sales.location_id', $location_id);
+
+		if($customer_id){
+			$this->db->where('sales.customer_id', $customer_id);
+		}
+
+		if($params){
+			$this->db->where('sale_time >=', $params['start_date']);
+			$this->db->where('sale_time <=', $params['end_date']. ' 23:59:59');
+			$this->db->order_by($col, $order);
+		}else{
+				$this->db->order_by($col, $order);
+		}
+		$this->db->limit($limit);
+		$this->db->offset($offset);
+		$sales = $this->db->get()->result_array();
+				
+		$sale_ids = array();
+		foreach($sales as $key => $sale)
+		{
+			$sale_ids[] = $sale['sale_id'];
+	
+			// Get Employee First Name and Last Name for the suspended sales Use $this->Employee->get_info($employee_id) to get more info
+			$employee 			= $this->Employee->get_info($sale['employee_id']);
+			$sold_by_employee 	= $this->Employee->get_info($sale['sold_by_employee_id']);
+			
+			// CONCAT first and last name
+			$sales[$key]['employee_name'] 	= $employee->first_name.' '.$employee->last_name;
+			$sales[$key]['sales_person'] 	= $sold_by_employee->first_name.' '.$sold_by_employee->last_name;
+
+		}
+		
+		$all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
+				
+		for($k=0;$k<count($sales);$k++)
+		{
+			$item_names = array();
+			$this->db->select('name, sales_items.description');
+			$this->db->from('items');
+			$this->db->join('sales_items', 'sales_items.item_id = items.item_id');
+			$this->db->where('sale_id', $sales[$k]['sale_id']);
+		
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$item_name_and_desc = $row['name'];
+
+				if ($row['description'] && !$this->config->item('hide_description_on_suspended_sales'))
+				{
+					$item_name_and_desc .= ' - '.$row['description'];
+				}
+				$item_names[] = $item_name_and_desc;
+			}
+			
+			$this->db->select('name');
+			$this->db->from('item_kits');
+			$this->db->join('sales_item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
+			$this->db->where('sale_id', $sales[$k]['sale_id']);
+		
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$item_names[] = $row['name'];
+			}
+			
+			
+			$sales[$k]['items'] = implode(', ', $item_names);
+			
+			
+			
+			$sales[$k]['last_payment_date'] = lang('none');			
+			$sale_total = $sales[$k]['total'];	
+			$amount_paid = 0;
+			$sale_id = $sales[$k]['sale_id'];
+						
+			$payment_data = array();
+			$sales[$k]['all_payments'] = array();
+
+			if (isset($all_payments_for_sales[$sale_id]))
+			{
+				$total_sale_balance = $sale_total;		
+				
+				foreach($all_payments_for_sales[$sale_id] as $payment_row)
+				{
+					//Postive sale total, positive payment
+					if ($sale_total >= 0 && $payment_row['payment_amount'] >=0)
+					{
+						$payment_amount = $payment_row['payment_amount'] <= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+					}//Negative sale total negative payment
+					elseif ($sale_total < 0 && $payment_row['payment_amount']  < 0)
+					{
+						$payment_amount = $payment_row['payment_amount'] >= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+					}//Positive Sale total negative payment
+					elseif($sale_total >= 0 && $payment_row['payment_amount']  < 0)
+					{
+						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+					}//Negtive sale total postive payment
+					elseif($sale_total < 0 && $payment_row['payment_amount']  >= 0)
+					{
+						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+					}				
+			
+					$total_sale_balance-=$payment_amount;	
+					$amount_paid+=	$payment_amount;	
+					
+					
+					$sales[$k]['last_payment_date'] = date(get_date_format().' '.get_time_format(), strtotime($payment_row['payment_date']));		
+				}
+
+				$sales[$k]['all_payments'] = $all_payments_for_sales[$sale_id];	
+			}
+			
+			$sales[$k]['sale_total'] = $sale_total;
+			$sales[$k]['amount_paid'] = $amount_paid;
+			$sales[$k]['amount_due'] = $sale_total - $amount_paid;
+		}
+		
+		return $sales;
+		
+	}
 	function get_all_suspended($suspended_types = NULL, $customer_id=null, $params=null, $work_order=false)
 	{				
 		
@@ -3993,7 +4387,7 @@ class Sale extends MY_Model
 		}else{
 			$this->db->order_by('sale_id');
 		}
-		$this->db->limit('10');
+
 		$sales = $this->db->get()->result_array();
 				
 		$sale_ids = array();
@@ -4001,90 +4395,98 @@ class Sale extends MY_Model
 		{
 			$sale_ids[] = $sale['sale_id'];
 	
+			// Get Employee First Name and Last Name for the suspended sales Use $this->Employee->get_info($employee_id) to get more info
+			$employee 			= $this->Employee->get_info($sale['employee_id']);
+			$sold_by_employee 	= $this->Employee->get_info($sale['sold_by_employee_id']);
+			
+			// CONCAT first and last name
+			$sales[$key]['employee_name'] 	= $employee->first_name.' '.$employee->last_name;
+			$sales[$key]['sales_person'] 	= $sold_by_employee->first_name.' '.$sold_by_employee->last_name;
+
 		}
 		
-		// $all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
+		$all_payments_for_sales = $this->_get_all_sale_payments($sale_ids, "payment_date");	
 				
-		// for($k=0;$k<count($sales);$k++)
-		// {
-		// 	$item_names = array();
-		// 	$this->db->select('name, sales_items.description');
-		// 	$this->db->from('items');
-		// 	$this->db->join('sales_items', 'sales_items.item_id = items.item_id');
-		// 	$this->db->where('sale_id', $sales[$k]['sale_id']);
+		for($k=0;$k<count($sales);$k++)
+		{
+			$item_names = array();
+			$this->db->select('name, sales_items.description');
+			$this->db->from('items');
+			$this->db->join('sales_items', 'sales_items.item_id = items.item_id');
+			$this->db->where('sale_id', $sales[$k]['sale_id']);
 		
-		// 	foreach($this->db->get()->result_array() as $row)
-		// 	{
-		// 		$item_name_and_desc = $row['name'];
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$item_name_and_desc = $row['name'];
 
-		// 		if ($row['description'] && !$this->config->item('hide_description_on_suspended_sales'))
-		// 		{
-		// 			$item_name_and_desc .= ' - '.$row['description'];
-		// 		}
-		// 		$item_names[] = $item_name_and_desc;
-		// 	}
+				if ($row['description'] && !$this->config->item('hide_description_on_suspended_sales'))
+				{
+					$item_name_and_desc .= ' - '.$row['description'];
+				}
+				$item_names[] = $item_name_and_desc;
+			}
 			
-		// 	$this->db->select('name');
-		// 	$this->db->from('item_kits');
-		// 	$this->db->join('sales_item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
-		// 	$this->db->where('sale_id', $sales[$k]['sale_id']);
+			$this->db->select('name');
+			$this->db->from('item_kits');
+			$this->db->join('sales_item_kits', 'sales_item_kits.item_kit_id = item_kits.item_kit_id');
+			$this->db->where('sale_id', $sales[$k]['sale_id']);
 		
-		// 	foreach($this->db->get()->result_array() as $row)
-		// 	{
-		// 		$item_names[] = $row['name'];
-		// 	}
+			foreach($this->db->get()->result_array() as $row)
+			{
+				$item_names[] = $row['name'];
+			}
 			
 			
-		// 	$sales[$k]['items'] = implode(', ', $item_names);
+			$sales[$k]['items'] = implode(', ', $item_names);
 			
 			
 			
-		// 	$sales[$k]['last_payment_date'] = lang('none');			
-		// 	$sale_total = $sales[$k]['total'];	
-		// 	$amount_paid = 0;
-		// 	$sale_id = $sales[$k]['sale_id'];
+			$sales[$k]['last_payment_date'] = lang('none');			
+			$sale_total = $sales[$k]['total'];	
+			$amount_paid = 0;
+			$sale_id = $sales[$k]['sale_id'];
 						
-		// 	$payment_data = array();
-		// 	$sales[$k]['all_payments'] = array();
+			$payment_data = array();
+			$sales[$k]['all_payments'] = array();
 
-		// 	if (isset($all_payments_for_sales[$sale_id]))
-		// 	{
-		// 		$total_sale_balance = $sale_total;		
+			if (isset($all_payments_for_sales[$sale_id]))
+			{
+				$total_sale_balance = $sale_total;		
 				
-		// 		foreach($all_payments_for_sales[$sale_id] as $payment_row)
-		// 		{
-		// 			//Postive sale total, positive payment
-		// 			if ($sale_total >= 0 && $payment_row['payment_amount'] >=0)
-		// 			{
-		// 				$payment_amount = $payment_row['payment_amount'] <= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
-		// 			}//Negative sale total negative payment
-		// 			elseif ($sale_total < 0 && $payment_row['payment_amount']  < 0)
-		// 			{
-		// 				$payment_amount = $payment_row['payment_amount'] >= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
-		// 			}//Positive Sale total negative payment
-		// 			elseif($sale_total >= 0 && $payment_row['payment_amount']  < 0)
-		// 			{
-		// 				$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
-		// 			}//Negtive sale total postive payment
-		// 			elseif($sale_total < 0 && $payment_row['payment_amount']  >= 0)
-		// 			{
-		// 				$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
-		// 			}				
+				foreach($all_payments_for_sales[$sale_id] as $payment_row)
+				{
+					//Postive sale total, positive payment
+					if ($sale_total >= 0 && $payment_row['payment_amount'] >=0)
+					{
+						$payment_amount = $payment_row['payment_amount'] <= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+					}//Negative sale total negative payment
+					elseif ($sale_total < 0 && $payment_row['payment_amount']  < 0)
+					{
+						$payment_amount = $payment_row['payment_amount'] >= $total_sale_balance ? $payment_row['payment_amount'] : $total_sale_balance;
+					}//Positive Sale total negative payment
+					elseif($sale_total >= 0 && $payment_row['payment_amount']  < 0)
+					{
+						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+					}//Negtive sale total postive payment
+					elseif($sale_total < 0 && $payment_row['payment_amount']  >= 0)
+					{
+						$payment_amount = $total_sale_balance != 0 ? $payment_row['payment_amount'] : 0;
+					}				
 			
-		// 			$total_sale_balance-=$payment_amount;	
-		// 			$amount_paid+=	$payment_amount;	
+					$total_sale_balance-=$payment_amount;	
+					$amount_paid+=	$payment_amount;	
 					
 					
-		// 			$sales[$k]['last_payment_date'] = date(get_date_format().' '.get_time_format(), strtotime($payment_row['payment_date']));		
-		// 		}
+					$sales[$k]['last_payment_date'] = date(get_date_format().' '.get_time_format(), strtotime($payment_row['payment_date']));		
+				}
 
-		// 		$sales[$k]['all_payments'] = $all_payments_for_sales[$sale_id];	
-		// 	}
+				$sales[$k]['all_payments'] = $all_payments_for_sales[$sale_id];	
+			}
 			
-		// 	$sales[$k]['sale_total'] = $sale_total;
-		// 	$sales[$k]['amount_paid'] = $amount_paid;
-		// 	$sales[$k]['amount_due'] = $sale_total - $amount_paid;
-		// }
+			$sales[$k]['sale_total'] = $sale_total;
+			$sales[$k]['amount_paid'] = $amount_paid;
+			$sales[$k]['amount_due'] = $sale_total - $amount_paid;
+		}
 		
 		return $sales;
 		

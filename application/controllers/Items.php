@@ -62,7 +62,7 @@ class Items extends Secure_area implements Idata_controller
 		$data['controller_name'] = strtolower(get_class());
 		$data['per_page'] = $config['per_page'];
 		$data['search'] = $params['search'] ? $params['search'] : "";
-		$data['category_id'] = $params['category_id'] ? $params['category_id'] : "";
+		$data['category_id'] = isset($params['category_id']) ? $params['category_id'] : "";
 		$data['categories'][''] = lang('all');
 		$data['deleted'] = $params['deleted'];
 		$categories = $this->Category->sort_categories_and_sub_categories($this->Category->get_all_categories_and_sub_categories());
@@ -126,7 +126,7 @@ class Items extends Secure_area implements Idata_controller
 
 		$data['per_page'] = $config['per_page'];
 		$data['search'] = $params['search'] ? $params['search'] : "";
-		$data['category_id'] = $params['category_id'] ? $params['category_id'] : "";
+		$data['category_id'] = isset($params['category_id']) ? $params['category_id'] : "";
 
 		$data['fields'] = $params['fields'] ? $params['fields'] : "all";
 

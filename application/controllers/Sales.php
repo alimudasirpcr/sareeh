@@ -6295,17 +6295,48 @@ class Sales extends Secure_area
 		$this->session->set_userdata('search_suspended_sale_types', $this->input->post('suspended_types'));
 	}
 
-	function suspended($type = '')
+	function suspended($type = '', $offset = 0)
 	{
 		$data = array();
-		$data['controller_name'] = strtolower(get_class());
-		if ($type == '') {
-			$table_data = $this->Sale->get_all_suspended($this->session->userdata('search_suspended_sale_types'));
-		} else {
-			$table_data = $this->Sale->get_all_suspended($type);
-		}
+		$params = $this->session->userdata('search_suspended_sale_types') ? $this->session->userdata('search_suspended_sale_types') : array('offset' => 0, 'order_col' => 'sale_id', 'order_dir' => 'desc', 'search' => FALSE,  'fields' => 'all', 'deleted' => 0);
 
-		$data['manage_table'] = get_suspended_sales_manage_table($table_data, $this);
+		if ($offset != $params['offset']) {
+			redirect('sales/suspended/'.$type.'/' . $params['offset']);
+		}
+		
+		$data['controller_name'] = strtolower(get_class());
+
+		$config['base_url'] = site_url('sales/sorting');
+		$config['per_page'] = 10;
+		$data['per_page'] = $config['per_page'];
+		if ($type == '') {
+			
+			$config['total_rows'] = $this->Sale->count_suspended($this->session->userdata('search_suspended_sale_types'));
+		} else {
+			$config['total_rows'] = $this->Sale->count_suspended($this->session->userdata('search_suspended_sale_types'));
+		}
+		
+		
+	
+
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+	
+		$data['fields'] = $params['fields'] ? $params['fields'] : "all";
+		$data['order_col'] = $params['order_col'];
+		$data['order_dir'] = $params['order_dir'];
+		$data['deleted'] = $params['deleted'];
+		$data['total_rows'] = $config['total_rows'];
+		$data['type'] = $type;
+		$table_data = $this->Sale->get_all_suspended_data_table($params['deleted'], $data['per_page'], $params['offset'], $params['order_col'], $params['order_dir'] , $data['type'] );
+	
+
+		
+
+
+
+		$data['manage_table'] = get_suspended_sales_manage_table_list($table_data, $this);
 		$data['suspended_sale_types'] = [];
 		if ($this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)) {
 			$data['suspended_sale_types'] = $this->Sale_types->get_all(!$this->config->item('ecommerce_platform') ? $this->config->item('ecommerce_suspended_sale_type_id') : NULL)->result_array();
@@ -6317,6 +6348,66 @@ class Sales extends Secure_area
 		$data['all_columns'] = array_merge($data['selected_columns'], $this->Sale->get_suspended_sales_displayable_columns());
 		$this->load->view('sales/suspended', $data);
 	}
+	function sorting()
+	{
+		$this->check_action_permission('search');
+		$params = $this->session->userdata('search_suspended_sale_types') ? $this->session->userdata('search_suspended_sale_types') : array('order_col' => 'sale_types.name', 'order_dir' => 'asc', 'deleted' => 0);
+		$search = $this->input->post('search') ? $this->input->post('search') : "";
+		
+		$fields = $this->input->post('fields') ? $this->input->post('fields') : 'all';
+
+		$per_page = $this->config->item('number_of_items_per_page') ? (int)$this->config->item('number_of_items_per_page') : 5;
+		$offset = $this->input->post('offset') ? $this->input->post('offset') : 0;
+		$order_col = $this->input->post('order_col') ? $this->input->post('order_col') : $params['order_col'];
+		$order_dir = $this->input->post('order_dir') ? $this->input->post('order_dir') : $params['order_dir'];
+		$deleted = $this->input->post('deleted') ? $this->input->post('deleted') : $params['deleted'];
+	
+
+		$items_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,  'fields' => $fields, 'deleted' => $deleted);
+
+		$this->session->set_userdata("items_search_data", $items_search_data);
+	
+
+
+		$config['total_rows'] = $this->Sale->count_suspended($this->session->userdata('search_suspended_sale_types'));
+
+		if($search){
+			$table_data = $this->Sale->get_all_suspended_data_table_search($search, $deleted,  $per_page, $this->input->post('offset') ? $this->input->post('offset') : 0, $order_col, $order_dir, $fields);
+		}else{
+			$table_data = $this->Sale->get_all_suspended_data_table( $deleted,  $per_page, $this->input->post('offset') ? $this->input->post('offset') : 0, $order_col, $order_dir, $fields);
+		}
+	
+
+		$config['base_url'] = site_url('sales/sorting');
+		$config['per_page'] = $per_page;
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
+		$data['pagination'] = $this->pagination->create_links();
+		$this->load->model('Employee_appconfig');
+		$data['default_columns'] = $this->Sale->get_suspended_sales_default_columns();
+		$data['manage_table'] = get_suspended_sales_manage_table_list($table_data, $this);
+
+		echo json_encode(array('manage_table' => $data['manage_table'], 'pagination' => $data['pagination'], 'total_rows' => $config['total_rows']));
+	}
+
+	function reload_table_sus()
+	{
+
+		$data['total_rows'] =  $this->Sale->count_suspended($this->session->userdata('search_suspended_sale_types'));
+		$params = $this->session->userdata('search_suspended_sale_types') ? $this->session->userdata('search_suspended_sale_types') : array('offset' => 0, 'order_col' => 'sale_id', 'order_dir' => 'desc', 'search' => FALSE, 'category_id' => FALSE, 'fields' => 'all', 'deleted' => 0);
+		$data['fields'] = $params['fields'] ? $params['fields'] : "all";
+		$data['order_col'] = $params['order_col'];
+		$data['order_dir'] = $params['order_dir'];
+		$data['deleted'] = $params['deleted'];
+		$data['type'] = '';
+		$data['controller_name'] = strtolower(get_class());
+		$data['per_page'] =10;
+		$table_data = $this->Sale->get_all_suspended_data_table($params['deleted'], $data['per_page'], $params['offset'], $params['order_col'], $params['order_dir'] , $data['type'] );
+	
+
+		echo get_suspended_sales_manage_table_list($table_data, $this);
+	}
+
 
 	public function suspended_quick($type = '')
 	{
