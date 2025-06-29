@@ -14,9 +14,17 @@ ini_set('display_errors', 1);
 	
 $(document).ready(function()
 {
-	$("#fields").select2({dropdownAutoWidth : true});
-	$("#category_id").select2({dropdownAutoWidth : true});
-	
+	$("#fields").select2({dropdownAutoWidth : true , dropdownParent: $('#skip-labels') });
+	$("#category_id").select2({dropdownAutoWidth : true , dropdownParent: $('#skip-labels')});
+	$(document).on('click', function (e) {
+		const $menu = $('.menu-sub-dropdown');
+		
+		if (!$menu.is(e.target) && $menu.has(e.target).length === 0) {
+					// Clicked outside the menu
+					$('#fields').select2('close');
+					$('#category_id').select2('close');
+		}
+	});
 	$("#sortable").sortable({
 		items : '.sort',
 		containment: "#sortable",
