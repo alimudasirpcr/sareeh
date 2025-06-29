@@ -3148,11 +3148,17 @@ return $result;
     	$query = array(); 
 		$this->db->save_queries = true;
 
-		if (!trim($search))
-		{
-			return array();
+		if (is_array($search)) {
+			if (!isset($search['term']) || !trim($search['term'])) {
+				return array();
+			}
+			$search = trim($search['term']); // Convert array to trimmed string
+		} else {
+			if (!trim($search)) {
+				return array();
+			}
+			$search = trim($search);
 		}
-		
 		if ($price_field == 'cost_price')
 		{
 			$has_cost_price_permission = $this->Employee->has_module_action_permission('items','see_cost_price', $this->Employee->get_logged_in_employee_info()->person_id);
