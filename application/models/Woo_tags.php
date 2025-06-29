@@ -73,7 +73,7 @@ class Woo_tags extends MY_Woo
 			$this->response = parent::do_post(self::post_endpoint);
 			$phppos_tag_id = $this->CI->Tag->get_tag_id_by_name($tag_name);
 			
-			if ($phppos_tag_id !== FALSE)
+			if ($phppos_tag_id !== FALSE && isset($this->response['id']))
 			{
 				$this->woo->link_tag($phppos_tag_id, $this->response['id']);
 			}
