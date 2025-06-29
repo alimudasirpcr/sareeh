@@ -3313,5 +3313,9 @@
     "edit_tag": "Edit tag",
     "reports_hide_items": "Reports hide items",
     "reports_hide_paid": "Reports hide paid",
-    "deliveries_no_deliveries": "Deliveries no deliveries"
+    "deliveries_no_deliveries": "Deliveries no deliveries",
+    "reports_receiving_type": "Reports receiving type",
+    "reports_detailed_payments_report": "Reports detailed payments report",
+    "reports_receiving_id": "Reports receiving id",
+    "reports_receiving_date": "Reports receiving date"
 }

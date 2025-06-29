@@ -79,7 +79,7 @@ if($export_excel == 1)
 									$checked = 'checked ="checked" ';
 								}
 								?>
-								<li class="col<?php echo $i; ?>"><a><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns" id="<?php echo $col_key['column_id']; ?>" value="<?php echo $col_key['column_id']; ?>"><label class="sortable_column_name" for="<?php echo $col_key['column_id']; ?>"><span></span><?php echo H($col_key['data']); ?></label><span class=""></span></a></li>									
+								<li class="col<?php echo $i; ?>"><span class="form-check form-check-sm form-check-custom form-check-solid"><input <?php echo $checked; ?> name="selected_columns[]" type="checkbox" class="columns form-check-input" id="<?php echo $col_key['column_id']; ?>" value="<?php echo $col_key['column_id']; ?>"><label class="sortable_column_name form-check-label" for="<?php echo $col_key['column_id']; ?>"><span></span><?php echo H($col_key['data']); ?></label></span></li>									
 							<?php } ?>
 						</ul>
 				</div>
