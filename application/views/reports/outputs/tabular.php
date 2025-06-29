@@ -148,7 +148,7 @@ if(isset($export_excel) && $export_excel == 1)
 		<div class="card  reports-printable"> 
 			<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
 			<div class="card-header rounded rounded-3 p-12">
-				<div class="card-title fs-6">
+				<div class="card-title fs-6 w-60">
 				<form> <?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?> </form>
 				
 				<small class="reports-range fs-8">  -<?php echo lang('Range'); ?>: <?php echo $subtitle ?> </small>
@@ -175,7 +175,7 @@ if(isset($export_excel) && $export_excel == 1)
 					
 				</span>
 				</div>
-				<div class="card-toolbar">
+				<div class="card-toolbar w-25 gap-1">
 				
 				<?php /* Html code for hide show and sort columns */ ?>
 				<form id="config_columns" class="report-config hidden-print">
