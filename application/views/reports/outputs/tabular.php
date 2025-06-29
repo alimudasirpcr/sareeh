@@ -145,13 +145,15 @@ if(isset($export_excel) && $export_excel == 1)
 
 <div class="row">
 	<div class="col-md-12">
-		<div class="card  reports-printable">
+		<div class="card  reports-printable"> 
 			<input type="hidden" name="url_segment" id="url_segment" value="<?php echo $this->uri->segment(3); ?>">
 			<div class="card-header rounded rounded-3 p-12">
+				<div class="card-title fs-6">
 				<form> <?php echo lang('reports_reports'); ?> - <?php echo $company; ?> <?php echo $title ?> </form>
 				
-				<small class="reports-range"><?php echo $subtitle ?> </small>
-				<br /><small class="reports-range"><?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
+				<small class="reports-range fs-8">  -<?php echo lang('Range'); ?>: <?php echo $subtitle ?> </small>
+
+				<br /><small class="reports-range fs-8"> -  <?php echo lang('reports_generation_date').' '.date(get_date_format().' '.get_time_format()); ?></small>
 				<span class="pull-right">
 					<?php
 					if ($this->uri->segment(3) == 'detailed_timeclock')
@@ -172,6 +174,8 @@ if(isset($export_excel) && $export_excel == 1)
 					<?php } ?>
 					
 				</span>
+				</div>
+				<div class="card-toolbar">
 				
 				<?php /* Html code for hide show and sort columns */ ?>
 				<form id="config_columns" class="report-config hidden-print">
@@ -203,7 +207,7 @@ if(isset($export_excel) && $export_excel == 1)
 				<?php } else { ?>
 					<button class="btn btn-primary text-white hidden-print save_report_button pull-right" style="margin-top: -21px;" data-message="<?php echo H(lang('reports_enter_report_name'));?>"> <?php echo lang('reports_save_report'); ?></button>
 				<?php } ?>
-				
+				</div>
 				
 			</div>
 

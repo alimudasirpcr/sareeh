@@ -29,6 +29,9 @@
 				<div class="card-body nopadding table_holder table-responsive" id="table_holder">
 					<?php echo $manage_table; ?>
 				</div>
+				<div class="pagination pagination-top hidden-print  text-center" id="pagination_bottom" >
+						<?php echo $pagination;?>
+					</div>
 		</div>
 	</div>
 </div>
@@ -37,7 +40,7 @@
 	
 	function reload_items_table()
 	{
-		$("#table_holder").load(<?php echo json_encode(site_url("$controller_name/reload_table")); ?>, function(){
+		$("#table_holder").load(<?php echo json_encode(site_url("$controller_name/reload_table_sus")); ?>, function(){
 			attachEvents();
 		});
 	}
@@ -259,14 +262,6 @@
 			
 		});
 
-		$('.unsuspend_quick').click(function(e) {
-           
-		   		e.preventDefault();
-		 
-			   check_and_get_suspended_sale($(this).data('id') , '0');
-		  
-	   });
-
 	});
 
 	attachEvents();
@@ -296,4 +291,11 @@
 	<?php
 	}
 	?>
+
+
+enable_sorting("<?php echo site_url("$controller_name/sorting"); ?>");
+		enable_select_all();
+		enable_checkboxes();
+		enable_row_selection();
+		enable_search('<?php echo site_url("$controller_name");?>',<?php echo json_encode(lang("confirm_search"));?>);
 </script>

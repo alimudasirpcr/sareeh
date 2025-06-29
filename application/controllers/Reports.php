@@ -120,7 +120,7 @@ class Reports extends Secure_area
 				}
 			}
 		} 
-
+ 
 		
 		$data = array_merge(array('input_data' => $report_model->getInputData()),array('output_data' => $output_data),array('key' => $this->input->get('key'),'report' => $report));
 		
