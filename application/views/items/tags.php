@@ -59,7 +59,7 @@
 						'checked' => false,
 						);
 																	
-						echo form_checkbox($checkbox_options). '<label for="ban_locations'.$location_id.'"><span></span></label> '.$location['name'];
+						echo '<div class="form-check form-check-sm form-check-custom form-check-solid"> '.form_checkbox($checkbox_options). '<label class="form-check-label" for="ban_locations'.$location_id.'">'.$location['name']. '</label> </div>';
 					}
 					?>
                         </div>
