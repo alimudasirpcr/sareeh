@@ -595,7 +595,7 @@ function disableConditions(elm, q) {
 									</select>
 								</td>
 								<td class="value">
-										<input type="text" name="value[]" w="" value="<?php echo $value[$k]; ?>" class="form-control"/>	
+										<input type="text" name="value[]" w="" value="<?php echo $value[$k]; ?>" class="form-control ffff"/>	
 								</td>
 								<td class="actions">
 									<span class="actionCondition">
@@ -607,8 +607,8 @@ function disableConditions(elm, q) {
 										}
 									?>
 									</span>
-									<a class="AddCondition btn btn-light-primary"  href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><i class="la la-plus"></i><?php echo lang("reports_sales_generator_addCondition")?></a>
-									<a class="DelCondition" href="#" title="<?php echo lang("reports_sales_generator_delCondition")?>"><?php echo lang("reports_sales_generator_delCondition")?></a>
+									<a class="AddCondition btn btn-light-primary" href="#" title="<?php echo lang("Add")?>"><i class="la la-plus"></i><?= lang('Add'); ?></a>
+									<a class="DelCondition btn btn-sm btn-light-danger " href="#" title="<?php echo lang("Delete")?>"><i class="la la-trash-o fs-3"></i><?= lang('Delete'); ?></a>
 								</td>
 							</tr>				
 							<?php
@@ -682,8 +682,8 @@ function disableConditions(elm, q) {
 										}
 									?> -->
 									</span>
-									<a class="AddCondition btn btn-light-primary" href="#" title="<?php echo lang("reports_sales_generator_addCondition")?>"><i class="la la-plus"></i><?= lang('Add'); ?></a>
-									<a class="DelCondition btn btn-sm btn-light-danger " href="#" title="<?php echo lang("reports_sales_generator_delCondition")?>"><i class="la la-trash-o fs-3"></i><?= lang('Delete'); ?></a>
+									<a class="AddCondition btn btn-light-primary" href="#" title="<?php echo lang("Add")?>"><i class="la la-plus"></i><?= lang('Add'); ?></a>
+									<a class="DelCondition btn btn-sm btn-light-danger " href="#" title="<?php echo lang("Delete")?>"><i class="la la-trash-o fs-3"></i><?= lang('Delete'); ?></a>
 								</td>
 							</tr>
 							

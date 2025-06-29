@@ -573,8 +573,13 @@ class Sales_generator extends Report
 		{
 			$this->db->group_start();
 			
+			// dd($this->params['values']);
 			foreach ($this->params['values'] as $w => $d) 
 			{
+				if($d['f']==0 || $d['o']==''){
+					unset($this->params['values'][$w]);
+					continue;
+				}
 				$ops = $this->params['ops'][$d['o']]; // Condition Operator
 				if (count($d['i']) > 1) 
 				{
