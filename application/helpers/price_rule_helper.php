@@ -32,7 +32,7 @@ function get_price_rules_manage_table($price_rules,$controller)
 		$sort_col = $header['sort_column'];
 		if ($count == 1)
 		{
-			$table.="<th data-sort-column='$sort_col' class='leftmost'>$label</th>";
+			$table.="<th data-sort-column='$sort_col' class='leftmost form-check form-check-sm form-check-custom form-check-solid mx-5'>$label</th>";
 		}
 		elseif ($count == count($headers))
 		{
