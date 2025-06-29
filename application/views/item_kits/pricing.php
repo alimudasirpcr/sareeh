@@ -97,8 +97,8 @@
 									'class'=>'form-control form-inps',
 									'value'=>$item_kit_info->cost_price ? to_currency_no_money($item_kit_info->cost_price,10) : '')
 								);?>
-								<span class="input-group-btn bg">
-								     <button id="calc_cost_price" class="btn btn-default" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("calculate_suggested_price"); ?></button>
+								<span class="input-group-btn  w-25">
+								     <button id="calc_cost_price" class="btn btn-primary" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("calculate_suggested_price"); ?></button>
 								</span>
 							</div>
 						</div>
@@ -177,8 +177,8 @@
 										'class'=>'form-control form-inps',
 								'value'=>$item_kit_info->unit_price ? to_currency_no_money($item_kit_info->unit_price, 10) : '')
 							);?>
-							<span class="input-group-btn bg">
-							     <button id="calc_unit_price" class="btn btn-default" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("calculate_suggested_price"); ?></button>
+							<span class="input-group-btn  w-25">
+							     <button id="calc_unit_price" class="btn btn-primary" type="button"><span class="ion-ios-calculator-outline"></span> <?php echo lang("calculate_suggested_price"); ?></button>
 							</span>
 						</div>
 					</div>
