@@ -3278,5 +3278,14 @@
     "reports_show_manual_adjustments_only": "Reports show manual adjustments only",
     "reports_detailed_inventory_report": "Reports detailed inventory report",
     "reports_item_name": "Reports item name",
-    "reports_average_quantity": "Reports average quantity"
+    "reports_average_quantity": "Reports average quantity",
+    "any": "Any",
+    "reports_months": "Reports months",
+    "reports_purchased_in_last": "Reports purchased in last",
+    "reports_customers_summary_report": "Reports customers summary report",
+    "reports_total_spent": "Reports total spent",
+    "reports_any_amount": "Reports any amount",
+    "reports_sales_generator_selectcondition_7": "Reports sales generator selectcondition 7",
+    "reports_sales_generator_selectcondition_8": "Reports sales generator selectcondition 8",
+    "reports_sales_generator_selectcondition_9": "Reports sales generator selectcondition 9"
 }

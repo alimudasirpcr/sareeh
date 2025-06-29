@@ -1,7 +1,7 @@
 <?php
 $company = ($company = $this->Location->get_info_for_key('company')) ? $company : $this->config->item('company');
 ?>
-<script src="<?php echo base_url('assets/css_good/plugins/global/plugins.bundle.js');?>"></script>
+
 <div class="row">
 	<?php foreach($summary_data as $name=>$value) { ?>
 	    <div class="col-md-3 col-xs-12 col-sm-6 summary-data mt-4">

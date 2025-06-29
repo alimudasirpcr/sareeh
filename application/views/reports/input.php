@@ -275,6 +275,7 @@
                                 <div class="form-check" data-keyword="<?php echo H(lang('config_keyword_payment')) ?>">
 								<?php 
 					$this->load->helper('view');
+              
 					foreach($input_params as $input_param) 
 					{
 							load_cleaned_view('reports/inputs/'.$input_param['view'],$input_param);
