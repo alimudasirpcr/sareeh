@@ -263,8 +263,6 @@ class Summary_customers extends Report
 	
 	public function getData()
 	{
-
-		save_query();
 		$this->db->select('COUNT(*) as count,customers.current_sales_for_discount, customer_id, CONCAT(first_name, " ",last_name) as customer, customers.person_id as person_id, people.phone_number, people.email, people.zip,people.address_1,people.address_2,people.state,people.city,sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax,sum(profit) as profit, sum(total_quantity_purchased) as total_quantity_purchased', false);
 		$this->db->from('sales');
 		$this->db->join('customers', 'customers.person_id = sales.customer_id');
@@ -371,8 +369,7 @@ class Summary_customers extends Report
 			
 			$this->db->where_in('customer_id', $customer_ids);
 			$this->db->group_by('sale_id');
-			$cust_ret = $this->db->get();
-	
+			$cust_ret = $this->db->get()->result_array();
 			
 			$customers_points = array();
 			
