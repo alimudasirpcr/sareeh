@@ -400,7 +400,7 @@ return $result;
 					"GROUP BY `$phppos_items`.`item_id` ) as main_query
 	        WHERE deleted = '$deleted' and system_item = 0 $order_by
 	        LIMIT $limit OFFSET $offset";
-			echo $query; exit();
+			
 					return $this->db->query($query);
 		}
 		else
