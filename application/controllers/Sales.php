@@ -6365,7 +6365,7 @@ class Sales extends Secure_area
 
 		$items_search_data = array('offset' => $offset, 'order_col' => $order_col, 'order_dir' => $order_dir, 'search' => $search,  'fields' => $fields, 'deleted' => $deleted);
 
-		$this->session->set_userdata("items_search_data", $items_search_data);
+		$this->session->set_userdata("search_suspended_sale_types", $items_search_data);
 	
 
 

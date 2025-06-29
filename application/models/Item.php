@@ -330,6 +330,7 @@ return $result;
 	*/
 	function get_all($deleted=0,$limit=10000, $offset=0,$col='item_id',$order='desc')
 	{
+		
 
 		$location_id= $this->Employee->get_logged_in_employee_current_location_id() ? $this->Employee->get_logged_in_employee_current_location_id() : 1;
 		$phppos_location_ban_items = $this->db->dbprefix('location_ban_items');
@@ -399,7 +400,7 @@ return $result;
 					"GROUP BY `$phppos_items`.`item_id` ) as main_query
 	        WHERE deleted = '$deleted' and system_item = 0 $order_by
 	        LIMIT $limit OFFSET $offset";
-							
+			echo $query; exit();
 					return $this->db->query($query);
 		}
 		else
@@ -454,6 +455,7 @@ return $result;
 			$this->db->limit($limit);
 			$this->db->offset($offset);
 			$return = $this->db->get();
+			
 			return $return;
 		}
 	}
