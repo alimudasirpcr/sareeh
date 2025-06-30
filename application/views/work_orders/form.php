@@ -844,7 +844,9 @@
                                                         }
                                                     ?>
 
-                                            <?php if (isset($item['allow_alt_description']) && $item['allow_alt_description'] == 1) { ?>
+<?php echo clean_html($item['description']);  exit(); ?>
+
+                                            <?php   if (isset($item['allow_alt_description']) && $item['allow_alt_description'] == 1) { ?>
                                             : <a href="#" id="description_<?php echo $line; ?>" class="xeditable"
                                                 data-type="textarea" data-pk="1" data-name="description"
                                                 data-value="<?php echo clean_html($item['description']); ?>"
