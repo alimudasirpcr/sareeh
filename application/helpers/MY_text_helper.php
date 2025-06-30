@@ -354,6 +354,7 @@ function clean_html($dirty_html)
 {
 	require_once (APPPATH."libraries/htmlpurifier/library/HTMLPurifier.auto.php");
 	$config = HTMLPurifier_Config::createDefault();
+	$config->set('HTML.Allowed', '');
 	$purifier = new HTMLPurifier($config);
 	return $purifier->purify($dirty_html);
 }
