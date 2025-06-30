@@ -20037,3 +20037,6 @@ select.form-control.tier_dropdown {
   white-space: nowrap;
 }
 
+#s2id_locations_list{
+  width: 85% !important;
+}
